@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Sensor</title>
+    <link rel="stylesheet" href="actualizar-sensor-style.css">
+</head>
+<body class="page">
+    <header class="header">
+        <div class="header__logo"></div>
+        <img src="../IMG/logo-sena.png" alt="Logo SENA" class="header__logo">
+    </header>
+    <main class="container">
+        <section class="sensor">
+            <h1 class="sensor__title">
+                <svg width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.5 0L10.5 5L5.5 10L0.5 5L5.5 0Z" fill="#4BBD17"/>
+                </svg>
+                Actualizar Sensor
+            </h1>
+            <form class="sensor__form">
+                <div class="sensor__form-group">
+                    <label class="sensor__label" for="tipoInsumo">Tipo de Sensor *</label>
+                    <input class="sensor__input" type="text" placeholder="Escribe aquí..." required>
+                </div>
+                <div class="sensor__form-group">
+                    <label class="sensor__label" for="idInsumo">ID del Sensor</label>
+                    <input class="sensor__input sensor__input--disabled" type="text" value="INS-001" disabled>
+                </div>
+                <div class="sensor__form-group">
+                    <label class="sensor__label" for="nombreInsumo">Nombre del Sensor *</label>
+                    <input class="sensor__input" type="text" value="Sensor de temperatura" required>
+                </div>
+                <div class="sensor__form-group">
+                    <label class="sensor__label" for="unidadMedida">Ubicacion *</label>
+                    <input class="sensor__input" type="text" placeholder="Escribe aquí..." required>
+                </div>
+                <div class="sensor__form-group">
+                    <label class="sensor__label" for="cantidad">Unidad de medida *</label>
+                    <input class="sensor__input" type="number" value="50" required>
+                </div>
+                <div class="sensor__form-group">
+                    <label class="sensor__label" for="valorUnitario">Valor minimo *</label>
+                    <input class="sensor__input" type="text" value="$2,500" required>
+                </div>
+                <div class="sensor__form-group sensor__form-group--full-width">
+                    <label class="sensor__label" for="valorTotal">Valor Maximo</label>
+                    <input class="sensor__input sensor__input--disabled" type="text" value="$125,000" disabled>
+                </div>
+                <div class="sensor__form-group sensor__form-group--full-width">
+                    <label class="sensor__label" for="descripcion">Intervalo de lectura (minutos)</label>
+                    <textarea class="sensor__textarea">...</textarea>
+                </div>
+                <div class="sensor__button-group">
+                    <a href="visualizar-sensor.html">
+                        <button type="button" class="sensor__button sensor__button--cancel">Cancelar</button>
+                    </a>
+                    <a href="visualizar-sensor.html">
+                        <button type="button" class="sensor__button sensor__button--save" >Guardar Cambios</button>
+                    </a>
+                    <a href="listar-sensor-sebas.html">
+                        <button type="button" class="sensor__button sensor__button--toggle">Habilitar / Deshabilitar</button>
+                    </a>
+                </div>
+            </form>
+        </section>
+    </main>
+    <script src="script-actualizar.js"></script>
+</body>
+</html>

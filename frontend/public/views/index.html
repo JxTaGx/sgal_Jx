@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Login</title>
+</head>
+<body>
+    <section class="login">
+        <div class="login__form-container">
+            <form class="login__form" action="" method="post">
+                <h1 class="login__title">LOGIN</h1>
+                <input type="text" placeholder="Usuario" class="login__input login__input--username">
+                <input type="password" placeholder="Contraseña" class="login__input login__input--password">
+                <a href="/USERS/recover.html" class="login__recover-link">
+                    <p class="login__recover-text">¿Olvidaste la contraseña?</p>
+                </a>
+                <a href="/USERS/home.html" class="login__submit-link">
+                    <input type="button" value="Iniciar Sesión" class="login__button" required>
+                </a>                
+            </form>
+        </div>
+        <section class="login__image-container">
+        </section>
+    </section>
+    <!-- Mensaje de error -->
+    <div class="error-message">
+        Los números no están permitidos en el nombre de usuario
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

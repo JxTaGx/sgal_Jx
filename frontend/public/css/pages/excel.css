@@ -1,0 +1,350 @@
+/* Paleta de colores */
+:root {
+    /* Colores primarios */
+    --primary-50: #EDF7E8;
+    --primary-100: #DBEFB9;
+    --primary-200: #C9E8B9;
+    --primary-300: #B7E0A2;
+    --primary-400: #A5D88B;
+    --primary-500: #93D074;
+    --primary-600: #81C85D;
+    --primary-700: #6FC046;
+    --primary-800: #5DD12E;
+    --primary-900: #4BBD17;
+    --primary-950: #39A900;
+
+    /* Colores secundarios */
+    --secondary-1-50: #E8ECEF;
+    --secondary-1-100: #D1DBDF;
+    --secondary-1-200: #B9C7CE;
+    --secondary-1-300: #A2B4BE;
+    --secondary-1-400: #8B9DD6;
+    --secondary-1-500: #748E9E;
+    --secondary-1-600: #5D7B8E;
+    --secondary-1-700: #46687E;
+    --secondary-1-800: #2E566D;
+    --secondary-1-900: #17435D;
+    --secondary-1-950: #00304D;
+
+    --secondary-2-50: #F2EBF3;
+    --secondary-2-100: #E5D8E7;
+    --secondary-2-200: #D8C4DB;
+    --secondary-2-300: #CBB0CD;
+    --secondary-2-400: #BE9DC3;
+    --secondary-2-500: #B289B6;
+    --secondary-2-600: #A576AA;
+    --secondary-2-700: #98629E;
+    --secondary-2-800: #8B4E92;
+    --secondary-2-900: #7E3B86;
+    --secondary-2-950: #71277A;
+
+    --secondary-3-50: #EFFDFE;
+    --secondary-3-100: #DFFAFE;
+    --secondary-3-200: #CFD0FD;
+    --secondary-3-300: #BFFAFD;
+    --secondary-3-400: #AFF3FC;
+    --secondary-3-500: #A0F1FC;
+    --secondary-3-600: #90EEF7;
+    --secondary-3-700: #80EECF;
+    --secondary-3-800: #70EAFA;
+    --secondary-3-900: #60E7FA;
+    --secondary-3-950: #50E5F9;
+
+    --secondary-4-50: #FFF6E8;
+    --secondary-4-100: #FFF4D1;
+    --secondary-4-200: #FEEFB9;
+    --secondary-4-300: #FEE9A2;
+    --secondary-4-400: #FEE48B;
+    --secondary-4-500: #FEDE74;
+    --secondary-4-600: #FEDB5D;
+    --secondary-4-700: #FED346;
+    --secondary-4-800: #FDCE2E;
+    --secondary-4-900: #FDC817;
+    --secondary-4-950: #FDC300;
+
+    /* Colores neutros */
+    --white: #FFFFFF;
+    --black: #000000;
+    --gray-950: #313131;
+    --gray-750: #626262;
+    --gray-550: #949494;
+    --gray-350: #C5C5C5;
+    --gray-150: #F6F6F6;
+
+    /* Tipografía */
+    --font-primary: "Work Sans", sans-serif;
+    --font-secondary: "Calibri", sans-serif;
+
+    /* Variaciones tipográficas */
+    --font-light: 300;
+    --font-regular: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+
+    /* Tamaños de fuente */
+    --font-size-h1: 3.2rem; /* 32px */
+    --font-size-h2: 2.4rem; /* 24px */
+    --font-size-h3: 2.0rem; /* 20px */
+    --font-size-h4: 1.6rem; /* 16px */
+    --font-size-h5: 1.4rem; /* 14px */
+    --font-size-h6: 1.2rem; /* 12px */
+}
+
+/* Estilos generales */
+body {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-h4); /* Base */
+}
+
+h1 {
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-bold);
+}
+
+h2 {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-semibold);
+}
+
+h3 {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-medium);
+}
+
+h4 {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-regular);
+}
+
+h5 {
+    font-size: var(--font-size-h5);
+    font-weight: var(--font-light);
+}
+
+h6 {
+    font-size: var(--font-size-h6);
+    font-weight: var(--font-light);
+}
+
+/* Tipografía secundaria */
+.calibri {
+    font-family: var(--font-secondary);
+}
+
+/* Hack para usar los rem de manera fácil */
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilo global */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+/* Header block */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.6rem 3.2rem;
+    background-color: var(--primary-950);
+    color: white;
+}
+
+.header__logo-img {
+    width: 5rem;
+}
+
+.header__title {
+    margin: 0;
+    font-size: 2.4rem; 
+}
+
+.header__user-info {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem; 
+}
+
+.header__user-img {
+    width: 4rem; 
+    border-radius: 50%;
+}
+
+.container {
+    padding: 3.2rem;
+    background: white;
+    border-radius: 1rem; 
+    box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.1); 
+    margin: 3.2rem auto;
+    max-width: 120rem; 
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.6rem;
+}
+
+.actions__search {
+    padding: 0.8rem 1.6rem; 
+    border: 0.1rem solid #ddd;
+    border-radius: 0.5rem; 
+    width: 30%;
+}
+
+.button {
+    padding: 0.8rem 1.6rem; 
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 1.4rem; 
+}
+
+.button--green {
+    background-color: var(--primary-950);
+    color: white;
+}
+
+.button--gray {
+    background-color: #ccc;
+    color: #333;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.6rem;
+}
+
+.users-table__header,
+.users-table__cell {
+    text-align: center;
+    border: 0.1rem solid #ddd;
+    padding: 0.8rem;
+}
+
+.users-table__header {
+    background-color: var(--primary-950);
+    color: white;
+}
+
+.users-table__row:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.users-table__icon {
+    width: 2rem; 
+    height: 2rem;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 1200px) {
+    .container {
+        max-width: 90%;
+    }
+    
+    .header {
+        padding: 1.2rem 2rem;
+    }
+    
+    .actions__search {
+        width: 40%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    
+    .header__logo-img {
+        width: 4rem;
+        margin-bottom: 1rem;
+    }
+    
+    .header__title {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .header__user-info {
+        margin-top: 1rem;
+    }
+    
+    .container {
+        padding: 2rem;
+        margin: 2rem auto;
+    }
+    
+    .actions {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .actions__search {
+        width: 100%;
+    }
+    
+    .button {
+        margin-bottom: 0.5rem;
+    }
+    
+    .users-table {
+        overflow-x: auto;
+        display: block;
+    }
+    
+    .users-table__header,
+    .users-table__cell {
+        padding: 0.6rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    html {
+        font-size: 55%;
+    }
+    
+    .header__title {
+        font-size: 1.8rem;
+    }
+    
+    .header__user-img {
+        width: 3rem;
+    }
+    
+    .container {
+        padding: 1.5rem;
+        margin: 1.5rem auto;
+    }
+    
+    .button {
+        padding: 0.6rem 1.2rem;
+        font-size: 1.2rem;
+    }
+    
+    .users-table__header,
+    .users-table__cell {
+        padding: 0.5rem 0.3rem;
+        font-size: 1.2rem;
+    }
+    
+    .users-table__icon {
+        width: 1.6rem;
+        height: 1.6rem;
+    }
+}

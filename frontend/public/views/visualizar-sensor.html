@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Sensor</title>
+    <link rel="stylesheet" href="../SENSOR/visualizar-sensor-style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <img src="../IMG/logo-sena.png" alt="SENA Logo" class="header__logo">
+            <h1 class="header__title">Visualizar Sensor</h1>
+        </header>
+        <main class="main">
+            <section class="sensor">
+                <div class="sensor__details">
+                    <h4 class="sensor__title">ID del Sensor: #12345</h4>
+                    <svg class="sensor__graph" width="1082" height="96" viewBox="0 0 1082 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 88H1081" stroke="#34A853" stroke-width="2"/>
+                        <path d="M1 88.0002C201 -11.9998 401 48.0002 601 8.00021C801 -31.9998 1001 128 1081 88.0002" stroke="#34A853" stroke-width="3"/>
+                    </svg>
+                    <ul class="sensor__info-list">
+                        <li class="sensor__info-item"><strong></strong> Tipo: Temperatura</li>
+                        <li class="sensor__info-item"><strong></strong> Ubicacion: Cosecha exterior</li>
+                        <li class="sensor__info-item"><strong></strong> Ultima lectura: 22°C</li>
+                        <li class="sensor__info-item"><strong></strong> Estado: Activo</li>
+                    </ul>
+                </div>
+                <div class="sensor__actions">
+                    <a href="actualizar-sensor.html">
+                        <button class="button button--edit">Actualizar Sensor</button>
+                    </a>
+                    <button class="button button--report" onclick="window.location.href='../USERS SEBASTIAN/lista de usuario/excel.html'">Generar Reporte</button>
+                </div>
+            </section>
+            <section class="history">
+                <h2 class="history__title">Historial de lecturas</h2>
+                <ul class="history__list">
+                    <li class="history__item">03/12/2024 - 14:00:00 - 21.5°C</li>
+                    <li class="history__item">23/09/2024 - 14:00:00 - 21.5°C</li>
+                    <li class="history__item">14/07/2024 - 14:00:00 - 21.5°C</li>
+                </ul>
+                <a href="listar-sensor-sebas.html">
+                    <button class="button button--back">Volver</button>
+                </a>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

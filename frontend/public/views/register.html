@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTEMA GESTION AGRICOLA LEMBO (S.G.A.L)</title>
+    <link rel="stylesheet" href="register-style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="page__header">
+            <img src="../IMG/logo-sena.png" alt="Logo SENA" class="page__logo">
+        </header>
+        <main class="page__main">
+            <section class="register">
+                <h2 class="register__title register__title--subtitle">Registro</h2>
+                <div class="register__background">
+                    <h1 class="register__heading">SISTEMA GESTION AGRICOLA LEMBO <br>(S.G.A.L)</h1>
+                    
+                    <form action="http://localhost:3000/user" id="registroForm" class="register__container" method="POST">
+                        <div class="register__column register__column--left">
+                            <h2 class="register__section-title">Tipo de Documento</h2>
+                            <div class="register__form-group">
+                                <label for="documentType" class="register__label">Tipo de Documento</label>
+                                <select id="documentType" name="documentType" class="register__select" required>
+                                    <option value="tp">TI</option>
+                                    <option value="cc">CC</option>
+                                    <option value="ppt">PPT</option>
+                                </select>
+                            </div>
+                            <div class="register__form-group">
+                                <label for="documentNumber" class="register__label">Número de Documento</label>
+                                <input type="text" id="documentNumber" placeholder="Numero de Documento" name="documentNumber" class="register__input" required>
+                            </div>
+                            <div class="register__form-group">
+                                <label for="userType" class="register__label">Tipo de Usuario</label>
+                                <input type="text" id="userType" placeholder="Tipo de usuario" name="userType" class="register__input" required>
+                            </div>
+                        </div>
+                        <div class="register__column register__column--right">
+                            <h2 class="register__section-title">Formulario</h2>
+                            <div class="register__form-group">
+                                <label for="firstName" class="register__label">Nombre</label>
+                                <input type="text" id="firstName" placeholder="Nombre" name="firstName" class="register__input register__input--name" required>
+                            </div>
+                            <div class="register__form-group">
+                                <label for="lastName" class="register__label">Apellido</label>
+                                <input type="text" id="lastName" placeholder="Apellido" name="lastName" class="register__input register__input--lastname" required>
+                            </div>
+                            <div class="register__form-group">
+                                <label for="phone" class="register__label">Teléfono</label>
+                                <input type="text" id="phone" placeholder="Teléfono" name="phone" class="register__input register__input--tel" required>
+                            </div>
+                            <div class="register__form-group">
+                                <label for="password" class="register__label">Contraseña</label>
+                                <input type="password" id="password" placeholder="Contraseña" name="password" class="register__input register__input--password" required>
+                            </div>
+                            <div class="register__form-group">
+                                <label for="email" class="register__label">Correo Electrónico</label>
+                                <input type="email" id="email" placeholder="Correo Electrónico" name="email" class="register__input register__input--email" required>
+                            </div>
+                            <div class="register__form-group">
+                                <label for="confirmEmail" class="register__label">Confirmar Correo Electrónico</label>
+                                <input type="email" id="confirmEmail" placeholder="Confirmar Correo Electrónico" name="confirmEmail" class="register__input" required>
+                            </div>
+                            <button type="submit" class="register__button register__button--submit">Registrarse</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <a href="/USERS SEBASTIAN/lista de usuario/index.html">
+                <button class="page__button page__button--back">Volver</button>
+            </a>
+        </main>
+    </div>
+    <script src="../USERS/script-register.js"></script>
+    <script src="../server.js"></script>
+</body>
+</html>

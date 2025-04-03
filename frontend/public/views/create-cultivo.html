@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cultivo</title>
+    <link rel="stylesheet" href="create-cultivo-style.css">
+</head>
+<body>
+    <div class="cultivo">
+        <header class="cultivo__header">
+            <img src="/IMG/logo-sena.png" alt="Logo SENA" class="cultivo__logo" title="Logo del SENA">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="cultivo__icon" aria-hidden="true">
+                <path d="M18 36C27.9411 36 36 27.9411 36 18C36 8.05887 27.9411 0 18 0C8.05887 0 0 8.05887 0 18C0 27.9411 8.05887 36 18 36Z" fill="#4BBD17"/>
+            </svg>
+        </header>
+        <form class="cultivo__form">
+            <div class="cultivo__column">
+                <h1 class="cultivo__title">Crear Cultivo</h1>
+                <div class="cultivo__form-group">
+                    <label class="cultivo__label cultivo__label--left" for="tipoCultivo">Tipo de cultivo</label>
+                    <input 
+                        class="cultivo__input cultivo__input--left" 
+                        type="text" 
+                        name="tipoCultivo" 
+                        id="tipoCultivo"
+                        placeholder="Ej: Maíz, Café, Arroz"
+                        title="Ingrese el tipo de cultivo"
+                        aria-label="Tipo de cultivo"
+                    >
+                </div>
+                <div class="cultivo__form-group">
+                    <label class="cultivo__label cultivo__label--left" for="nombreCultivo">Nombre del cultivo</label>
+                    <input 
+                        class="cultivo__input cultivo__input--left" 
+                        type="text" 
+                        name="nombreCultivo" 
+                        id="nombreCultivo"
+                        placeholder="Ej: Cultivo de maíz 2024"
+                        title="Ingrese el nombre del cultivo"
+                        aria-label="Nombre del cultivo"
+                    >
+                </div>
+                <div class="cultivo__form-group">
+                    <label class="cultivo__label cultivo__label--left" for="identificador">ID de cultivo</label>
+                    <input 
+                        class="cultivo__input cultivo__input--left" 
+                        type="text" 
+                        name="identificador" 
+                        id="identificador"
+                        placeholder="Ej: CULT-001"
+                        title="Ingrese el ID del cultivo"
+                        aria-label="ID del cultivo"
+                    >
+                </div>
+                <div class="cultivo__form-group">
+                    <label class="cultivo__label cultivo__label--left" for="fotografia">Fotografía</label>
+                    <div class="cultivo__upload-area" role="button" aria-label="Subir fotografía" title="Área para subir imágenes">
+                        <p class="cultivo__upload-text">Arrastra y suelta o haz clic para subir</p>
+                    </div>
+                </div>
+            </div>
+            <div class="cultivo__column cultivo__column--right">
+                <div class="cultivo__form-group">
+                    <label class="cultivo__label" for="tamano">Tamaño</label>
+                    <input 
+                        class="cultivo__input" 
+                        type="text" 
+                        name="tamano" 
+                        id="tamano"
+                        placeholder="Ej: 100 m²"
+                        title="Ingrese el tamaño del cultivo"
+                        aria-label="Tamaño del cultivo"
+                    >
+                </div>
+                <div class="cultivo__form-group">
+                    <label class="cultivo__label" for="ubicacion">Ubicación</label>
+                    <input 
+                        class="cultivo__input" 
+                        type="text" 
+                        name="ubicacion" 
+                        id="ubicacion"
+                        placeholder="Ej: Finca La Esperanza"
+                        title="Ingrese la ubicación del cultivo"
+                        aria-label="Ubicación del cultivo"
+                    >
+                </div>
+                <div class="cultivo__form-group">
+                    <label class="cultivo__label" for="estado">Estado</label>
+                    <input 
+                        class="cultivo__input" 
+                        type="text" 
+                        name="estado" 
+                        id="estado"
+                        placeholder="Ej: Activo, En crecimiento"
+                        title="Ingrese el estado del cultivo"
+                        aria-label="Estado del cultivo"
+                    >
+                </div>
+                <div class="cultivo__form-group">
+                    <label class="cultivo__label" for="descripcion">Descripción</label>
+                    <textarea 
+                        class="cultivo__textarea" 
+                        name="descripcion" 
+                        id="descripcion"
+                        placeholder="Describa el cultivo..."
+                        title="Ingrese una descripción"
+                        aria-label="Descripción del cultivo"
+                    ></textarea>
+                </div>
+            </div>
+            <div class="cultivo__form-actions">
+                <button type="button" class="cultivo__btn cultivo__btn--volver" onclick="window.location.href='listar-cultivo-sebas.html'" title="Volver a la lista de cultivos" aria-label="Volver">
+                    Volver
+                </button>
+                <button type="submit" class="cultivo__btn cultivo__btn--crear" title="Crear nuevo cultivo" aria-label="Crear cultivo">
+                    Crear Cultivo
+                </button>
+            </div>
+        </form>
+    </div>
+    <script src="../JS/CULTIVO JS/create-cultivo.js"></script>
+</body>
+</html>

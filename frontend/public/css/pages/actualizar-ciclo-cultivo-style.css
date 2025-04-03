@@ -1,0 +1,346 @@
+:root {
+    /* Colores primarios */
+    --primary-50: #EDF7E8;
+    --primary-100: #DBEFB9;
+    --primary-200: #C9E8B9;
+    --primary-300: #B7E0A2;
+    --primary-400: #A5D88B;
+    --primary-500: #93D074;
+    --primary-600: #81C85D;
+    --primary-700: #6FC046;
+    --primary-800: #5DD12E;
+    --primary-900: #4BBD17;
+    --primary-950: #39A900;
+
+    /* Colores secundarios */
+    --secondary-1-50: #E8ECEF;
+    --secondary-1-100: #D1DBDF;
+    --secondary-1-200: #B9C7CE;
+    --secondary-1-300: #A2B4BE;
+    --secondary-1-400: #8B9DD6;
+    --secondary-1-500: #748E9E;
+    --secondary-1-600: #5D7B8E;
+    --secondary-1-700: #46687E;
+    --secondary-1-800: #2E566D;
+    --secondary-1-900: #17435D;
+    --secondary-1-950: #00304D;
+
+    /* Colores neutros */
+    --white: #FFFFFF;
+    --black: #000000;
+    --gray-950: #313131;
+    --gray-750: #626262;
+    --gray-550: #949494;
+    --gray-350: #C5C5C5;
+    --gray-150: #F6F6F6;
+
+    /* Tipografía */
+    --font-primary: "Work Sans", sans-serif;
+    --font-secondary: "Calibri", sans-serif;
+    --font-light: 300;
+    --font-regular: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+
+    /* Tamaños de fuente */
+    --font-size-h1: 3.2rem;
+    --font-size-h2: 2.4rem;
+    --font-size-h3: 2.0rem;
+    --font-size-h4: 1.6rem;
+    --font-size-h5: 1.4rem;
+    --font-size-h6: 1.2rem;
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-h4);
+}
+
+body::before{
+    content: ""; 
+    position: absolute; 
+    inset: 0;
+    background-image: url('/IMG/wallpaper-code.jpeg'); 
+    background-size: cover; 
+    background-position: center; 
+    opacity: 0.1; 
+    z-index: 1; 
+}
+
+body > * {
+    position: relative; 
+    z-index: 1; 
+}
+
+h1 {
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-bold);
+}
+
+h2 {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-semibold);
+}
+
+h3 {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-medium);
+}
+
+h4 {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-regular);
+}
+
+h5 {
+    font-size: var(--font-size-h5);
+    font-weight: var(--font-light);
+}
+
+h6 {
+    font-size: var(--font-size-h6);
+    font-weight: var(--font-light);
+}
+
+.calibri {
+    font-family: var(--font-secondary);
+}
+
+/* Asegurar que todas las imágenes sean responsivas */
+img, svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Styles for the form */
+.cultivo-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.cultivo-header {
+    display: flex;
+    align-items: center;
+    padding: 2rem 0;
+}
+
+.cultivo-header__logo {
+    max-width: 8rem;
+    margin-right: 1rem;
+    margin-top: -3rem;
+}
+
+.cultivo-header h1 {
+    margin: 0;
+    margin-top: -3rem;
+    margin-left: 2rem;
+}
+
+.cultivo-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-left: -12rem;
+    margin-top: -3rem;
+    height: 40rem;
+}
+
+svg {
+    width: 20%;
+    margin-top: 30rem;
+    margin-left: 30rem;
+}
+
+.cultivo-content__image-placeholder {
+    background-color: var(--gray-150);
+    border: 0.1rem solid var(--secondary-1-800);
+    border-radius: 0.5rem;
+    padding: 7rem;
+    text-align: center;
+    flex: 1;
+    width: 40rem;
+    height: 40rem;
+    margin-left: 30rem;
+    margin-top: 5rem;
+}
+
+.cultivo-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex: 2;
+    margin-top: 5rem;
+}
+
+.cultivo-form__group {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.cultivo-form__label {
+    font-weight: var(--font-medium);
+    margin-bottom: 0.5rem;
+}
+
+.cultivo-form__input {
+    width: 32rem;
+    height: 4.8rem;
+    padding: 1rem;
+    border: 0.1rem solid var(--gray-550);
+    border-radius: 0.5rem;
+    font-size: var(--font-size-h4);
+}
+
+.cultivo-form__buttons {
+    display: flex;
+    justify-content: flex-start;
+    gap: 3rem;
+    margin-top: 4rem;
+}
+
+.cultivo-form__btn {
+    padding: 1.2rem 2.4rem;
+    border: 0.1rem solid var(--black);
+    border-radius: 0.5rem;
+    font-size: var(--font-size-h4);
+    cursor: pointer;
+}
+
+.cultivo-form__btn--save {
+    background-color: var(--primary-900);
+    color: var(--white);
+}
+
+.cultivo-form__btn--cancel {
+    background-color: var(--primary-900);
+    color: var(--white);
+}
+
+/* Pantallas grandes (escritorio) */
+@media (max-width: 1200px) {
+    .cultivo-content {
+        margin-left: -8rem;
+    }
+    
+    .cultivo-content__image-placeholder {
+        width: 35rem;
+        height: 35rem;
+        margin-left: 20rem;
+    }
+    
+    .cultivo-form__buttons {
+        margin-left: -50rem;
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    body {
+        font-size: var(--font-size-h5);
+    }
+    
+    .cultivo-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .cultivo-header__logo {
+        margin-top: 0;
+    }
+    
+    .cultivo-header h1 {
+        margin-top: 1rem;
+        margin-left: 0;
+    }
+    
+    .cultivo-content {
+        grid-template-columns: 1fr;
+        margin-left: 0;
+        margin-top: 1rem;
+        height: auto;
+        gap: 3rem;
+    }
+    
+    .cultivo-content__image-placeholder {
+        width: 90%;
+        height: 30rem;
+        margin: 0 auto;
+    }
+    
+    svg {
+        margin-top: 10rem;
+        margin-left: 0;
+    }
+    
+    .cultivo-form {
+        margin-top: 0;
+    }
+    
+    .cultivo-form__group {
+        grid-template-columns: 1fr;
+    }
+    
+    .cultivo-form__input {
+        width: 100%;
+    }
+    
+    .cultivo-form__buttons {
+        flex-direction: row;
+        justify-content: center;
+        margin-left: 0;
+        margin-top: 3rem;
+    }
+    
+    .cultivo-form__btn {
+        width: auto;
+    }
+}
+
+/* Móviles */
+@media (max-width: 480px) {
+    .cultivo-container {
+        padding: 1rem;
+    }
+    
+    .cultivo-header h1 {
+        font-size: 2.4rem;
+    }
+    
+    .cultivo-content__image-placeholder {
+        height: 25rem;
+        padding: 4rem;
+    }
+    
+    svg {
+        margin-top: 7rem;
+    }
+    
+    .cultivo-form__buttons {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .cultivo-form__btn {
+        width: 100%;
+        padding: 1rem 2rem;
+    }
+    
+    .cultivo-form__input {
+        height: 4rem;
+    }
+    
+    .cultivo-form__group {
+        gap: 0.5rem;
+    }
+}

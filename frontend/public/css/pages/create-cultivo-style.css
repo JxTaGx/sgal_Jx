@@ -1,0 +1,485 @@
+/* Paleta de colores */
+:root {
+    /* Colores primarios */
+    --primary-50: #EDF7E8;
+    --primary-100: #DBEFB9;
+    --primary-200: #C9E8B9;
+    --primary-300: #B7E0A2;
+    --primary-400: #A5D88B;
+    --primary-500: #93D074;
+    --primary-600: #81C85D;
+    --primary-700: #6FC046;
+    --primary-800: #5DD12E;
+    --primary-900: #4BBD17;
+    --primary-950: #39A900;
+
+    /* Colores secundarios */
+    --secondary-1-50: #E8ECEF;
+    --secondary-1-100: #D1DBDF;
+    --secondary-1-200: #B9C7CE;
+    --secondary-1-300: #A2B4BE;
+    --secondary-1-400: #8B9DD6;
+    --secondary-1-500: #748E9E;
+    --secondary-1-600: #5D7B8E;
+    --secondary-1-700: #46687E;
+    --secondary-1-800: #2E566D;
+    --secondary-1-900: #17435D;
+    --secondary-1-950: #00304D;
+
+    --secondary-2-50: #F2EBF3;
+    --secondary-2-100: #E5D8E7;
+    --secondary-2-200: #D8C4DB;
+    --secondary-2-300: #CBB0CD;
+    --secondary-2-400: #BE9DC3;
+    --secondary-2-500: #B289B6;
+    --secondary-2-600: #A576AA;
+    --secondary-2-700: #98629E;
+    --secondary-2-800: #8B4E92;
+    --secondary-2-900: #7E3B86;
+    --secondary-2-950: #71277A;
+
+    --secondary-3-50: #EFFDFE;
+    --secondary-3-100: #DFFAFE;
+    --secondary-3-200: #CFD0FD;
+    --secondary-3-300: #BFFAFD;
+    --secondary-3-400: #AFF3FC;
+    --secondary-3-500: #A0F1FC;
+    --secondary-3-600: #90EEF7;
+    --secondary-3-700: #80EECF;
+    --secondary-3-800: #70EAFA;
+    --secondary-3-900: #60E7FA;
+    --secondary-3-950: #50E5F9;
+
+    --secondary-4-50: #FFF6E8;
+    --secondary-4-100: #FFF4D1;
+    --secondary-4-200: #FEEFB9;
+    --secondary-4-300: #FEE9A2;
+    --secondary-4-400: #FEE48B;
+    --secondary-4-500: #FEDE74;
+    --secondary-4-600: #FEDB5D;
+    --secondary-4-700: #FED346;
+    --secondary-4-800: #FDCE2E;
+    --secondary-4-900: #FDC817;
+    --secondary-4-950: #FDC300;
+
+    /* Colores neutros */
+    --white: #FFFFFF;
+    --black: #000000;
+    --gray-950: #313131;
+    --gray-750: #626262;
+    --gray-550: #949494;
+    --gray-350: #C5C5C5;
+    --gray-150: #F6F6F6;
+
+    /* Tipografía */
+    --font-primary: "Work Sans", sans-serif;
+    --font-secondary: "Calibri", sans-serif;
+
+    /* Variaciones tipográficas */
+    --font-light: 300;
+    --font-regular: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+
+    /* Tamaños de fuente */
+    --font-size-h1: 3.2rem;
+    --font-size-h2: 2.4rem;
+    --font-size-h3: 2.0rem;
+    --font-size-h4: 1.6rem;
+    --font-size-h5: 1.4rem;
+    --font-size-h6: 1.2rem;
+}
+
+/* Hack para usar los rem de manera fácil */
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+/* Estilos generales */
+body {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-h4); /* Base */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 99vh;
+    background-color: var(--gray-150);
+}
+
+h1 {
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-bold);
+}
+
+h2 {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-semibold);
+}
+
+h3 {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-medium);
+}
+
+h4 {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-regular);
+}
+
+h5 {
+    font-size: var(--font-size-h5);
+    font-weight: var(--font-light);
+}
+
+h6 {
+    font-size: var(--font-size-h6);
+    font-weight: var(--font-light);
+}
+
+/* Tipografía secundaria */
+.calibri {
+    font-family: var(--font-secondary);
+}
+
+/* Regla para todas las imágenes */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Estilos BEM */
+.cultivo {
+    width: 100%;
+    max-width: 120rem;
+    margin: 2rem auto;
+    padding: 0 2rem;
+    text-align: center;
+}
+
+.cultivo__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.cultivo__logo {
+    width: 8rem;
+    height: auto;
+    position: absolute;
+    top: 3rem;
+    left: -14rem;
+}
+
+.cultivo__title {
+    font-size: var(--font-size-h2);
+    color: var(--black);
+    margin: 2rem 0 3rem;
+    padding-top: 1rem;
+    text-align: left;
+    width: 100%;
+    padding-left: 4rem;
+}
+
+.cultivo__icon {
+    position: absolute;
+    top: 6.5rem;
+    left: 8rem;
+    z-index: 1;
+    max-width: 100%;
+}
+
+.cultivo__form {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    text-align: left;
+    position: relative;
+    border: 0.1rem solid var(--black);
+    margin-bottom: 6rem;
+    height: auto;
+    min-height: 60rem;
+    max-height: 90vh;
+}
+
+.cultivo__form::before {
+    content: ""; 
+    position: absolute; 
+    inset: 0;
+    background-image: url('/IMG/imagen-register.jpeg'); 
+    background-size: cover; 
+    background-position: center; 
+    opacity: 0.1; 
+    z-index: 0; 
+}
+
+.cultivo__form > * {
+    position: relative; 
+    z-index: 1; 
+}
+
+.cultivo__label--left {
+    display: flex;
+}
+
+.cultivo__input--left {
+    display: flex;
+}
+
+.cultivo__column--right {
+    display: flex;
+    flex-direction: column;
+    padding-top: 2rem;
+}
+
+.cultivo__column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex: 1;
+    max-width: 45%;
+    padding-left: 8rem;
+}
+
+.cultivo__form-group {
+    margin-bottom: 1.5rem;
+}
+
+.cultivo__label {
+    display: block;
+    font-size: var(--font-size-h5);
+    margin-bottom: 0.5rem;
+    color: var(--black);
+}
+
+.cultivo__input,
+.cultivo__textarea {
+    width: 32rem;
+    height: 4.8rem;
+    padding: 1rem;
+    font-size: var(--font-size-h5);
+    border: 0.1rem solid var(--gray-350);
+    border-radius: 0.5rem;
+}
+
+.cultivo__textarea {
+    resize: vertical;
+    height: 10rem;
+}
+
+.cultivo__upload-area {
+    width: 32rem;
+    height: 15rem;
+    border: 0.2rem dashed var(--gray-350);
+    padding: 5rem;
+    text-align: center;
+    color: var(--gray-350);
+    cursor: pointer;
+}
+
+.cultivo__form-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2rem;
+    width: 100%;
+    padding: 0 2rem;
+    margin-bottom: 2rem;
+}
+
+.cultivo__btn {
+    padding: 1.2rem 2.4rem;
+    font-size: var(--font-size-h5);
+    color: var(--white);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cultivo__btn--volver {
+    background-color: var(--primary-900);
+    border-radius: 0.6rem;
+    border: 0.1rem solid var(--black); 
+}
+
+.cultivo__btn--volver:hover {
+    background-color: var(--primary-800);
+}
+
+.cultivo__btn--crear {
+    background-color: var(--primary-900);
+    border-radius: 0.6rem;
+    border: 0.1rem solid var(--black); 
+}
+
+.cultivo__btn--crear:hover {
+    background-color: var(--primary-800);
+}
+
+/* Media Queries */
+/* Desktop grande */
+@media (max-width: 1200px) {
+    .cultivo {
+        max-width: 100rem;
+        padding: 0 2rem;
+    }
+
+    .cultivo__column {
+        padding-left: 4rem;
+    }
+
+    .cultivo__logo {
+        left: -8rem;
+    }
+
+    .cultivo__icon {
+        left: 6rem;
+    }
+
+    .cultivo__input,
+    .cultivo__textarea,
+    .cultivo__upload-area {
+        width: 28rem;
+    }
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+        height: auto;
+        padding: 2rem 0;
+    }
+
+    .cultivo {
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+
+    .cultivo__header {
+        padding: 0 1rem;
+    }
+
+    .cultivo__logo {
+        position: static;
+        margin: 1rem auto;
+        width: 6rem;
+        padding-top: 4rem;
+    }
+
+    .cultivo__icon {
+        position: static;
+        margin: 1rem auto;
+    }
+
+    .cultivo__title {
+        font-size: var(--font-size-h3);
+        margin: 1rem 0;
+        padding: 0;
+        text-align: center;
+    }
+
+    .cultivo__form {
+        padding: 2rem 1rem;
+        flex-direction: column;
+        align-items: center;
+        min-height: auto;
+    }
+
+    .cultivo__column {
+        max-width: 100%;
+        padding-left: 0;
+        align-items: center;
+    }
+
+    .cultivo__column--right {
+        padding-right: 40rem;
+    }
+
+    .cultivo__input,
+    .cultivo__textarea {
+        width: 100%;
+        max-width: 45rem;
+    }
+
+    .cultivo__upload-area {
+        width: 70%;
+    }
+
+    .cultivo__form-actions {
+        flex-direction: column;
+        justify-content: center;
+        gap: 2rem;
+        padding: 0;
+    }
+
+    .cultivo__btn {
+        width: auto;
+        min-width: auto;
+        margin-right: 20rem;
+    }
+}
+
+/* Móvil */
+@media (max-width: 480px) {
+    html {
+        font-size: 55%; /* Ajustar el tamaño base de rem para móviles */
+    }
+
+    .cultivo__title {
+        font-size: var(--font-size-h4);
+    }
+
+    h2 {
+        font-size: var(--font-size-h4);
+    }
+
+    .cultivo__form {
+        padding: 1.5rem 1rem;
+        margin-bottom: 3rem;
+    }
+
+    .cultivo__label--left,
+    .cultivo__input--left,
+    .cultivo__column--right {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .cultivo__form-group {
+        width: 50%;
+        display: grid;
+        margin-right: 20rem;
+    }
+
+    .cultivo__input,
+    .cultivo__textarea,
+    .cultivo__upload-area {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .cultivo__form-actions {
+        flex-direction: column;
+        gap: 1rem;
+        margin-left: -30rem;
+    }
+
+    .cultivo__btn {
+        width: auto;
+    }
+}

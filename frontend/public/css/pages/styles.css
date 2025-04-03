@@ -1,0 +1,369 @@
+/* Paleta de colores */
+:root {
+    /* Colores primarios */
+    --primary-50: #EDF7E8;
+    --primary-100: #DBEFB9;
+    --primary-200: #C9E8B9;
+    --primary-300: #B7E0A2;
+    --primary-400: #A5D88B;
+    --primary-500: #93D074;
+    --primary-600: #81C85D;
+    --primary-700: #6FC046;
+    --primary-800: #5DD12E;
+    --primary-900: #4BBD17;
+    --primary-950: #39A900;
+
+    /* Colores secundarios */
+    --secondary-1-50: #E8ECEF;
+    --secondary-1-100: #D1DBDF;
+    --secondary-1-200: #B9C7CE;
+    --secondary-1-300: #A2B4BE;
+    --secondary-1-400: #8B9DD6;
+    --secondary-1-500: #748E9E;
+    --secondary-1-600: #5D7B8E;
+    --secondary-1-700: #46687E;
+    --secondary-1-800: #2E566D;
+    --secondary-1-900: #17435D;
+    --secondary-1-950: #00304D;
+
+    --secondary-2-50: #F2EBF3;
+    --secondary-2-100: #E5D8E7;
+    --secondary-2-200: #D8C4DB;
+    --secondary-2-300: #CBB0CD;
+    --secondary-2-400: #BE9DC3;
+    --secondary-2-500: #B289B6;
+    --secondary-2-600: #A576AA;
+    --secondary-2-700: #98629E;
+    --secondary-2-800: #8B4E92;
+    --secondary-2-900: #7E3B86;
+    --secondary-2-950: #71277A;
+
+    --secondary-3-50: #EFFDFE;
+    --secondary-3-100: #DFFAFE;
+    --secondary-3-200: #CFD0FD;
+    --secondary-3-300: #BFFAFD;
+    --secondary-3-400: #AFF3FC;
+    --secondary-3-500: #A0F1FC;
+    --secondary-3-600: #90EEF7;
+    --secondary-3-700: #80EECF;
+    --secondary-3-800: #70EAFA;
+    --secondary-3-900: #60E7FA;
+    --secondary-3-950: #50E5F9;
+
+    --secondary-4-50: #FFF6E8;
+    --secondary-4-100: #FFF4D1;
+    --secondary-4-200: #FEEFB9;
+    --secondary-4-300: #FEE9A2;
+    --secondary-4-400: #FEE48B;
+    --secondary-4-500: #FEDE74;
+    --secondary-4-600: #FEDB5D;
+    --secondary-4-700: #FED346;
+    --secondary-4-800: #FDCE2E;
+    --secondary-4-900: #FDC817;
+    --secondary-4-950: #FDC300;
+
+    /* Colores neutros */
+    --white: #FFFFFF;
+    --black: #000000;
+    --gray-950: #313131;
+    --gray-750: #626262;
+    --gray-550: #949494;
+    --gray-350: #C5C5C5;
+    --gray-150: #F6F6F6;
+
+    /* Tipografía */
+    --font-primary: "Work Sans", sans-serif;
+    --font-secondary: "Calibri", sans-serif;
+
+    /* Variaciones tipográficas */
+    --font-light: 300;
+    --font-regular: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+
+    /* Tamaños de fuente */
+    --font-size-h1: 3.2rem;
+    --font-size-h2: 2.4rem;
+    --font-size-h3: 2.0rem;
+    --font-size-h4: 1.6rem;
+    --font-size-h5: 1.4rem;
+    --font-size-h6: 1.2rem;
+}
+
+/* Estilos generales */
+body {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-h4); /* Base */
+}
+
+h1 {
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-bold);
+}
+
+h2 {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-semibold);
+}
+
+h3 {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-medium);
+}
+
+h4 {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-regular);
+}
+
+h5 {
+    font-size: var(--font-size-h5);
+    font-weight: var(--font-light);
+}
+
+h6 {
+    font-size: var(--font-size-h6);
+    font-weight: var(--font-light);
+}
+
+/* Tipografía secundaria */
+.calibri {
+    font-family: var(--font-secondary);
+}
+
+/* Hack para usar los rem de manera fácil */
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.login {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.login__form-container {
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    float: left;
+    display: flex;
+    justify-content: center;
+}
+
+.login__form {
+    height: 100%;
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 12rem;
+}
+
+.login__image-container {
+    width: 50%;
+    height: 100%;
+    margin: 0;
+    float: right;
+    background: var(--white) url(/IMG/fondo-login.jpeg) no-repeat center;
+    background-size: cover;
+    border-radius: 2rem;
+    opacity: 0.5;
+}
+
+.login__title {
+    font-size: var(--font-size-h2);
+    color: var(--black);
+    margin: 0.2rem 0;
+    font-style: italic;
+    font-weight: var(--font-semibold);
+    margin-bottom: 4rem;
+}
+
+.login__input {
+    width: 36rem;
+    padding: 1rem 0;
+    font-size: var(--font-size-h6);
+    height: 4.8rem;
+    margin: 1rem 0;
+    border-radius: 0.7rem;
+    border: 0.1rem solid var(--gray-550);
+    padding-left: 1rem;
+}
+
+.login__button {
+    width: 32rem;
+    background-color: var(--black);
+    color: var(--white);
+    border-radius: 0.7rem;
+    font-size: var(--font-size-h5);
+    padding: 1.2rem 2.4rem;
+    margin-top: 3rem;
+    font-weight: var(--font-semibold);
+    cursor: pointer;
+}
+
+.login__recover-text {
+    font-weight: var(--font-semibold);
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    font-size: var(--font-size-h5);
+}
+
+.login__recover-link,
+.login__submit-link {
+    text-decoration: none;
+    color: var(--black);
+}
+
+* {
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+img, video {
+    max-width: 100%;
+    height: auto;
+}
+
+.error-message {
+    position: fixed;
+    bottom: 5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: red;
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1.6rem;
+    border-radius: 1rem;
+    display: none;
+    z-index: 1000;
+}
+
+@media screen and (max-width: 1200px) {
+    .login__form-container {
+        width: 60%;
+    }
+
+    .login__form {
+        width: 70%;
+        margin-left: 5rem;
+    }
+
+    .login__image-container {
+        width: 40%;
+    }
+
+    .login__input {
+        width: 32rem;
+    }
+
+    .login__button {
+        width: 28rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .login {
+        flex-direction: column;
+    }
+
+    .login__form-container {
+        width: 100%;
+        height: 70%;
+        order: 2;
+    }
+
+    .login__form {
+        width: 80%;
+        margin: 0 auto;
+        padding: 2rem 0;
+    }
+
+    .login__image-container {
+        width: 100%;
+        height: 30%;
+        order: 1;
+        border-radius: 0 0 2rem 2rem;
+    }
+
+    .login__title {
+        margin-bottom: 2rem;
+        font-size: 2.2rem;
+    }
+
+    .login__input {
+        width: 100%;
+        max-width: 36rem;
+    }
+
+    .login__button {
+        width: 100%;
+        max-width: 32rem;
+        margin-top: 2rem;
+    }
+
+    body {
+        overflow-y: auto;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    html {
+        font-size: 55%; 
+    }
+
+    .login__form-container {
+        height: 75%;
+    }
+
+    .login__form {
+        width: 90%;
+        padding: 1rem;
+    }
+
+    .login__image-container {
+        height: 25%;
+    }
+
+    .login__title {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .login__input {
+        height: 4.2rem;
+        margin: 0.8rem 0;
+    }
+
+    .login__button {
+        padding: 1rem 2rem;
+    }
+
+    .login__recover-text {
+        font-size: 1.3rem;
+        margin-top: 0.8rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .error-message {
+        bottom: 2rem;
+        padding: 0.8rem 1.6rem;
+        font-size: 1.4rem;
+    }
+}

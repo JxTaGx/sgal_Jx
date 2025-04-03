@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Ciclo Cultivo</title>
+    <link rel="stylesheet" href="create-ciclo-cultivo-style.css">
+</head>
+<body>
+    <div class="ciclo-cultivo">
+        <header class="ciclo-cultivo__header">
+            <img src="/IMG/logo-sena.png" alt="Logo SENA" class="ciclo-cultivo__logo">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="ciclo-cultivo__icon">
+                <path d="M18 36C27.9411 36 36 27.9411 36 18C36 8.05887 27.9411 0 18 0C8.05887 0 0 8.05887 0 18C0 27.9411 8.05887 36 18 36Z" fill="#4BBD17"/>
+            </svg>
+        </header>
+        
+        <form class="ciclo-cultivo__form">
+            <div class="ciclo-cultivo__column">
+                <h1 class="ciclo-cultivo__title">Crear Ciclo Cultivo</h1>
+                
+                <div class="ciclo-cultivo__form-group">
+                    <label class="ciclo-cultivo__label ciclo-cultivo__label--left" for="id-ciclo">ID ciclo cultivo</label>
+                    <input class="ciclo-cultivo__input ciclo-cultivo__input--left" type="text" name="id-ciclo" id="id-ciclo" placeholder="Ingrese el ID del ciclo" title="ID del ciclo de cultivo">
+                </div>
+                
+                <div class="ciclo-cultivo__form-group">
+                    <label class="ciclo-cultivo__label ciclo-cultivo__label--left" for="nombre-ciclo">Nombre ciclo cultivo</label>
+                    <input class="ciclo-cultivo__input ciclo-cultivo__input--left" type="text" name="nombre-ciclo" id="nombre-ciclo" placeholder="Nombre del ciclo" title="Nombre del ciclo de cultivo">
+                </div>
+                
+                <div class="ciclo-cultivo__form-group">
+                    <label class="ciclo-cultivo__label" for="descripcion">Descripción</label>
+                    <textarea class="ciclo-cultivo__textarea" name="descripcion" id="descripcion" placeholder="Descripción del ciclo" title="Descripción del ciclo"></textarea>
+                </div>
+                
+                <div class="ciclo-cultivo__form-group">
+                    <label class="ciclo-cultivo__label ciclo-cultivo__label--left" for="fotografia">Fotografía</label>
+                    <div class="ciclo-cultivo__upload-area">
+                        <input type="file" id="fotografia" name="fotografia" accept="image/*"">
+                        <label for="fotografia" class="ciclo-cultivo__upload-text">Arrastra o suelta</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ciclo-cultivo__column ciclo-cultivo__column--right">
+                <div class="ciclo-cultivo__form-group ciclo-cultivo__form-group--right">
+                    <label class="ciclo-cultivo__label" for="periodo-siembra">Periodo de siembra</label>
+                    <input class="ciclo-cultivo__input" type="text" name="periodo-siembra" id="periodo-siembra" placeholder="Ej: Primavera 2023" title="Periodo de siembra">
+                </div>
+                
+                <div class="ciclo-cultivo__form-group ciclo-cultivo__form-group--right">
+                    <label class="ciclo-cultivo__label" for="novedades">Novedades</label>
+                    <input class="ciclo-cultivo__input" type="text" name="novedades" id="novedades" placeholder="Novedades del cultivo" title="Novedades del cultivo">
+                </div>
+                
+                <div class="ciclo-cultivo__form-group ciclo-cultivo__form-group--right">
+                    <label class="ciclo-cultivo__label" for="estado">Estado</label>
+                    <select class="ciclo-cultivo__input" name="estado" id="estado" title="Estado del cultivo">
+                        <option value="">Seleccione un estado</option>
+                        <option value="activo">Activo</option>
+                        <option value="inactivo">Inactivo</option>
+                        <option value="pendiente">Pendiente</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="ciclo-cultivo__actions">
+                <button type="button" class="ciclo-cultivo__btn ciclo-cultivo__btn--volver" onclick="window.location.href='listar-ciclo-cultivo-sebas.html'">Volver</button>
+                <button type="submit" class="ciclo-cultivo__btn ciclo-cultivo__btn--crear">Crear Ciclo Cultivo</button>
+            </div>
+        </form>
+    </div>
+    
+    <script src="/JS/CICLO CULTIVO JS/create-ciclo-cultivo.js"></script>
+</body>
+</html>

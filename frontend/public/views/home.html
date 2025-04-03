@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Gestión Agrícola Lembo</title>
+    <link rel="stylesheet" href="home-style.css">
+</head>
+<body class="page">
+    <header class="header">
+        <div class="header__logo"></div>
+        <h1 class="header__title">Sistema Gestión Agrícola Lembo <br><span class="header__subtitle">S.G.A.L</span></h1>
+    <nav class="nav">
+        <ul class="nav__list">
+            <li class="nav__item"><a href="/CICLO CULTIVO/listar-ciclo-cultivo-sebas.html" class="nav__link">Ciclo Cultivo</a></li>
+            <li class="nav__item"><a href="/SENSOR/listar-sensor-sebas.html" class="nav__link">Sensores</a></li>
+            <li class="nav__item"><a href="/INSUMO/listar-insumo-sebas.html" class="nav__link">Insumos</a></li>
+            <li class="nav__item"><a href="/CULTIVO/listar-cultivo-sebas.html" class="nav__link">Cultivos</a></li>
+            <li class="nav__item"><a href="/USERS SEBASTIAN/lista de usuario/index.html" class="nav__link">Usuarios</a></li>
+        </ul>
+    </nav>
+    <div class="header__user-options">
+        <a href="../USERS SEBASTIAN/editar perfil/index.html" class="header__user-link">
+            <span class="header__user-name">USER</span>
+        </a>
+        <a href="/USERS/index.html" class="header__logout-link">LOGOUT</a>
+    </div>
+</header>
+    <main class="main">
+        <section class="welcome">
+            <h2 class="welcome__title">Bienvenid@ "User"</h2>
+        </section>
+        <section class="content">
+            <div class="cards">
+                <div class="card card--cultivos">
+                    <h3 class="card__title">Cultivos</h3>
+                    <div class="card__image"></div>
+                    <p class="card__text">Tomates</p>
+                    <p class="card__text">Fecha siembra: 15/03/2023</p>
+                    <p class="card__text">Período: 90-120 días</p><br>
+                    <p class="card__text">Maíz</p>
+                    <p class="card__text">Fecha siembra: 01/05/2023</p>
+                    <p class="card__text">Período: 90-120 días</p>
+                    <p class="card__text">Temperatura: 22-28°C</p>
+                </div>
+                <div class="card card--sensores">
+                    <h3 class="card__title">Sensores</h3>
+                    <div class="card__image"></div>
+                    <p class="card__text">Temperatura</p>
+                    <p class="card__text">Rango óptimo: 18-25°C</p>
+                    <p class="card__text">Valor actual: 22°C</p>
+                    <p class="card__text">Histórico: Estable</p><br>
+                    <p class="card__text">Humedad</p>
+                    <p class="card__text">Rango óptimo: 55-75%</p>
+                    <p class="card__text">Valor actual: 65%</p>
+                    <p class="card__text">Histórico: Estable</p>
+                </div>
+                <div class="card card--info">
+                    <h3 class="card__title">Información Útil</h3>
+                    <div class="card__image"></div>
+                    <p class="card__text">Alerta de Helada</p>
+                    <p class="card__text">Riesgo alto en las próximas 12 horas</p><br>
+                    <p class="card__text">Recomendación</p>
+                    <p class="card__text">Cubrir los cultivos sensibles a la helada</p>
+                    <p class="card__text">Índice UV</p>
+                    <p class="card__text">Nivel actual: 8 (Alto)</p>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

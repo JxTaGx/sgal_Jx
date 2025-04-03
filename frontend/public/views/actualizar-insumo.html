@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Insumo</title>
+    <link rel="stylesheet" href="actualizar-insumo-style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header__logo"></div>
+    </header>
+    <main class="main">
+        <section class="form-section">
+            <h1><svg width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5.5 0L10.5 5L5.5 10L0.5 5L5.5 0Z" fill="#4BBD17"/>
+                </svg>
+                Actualizar Insumo</h1>
+            <form class="form">
+                <div class="form__group">
+                    <label for="tipoInsumo" class="form__label">Tipo de insumo *</label>
+                    <input type="text" class="form__input" placeholder="Escribe aquí...">
+                </div>
+                <div class="form__group">
+                    <label for="idInsumo" class="form__label">ID de insumo</label>
+                    <input type="text" class="form__input form__input--disabled" value="INS-001" disabled>
+                </div>
+                <div class="form__group">
+                    <label for="nombreInsumo" class="form__label">Nombre del insumo *</label>
+                    <input type="text" class="form__input" value="Harina de trigo">
+                </div>
+                <div class="form__group">
+                    <label for="unidadMedida" class="form__label">Unidad de medida *</label>
+                    <input type="text" class="form__input" placeholder="Escribe aquí...">
+                </div>
+                <div class="form__group">
+                    <label for="cantidad" class="form__label">Cantidad *</label>
+                    <input type="number" class="form__input" value="50">
+                </div>
+                <div class="form__group">
+                    <label for="valorUnitario" class="form__label">Valor unitario *</label>
+                    <input type="text" class="form__input" value="$2,500">
+                </div>
+                <div class="form__group form__group--full-width">
+                    <label for="valorTotal" class="form__label">Valor total</label>
+                    <input type="text" class="form__input form__input--disabled" value="$125,000" disabled>
+                </div>
+                <div class="form__group form__group--full-width">
+                    <label for="descripcion" class="form__label">Descripción</label>
+                    <textarea class="form__textarea">...</textarea>
+                </div>
+                <div class="form__button-group">
+                    <a href="visualizar-insumo.html" class="form__button-link">
+                        <button type="button" class="form__button form__button--back">Volver</button>
+                    </a>
+                    <a href="visualizar-insumo.html" class="form__button-link">
+                        <button type="button" class="form__button form__button--save">Guardar</button>
+                    </a>
+                </div>
+            </form>
+        </section>
+    </main>
+    <script src="../JS/INSUMO JS/actualizar-insumo.js"></script>
+</body>
+</html>

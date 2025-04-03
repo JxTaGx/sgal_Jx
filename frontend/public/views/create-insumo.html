@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Insumo</title>
+    <link rel="stylesheet" href="create-insumo-style.css">
+</head>
+<body>
+    <div class="insumo">
+        <header class="insumo__header">
+            <img src="/IMG/logo-sena.png" alt="Logo SENA" class="insumo__logo">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="insumo__icon">
+            <path d="M18 36C27.9411 36 36 27.9411 36 18C36 8.05887 27.9411 0 18 0C8.05887 0 0 8.05887 0 18C0 27.9411 8.05887 36 18 36Z" fill="#4BBD17"/>
+            </svg>
+        </header>
+        <form class="insumo__form">
+            <div class="insumo__column">
+                <h1 class="insumo__title">Crear Insumo</h1>
+                <div class="insumo__form-group">
+                    <label class="insumo__label insumo__label--left" for="tipoSensor">Tipo de insumo</label>
+                    <input class="insumo__input insumo__input--left" type="text" name="tipoSensor" title="Ingrese el tipo de insumo" placeholder="Ej: Material eléctrico">
+                </div>
+                <div class="insumo__form-group">
+                    <label class="insumo__label insumo__label--left" for="nombreSensor">Nombre del insumo</label>
+                    <input class="insumo__input insumo__input--left" type="text" name="nombreSensor" title="Ingrese el nombre del insumo" placeholder="Ej: Cable UTP">
+                </div>
+                <div class="insumo__form-group">
+                    <label class="insumo__label insumo__label--left" for="identificador">ID de insumo</label>
+                    <input class="insumo__input insumo__input--left" type="text" name="identificador" title="Ingrese el ID del insumo" placeholder="Ej: INS-001">
+                </div>
+                <div class="insumo__form-group">
+                    <label class="insumo__label" for="descripcion">Descripción</label>
+                    <textarea class="insumo__textarea" name="descripcion" title="Ingrese una descripción del insumo" placeholder="Describa las características del insumo"></textarea>
+                </div>
+            </div>
+            <div class="insumo__column insumo__column--right">
+                <div class="insumo__form-group">
+                    <label class="insumo__label" for="referenciaSensor">Unidad de medida</label>
+                    <input class="insumo__input" type="text" name="referenciaSensor" title="Ingrese la unidad de medida" placeholder="Ej: metros, unidades">
+                </div>
+                <div class="insumo__form-group">
+                    <label class="insumo__label" for="unidadMedida">Cantidad</label>
+                    <input class="insumo__input" type="text" name="unidadMedida" title="Ingrese la cantidad disponible" placeholder="Ej: 10">
+                </div>
+                <div class="insumo__form-group">
+                    <label class="insumo__label" for="tiempoEscaneo">Valor unitario</label>
+                    <input class="insumo__input" type="text" name="tiempoEscaneo" title="Ingrese el valor unitario" placeholder="Ej: 15000">
+                </div>
+                <div class="insumo__form-group">
+                    <label class="insumo__label" for="valorTotal">Valor total</label>
+                    <input class="insumo__input" type="text" name="valorTotal" title="Valor total calculado" placeholder="Se calculará automáticamente">
+                </div>
+                <div class="insumo__form-group">
+                    <label class="insumo__label" for="estado">Estado</label>
+                    <input class="insumo__input" type="text" name="estado" title="Ingrese el estado del insumo" placeholder="Ej: Disponible, Agotado">
+                </div>
+            </div>
+            <div class="insumo__actions">
+                <button type="button" class="insumo__btn insumo__btn--volver">Volver</button>
+                <button type="submit" class="insumo__btn insumo__btn--crear">Crear Insumo</button>
+            </div>
+        </form>
+    </div>
+    <script src="../JS/INSUMO JS/create-insumo.js"></script>
+</body>
+</html>

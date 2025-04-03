@@ -1,0 +1,38 @@
+/* Reset Avanzado con Normalize.css */
+
+/* Corrige los estilos de fuentes en todos los navegadores */
+body {
+    font-family: var(--main-font); 
+    line-height: 1.5;
+    font-size: var(--fs-xs);
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* Hace que las imágenes y medios sean flexibles */
+img, picture, video, canvas, svg {
+    max-width: 100%;
+    display: block;
+}
+
+/* Elimina márgenes en elementos de texto */
+h1, h2, h3, h4, h5, h6, p {
+    margin: 0;
+}
+
+/* Hace que los botones sean más consistentes */
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Elimina los bordes predeterminados en inputs */
+input, textarea, select {
+    font: inherit;
+    border: none;
+    outline: none;
+}

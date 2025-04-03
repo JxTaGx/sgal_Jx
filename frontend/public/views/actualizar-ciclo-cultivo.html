@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Cultivo</title>
+    <link rel="stylesheet" href="actualizar-ciclo-cultivo-style.css">
+</head>
+<body>
+    <div class="cultivo-container">
+        <header class="cultivo-header">
+            <img src="/IMG/logo-sena.png" alt="SENA Logo" class="cultivo-header__logo">
+            <h1 class="cultivo-header__title">Actualizar Ciclo Cultivo</h1>
+        </header>
+        <main class="cultivo-main">
+            <div class="cultivo-content">
+                <div class="cultivo-content__image-placeholder">
+                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M30 60C46.5685 60 60 46.5685 60 30C60 13.4315 46.5685 0 30 0C13.4315 0 0 13.4315 0 30C0 46.5685 13.4315 60 30 60Z" fill="#2E566D"/>
+                        <path d="M20 30H40M30 20V40" stroke="white" stroke-width="2"/>
+                        </svg>                        
+                </div>
+                <form class="cultivo-form">
+                    <div class="cultivo-form__group cultivo-form__group--grid-page">
+                        <label for="nombreCultivo" class="cultivo-form__label">ID Ciclo Cultivo</label>
+                        <input type="text" class="cultivo-form__input" value="Tomate Cherry Orgánico" required minlength="3" maxlength="50">
+                    </div>
+                    <div class="cultivo-form__group cultivo-form__group--grid-page">
+                        <label for="variedad" class="cultivo-form__label">Nombre Ciclo Cultivo</label>
+                        <input type="text" class="cultivo-form__input" value="Sweet 100" required minlength="2" maxlength="30">
+                    </div>
+                    <div class="cultivo-form__group cultivo-form__group--grid-page">
+                        <label for="fechaSiembra" class="cultivo-form__label">Periodo de siembra</label>
+                        <input type="text" class="cultivo-form__input" value="15/03/2023" required pattern="\d{2}/\d{2}/\d{4}" title="Formato: DD/MM/AAAA">
+                    </div>
+                    <div class="cultivo-form__group cultivo-form__group--grid-page">
+                        <label for="areaCultivada" class="cultivo-form__label">Novedades</label>
+                        <input type="text" class="cultivo-form__input" value="2.5" required minlength="1" maxlength="100">
+                    </div>
+                    <div class="cultivo-form__group cultivo-form__group--grid-page">
+                        <label for="etapaActual" class="cultivo-form__label">Descripcion Ciclo Cultivo</label>
+                        <input type="text" class="cultivo-form__input" value="Crecimiento vegetativo" required minlength="5" maxlength="200">
+                    </div>
+                    <div class="cultivo-form__buttons">
+                        <a href="visualizar-ciclo-cultivo.html" class="cultivo-form__link">
+                        <button type="button" class="cultivo-form__btn cultivo-form__btn--save">Guardar Cambios</button>
+                        </a>
+                        <a href="visualizar-ciclo-cultivo.html" class="cultivo-form__link">
+                        <button type="button" class="cultivo-form__btn cultivo-form__btn--cancel">Cancelar</button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="../JS/CICLO CULTIVO JS/actualizar-ciclo-cultivo.js"></script>
+</body>
+</html>

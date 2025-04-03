@@ -1,0 +1,404 @@
+/* Paleta de colores */
+:root {
+    /* Colores primarios */
+    --primary-50: #EDF7E8;
+    --primary-100: #DBEFB9;
+    --primary-200: #C9E8B9;
+    --primary-300: #B7E0A2;
+    --primary-400: #A5D88B;
+    --primary-500: #93D074;
+    --primary-600: #81C85D;
+    --primary-700: #6FC046;
+    --primary-800: #5DD12E;
+    --primary-900: #4BBD17;
+    --primary-950: #39A900;
+
+    /* Colores secundarios */
+    --secondary-1-50: #E8ECEF;
+    --secondary-1-100: #D1DBDF;
+    --secondary-1-200: #B9C7CE;
+    --secondary-1-300: #A2B4BE;
+    --secondary-1-400: #8B9DD6;
+    --secondary-1-500: #748E9E;
+    --secondary-1-600: #5D7B8E;
+    --secondary-1-700: #46687E;
+    --secondary-1-800: #2E566D;
+    --secondary-1-900: #17435D;
+    --secondary-1-950: #00304D;
+
+    --secondary-2-50: #F2EBF3;
+    --secondary-2-100: #E5D8E7;
+    --secondary-2-200: #D8C4DB;
+    --secondary-2-300: #CBB0CD;
+    --secondary-2-400: #BE9DC3;
+    --secondary-2-500: #B289B6;
+    --secondary-2-600: #A576AA;
+    --secondary-2-700: #98629E;
+    --secondary-2-800: #8B4E92;
+    --secondary-2-900: #7E3B86;
+    --secondary-2-950: #71277A;
+
+    --secondary-3-50: #EFFDFE;
+    --secondary-3-100: #DFFAFE;
+    --secondary-3-200: #CFD0FD;
+    --secondary-3-300: #BFFAFD;
+    --secondary-3-400: #AFF3FC;
+    --secondary-3-500: #A0F1FC;
+    --secondary-3-600: #90EEF7;
+    --secondary-3-700: #80EECF;
+    --secondary-3-800: #70EAFA;
+    --secondary-3-900: #60E7FA;
+    --secondary-3-950: #50E5F9;
+
+    --secondary-4-50: #FFF6E8;
+    --secondary-4-100: #FFF4D1;
+    --secondary-4-200: #FEEFB9;
+    --secondary-4-300: #FEE9A2;
+    --secondary-4-400: #FEE48B;
+    --secondary-4-500: #FEDE74;
+    --secondary-4-600: #FEDB5D;
+    --secondary-4-700: #FED346;
+    --secondary-4-800: #FDCE2E;
+    --secondary-4-900: #FDC817;
+    --secondary-4-950: #FDC300;
+
+    /* Colores neutros */
+    --white: #FFFFFF;
+    --black: #000000;
+    --gray-950: #313131;
+    --gray-750: #626262;
+    --gray-550: #949494;
+    --gray-350: #C5C5C5;
+    --gray-150: #F6F6F6;
+
+    /* Tipografía */
+    --font-primary: "Work Sans", sans-serif;
+    --font-secondary: "Calibri", sans-serif;
+
+    /* Variaciones tipográficas */
+    --font-light: 300;
+    --font-regular: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+
+    /* Tamaños de fuente */
+    --font-size-h1: 3.2rem;
+    --font-size-h2: 2.4rem;
+    --font-size-h3: 2.0rem;
+    --font-size-h4: 1.6rem;
+    --font-size-h5: 1.4rem;
+    --font-size-h6: 1.2rem;
+}
+
+/* Hack para usar los rem de manera fácil */
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+/* Estilos base */
+.page {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-h4);
+    margin: 0;
+    padding: 0;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+
+.page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url(../IMG/imagen-register.jpeg);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.1; 
+    z-index: -1; 
+}
+
+/* Contenedor principal */
+.container {
+    width: 100%;
+    max-width: 120rem;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+    height: 100%;
+}
+
+/* Encabezado */
+.header {
+    text-align: left;
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.header__logo {
+    width: 8rem;
+    height: auto;
+    margin-right: 2rem;
+    margin-left: -14rem;
+}
+
+/* Sección de recuperación */
+.recovery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 12rem;
+    margin-right: 35rem;
+}
+
+.recovery__background {
+    position: relative;
+    background-image: url(../IMG/imagen-register.jpeg);
+    margin-left: 38rem;
+    padding-top: 4rem;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-bottom: 10rem;
+    border-radius: 5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    margin-top: -9rem;
+}
+
+.recovery__background::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--gray-350);
+    opacity: 0.8;
+    z-index: 1;
+    border-radius: 5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+}
+
+.recovery__title {
+    font-size: var(--font-size-h2);
+    margin: 0;
+    color: var(--black);
+    text-align: center;
+    margin-left: 1rem;
+    font-weight: var(--font-bold);
+    font-style: italic;
+    position: relative;
+    z-index: 3;
+}
+
+.recovery__form {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 70rem;
+    margin: 2rem 0;
+    position: relative;
+    padding: 2rem;
+    border-radius: 1rem;
+    margin-left: 40rem;
+    z-index: 2;
+}
+
+.recovery__column {
+    width: 48%;
+}
+
+.recovery__column--left {
+    padding: 1rem;
+    margin-left: -30rem;
+}
+
+.recovery__column--right {
+    padding: 1rem;
+    margin-right: 18rem;
+}
+
+.recovery__heading {
+    font-size: var(--font-size-h3);
+    color: var(--black);
+    margin-bottom: 5rem;
+    white-space: nowrap;
+    margin-right: 15rem;
+    position: relative;
+    z-index: 3;
+    text-transform: uppercase;
+    font-style: italic;
+    font-weight: var(--font-semibold);
+}
+
+.recovery__link-text {
+    font-size: var(--font-size-h5);
+    white-space: nowrap;
+    margin-left: 21rem;
+    font-weight: var(--font-medium);
+    position: relative;
+    z-index: 3;
+}
+
+.recovery__field {
+    margin-bottom: 2rem;
+}
+
+.recovery__input {
+    width: 32rem;
+    height: 4.8rem;
+    padding: 1rem;
+    font-size: var(--font-size-h5);
+    border: 0.1rem solid var(--secondary-4-50);
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Botones */
+.button {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    font-size: var(--font-size-h4);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    background-color: var(--primary-900);
+    color: var(--white);
+    border: 0.1rem solid var(--black);
+    z-index: 3;
+}
+
+.button--back {
+    width: 9.7rem;
+    position: absolute;
+    bottom: 1rem;
+    left: 2rem;
+    margin: 1rem;
+}
+
+.button--next {
+    width: 9.7rem;
+    position: absolute;
+    bottom: 1rem;
+    left: 29rem;
+    margin-bottom: -1rem;
+}
+
+@media screen and (max-width: 1200px) {
+    .recovery__background {
+        margin-left: 20rem;
+    }
+    
+    .recovery__form {
+        margin-left: 22rem;
+        max-width: 60rem;
+    }
+    
+    .recovery__column--left {
+        margin-left: -20rem;
+    }
+    
+    .recovery__column--right {
+        margin-right: 10rem;
+    }
+    
+    .recovery__input {
+        width: 28rem;
+    }
+    
+    .recovery {
+        margin-right: 20rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .recovery__background {
+        margin-left: 5rem;
+    }
+    
+    .recovery__form {
+        margin-left: 7rem;
+        flex-direction: column;
+    }
+    
+    .recovery__column {
+        width: 100%;
+    }
+    
+    .recovery__column--left {
+        margin-left: 0;
+    }
+    
+    .recovery__column--right {
+        margin-right: 0;
+    }
+    
+    .recovery__heading {
+        margin-right: 0;
+        font-size: 1.8rem;
+    }
+    
+    .recovery__link-text {
+        margin-left: 0;
+        text-align: center;
+    }
+    
+    .recovery__input {
+        width: 100%;
+    }
+    
+    .recovery {
+        margin-right: 0;
+        margin-top: 8rem;
+    }
+    
+    .button--next {
+        left: 15rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .recovery__background {
+        margin-left: 0;
+        border-radius: 2rem;
+        margin-top: -5rem;
+    }
+    
+    .recovery__background::after {
+        border-radius: 2rem;
+    }
+    
+    .recovery__form {
+        margin-left: 0;
+        padding: 1rem;
+    }
+    
+    .recovery__heading {
+        font-size: 1.6rem;
+        margin-bottom: 3rem;
+        white-space: normal;
+        text-align: center;
+    }
+    
+    .button--back, .button--next {
+        width: 8rem;
+        font-size: 1.4rem;
+        padding: 0.8rem;
+    }
+    
+    .button--next {
+        left: auto;
+        right: 2rem;
+    }
+    
+    .container {
+        padding: 1rem;
+    }
+    
+    .header__logo {
+        width: 6rem;
+    }
+}

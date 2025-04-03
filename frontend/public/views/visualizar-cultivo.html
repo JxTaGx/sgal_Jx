@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Cultivo</title>
+    <link rel="stylesheet" href="visualizar-cultivo-style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <img src="/IMG/logo-sena.png" alt="SENA Logo" class="header__logo">
+            <h1 class="header__title">Visualizar Cultivo</h1>
+        </header>
+        <main class="main">
+            <section class="details">
+                <div class="details__item">
+                    <h2 class="details__title">Detalles del cultivo</h2>
+                    <ul class="details__list">
+                        <li class="details__list-item"><strong>Tipo de cultivo:</strong> Tomate Cherry Orgánico</li>
+                        <li class="details__list-item"><strong>Fecha de siembra:</strong> 15 de marzo, 2023</li>
+                        <li class="details__list-item"><strong>Área cultivada:</strong> 2.5 hectáreas</li>
+                        <li class="details__list-item"><strong>Etapa actual:</strong> Crecimiento vegetativo</li>
+                        <li class="details__list-item"><strong>Rendimiento esperado:</strong> 15 toneladas/hectárea</li>
+                        <li class="details__list-item"><strong>Método de riego:</strong> Goteo automatizado</li>
+                        <li class="details__list-item"><strong>Próxima tarea:</strong> Fertilización foliar</li>
+                    </ul>
+                </div>
+                <div class="details__buttons">
+                    <a href="actualizar-cultivo.html" class="details__link">
+                        <button class="button button--edit">Editar</button>
+                    </a>
+                    <a href="listar-cultivo-sebas.html" class="details__link">
+                        <button class="button button--disable">Deshabilitar</button>
+                    </a>
+                </div>
+            </section>
+            <section class="tasks">
+                <h2 class="tasks__title">Tareas pendientes</h2>
+                <ul class="tasks__list">
+                    <li class="tasks__list-item">Fertilización foliar - Hoy</li>
+                    <li class="tasks__list-item">Control de plagas - Mañana</li>
+                    <li class="tasks__list-item">Monitoreo de temperatura - En 2 días</li>
+                </ul>
+            </section>
+            <a href="listar-cultivo-sebas.html" class="main__link">
+                <button class="button button--back">Volver</button>
+            </a>
+        </main>
+    </div>
+    <script src="../JS/CULTIVO JS/visualizar-cultivo.js"></script>
+</body>
+</html>
