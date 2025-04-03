@@ -305,7 +305,7 @@ h6 {
 .register__column--right {
     padding: 1rem;
     margin-right: 13rem;
-    margin-top: -10rem;
+    margin-top: -14rem;
 }
 
 .register__section-title {
@@ -328,7 +328,7 @@ h6 {
     border-radius: 0.5rem;
 }
 
-.register__input--email {
+.register__input--email, .register__input--confirmEmail {
     text-align: center;
     font-weight: bold;
 }
@@ -351,12 +351,47 @@ a {
 }
 
 .register__button--submit {
-    margin-left: -15rem;
-    margin-top: -1rem;
+    margin-left: -18rem;
+    margin-top: -4rem;
     width: 12rem;
     background-color: var(--primary-900);
     border-radius: 0.6rem;
     border: 0.1rem solid var(--black);
+}
+
+.error-container {
+    color: #ff0000;
+    font-size: 1.4rem;
+    height: 20px; /* Altura fija */
+    visibility: hidden; /* Oculto por defecto */
+    margin-top: 2px;
+    white-space: nowrap;
+}
+
+.input-error {
+    border: 1px solid #ff0000 !important;
+}
+
+.register__input:focus.input-error {
+    outline: 1px solid #ff0000;
+}
+
+/* Asegurar que los grupos de formulario tengan altura fija */
+.register__form-group {
+    min-height: 80px; /* Ajusta según necesites */
+    margin-bottom: 5px;
+}
+
+/* Animación de entrada para alertas */
+@keyframes alert-slide-in {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 @media screen and (max-width: 1200px) {

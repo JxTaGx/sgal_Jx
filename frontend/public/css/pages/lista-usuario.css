@@ -1,0 +1,485 @@
+/* Paleta de colores */
+:root {
+    /* Colores primarios */
+    --primary-50: #EDF7E8;
+    --primary-100: #DBEFB9;
+    --primary-200: #C9E8B9;
+    --primary-300: #B7E0A2;
+    --primary-400: #A5D88B;
+    --primary-500: #93D074;
+    --primary-600: #81C85D;
+    --primary-700: #6FC046;
+    --primary-800: #5DD12E;
+    --primary-900: #4BBD17;
+    --primary-950: #39A900;
+
+    /* Colores secundarios */
+    --secondary-1-50: #E8ECEF;
+    --secondary-1-100: #D1DBDF;
+    --secondary-1-200: #B9C7CE;
+    --secondary-1-300: #A2B4BE;
+    --secondary-1-400: #8B9DD6;
+    --secondary-1-500: #748E9E;
+    --secondary-1-600: #5D7B8E;
+    --secondary-1-700: #46687E;
+    --secondary-1-800: #2E566D;
+    --secondary-1-900: #17435D;
+    --secondary-1-950: #00304D;
+
+    --secondary-2-50: #F2EBF3;
+    --secondary-2-100: #E5D8E7;
+    --secondary-2-200: #D8C4DB;
+    --secondary-2-300: #CBB0CD;
+    --secondary-2-400: #BE9DC3;
+    --secondary-2-500: #B289B6;
+    --secondary-2-600: #A576AA;
+    --secondary-2-700: #98629E;
+    --secondary-2-800: #8B4E92;
+    --secondary-2-900: #7E3B86;
+    --secondary-2-950: #71277A;
+
+    --secondary-3-50: #EFFDFE;
+    --secondary-3-100: #DFFAFE;
+    --secondary-3-200: #CFD0FD;
+    --secondary-3-300: #BFFAFD;
+    --secondary-3-400: #AFF3FC;
+    --secondary-3-500: #A0F1FC;
+    --secondary-3-600: #90EEF7;
+    --secondary-3-700: #80EECF;
+    --secondary-3-800: #70EAFA;
+    --secondary-3-900: #60E7FA;
+    --secondary-3-950: #50E5F9;
+
+    --secondary-4-50: #FFF6E8;
+    --secondary-4-100: #FFF4D1;
+    --secondary-4-200: #FEEFB9;
+    --secondary-4-300: #FEE9A2;
+    --secondary-4-400: #FEE48B;
+    --secondary-4-500: #FEDE74;
+    --secondary-4-600: #FEDB5D;
+    --secondary-4-700: #FED346;
+    --secondary-4-800: #FDCE2E;
+    --secondary-4-900: #FDC817;
+    --secondary-4-950: #FDC300;
+
+    /* Colores neutros */
+    --white: #FFFFFF;
+    --black: #000000;
+    --gray-950: #313131;
+    --gray-750: #626262;
+    --gray-550: #949494;
+    --gray-350: #C5C5C5;
+    --gray-150: #F6F6F6;
+
+    /* Tipografía */
+    --font-primary: "Work Sans", sans-serif;
+    --font-secondary: "Calibri", sans-serif;
+
+    /* Variaciones tipográficas */
+    --font-light: 300;
+    --font-regular: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+
+    /* Tamaños de fuente */
+    --font-size-h1: 3.2rem;
+    --font-size-h2: 2.4rem;
+    --font-size-h3: 2.0rem;
+    --font-size-h4: 1.6rem;
+    --font-size-h5: 1.4rem;
+    --font-size-h6: 1.2rem;
+}
+
+/* Estilos generales */
+body {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-h4); /* Base */
+    background-size: cover;
+    background-position: center;
+    overflow-x: hidden;
+}
+
+h1 {
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-bold);
+}
+
+h2 {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-semibold);
+}
+
+h3 {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-medium);
+}
+
+h4 {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-regular);
+}
+
+h5 {
+    font-size: var(--font-size-h5);
+    font-weight: var(--font-light);
+}
+
+h6 {
+    font-size: var(--font-size-h6);
+    font-weight: var(--font-light);
+}
+
+/* Tipografía secundaria */
+.calibri {
+    font-family: var(--font-secondary);
+}
+
+/* Hack para usar los rem de manera fácil */
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+html::before {
+    content: ""; 
+    position: absolute; 
+    inset: 0;
+    background-image: url('/frontend/IMG/imagen-register.jpeg'); 
+    background-size: cover; 
+    background-position: center; 
+    opacity: 0.1; 
+    z-index: -1; 
+}
+
+.header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    color: var(--black);
+    border: 0.1rem solid var(--black);
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url(/frontend/IMG/header.jpeg) no-repeat center;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2; 
+    z-index: -1; 
+}
+
+.header__logo {
+    display: flex;
+}
+
+.header__logo-img {
+    height: 8rem;
+}
+
+.header__user-info {
+    margin-right: 10rem;
+    margin-top: 5rem;  
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.header__nav-link {
+    text-decoration: none;
+    color: black;
+    font-size: 2.4rem;
+    font-style: italic;
+    margin-right: -1rem;
+}
+
+.header__title {
+    font-style: italic;
+    font-size: 2.2rem;
+    margin-right: 65rem;
+}
+
+.header__subtitle {
+    margin-left: 13rem;
+}
+
+.header__icon-user {
+    margin-right: -4rem;
+    margin-top: 1rem;
+    margin-bottom: -0.4rem;
+    margin-right: -8rem;
+}
+
+.header__icon-home {
+    margin-left: 13rem;
+    margin-bottom: -0.4rem;
+}
+
+.users__title {
+    margin-top: 2rem;
+    margin-left: 8rem;
+    font-weight: var(--font-light);
+}
+
+.users__search {
+    border: 0.1rem solid var(--black);
+    padding: 1.2rem 2.4rem;
+    border-radius: 2rem;
+    margin-left: 8rem;
+    padding-left: 1rem;
+    margin-top: 2rem;
+    font-size: 1.6rem;
+    width: 32rem;
+    height: 4.8rem;
+}
+
+.users__button {
+    font-size: var(--font-size-h4);
+    border-radius: 0.6rem;
+    padding: 1.2rem 2.4rem;
+    margin-top: 2rem;
+    cursor: pointer;
+}
+
+.users__button--green {
+    background: var(--primary-900);
+    color: var(--white);
+    margin-right: 55rem;
+    white-space: nowrap;
+}
+
+.users__button--gray {
+    background: var(--secondary-1-300);
+    color: var(--white);
+    margin-right: 6rem;
+}
+
+.users__button--back {
+    background: var(--primary-900);
+    color: var(--white);
+    margin-left: 2%;
+    margin-top: 19rem;
+}
+
+.users__controls {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.users__table-header {
+    width: 140rem;
+    height: 4rem;
+    font-size: var(--font-size-h4);
+    padding-left: 2rem;
+    padding-right: 8rem;
+    margin-top: 4rem;
+    border-radius: 0.6rem;
+    margin-left: 8rem;
+    color: var(--white);
+    background: var(--primary-900);
+}
+
+.users__header-cell {
+    text-align: center;
+    padding: 0.8rem;
+}
+
+.users__header-row {
+    margin-right: 60%;
+    text-align: center;
+}
+
+.users__table-body {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-regular);
+    color: var(--black);
+    background: var(--gray-150);
+    width: 145rem;
+    height: 4rem;
+    padding-left: 4rem;
+    padding-right: 17rem;
+    margin-top: 0.6rem;
+    border-radius: 0.6rem;
+    margin-left: 8rem;
+    padding-top: 1rem;
+}
+
+.users__row,
+.users__cell {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    padding: 0.5rem;
+    padding-right: 1rem;
+    padding-left: 0;
+    width: 125rem;
+    height: 5rem;
+}
+
+.users__icon-edit {
+    margin-right: -24rem;
+    margin-left: 12rem;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 1200px) {
+    .header__title {
+        margin-right: 40rem;
+    }
+    
+    .header__user-info {
+        margin-right: 5rem;
+    }
+    
+    .users__button--green {
+        margin-right: 30rem;
+    }
+    
+    .users__table-header,
+    .users__table-body {
+        width: 100%;
+        max-width: 120rem;
+    }
+    
+    .users__row,
+    .users__cell {
+        width: 100%;
+        max-width: 110rem;
+    }
+    
+    .users__icon-check {
+        margin-right: -8rem;
+    }
+    
+    .users__icon-edit {
+        margin-right: -12rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    
+    .header__logo-img {
+        height: 6rem;
+    }
+    
+    .header__title {
+        margin-right: 0;
+        text-align: center;
+        margin: 1rem 0;
+    }
+    
+    .header__user-info {
+        margin-right: 0;
+        margin-top: 2rem;
+        text-align: center;
+    }
+    
+    .header__subtitle {
+        margin-left: 0;
+    }
+    
+    .header__icon-home {
+        margin-left: 0;
+    }
+    
+    .users__title {
+        margin-left: 2rem;
+    }
+    
+    .users__search {
+        margin-left: 2rem;
+        width: 70%;
+    }
+    
+    .users__controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .users__button--green,
+    .users__button--gray {
+        margin-right: 0;
+        margin-left: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .users__table-header,
+    .users__table-body {
+        margin-left: 2rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        overflow-x: auto;
+    }
+    
+    .users__header-row {
+        margin-right: 0;
+    }
+    
+    .users__row,
+    .users__cell {
+        padding-right: 0;
+        padding-left: 0;
+    }
+    
+    .users__icon-check,
+    .users__icon-edit {
+        margin-right: 0;
+        margin-left: 0;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    html {
+        font-size: 55%;
+    }
+    
+    .header__logo-img {
+        height: 5rem;
+    }
+    
+    .header__nav-link {
+        font-size: 1.8rem;
+    }
+    
+    .header__title {
+        font-size: 1.8rem;
+    }
+    
+    .users__search {
+        width: 90%;
+        margin-right: 2rem;
+    }
+    
+    .users__button {
+        font-size: 1.4rem;
+        padding: 1rem 1.5rem;
+    }
+    
+    .users__table-header,
+    .users__table-body {
+        width: 95%;
+        font-size: 1.2rem;
+    }
+    
+    .users__header-cell,
+    .users__cell {
+        padding: 0.5rem 0.2rem;
+    }
+    
+    .users__button--back {
+        margin-top: 5rem;
+    }
+}

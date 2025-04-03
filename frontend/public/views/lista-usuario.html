@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/pages/lista-usuario.css">
+    <title>Lista de usuarios</title>
+</head>
+<body>
+    <header class="header">
+        <div class="header__logo">
+            <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="header__logo-img">
+        </div>
+        <div class="header__title-container">
+            <h1 class="header__title">Sistema Gestión Agrícola Lembo <br><span class="header__subtitle">S.G.A.L</span></h1>
+        </div>
+        <div class="header__user-info">
+            <a href="../views/editar-perfil.html" class="header__nav-link">User 
+                <svg class="header__icon-user" width="25" height="27" viewBox="0 0 25 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8.8827 12.8942C10.3293 12.8942 11.7167 12.3195 12.7396 11.2966C13.7626 10.2737 14.3372 8.88629 14.3372 7.43965C14.3372 5.99302 13.7626 4.60563 12.7396 3.58271C11.7167 2.55978 10.3293 1.98511 8.8827 1.98511C7.43607 1.98511 6.04868 2.55978 5.02576 3.58271C4.00283 4.60563 3.42816 5.99302 3.42816 7.43965C3.42816 8.88629 4.00283 10.2737 5.02576 11.2966C6.04868 12.3195 7.43607 12.8942 8.8827 12.8942ZM8.8827 12.8942C11.0787 12.8942 12.9976 13.7233 14.3623 15.1011M8.8827 12.8942C4.51907 12.8942 1.24634 16.1669 1.24634 20.5306V25.9851H8.8827M25.2463 17.2578L21.9736 13.9851L15.4282 20.5306M19.2463 16.7124L22.5191 19.9851M11.0645 22.1669C11.0648 22.8905 11.3525 23.5844 11.8644 24.0959C12.3763 24.6073 13.0704 24.8945 13.794 24.8942C14.5176 24.8939 15.2114 24.6062 15.7229 24.0943C16.2344 23.5824 16.5215 22.8884 16.5212 22.1647C16.521 21.4411 16.2332 20.7473 15.7214 20.2358C15.2095 19.7244 14.5154 19.4372 13.7918 19.4375C13.0682 19.4378 12.3743 19.7255 11.8629 20.2374C11.3514 20.7492 11.0642 21.4433 11.0645 22.1669Z" stroke="black" stroke-width="2"/>
+                </svg>
+            </a>
+            <a href="../views/home.html" class="header__home-link">
+                <svg class="header__icon-home" width="24" height="27" viewBox="0 0 24 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.99992 24.7536H8.15325V14.9469H15.8466V24.7536H21.9999V9.7536L11.9999 2.19027L1.99992 9.7536V24.7536ZM0.333252 26.4203V8.92027L11.9999 0.106934L23.6666 8.92027V26.4203H14.1799V16.6136H9.81992V26.4203H0.333252Z" fill="black"/>
+                </svg>
+            </a>
+            <a href="#" class="header__nav-link"></a>
+        </div>
+    </header>
+    <main class="users">
+        <h2 class="users__title">LISTA DE USUARIOS</h2>
+        <div class="users__controls">
+            <input type="text" placeholder="Buscar usuarios..." class="users__search">
+            <a href="../views/register.html" class="users__create-link">
+                <button type="submit" class="users__button users__button--green">Crear Usuario</button>
+            </a>
+            <button type="submit" class="users__button users__button--gray"onclick="window.location.href='excel.html'" >Generar Reporte</button>
+        </div>
+        <table class="users__table-header">
+            <thead>
+                <tr class="users__header-row">
+                    <th class="users__header-cell">ID</th>
+                    <th class="users__header-cell">Tipo Documento</th>
+                    <th class="users__header-cell">Número Documento</th>
+                    <th class="users__header-cell">Nombre</th>
+                    <th class="users__header-cell">Correo Electrónico</th>
+                    <th class="users__header-cell">Teléfono</th>
+                    <th class="users__header-cell">Tipo de Usuario</th>
+                    <th class="users__header-cell">Estado</th>
+                </tr>
+            </thead>
+        </table>
+        <table class="users__table-body">
+            <tr class="users__row">
+                <td class="users__cell">1</td>
+                <td class="users__cell">CC</td>
+                <td class="users__cell">11111</td>
+                <td class="users__cell">USER</td>
+                <td class="users__cell">USER@BSS</td>
+                <td class="users__cell">32232322</td>
+                <td class="users__cell">ADMIN</td>
+                <td class="users__cell users__cell--check">
+                    <svg class="users__icon-check" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 8L9 11L17 3" stroke="#313131" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M17 9V15C17 15.5304 16.7893 16.0391 16.4142 16.4142C16.0391 16.7893 15.5304 17 15 17H3C2.46957 17 1.96086 16.7893 1.58579 16.4142C1.21071 16.0391 1 15.5304 1 15V3C1 2.46957 1.21071 1.96086 1.58579 1.58579C1.96086 1.21071 2.46957 1 3 1H12" stroke="#313131" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </td>
+                <td class="users__cell users__cell--edit">
+                    <a href="/fronted/views/editar-perfil.html" class="users__edit-link">
+                        <svg class="users__icon-edit" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.43506 23.1725H22.5601C22.7258 23.1725 22.8848 23.1066 23.002 22.9894C23.1192 22.8722 23.1851 22.7132 23.1851 22.5475C23.1851 22.3817 23.1192 22.2228 23.002 22.1055C22.8848 21.9883 22.7258 21.9225 22.5601 21.9225H1.43506C1.2693 21.9225 1.11033 21.9883 0.993117 22.1055C0.875906 22.2228 0.810059 22.3817 0.810059 22.5475C0.810059 22.7132 0.875906 22.8722 0.993117 22.9894C1.11033 23.1066 1.2693 23.1725 1.43506 23.1725ZM9.13756 18.475C9.66528 18.3266 10.1469 18.0471 10.5376 17.6625L22.4626 5.73749C22.8709 5.3275 23.1002 4.77241 23.1002 4.19374C23.1002 3.61507 22.8709 3.05997 22.4626 2.64999L21.2876 1.48749C20.8714 1.09087 20.3187 0.869629 19.7438 0.869629C19.169 0.869629 18.6162 1.09087 18.2001 1.48749L6.27506 13.4C5.89051 13.7886 5.61466 14.2714 5.47506 14.8L4.55006 18.25C4.50657 18.4076 4.50564 18.5739 4.54736 18.732C4.58908 18.8901 4.67196 19.0343 4.78756 19.15C4.96471 19.3236 5.20204 19.4221 5.45006 19.425L9.13756 18.475ZM9.65006 16.775C9.41954 17.0095 9.13032 17.1779 8.81256 17.2625L7.60006 17.5875L6.35006 16.3375L6.67506 15.125C6.76136 14.8079 6.92948 14.5191 7.16256 14.2875L7.63756 13.825L10.1251 16.3125L9.65006 16.775ZM11.0126 15.425L8.52506 12.9375L16.9376 4.52499L19.4251 7.01249L11.0126 15.425ZM21.5751 4.86249L20.3126 6.12499L17.8251 3.63749L19.0876 2.36249C19.2633 2.18692 19.5016 2.08831 19.7501 2.08831C19.9985 2.08831 20.2368 2.18692 20.4126 2.36249L21.5751 3.53749C21.7494 3.71391 21.8472 3.95195 21.8472 4.19999C21.8472 4.44802 21.7494 4.68606 21.5751 4.86249Z" fill="black"/>
+                        </svg>
+                    </a>
+                </td>
+            </tr>
+            <tr class="users__row">
+                <td class="users__cell">2</td>
+                <td class="users__cell">CC</td>
+                <td class="users__cell">11111</td>
+                <td class="users__cell">USER</td>
+                <td class="users__cell">USER@AA</td>
+                <td class="users__cell">1244312</td>
+                <td class="users__cell">ADMIN</td>
+                <td class="users__cell users__cell--check">
+                    <svg class="users__icon-check" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 8L9 11L17 3" stroke="#313131" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M17 9V15C17 15.5304 16.7893 16.0391 16.4142 16.4142C16.0391 16.7893 15.5304 17 15 17H3C2.46957 17 1.96086 16.7893 1.58579 16.4142C1.21071 16.0391 1 15.5304 1 15V3C1 2.46957 1.21071 1.96086 1.58579 1.58579C1.96086 1.21071 2.46957 1 3 1H12" stroke="#313131" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </td>
+                <td class="users__cell users__cell--edit">
+                    <svg class="users__icon-edit" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1.43506 23.1725H22.5601C22.7258 23.1725 22.8848 23.1066 23.002 22.9894C23.1192 22.8722 23.1851 22.7132 23.1851 22.5475C23.1851 22.3817 23.1192 22.2228 23.002 22.1055C22.8848 21.9883 22.7258 21.9225 22.5601 21.9225H1.43506C1.2693 21.9225 1.11033 21.9883 0.993117 22.1055C0.875906 22.2228 0.810059 22.3817 0.810059 22.5475C0.810059 22.7132 0.875906 22.8722 0.993117 22.9894C1.11033 23.1066 1.2693 23.1725 1.43506 23.1725ZM9.13756 18.475C9.66528 18.3266 10.1469 18.0471 10.5376 17.6625L22.4626 5.73749C22.8709 5.3275 23.1002 4.77241 23.1002 4.19374C23.1002 3.61507 22.8709 3.05997 22.4626 2.64999L21.2876 1.48749C20.8714 1.09087 20.3187 0.869629 19.7438 0.869629C19.169 0.869629 18.6162 1.09087 18.2001 1.48749L6.27506 13.4C5.89051 13.7886 5.61466 14.2714 5.47506 14.8L4.55006 18.25C4.50657 18.4076 4.50564 18.5739 4.54736 18.732C4.58908 18.8901 4.67196 19.0343 4.78756 19.15C4.96471 19.3236 5.20204 19.4221 5.45006 19.425L9.13756 18.475ZM9.65006 16.775C9.41954 17.0095 9.13032 17.1779 8.81256 17.2625L7.60006 17.5875L6.35006 16.3375L6.67506 15.125C6.76136 14.8079 6.92948 14.5191 7.16256 14.2875L7.63756 13.825L10.1251 16.3125L9.65006 16.775ZM11.0126 15.425L8.52506 12.9375L16.9376 4.52499L19.4251 7.01249L11.0126 15.425ZM21.5751 4.86249L20.3126 6.12499L17.8251 3.63749L19.0876 2.36249C19.2633 2.18692 19.5016 2.08831 19.7501 2.08831C19.9985 2.08831 20.2368 2.18692 20.4126 2.36249L21.5751 3.53749C21.7494 3.71391 21.8472 3.95195 21.8472 4.19999C21.8472 4.44802 21.7494 4.68606 21.5751 4.86249Z" fill="black"/>
+                    </svg>
+                </td>
+            </tr>
+            <tr class="users__row">
+                <td class="users__cell">3</td>
+                <td class="users__cell">CC</td>
+                <td class="users__cell">1111</td>
+                <td class="users__cell">USER</td>
+                <td class="users__cell">USER@HH</td>
+                <td class="users__cell">1231322</td>
+                <td class="users__cell">ADMIN</td>
+                <td class="users__cell users__cell--check">
+                    <svg class="users__icon-check" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 8L9 11L17 3" stroke="#313131" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M17 9V15C17 15.5304 16.7893 16.0391 16.4142 16.4142C16.0391 16.7893 15.5304 17 15 17H3C2.46957 17 1.96086 16.7893 1.58579 16.4142C1.21071 16.0391 1 15.5304 1 15V3C1 2.46957 1.21071 1.96086 1.58579 1.58579C1.96086 1.21071 2.46957 1 3 1H12" stroke="#313131" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </td>
+                <td class="users__cell users__cell--edit">
+                    <svg class="users__icon-edit" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1.43506 23.1725H22.5601C22.7258 23.1725 22.8848 23.1066 23.002 22.9894C23.1192 22.8722 23.1851 22.7132 23.1851 22.5475C23.1851 22.3817 23.1192 22.2228 23.002 22.1055C22.8848 21.9883 22.7258 21.9225 22.5601 21.9225H1.43506C1.2693 21.9225 1.11033 21.9883 0.993117 22.1055C0.875906 22.2228 0.810059 22.3817 0.810059 22.5475C0.810059 22.7132 0.875906 22.8722 0.993117 22.9894C1.11033 23.1066 1.2693 23.1725 1.43506 23.1725ZM9.13756 18.475C9.66528 18.3266 10.1469 18.0471 10.5376 17.6625L22.4626 5.73749C22.8709 5.3275 23.1002 4.77241 23.1002 4.19374C23.1002 3.61507 22.8709 3.05997 22.4626 2.64999L21.2876 1.48749C20.8714 1.09087 20.3187 0.869629 19.7438 0.869629C19.169 0.869629 18.6162 1.09087 18.2001 1.48749L6.27506 13.4C5.89051 13.7886 5.61466 14.2714 5.47506 14.8L4.55006 18.25C4.50657 18.4076 4.50564 18.5739 4.54736 18.732C4.58908 18.8901 4.67196 19.0343 4.78756 19.15C4.96471 19.3236 5.20204 19.4221 5.45006 19.425L9.13756 18.475ZM9.65006 16.775C9.41954 17.0095 9.13032 17.1779 8.81256 17.2625L7.60006 17.5875L6.35006 16.3375L6.67506 15.125C6.76136 14.8079 6.92948 14.5191 7.16256 14.2875L7.63756 13.825L10.1251 16.3125L9.65006 16.775ZM11.0126 15.425L8.52506 12.9375L16.9376 4.52499L19.4251 7.01249L11.0126 15.425ZM21.5751 4.86249L20.3126 6.12499L17.8251 3.63749L19.0876 2.36249C19.2633 2.18692 19.5016 2.08831 19.7501 2.08831C19.9985 2.08831 20.2368 2.18692 20.4126 2.36249L21.5751 3.53749C21.7494 3.71391 21.8472 3.95195 21.8472 4.19999C21.8472 4.44802 21.7494 4.68606 21.5751 4.86249Z" fill="black"/>
+                    </svg>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" class="users__button users__button--back" onclick="window.location.href='/frontend/public/views/home.html'"  value="Volver">
+    </main>
+</body>
+</html>

@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Botón volver
   btnVolver.addEventListener('click', function() {
       // Redirigir a la página anterior o a la lista de insumos
-      window.location.href = 'insumos.html'; // Ajusta según tu estructura
+      window.location.href = 'listar-insumo-sebas.html'; // Ajusta según tu estructura
   });
   
   // Manejar la creación del insumo
