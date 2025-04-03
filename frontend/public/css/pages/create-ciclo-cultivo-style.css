@@ -220,7 +220,7 @@ h6 {
     content: ""; 
     position: absolute; 
     inset: 0;
-    background-image: url('/IMG/imagen-register.jpeg'); 
+    background-image: url('/frontend/IMG/imagen-register.jpeg'); 
     background-size: cover; 
     background-position: center; 
     opacity: 0.1; 

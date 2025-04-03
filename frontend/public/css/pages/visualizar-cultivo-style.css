@@ -97,7 +97,7 @@ body::before{
     content: ""; 
     position: absolute; 
     inset: 0;
-    background-image: url('/IMG/wallpaper-code.jpeg'); 
+    background-image: url('/frontend/IMG/wallpaper-code.jpeg'); 
     background-size: cover; 
     background-position: center; 
     opacity: 0.1; 

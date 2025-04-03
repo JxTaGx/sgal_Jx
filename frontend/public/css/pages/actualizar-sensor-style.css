@@ -192,7 +192,7 @@ h6 {
     content: ""; 
     position: absolute; 
     inset: 0;
-    background-image: url(../IMG/fondo-login.jpeg); 
+    background-image: url(/frontend/IMG/fondo-login.jpeg); 
     background-size: cover; 
     background-position: center; 
     opacity: 0.1; 

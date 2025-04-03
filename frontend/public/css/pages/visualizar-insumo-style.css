@@ -175,7 +175,7 @@ body {
 .logo {
     width: 8rem;
     height: 8rem;
-    background-image: url("/IMG/logo-sena.png"); 
+    background-image: url("/frontend/IMG/logo-sena.png"); 
     background-size: cover;
     background-position: center;
     margin-left: 2rem;
@@ -196,7 +196,7 @@ body {
     content: ""; 
     position: absolute; 
     inset: 0;
-    background-image: url('/IMG/imagen-register.jpeg'); 
+    background-image: url('/frontend/IMG/imagen-register.jpeg'); 
     background-size: cover; 
     background-position: center; 
     opacity: 0.1; 

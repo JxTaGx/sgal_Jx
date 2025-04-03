@@ -180,7 +180,7 @@ body {
     height: 100%;
     margin: 0;
     float: right;
-    background: var(--white) url(/IMG/fondo-login.jpeg) no-repeat center;
+    background: var(--white) url(/frontend/IMG/fondo-login.jpeg) no-repeat center;
     background-size: cover;
     border-radius: 2rem;
     opacity: 0.5;

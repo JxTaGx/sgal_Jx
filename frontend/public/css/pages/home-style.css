@@ -128,7 +128,7 @@ html {
     content: '';
     position: absolute;
     inset: 0;
-    background: url(../IMG/2.png) no-repeat center;
+    background: url(/frontend/IMG/2.png) no-repeat center;
     background-size: cover;
     background-position: center;
     opacity: 0.6; 
@@ -138,7 +138,7 @@ html {
 .header__logo {
     width: 8rem;
     height: 8rem;
-    background-image: url('../IMG/logo-sena.png'); 
+    background-image: url('/frontend/IMG/logo-sena.png'); 
     background-size: contain;
     background-repeat: no-repeat;
     margin-right: 2rem;
@@ -258,15 +258,15 @@ html {
 }
 
 .card--cultivos::before {
-    background-image: url('../IMG/card-1.jpeg'); 
+    background-image: url('/frontend/IMG/card-1.jpeg'); 
 }
 
 .card--sensores::before {
-    background-image: url('../IMG/card-2.jpeg'); 
+    background-image: url('/frontend/IMG/card-2.jpeg'); 
 }
 
 .card--info::before {
-    background-image: url('../IMG/card-3.jpeg'); 
+    background-image: url('/frontend/IMG/card-3.jpeg'); 
 }
 
 .card__title {

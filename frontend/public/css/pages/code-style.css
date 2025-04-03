@@ -106,7 +106,7 @@ body::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url(../IMG/wallpaper-code.jpeg);
+    background-image: url(/frontend/IMG/wallpaper-code.jpeg);
     background-size: cover;
     background-position: center;
     opacity: 0.1; 
@@ -192,7 +192,7 @@ h6 {
 
 .verification__background {
     position: relative;
-    background-image: url(../IMG/wallpaper-code.jpeg);
+    background-image: url(/frontend/IMG/wallpaper-code.jpeg);
     margin-left: 38rem;
     padding-top: 4rem;
     background-repeat: no-repeat;

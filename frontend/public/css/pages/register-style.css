@@ -123,7 +123,7 @@ body::before {
     content: '';
     position: fixed; /* Cambio de absolute a fixed para evitar scroll */
     inset: 0;
-    background-image: url(../IMG/imagen-register.jpeg);
+    background-image: url(/frontend/IMG/imagen-register.jpeg);
     background-size: cover;
     background-position: center;
     opacity: 0.1; 
@@ -255,7 +255,7 @@ h6 {
 
 .register__background {
     position: relative;
-    background-image: url(../IMG/imagen-register.jpeg);
+    background-image: url(/frontend/IMG/imagen-register.jpeg);
     margin-left: 38rem;
     padding-top: 4rem;
     background-repeat: no-repeat;

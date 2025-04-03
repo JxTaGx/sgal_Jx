@@ -124,7 +124,7 @@ html {
   content: '';
   position: absolute;
   inset: 0;
-  background: url(../IMG/2.png) no-repeat center;
+  background: url(/frontend/IMG/2.png) no-repeat center;
   background-size: cover;
   background-position: center;
   opacity: 0.4; 
@@ -239,7 +239,7 @@ html {
 }
 
 .illustration {
-  background-image: url(../IMG/prehomefondo.png);
+  background-image: url(/frontend/IMG/prehomefondo.png);
   background-size: cover;
   background-position: center;
   height: 100%;
