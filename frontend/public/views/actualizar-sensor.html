@@ -21,37 +21,40 @@
             </h1>
             <form class="sensor__form">
                 <div class="sensor__form-group">
-                    <label class="sensor__label" for="tipoInsumo">Tipo de Sensor *</label>
-                    <input class="sensor__input" type="text" placeholder="Escribe aquí..." required>
-                </div>
-                <div class="sensor__form-group">
                     <label class="sensor__label" for="idInsumo">ID del Sensor</label>
-                    <input class="sensor__input sensor__input--disabled" type="text" value="INS-001" disabled>
+                    <input class="sensor__input sensor__input--disabled"  type="text"  value="INS-001" disabled title="ID del sensor (campo no editable)" />
                 </div>
+
                 <div class="sensor__form-group">
                     <label class="sensor__label" for="nombreInsumo">Nombre del Sensor *</label>
-                    <input class="sensor__input" type="text" value="Sensor de temperatura" required>
+                    <input class="sensor__input" type="text" value="Sensor de temperatura" required placeholder="Escribe el nombre del sensor" title="Nombre del sensor" />
                 </div>
+
                 <div class="sensor__form-group">
-                    <label class="sensor__label" for="unidadMedida">Ubicacion *</label>
-                    <input class="sensor__input" type="text" placeholder="Escribe aquí..." required>
+                    <label class="sensor__label" for="unidadMedida">Ubicación *</label>
+                    <input class="sensor__input" type="text" required placeholder="Escribe aquí..." title="Ubicación del sensor" />
                 </div>
+
                 <div class="sensor__form-group">
                     <label class="sensor__label" for="cantidad">Unidad de medida *</label>
-                    <input class="sensor__input" type="number" value="50" required>
+                    <input class="sensor__input" type="number" value="50" required placeholder="Ej: 50" title="Unidad de medida" />
                 </div>
+
                 <div class="sensor__form-group">
-                    <label class="sensor__label" for="valorUnitario">Valor minimo *</label>
-                    <input class="sensor__input" type="text" value="$2,500" required>
+                    <label class="sensor__label" for="valorUnitario">Valor mínimo *</label>
+                    <input class="sensor__input" type="text" value="$2,500" required placeholder="Ej: $2,500" title="Valor unitario mínimo" />
                 </div>
+
                 <div class="sensor__form-group sensor__form-group--full-width">
                     <label class="sensor__label" for="valorTotal">Valor Maximo</label>
-                    <input class="sensor__input sensor__input--disabled" type="text" value="$125,000" disabled>
+                    <input class="sensor__input sensor__input--disabled" type="text" value="$125,000" disabled title="Valor máximo del sensor (no editable)" />
                 </div>
+
                 <div class="sensor__form-group sensor__form-group--full-width">
                     <label class="sensor__label" for="descripcion">Intervalo de lectura (minutos)</label>
-                    <textarea class="sensor__textarea">...</textarea>
+                    <textarea class="sensor__textarea" placeholder="Ej: Cada 15 minutos" title="Ingresa el intervalo de lectura en minutos"></textarea>
                 </div>
+
                 <div class="sensor__button-group">
                     <a href="visualizar-sensor.html">
                         <button type="button" class="sensor__button sensor__button--cancel">Cancelar</button>

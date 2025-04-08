@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Cultivos</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../css/pages/integracion.css">
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <div class="header__container">
+                <h1 class="header__title">Sistema de Asociaciones</h1>
+            </div>
+        </header>
+
+        <nav class="navigation">
+            <div class="navigation__container">
+                <button class="navigation__tab navigation__tab--active" data-tab="create">Crear</button>
+                <button class="navigation__tab" data-tab="view">Visualizar</button>
+                <button class="navigation__tab" data-tab="update">Actualizar</button>
+                <button class="navigation__tab" data-tab="enable">Habilitar</button>
+                <button class="navigation__tab" data-tab="list">Listar</button>
+                <button class="navigation__tab" data-tab="report">Generar Reporte</button>
+            </div>
+        </nav>
+
+        <main class="main">
+            <!-- Formulario Crear Asociación -->
+            <section class="panel panel--active" id="create-panel">
+                <div class="panel__header">
+                <h2 class="panel__title">Crear Asociación de Cultivo</h2>
+                </div>
+            
+                <form class="form form--two-columns" id="create-form">
+                <div class="form__group">
+                    <label class="form__label" for="cultivation-name">Nombre del Cultivo</label>
+                    <input class="form__input" type="text" id="cultivation-name" required />
+                    <span class="form__error" id="cultivation-name-error"></span>
+                </div>
+            
+                <div class="form__group">
+                    <label class="form__label" for="sensor-select">Sensores</label>
+                    <select class="form__select" id="sensor-select" multiple required>
+                    <option value="1">Sensor de Humedad</option>
+                    <option value="2">Sensor de Temperatura</option>
+                    <option value="3">Sensor de pH</option>
+                    </select>
+                    <span class="form__error" id="sensor-select-error"></span>
+                </div>
+            
+                <div class="form__group">
+                    <label class="form__label" for="supply-select">Insumos</label>
+                    <select class="form__select" id="supply-select" multiple required>
+                    <option value="1">Fertilizante A</option>
+                    <option value="2">Fertilizante B</option>
+                    <option value="3">Plaguicida Natural</option>
+                    </select>
+                    <span class="form__error" id="supply-select-error"></span>
+                </div>
+            
+                <div class="form__group">
+                    <label class="form__label" for="cycle-select">Ciclo de Cultivo</label>
+                    <select class="form__select" id="cycle-select" required>
+                    <option value="">Seleccione un ciclo</option>
+                    <option value="1">Ciclo Primavera</option>
+                    <option value="2">Ciclo Verano</option>
+                    <option value="3">Ciclo Otoño</option>
+                    </select>
+                    <span class="form__error" id="cycle-select-error"></span>
+                </div>
+            
+                <div class="form__group">
+                    <label class="form__label" for="user-select">Usuario Responsable</label>
+                    <select class="form__select" id="user-select" required>
+                    <option value="">Seleccione un usuario</option>
+                    <option value="1">Manuel Valencia</option>
+                    <option value="2">Esteban Patiño</option>
+                    <option value="3">Sebastian Tarara</option>
+                    </select>
+                    <span class="form__error" id="user-select-error"></span>
+                </div>
+            
+                <!-- Acción ocupa toda la fila -->
+                <div class="form__actions" style="grid-column: span 2;">
+                    <button class="button button--tertiary" type="button" onclick="window.location.href='../views/home.html'">Volver</button>
+                    <button class="button button--primary" type="submit">Guardar</button>
+                    <button class="button button--secondary" type="reset">Limpiar</button>
+                </div>
+                </form>
+            </section>
+  
+
+            <!-- Visualizar Asociación -->
+            <section class="panel" id="view-panel">
+                <div class="panel__header">
+                    <h2 class="panel__title">Visualizar Asociación de Cultivo</h2>
+                </div>
+                <form class="form" id="view-form">
+                    <div class="form__group">
+                        <label class="form__label" for="cultivation-id">ID del Cultivo</label>
+                        <input class="form__input" type="text" id="cultivation-id" required>
+                        <span class="form__error" id="cultivation-id-error"></span>
+                    </div>
+                    
+                    <div class="form__actions">
+                        <button class="button button--primary" type="submit">Buscar</button>
+                    </div>
+                </form>
+                
+                <div class="result" id="view-result">
+                    <div class="result__header">
+                        <h3 class="result__title">Detalles del Cultivo</h3>
+                    </div>
+                    <div class="result__content">
+                        <!-- Aquí se mostrarán los resultados -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Actualizar Asociación -->
+            <section class="panel" id="update-panel">
+                <div class="panel__header">
+                    <h2 class="panel__title">Actualizar Asociación de Cultivo</h2>
+                </div>
+                <form class="form" id="search-update-form">
+                    <div class="form__group">
+                        <label class="form__label" for="update-cultivation-id">ID del Cultivo</label>
+                        <input class="form__input" type="text" id="update-cultivation-id" required>
+                        <span class="form__error" id="update-cultivation-id-error"></span>
+                    </div>
+                    
+                    <div class="form__actions">
+                        <button class="button button--primary" type="submit">Buscar</button>
+                    </div>
+                </form>
+
+                <form class="form form--hidden" id="update-form">
+                    <!-- Se poblará dinámicamente al buscar el cultivo -->
+                    <div class="form__actions">
+                        <button class="button button--primary" type="submit">Actualizar</button>
+                        <button class="button button--secondary" type="button" id="cancel-update">Cancelar</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Habilitar Asociación -->
+            <section class="panel" id="enable-panel">
+                <div class="panel__header">
+                    <h2 class="panel__title">Habilitar/Deshabilitar Asociación de Cultivo</h2>
+                </div>
+                <form class="form" id="enable-form">
+                    <div class="form__group">
+                        <label class="form__label" for="sensor-id">ID del Sensor</label>
+                        <input class="form__input" type="text" id="sensor-id" required>
+                        <span class="form__error" id="sensor-id-error"></span>
+                    </div>
+                    
+                    <div class="form__actions">
+                        <button class="button button--primary" type="submit">Buscar</button>
+                    </div>
+                </form>
+                
+                <div class="result result--hidden" id="enable-result">
+                    <div class="result__header">
+                        <h3 class="result__title">Estado del Ciclo de Cultivo</h3>
+                    </div>
+                    <div class="result__content">
+                        <!-- Aquí se mostrarán los resultados -->
+                    </div>
+                    <div class="result__actions">
+                        <button class="button button--accent" id="toggle-status">Cambiar Estado</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Listar Asociación -->
+            <section class="panel" id="list-panel">
+                <div class="panel__header">
+                    <h2 class="panel__title">Listar Asociaciones de Cultivo</h2>
+                </div>
+                <div class="list-controls">
+                    <div class="list-controls__search">
+                        <input class="list-controls__input" type="text" id="search-cultivation" placeholder="Buscar cultivo...">
+                    </div>
+                    <div class="list-controls__filters">
+                        <select class="list-controls__select" id="filter-status">
+                            <option value="all">Todos los estados</option>
+                            <option value="active">Activo</option>
+                            <option value="inactive">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="table">
+                        <thead class="table__head">
+                            <tr class="table__row">
+                                <th class="table__header">ID</th>
+                                <th class="table__header">Nombre</th>
+                                <th class="table__header">Ciclo</th>
+                                <th class="table__header">Usuario</th>
+                                <th class="table__header">Estado</th>
+                                <th class="table__header">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table__body" id="cultivation-list">
+                            <!-- Se llenará dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="pagination">
+                    <button class="pagination__button" id="prev-page">
+                        <i class="material-icons">navigate_before</i>
+                    </button>
+                    <span class="pagination__info" id="page-info">Página 1 de 1</span>
+                    <button class="pagination__button" id="next-page">
+                        <i class="material-icons">navigate_next</i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Generar Reporte -->
+            <section class="panel" id="report-panel">
+                <div class="panel__header">
+                    <h2 class="panel__title">Generar Reporte de Asociación de Cultivo</h2>
+                </div>
+                <form class="form" id="report-form">
+                    <div class="form__group">
+                        <label class="form__label">Período</label>
+                        <div class="form__date-range">
+                            <div class="form__date-field">
+                                <label class="form__sublabel" for="start-date">Fecha Inicio</label>
+                                <input class="form__input" type="date" id="start-date" required>
+                            </div>
+                            <div class="form__date-field">
+                                <label class="form__sublabel" for="end-date">Fecha Fin</label>
+                                <input class="form__input" type="date" id="end-date" required>
+                            </div>
+                        </div>
+                        <span class="form__error" id="date-range-error"></span>
+                    </div>
+                    
+                    <div class="form__group">
+                        <label class="form__label">Formato</label>
+                        <div class="form__radio-group">
+                            <label class="form__radio">
+                                <input type="radio" name="format" value="excel" checked>
+                                <span class="form__radio-label">Excel</span>
+                            </label>
+                            <label class="form__radio">
+                                <input type="radio" name="format" value="pdf">
+                                <span class="form__radio-label">PDF</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form__actions">
+                        <button class="button button--primary" type="submit">Generar Reporte</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+
+        <div class="snackbar" id="snackbar">
+            <div class="snackbar__content">
+                <span class="snackbar__message"></span>
+                <button class="snackbar__close">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/pages/integracion.js"></script>
+</body>
+</html>
