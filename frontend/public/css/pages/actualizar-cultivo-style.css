@@ -221,7 +221,7 @@ h6 {
 }
 
 .update-crop__button--cancel {
-    background-color: var(--primary-900);
+    background-color: var(--gray-550);
     color: var(--white);
 }
 

@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Cambiar el color de borde en los inputs cuando hay error
     function marcarCampoError(elemento, hayError) {
         if (hayError) {
-            elemento.style.borderColor = "#ff3860";
+            elemento.style.borderColor = "#FDC300";
         } else {
             elemento.style.borderColor = "";
         }
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
         alertaElement.style.display = "block";
         
         if (tipo === "error") {
-            alertaElement.style.backgroundColor = "#ff3860";
+            alertaElement.style.backgroundColor = "#FDC300";
         } else {
             alertaElement.style.backgroundColor = "#23d160";
         }

@@ -246,7 +246,7 @@ img, video {
     bottom: 5rem;
     left: 50%;
     transform: translateX(-50%);
-    background-color: red;
+    background-color: var(--secondary-4-950);
     color: white;
     padding: 1rem 2rem;
     font-size: 1.6rem;

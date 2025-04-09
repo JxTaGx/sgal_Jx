@@ -276,6 +276,7 @@ a {
 }
 
 .button--back {
+    background-color: var(--gray-550);
     width: 9.7rem;
     position: absolute;
     bottom: 1rem;

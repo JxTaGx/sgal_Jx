@@ -263,7 +263,7 @@ h6 {
 }
 
 .button--back {
-    background-color: var(--primary-900);
+    background-color: var(--gray-550);
     color: var(--white);
     margin-left: -16rem;
     margin-top: 6rem;

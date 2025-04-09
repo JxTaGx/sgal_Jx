@@ -292,7 +292,7 @@ input[disabled] {
 }
 
 .backBtn {
-    background-color: var(--primary-900);
+    background-color: var(--gray-550);
     color: var(--white);
     z-index: 1;
     border: 0.1rem solid var(--black);
