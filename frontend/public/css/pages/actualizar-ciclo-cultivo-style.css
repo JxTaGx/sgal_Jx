@@ -223,7 +223,7 @@ svg {
 }
 
 .cultivo-form__btn--cancel {
-    background-color: var(--primary-900);
+    background: var(--gray-550);
     color: var(--white);
 }
 

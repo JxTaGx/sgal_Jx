@@ -250,11 +250,11 @@ img {
 
 .button {
     padding: 1.2rem 2.4rem;
-    border: none;
     border-radius: 0.5rem;
-    font-size: var(--font-size-h4);
+    font-size: var(--font-size-h5);
     cursor: pointer;
     border: 0.1rem solid var(--black);
+    margin-top: 1rem;
 }
 
 .button--edit {
@@ -268,7 +268,7 @@ img {
 }
 
 .button--back {
-    background-color: var(--primary-900);
+    background-color: var(--gray-550);
     color: var(--white);
 }
 

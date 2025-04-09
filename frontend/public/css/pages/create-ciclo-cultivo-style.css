@@ -99,6 +99,17 @@ html {
     overflow: hidden; /* Evitar scroll */
 }
 
+html::before {
+    content: ""; 
+    position: absolute; 
+    inset: 0;
+    background-image: url('/frontend/IMG/fondo.jpeg'); 
+    background-size: cover; 
+    background-position: center; 
+    opacity: 0.1; 
+    z-index: 0; 
+}
+
 *, *:before, *:after {
     box-sizing: inherit;
 }
@@ -188,16 +199,18 @@ h6 {
     font-size: var(--font-size-h1);
     color: var(--black);
     position: absolute;
-    left: 5rem;
+    left: 6rem;
     top: -8rem;
     white-space: nowrap;
 }
 
 .ciclo-cultivo__icon {
     position: absolute;
-    left: 2rem;
-    top: 9rem;
+    left: 3rem;
+    top: 9.3rem;
     z-index: 1;
+    width: 3rem;
+    height: 3rem;
 }
 
 /* Formulario principal */
@@ -317,7 +330,7 @@ h6 {
 }
 
 .ciclo-cultivo__btn--volver {
-    background-color: var(--primary-900);
+    background-color: var(--gray-550);
 }
 
 .ciclo-cultivo__btn--crear {

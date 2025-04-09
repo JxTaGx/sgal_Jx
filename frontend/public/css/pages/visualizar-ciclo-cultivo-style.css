@@ -261,7 +261,7 @@ img {
 }
 
 .ciclo-cultivo__btn--back {
-    background-color: var(--primary-900);
+    background-color: var(--gray-550);
     color: var(--white);
     margin-top: 4rem;
 }

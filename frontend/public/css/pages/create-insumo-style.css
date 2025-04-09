@@ -149,6 +149,17 @@ html {
     position: relative;
 }
 
+html::before {
+    content: ""; 
+    position: absolute; 
+    inset: 0;
+    background-image: url('/frontend/IMG/fondo.jpeg'); 
+    background-size: cover; 
+    background-position: center; 
+    opacity: 0.1; 
+    z-index: 0; 
+}
+
 *, *:before, *:after {
     box-sizing: inherit;
 }
@@ -289,7 +300,7 @@ html {
 }
 
 .insumo__btn--volver {
-    background-color: var(--primary-900);
+    background-color: var(--gray-550);
     border-radius: 0.6rem;
     border: 0.1rem solid var(--black); 
 }

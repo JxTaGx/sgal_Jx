@@ -202,7 +202,7 @@ html::before {
 
 .header__title {
     font-style: italic;
-    font-size: 2.2rem;
+    font-size: var(--font-size-h2);
     margin-right: 65rem;
 }
 
@@ -220,12 +220,15 @@ html::before {
 .header__icon-home {
     margin-left: 13rem;
     margin-bottom: -0.4rem;
+    cursor: pointer;
 }
 
 .users__title {
-    margin-top: 2rem;
+    margin-top: 4rem;
     margin-left: 8rem;
     font-weight: var(--font-light);
+    text-transform: uppercase;
+    font-size: var(--font-size-h3);
 }
 
 .users__search {
@@ -238,10 +241,10 @@ html::before {
     font-size: 1.6rem;
     width: 32rem;
     height: 4.8rem;
-}
+} 
 
 .users__button {
-    font-size: var(--font-size-h4);
+    font-size: var(--font-size-h5);
     border-radius: 0.6rem;
     padding: 1.2rem 2.4rem;
     margin-top: 2rem;
@@ -262,9 +265,9 @@ html::before {
 }
 
 .users__button--back {
-    background: var(--primary-900);
+    background-color: var(--gray-550);
     color: var(--white);
-    margin-left: 2%;
+    margin-left: 4%;
     margin-top: 19rem;
 }
 
@@ -300,14 +303,13 @@ html::before {
 
 .users__table-body {
     font-size: var(--font-size-h4);
-    font-weight: var(--font-regular);
     color: var(--black);
     background: var(--gray-150);
-    width: 145rem;
+    width: auto;
     height: 4rem;
     padding-left: 4rem;
-    padding-right: 17rem;
-    margin-top: 0.6rem;
+    padding-right: 11rem;
+    margin-top: 0.8rem;
     border-radius: 0.6rem;
     margin-left: 8rem;
     padding-top: 1rem;
@@ -326,8 +328,12 @@ html::before {
 }
 
 .users__icon-edit {
-    margin-right: -24rem;
-    margin-left: 12rem;
+    margin-right: -11rem;
+    cursor: pointer;
+}
+
+.users__icon-check {
+    margin-right: -10rem;
     cursor: pointer;
 }
 

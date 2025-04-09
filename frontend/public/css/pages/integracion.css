@@ -348,12 +348,12 @@
   
   .form__input:invalid,
   .form__select:invalid {
-    border-color: var(--color-error);
+    border-color: var(--secondary-4-950);
   }
   
   .form__error {
     display: none;
-    color: var(--color-error);
+    color: var(--secondary-4-950);
     font-size: 1.2rem;
     margin-top: var(--spacing-xs);
   }

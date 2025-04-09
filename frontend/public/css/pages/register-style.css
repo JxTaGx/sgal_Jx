@@ -185,13 +185,13 @@ h6 {
 .page__logo {
     width: 8rem;
     height: auto;
-    margin-right: 2rem;
+    margin-left: 1rem;
 }
 
 .page__button {
     display: block;
     width: 100%;
-    padding: 1rem;
+    padding: 1.2rem 2.4rem;
     font-size: var(--font-size-h4);
     background-color: var(--secondary-3-800);
     color: var(--white);
@@ -204,17 +204,16 @@ h6 {
 .page__button--back {
     width: 9.7rem;
     position: absolute;
-    bottom: 2rem;
-    left: 2rem;
-    background-color: var(--primary-900);
+    bottom: 3rem;
+    left: 4rem;
+    background-color: var(--gray-550);
     color: var(--white);
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
-    font-size: var(--font-size-h4);
-    padding: 1rem;
+    font-size: var(--font-size-h5);
+    padding: 1.2rem 2.4rem;
     border: 0.1rem solid var(--black);
-    margin: 1rem;
     z-index: 10; /* Asegurar que esté por encima de otros elementos */
 }
 
@@ -229,12 +228,12 @@ h6 {
 
 .register__title {
     font-size: var(--font-size-h2);
-    margin: 0;
+    margin: 1rem;
     color: var(--black);
     text-align: center;
-    margin-left: 1rem;
     font-weight: var(--font-bold);
     font-style: italic;
+    margin-left: -7rem;
 }
 
 .register__title--subtitle {
@@ -336,14 +335,13 @@ h6 {
 .register__button {
     display: block;
     width: 100%;
-    padding: 1rem;
-    font-size: var(--font-size-h4);
+    padding: 1.2rem 2.4rem;
+    font-size: var(--font-size-h5);
     background-color: var(--secondary-3-800);
     color: var(--white);
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
-    margin-top: 1rem;
 }
 
 a {
@@ -360,26 +358,26 @@ a {
 }
 
 .error-container {
-    color: #ff0000;
+    color: var(--secundary-950);
     font-size: 1.4rem;
-    height: 20px; /* Altura fija */
+    height: 2.0rem; /* Altura fija */
     visibility: hidden; /* Oculto por defecto */
-    margin-top: 2px;
+    margin-top: 0.2rem;
     white-space: nowrap;
 }
 
 .input-error {
-    border: 1px solid #ff0000 !important;
+    border: 1px solid var(--secondary-4-950) !important;
 }
 
 .register__input:focus.input-error {
-    outline: 1px solid #ff0000;
+    outline: 1px solid var(--secondary-4-950);
 }
 
 /* Asegurar que los grupos de formulario tengan altura fija */
 .register__form-group {
-    min-height: 80px; /* Ajusta según necesites */
-    margin-bottom: 5px;
+    min-height: 8.0rem; /* Ajusta según necesites */
+    margin-bottom: 0.5rem;
 }
 
 /* Animación de entrada para alertas */

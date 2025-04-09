@@ -107,7 +107,6 @@ html {
     justify-content: center;
     align-items: center;
     font-family: var(--font-primary);   
-    position: relative;
     font-size: var(--font-size-h4);
     overflow: hidden;
 }
@@ -200,60 +199,52 @@ html {
 
 .form-field__input {
     height: 4.8rem;
-    width: 100%; 
-    outline: none;
+    width: 32rem; 
     border-radius: 0.7rem;
     border: 0.1rem solid var(--gray-350);
-    padding-left: 1.5rem;
-    border-bottom-width: 0.2rem;
     background-color: var(--gray-150);
     opacity: 0.6;
-    margin: 0.4rem 0; 
 }
 
 /* Botones */
 .button {
-    border: 0.1rem solid var(--black);
-    border-bottom-width: 0.2rem;
-    border-radius: 0.9rem;
+    padding: 1.2rem 2.4rem;
+    font-size: var(--font-size-h5);
     color: var(--white);
-    font-weight: var(--font-bold);
+    background-color: var(--primary-900);
+    border: 0.1rem solid var(--black);
+    border-radius: 0.6rem;
+    cursor: pointer;
+    white-space: nowrap;
 }
 
 .button--purple {
     background: var(--secondary-2-900);
-    padding: 1.2rem 2.4rem;
     width: auto;
-    height: 4.8rem;
     display: flex;
     flex-direction: row;
     justify-content: center;
     text-align: center;
 }
 
-.button--green {
-    background: var(--primary-900);
-    padding: 1.2rem 2.4rem;
-    width: auto;
-    height: 4rem;
+.button--back {
+    background-color: var(--gray-550);
 }
 
-.button-group {
-    text-align: center;
-    padding: 1.2rem 2.4rem;
+.button--green {
+    background: var(--primary-900);
 }
 
 .button-group--purple {
-    margin-top: 1.5rem;
-    margin-right: 4rem;
+    margin-top: 4rem;
+    margin-right: 9.5rem;
 }
 
 .button-group--green {
     display: flex;
     justify-content: space-between;
-    gap: 4rem;
+    gap: 3rem;
     margin-top: 3rem;
-    margin-bottom: 2rem; 
 }
 
 .notification {
@@ -269,7 +260,7 @@ html {
 }
 
 .notification--error {
-    background-color: red;
+    background-color: var(--secondary-4-950);
     color: white;
 }
 
