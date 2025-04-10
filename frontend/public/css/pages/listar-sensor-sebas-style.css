@@ -95,7 +95,6 @@
 body {
     font-family: var(--font-primary);
     font-size: var(--font-size-h4);
-    /* Base */
     overflow: hidden; /* Eliminar scroll */
     width: 100vw;
     height: 100vh;
@@ -164,8 +163,8 @@ html > * {
 }
 
 .sensor {
-    width: 100%;
-    height: 100vh;
+    width: auto;
+    height: 70vh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -175,20 +174,18 @@ html > * {
     font-family: var(--font-primary);
     font-weight: var(--font-bold);
     font-size: var(--font-size-h1);
-    margin-top: 2rem;
-    margin-bottom: 0;
+    margin-top: 5rem;
     margin-left: 14rem;
 }
 
 .sensor__logo {
     width: 8rem;
     height: auto;
-    margin-top: -4rem;
+    margin-top: -6rem;
     margin-left: 3rem;
 }
 
 .sensor__control-panel {
-    margin-bottom: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -196,14 +193,15 @@ html > * {
 
 .sensor__search {
     border: var(--black);
-    width: 35rem;
+    width: 36rem;
+    height: 4.2rem;
     padding: 1.2rem 2.4rem;
     border-radius: 2rem;
     margin-left: 8rem;
     padding-left: 1rem;
-    margin-top: 2rem;
+    margin-top: 4rem;
     font-weight: var(--font-regular);
-    font-size: var(--font-size-h4);
+    font-size: var(--font-size-h5);
     background: var(--gray-150);
     color: var(--gray-550);
 }
@@ -219,9 +217,9 @@ html > * {
     color: var(--white);
     border-radius: 0.6rem;
     padding: 1.2rem 2.4rem;
-    font-size: var(--font-size-h4);
-    margin-top: 0;
+    font-size: var(--font-size-h5);
     cursor: pointer;
+    margin-top: 4rem;
 }
 
 .sensor__button--green-alt {
@@ -230,10 +228,8 @@ html > * {
     color: var(--white);
     border-radius: 0.6rem;
     padding: 1.2rem 2.4rem;
-    margin-top: 2rem;
-    font-size: var(--font-size-h4);
+    font-size: var(--font-size-h5);
     cursor: pointer;
-
 }
 
 .sensor__button--gray {
@@ -241,11 +237,11 @@ html > * {
     color: var(--white);
     border-radius: 0.6rem;
     padding: 1.2rem 2.4rem;
-    font-size: var(--font-size-h4);
+    font-size: var(--font-size-h5);
     margin-right: 15rem;
-    margin-top: 2rem;
     cursor: pointer;
-
+    margin-top: 4rem;
+    border: none;
 }
 
 .sensor__button--blue {
@@ -264,7 +260,7 @@ html > * {
     border-radius: 0.6rem;
     padding: 1.2rem 2.4rem;
     color: var(--white);
-    margin-left: 1rem;
+    margin-left: 2rem;
     border: 0.1rem solid var(--black);
     cursor: pointer;
 }
@@ -275,22 +271,20 @@ html > * {
     color: var(--white);
     border-radius: 0.6rem;
     padding: 1.2rem 2.4rem;
-    font-size: var(--font-size-h4);
-    margin: 0;
+    font-size: var(--font-size-h5);
     cursor: pointer;
 }
 
 .sensor__button--green1 {
-    border: none;
     background: var(--primary-900);
     color: var(--white);
     border-radius: 0.6rem;
     padding: 1.2rem 2.4rem;
-    font-size: var(--font-size-h4);
-    margin-top: 0;
+    font-size: var(--font-size-h5);
     border: 0.1rem solid var(--black);
-    margin-right: 4rem;
     cursor: pointer;
+    margin-bottom: 3rem;
+    margin-left: 2rem;
 }
 
 .sensor__table-header {

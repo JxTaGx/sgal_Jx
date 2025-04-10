@@ -183,8 +183,7 @@ body {
 }
 
 .container {
-    width: 90%;
-    max-width: 120rem;
+    width: 60%;
     background-color: var(--white);
     border-radius: 0.8rem;
     box-shadow: 0 0rem 0.4rem rgba(0, 0, 0, 0.1);
@@ -212,11 +211,9 @@ body {
     text-align: center;
     font-size: var(--font-size-h2);
     color: var(--black);
-    margin-top: -8rem;
+    margin-top: -10rem;
     font-weight: var(--font-bold);
-    margin-bottom: 16rem;
-    margin-right: 3rem;
-    margin-bottom: 17rem;
+    margin-bottom: 20rem;
 }
 
 .decoration-title {
@@ -225,9 +222,9 @@ body {
 }
 
 .status{
-    margin-left: 20rem;
+    margin-left: 6rem;
     width: 73rem;   
-    margin-bottom: -3rem;
+    margin-bottom: -2rem;
 }
 
 .form {
@@ -286,7 +283,6 @@ input[disabled] {
 .btn {
     padding: 1.2rem 2.4rem;
     font-size: var(--font-size-h5);
-    border: none;
     border-radius: 0.4rem;
     cursor: pointer;
 }
@@ -296,7 +292,6 @@ input[disabled] {
     color: var(--white);
     z-index: 1;
     border: 0.1rem solid var(--black);
-    margin-right: 3rem;
 }
 
 .desBtn {
@@ -304,7 +299,7 @@ input[disabled] {
     color: var(--white);
     z-index: 1;
     border: 0.1rem solid var(--black);
-    margin-right: -36rem;
+    margin-left: 22rem;
 }
 
 .editBtn {

@@ -185,7 +185,7 @@ h1 {
     font-family: var(--font-primary);
     font-size: var(--font-size-h1);
     font-weight: var(--font-bold);
-    margin-left: 26rem;
+    margin-left: 20rem;
     margin-bottom: 2rem;
 }
 
@@ -197,7 +197,7 @@ h1 {
     border: none;
     padding: 1.2rem 2.4rem;
     margin-top: 1rem;
-    margin-left: -8rem;
+    margin-right: -10rem;
 }
 
 .insumo-card {
@@ -242,6 +242,8 @@ h1 {
     margin-top: 1rem;
     border: 0.1rem solid var(--black);
     cursor: pointer;
+    margin-left: 12rem;
+
 }
 
 .button--gray {
@@ -252,7 +254,7 @@ h1 {
     font-weight: var(--font-regular);
     border: 0.1rem solid var(--black);
     border-radius: 0.6rem;
-    margin-left: 65%;
+    margin-left: 15%;
     margin-top: 1rem;
     cursor: pointer;
 }
@@ -265,7 +267,6 @@ h1 {
     font-weight: var(--font-regular);
     border: 0.1rem solid var(--black);
     border-radius: 0.6rem;
-    margin-top: 55%;
     cursor: pointer;
 }
 
@@ -277,7 +278,6 @@ h1 {
     font-weight: var(--font-regular);
     border: 0.1rem solid var(--black);
     border-radius: 0.6rem;
-    margin-top: 55%;
     cursor: pointer;
 }
 
@@ -289,11 +289,6 @@ h1 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
-}
-
-.page-footer__pagination {
-    border-radius: 10rem;
-    gap: 10rem;
 }
 
 .page-footer__page-button {
@@ -308,7 +303,7 @@ h1 {
     display: flex;  
     justify-content: space-around;
     align-items: center;
-    margin-top: 19rem;
+    margin-top: 22rem;
 }
 
 /* Media Queries */

@@ -243,9 +243,8 @@ img {
 
 .ciclo-cultivo__btn {
     padding: 1.2rem 2.4rem;
-    border: none;
     border-radius: 0.5rem;
-    font-size: var(--font-size-h4);
+    font-size: var(--font-size-h5);
     cursor: pointer;
     border: 0.1rem solid var(--black);
 }
@@ -264,6 +263,7 @@ img {
     background-color: var(--gray-550);
     color: var(--white);
     margin-top: 4rem;
+    margin-left: -12rem;
 }
 
 /* Media query para pantallas grandes (hasta 1200px) */

@@ -216,7 +216,7 @@ html::before {
     text-align: left;
     position: relative;
     border: 0.1rem solid var(--black);
-    margin-bottom: 5rem; /* Reducido de 12rem a 5rem */
+    margin-bottom: 7rem; /* Reducido de 12rem a 5rem */
     height: auto; /* Cambiado de altura fija a auto */
     min-height: 65rem; /* Añadido min-height */
     max-height: 70rem; /* Añadido max-height */

@@ -236,15 +236,15 @@ h6 {
     margin-left: 85rem;
     flex-direction: column;
     padding: 1.2rem 2.4rem;
-    width: 21.5rem;
+    width: 20.6rem;
     white-space: nowrap;
+    border-radius: 0.5rem;
 }
 
 .button {
     padding: 1.2rem 2.4rem;
-    border: none;
     border-radius: 0.5rem;
-    font-size: var(--font-size-h4);
+    font-size: var(--font-size-h5);
     cursor: pointer;
     border: 0.1rem solid var(--black);
 }
@@ -252,21 +252,18 @@ h6 {
 .button--edit {
     background-color: var(--primary-900);
     color: var(--white);
-    width: 17rem;
-    height: 4.8rem;
 }
 
 .button--report {
     background-color: var(--primary-900);
     color: var(--white);
-    height: 4.8rem;
 }
 
 .button--back {
     background-color: var(--gray-550);
     color: var(--white);
-    margin-left: -16rem;
-    margin-top: 6rem;
+    margin-left: -15rem;
+    margin-top: 7rem;
 }
 
 @media screen and (max-width: 1200px) {
