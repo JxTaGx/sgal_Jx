@@ -140,14 +140,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Crear nuevo mensaje de error
         const errorElement = document.createElement('span');
         errorElement.className = 'error-message';
-        errorElement.style.color = 'red';
+        errorElement.style.color = 'yellow';
         errorElement.style.fontSize = '1.2rem';
         errorElement.style.display = 'block';
         errorElement.style.marginTop = '0.5rem';
         errorElement.textContent = message;
         
         // Agregar estilo al input con error
-        input.style.borderColor = 'red';
+        input.style.borderColor = 'yellow';
         
         // Insertar mensaje después del input
         input.insertAdjacentElement('afterend', errorElement);
@@ -386,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
             notification.style.backgroundColor = 'var(--primary-900)';
             notification.style.color = 'var(--white)';
         } else {
-            notification.style.backgroundColor = '#ff4d4d';
+            notification.style.backgroundColor = '#FDC300';
             notification.style.color = 'var(--white)';
         }
         

@@ -400,8 +400,8 @@ document.addEventListener('DOMContentLoaded', () => {
           // Crear contenedor para mensaje general
           errorContainer = document.createElement('div');
           errorContainer.className = 'general-error';
-          errorContainer.style.backgroundColor = '#ffebee';
-          errorContainer.style.color = '#c62828';
+          errorContainer.style.backgroundColor = '#FDC300';
+          errorContainer.style.color = '#FDC300';
           errorContainer.style.padding = '1rem';
           errorContainer.style.borderRadius = '0.4rem';
           errorContainer.style.marginBottom = '2rem';

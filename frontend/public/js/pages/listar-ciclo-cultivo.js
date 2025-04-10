@@ -219,12 +219,12 @@ document.addEventListener("DOMContentLoaded", () => {
       // Crear contenedor de error
         const errorContainer = document.createElement("div");
         errorContainer.id = "error-container";
-        errorContainer.style.backgroundColor = "#ffdddd";
-        errorContainer.style.color = "#ff0000";
+        errorContainer.style.backgroundColor = "#FEE9A2";
+        errorContainer.style.color = "#FDC300";
         errorContainer.style.padding = "10px";
         errorContainer.style.margin = "10px 0";
         errorContainer.style.borderRadius = "5px";
-        errorContainer.style.borderLeft = "5px solid #ff0000";
+        errorContainer.style.borderLeft = "5px solid #FDC300";
         errorContainer.style.textAlign = "center";
         errorContainer.style.fontWeight = "bold";
         errorContainer.textContent = message;

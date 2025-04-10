@@ -119,8 +119,8 @@ document.addEventListener('DOMContentLoaded', function() {
             errorNotification.style.top = '20px';
             errorNotification.style.left = '50%';
             errorNotification.style.transform = 'translateX(-50%)';
-            errorNotification.style.backgroundColor = '#FFE0E0';
-            errorNotification.style.color = '#D32F2F';
+            errorNotification.style.backgroundColor = '#FEE48B';
+            errorNotification.style.color = '#FDC300';
             errorNotification.style.padding = '10px 20px';
             errorNotification.style.borderRadius = '5px';
             errorNotification.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';

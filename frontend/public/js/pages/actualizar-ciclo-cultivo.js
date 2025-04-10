@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!errorElement) {
                 errorElement = document.createElement("span");
                 errorElement.className = "error-message";
-                errorElement.style.color = "#ff0000";
+                errorElement.style.color = "#FDC300";
                 errorElement.style.fontSize = "1.2rem";
                 errorElement.style.display = "block";
                 errorElement.style.marginTop = "0.5rem";
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Establecer mensaje y estilo al input
             errorElement.textContent = message;
-            input.style.borderColor = "#ff0000";
+            input.style.borderColor = "#FDC300";
         } catch (error) {
             console.error("Error al mostrar mensaje de error:", error);
         }
@@ -197,8 +197,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 errorSummary.className = "error-summary";
                 errorSummary.textContent =
                     "Por favor, corrija los errores en el formulario antes de continuar.";
-                errorSummary.style.backgroundColor = "#ffebee";
-                errorSummary.style.color = "#d32f2f";
+                errorSummary.style.backgroundColor = "#FEDE74";
+                errorSummary.style.color = "#ffffff";
                 errorSummary.style.padding = "1rem";
                 errorSummary.style.borderRadius = "0.5rem";
                 errorSummary.style.textAlign = "center";

@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
             mensajeElement.style.color = "#008000";
             mensajeElement.style.backgroundColor = "#eeffee";
         } else {
-            mensajeElement.style.color = "#ff0000";
+            mensajeElement.style.color = "#FDC300";
             mensajeElement.style.backgroundColor = "#ffeeee";
         }
         
