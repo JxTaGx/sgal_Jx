@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Gestión de Cultivos</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="../css/pages/integracion.css">
 </head>
 <body>
@@ -22,245 +23,347 @@
                 <button class="navigation__tab" data-tab="update">Actualizar</button>
                 <button class="navigation__tab" data-tab="enable">Habilitar</button>
                 <button class="navigation__tab" data-tab="list">Listar</button>
-                <button class="navigation__tab" data-tab="report">Generar Reporte</button>
+                <button class="navigation__tab" data-tab="report">Reportes</button>
             </div>
         </nav>
 
-        <main class="main">
-            <!-- Formulario Crear Asociación -->
-            <section class="panel panel--active" id="create-panel">
-                <div class="panel__header">
-                <h2 class="panel__title">Crear Asociación de Cultivo</h2>
+        <main class="dashboard">
+            <!-- Sección Crear Asociación -->
+            <section class="dashboard__section dashboard__section--active" id="create-panel">
+                <div class="dashboard__heading">
+                    <h2 class="dashboard__title">
+                        <i class="material-icons dashboard__icon">add_circle</i>
+                        Crear Asociación de Cultivo
+                    </h2>
+                    <p class="dashboard__subtitle">Complete el formulario para crear una nueva asociación</p>
                 </div>
-            
-                <form class="form form--two-columns" id="create-form">
-                <div class="form__group">
-                    <label class="form__label" for="cultivation-name">Nombre del Cultivo</label>
-                    <input class="form__input" type="text" id="cultivation-name" required />
-                    <span class="form__error" id="cultivation-name-error"></span>
-                </div>
-            
-                <div class="form__group">
-                    <label class="form__label" for="sensor-select">Sensores</label>
-                    <select class="form__select" id="sensor-select" multiple required>
-                    <option value="1">Sensor de Humedad</option>
-                    <option value="2">Sensor de Temperatura</option>
-                    <option value="3">Sensor de pH</option>
-                    </select>
-                    <span class="form__error" id="sensor-select-error"></span>
-                </div>
-            
-                <div class="form__group">
-                    <label class="form__label" for="supply-select">Insumos</label>
-                    <select class="form__select" id="supply-select" multiple required>
-                    <option value="1">Fertilizante A</option>
-                    <option value="2">Fertilizante B</option>
-                    <option value="3">Plaguicida Natural</option>
-                    </select>
-                    <span class="form__error" id="supply-select-error"></span>
-                </div>
-            
-                <div class="form__group">
-                    <label class="form__label" for="cycle-select">Ciclo de Cultivo</label>
-                    <select class="form__select" id="cycle-select" required>
-                    <option value="">Seleccione un ciclo</option>
-                    <option value="1">Ciclo Primavera</option>
-                    <option value="2">Ciclo Verano</option>
-                    <option value="3">Ciclo Otoño</option>
-                    </select>
-                    <span class="form__error" id="cycle-select-error"></span>
-                </div>
-            
-                <div class="form__group">
-                    <label class="form__label" for="user-select">Usuario Responsable</label>
-                    <select class="form__select" id="user-select" required>
-                    <option value="">Seleccione un usuario</option>
-                    <option value="1">Manuel Valencia</option>
-                    <option value="2">Esteban Patiño</option>
-                    <option value="3">Sebastian Gallego</option>
-                    </select>
-                    <span class="form__error" id="user-select-error"></span>
-                </div>
-            
-                <!-- Acción ocupa toda la fila -->
-                <div class="form__actions" style="grid-column: span 2;">
-                    <button class="button button--tertiary" type="button" onclick="window.location.href='../views/home.html'">Volver</button>
-                    <button class="button button--primary" type="submit">Guardar</button>
-                    <button class="button button--secondary" type="reset">Limpiar</button>
-                </div>
-                </form>
-            </section>
-  
-
-            <!-- Visualizar Asociación -->
-            <section class="panel" id="view-panel">
-                <div class="panel__header">
-                    <h2 class="panel__title">Visualizar Asociación de Cultivo</h2>
-                </div>
-                <form class="form" id="view-form">
-                    <div class="form__group">
-                        <label class="form__label" for="cultivation-id">ID del Cultivo</label>
-                        <input class="form__input" type="text" id="cultivation-id" required>
-                        <span class="form__error" id="cultivation-id-error"></span>
-                    </div>
+                
+                <div class="dashboard__widget">
+                    <form class="dashboard__form dashboard__form--two-columns" id="create-form">
+                        <div class="dashboard__form-group">
+                            <label class="dashboard__label" for="cultivation-name">Nombre del Cultivo</label>
+                            <input class="dashboard__input" type="text" id="cultivation-name" required />
+                            <span class="dashboard__error" id="cultivation-name-error"></span>
+                        </div>
                     
-                    <div class="form__actions">
-                        <button class="button button--primary" type="submit">Buscar</button>
-                    </div>
-                </form>
-                
-                <div class="result" id="view-result">
-                    <div class="result__header">
-                        <h3 class="result__title">Detalles del Cultivo</h3>
-                    </div>
-                    <div class="result__content">
-                        <!-- Aquí se mostrarán los resultados -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- Actualizar Asociación -->
-            <section class="panel" id="update-panel">
-                <div class="panel__header">
-                    <h2 class="panel__title">Actualizar Asociación de Cultivo</h2>
-                </div>
-                <form class="form" id="search-update-form">
-                    <div class="form__group">
-                        <label class="form__label" for="update-cultivation-id">ID del Cultivo</label>
-                        <input class="form__input" type="text" id="update-cultivation-id" required>
-                        <span class="form__error" id="update-cultivation-id-error"></span>
-                    </div>
+                        <div class="dashboard__form-group">
+                            <label class="dashboard__label" for="sensor-select">Sensores</label>
+                            <select class="dashboard__select" id="sensor-select" multiple required>
+                                <option value="1">Sensor de Humedad</option>
+                                <option value="2">Sensor de Temperatura</option>
+                                <option value="3">Sensor de pH</option>
+                            </select>
+                            <span class="dashboard__error" id="sensor-select-error"></span>
+                        </div>
                     
-                    <div class="form__actions">
-                        <button class="button button--primary" type="submit">Buscar</button>
-                    </div>
-                </form>
-
-                <form class="form form--hidden" id="update-form">
-                    <!-- Se poblará dinámicamente al buscar el cultivo -->
-                    <div class="form__actions">
-                        <button class="button button--primary" type="submit">Actualizar</button>
-                        <button class="button button--secondary" type="button" id="cancel-update">Cancelar</button>
-                    </div>
-                </form>
-            </section>
-
-            <!-- Habilitar Asociación -->
-            <section class="panel" id="enable-panel">
-                <div class="panel__header">
-                    <h2 class="panel__title">Habilitar/Deshabilitar Asociación de Cultivo</h2>
-                </div>
-                <form class="form" id="enable-form">
-                    <div class="form__group">
-                        <label class="form__label" for="sensor-id">ID del Sensor</label>
-                        <input class="form__input" type="text" id="sensor-id" required>
-                        <span class="form__error" id="sensor-id-error"></span>
-                    </div>
+                        <div class="dashboard__form-group">
+                            <label class="dashboard__label" for="supply-select">Insumos</label>
+                            <select class="dashboard__select" id="supply-select" multiple required>
+                                <option value="1">Fertilizante A</option>
+                                <option value="2">Fertilizante B</option>
+                                <option value="3">Plaguicida Natural</option>
+                            </select>
+                            <span class="dashboard__error" id="supply-select-error"></span>
+                        </div>
                     
-                    <div class="form__actions">
-                        <button class="button button--primary" type="submit">Buscar</button>
-                    </div>
-                </form>
-                
-                <div class="result result--hidden" id="enable-result">
-                    <div class="result__header">
-                        <h3 class="result__title">Estado del Ciclo de Cultivo</h3>
-                    </div>
-                    <div class="result__content">
-                        <!-- Aquí se mostrarán los resultados -->
-                    </div>
-                    <div class="result__actions">
-                        <button class="button button--accent" id="toggle-status">Cambiar Estado</button>
-                    </div>
+                        <div class="dashboard__form-group">
+                            <label class="dashboard__label" for="cycle-select">Ciclo de Cultivo</label>
+                            <select class="dashboard__select" id="cycle-select" required>
+                                <option value="">Seleccione un ciclo</option>
+                                <option value="1">Ciclo Primavera</option>
+                                <option value="2">Ciclo Verano</option>
+                                <option value="3">Ciclo Otoño</option>
+                            </select>
+                            <span class="dashboard__error" id="cycle-select-error"></span>
+                        </div>
+                    
+                        <div class="dashboard__form-group">
+                            <label class="dashboard__label" for="user-select">Usuario Responsable</label>
+                            <select class="dashboard__select" id="user-select" required>
+                                <option value="">Seleccione un usuario</option>
+                                <option value="1">Manuel Valencia</option>
+                                <option value="2">Esteban Patiño</option>
+                                <option value="3">Sebastian Gallego</option>
+                            </select>
+                            <span class="dashboard__error" id="user-select-error"></span>
+                        </div>
+                    
+                        <div class="dashboard__form-actions">
+                            <button class="dashboard__button dashboard__button--tertiary" type="button" onclick="window.location.href='../views/home.html'">Volver</button>
+                            <button class="dashboard__button dashboard__button--primary" type="submit">Guardar</button>
+                            <button class="dashboard__button dashboard__button--secondary" type="reset">Limpiar</button>
+                        </div>
+                    </form>
                 </div>
             </section>
 
-            <!-- Listar Asociación -->
-            <section class="panel" id="list-panel">
-                <div class="panel__header">
-                    <h2 class="panel__title">Listar Asociaciones de Cultivo</h2>
-                </div>
-                <div class="list-controls">
-                    <div class="list-controls__search">
-                        <input class="list-controls__input" type="text" id="search-cultivation" placeholder="Buscar cultivo...">
-                    </div>
-                    <div class="list-controls__filters">
-                        <select class="list-controls__select" id="filter-status">
-                            <option value="all">Todos los estados</option>
-                            <option value="active">Activo</option>
-                            <option value="inactive">Inactivo</option>
-                        </select>
-                    </div>
+            <!-- Sección Visualizar Asociación -->
+            <section class="dashboard__section" id="view-panel">
+                <div class="dashboard__heading">
+                    <h2 class="dashboard__title">
+                        <i class="material-icons dashboard__icon">visibility</i>
+                        Visualizar Asociación
+                    </h2>
+                    <p class="dashboard__subtitle">Busque una asociación por su ID para ver los detalles</p>
                 </div>
                 
-                <div class="table-container">
-                    <table class="table">
-                        <thead class="table__head">
-                            <tr class="table__row">
-                                <th class="table__header">ID</th>
-                                <th class="table__header">Nombre</th>
-                                <th class="table__header">Ciclo</th>
-                                <th class="table__header">Usuario</th>
-                                <th class="table__header">Estado</th>
-                                <th class="table__header">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table__body" id="cultivation-list">
-                            <!-- Se llenará dinámicamente -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="pagination">
-                    <button class="pagination__button" id="prev-page">
-                        <i class="material-icons">navigate_before</i>
-                    </button>
-                    <span class="pagination__info" id="page-info">Página 1 de 1</span>
-                    <button class="pagination__button" id="next-page">
-                        <i class="material-icons">navigate_next</i>
-                    </button>
-                </div>
-            </section>
-
-            <!-- Generar Reporte -->
-            <section class="panel" id="report-panel">
-                <div class="panel__header">
-                    <h2 class="panel__title">Generar Reporte de Asociación de Cultivo</h2>
-                </div>
-                <form class="form" id="report-form">
-                    <div class="form__group">
-                        <label class="form__label">Período</label>
-                        <div class="form__date-range">
-                            <div class="form__date-field">
-                                <label class="form__sublabel" for="start-date">Fecha Inicio</label>
-                                <input class="form__input" type="date" id="start-date" required>
+                <div class="dashboard__widget">
+                    <form class="dashboard__form" id="view-form">
+                        <div class="dashboard__form-group">
+                            <label class="dashboard__label" for="cultivation-id">ID del Cultivo</label>
+                            <div class="dashboard__input-group">
+                                <input class="dashboard__input" type="text" id="cultivation-id" required>
+                                <button class="dashboard__button dashboard__button--primary" type="submit">Buscar</button>
                             </div>
-                            <div class="form__date-field">
-                                <label class="form__sublabel" for="end-date">Fecha Fin</label>
-                                <input class="form__input" type="date" id="end-date" required>
+                            <span class="dashboard__error" id="cultivation-id-error"></span>
+                        </div>
+                    </form>
+                    
+                    <div class="dashboard__result dashboard__result--hidden" id="view-result">
+                        <!-- Sección de Detalles Básicos -->
+                        <div class="dashboard__info-section">
+                            <h3 class="dashboard__section-title">Información General</h3>
+                            <div class="dashboard__info-grid" id="basic-info">
+                                <!-- Se llenará dinámicamente -->
                             </div>
                         </div>
-                        <span class="form__error" id="date-range-error"></span>
+                        
+                        <!-- Sección de Métricas -->
+                        <div class="dashboard__info-section">
+                            <h3 class="dashboard__section-title">Métricas Clave</h3>
+                            <div class="dashboard__metrics-grid">
+                                <div class="dashboard__metric-card">
+                                    <div class="dashboard__metric-value" id="health-metric">85%</div>
+                                    <div class="dashboard__metric-label">Salud del Cultivo</div>
+                                    <div class="dashboard__metric-trend trend-up">
+                                        <i class="material-icons">trending_up</i> 2% vs semana pasada
+                                    </div>
+                                </div>
+                                <div class="dashboard__metric-card">
+                                    <div class="dashboard__metric-value" id="growth-metric">63cm</div>
+                                    <div class="dashboard__metric-label">Crecimiento Promedio</div>
+                                    <div class="dashboard__metric-trend trend-up">
+                                        <i class="material-icons">trending_up</i> 5cm este mes
+                                    </div>
+                                </div>
+                                <div class="dashboard__metric-card">
+                                    <div class="dashboard__metric-value" id="yield-metric">78%</div>
+                                    <div class="dashboard__metric-label">Rendimiento Estimado</div>
+                                    <div class="dashboard__metric-trend trend-down">
+                                        <i class="material-icons">trending_down</i> 3% vs esperado
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Sección de Gráficos -->
+                        <div class="dashboard__info-section">
+                            <h3 class="dashboard__section-title">Análisis de Datos</h3>
+                            <div class="dashboard__charts-grid">
+                                <div class="dashboard__chart-container">
+                                    <h4 class="dashboard__chart-title">Humedad del Suelo (últimos 7 días)</h4>
+                                    <canvas id="humidity-chart" height="250"></canvas>
+                                </div>
+                                <div class="dashboard__chart-container">
+                                    <h4 class="dashboard__chart-title">Temperatura Ambiente (últimos 7 días)</h4>
+                                    <canvas id="temperature-chart" height="250"></canvas>
+                                </div>
+                                <div class="dashboard__chart-container">
+                                    <h4 class="dashboard__chart-title">Niveles de Nutrientes</h4>
+                                    <canvas id="nutrients-chart" height="250"></canvas>
+                                </div>
+                                <div class="dashboard__chart-container">
+                                    <h4 class="dashboard__chart-title">Progreso de Crecimiento</h4>
+                                    <canvas id="growth-chart" height="250"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Sección de Sensores -->
+                        <div class="dashboard__info-section">
+                            <h3 class="dashboard__section-title">Estado de Sensores</h3>
+                            <div class="dashboard__sensors-grid" id="sensors-info">
+                                <!-- Se llenará dinámicamente -->
+                            </div>
+                        </div>
                     </div>
+                </div>
+            </section>
+
+            <!-- Sección Actualizar Asociación -->
+            <section class="dashboard__section" id="update-panel">
+                <div class="dashboard__heading">
+                    <h2 class="dashboard__title">
+                        <i class="material-icons dashboard__icon">edit</i>
+                        Actualizar Asociación
+                    </h2>
+                    <p class="dashboard__subtitle">Busque una asociación para actualizar sus datos</p>
+                </div>
+                
+                <div class="dashboard__widget">
+                    <form class="dashboard__form" id="search-update-form">
+                        <div class="dashboard__form-group">
+                            <label class="dashboard__label" for="update-cultivation-id">ID del Cultivo</label>
+                            <div class="dashboard__input-group">
+                                <input class="dashboard__input" type="text" id="update-cultivation-id" required>
+                                <button class="dashboard__button dashboard__button--primary" type="submit">Buscar</button>
+                            </div>
+                            <span class="dashboard__error" id="update-cultivation-id-error"></span>
+                        </div>
+                    </form>
+
+                    <form class="dashboard__form dashboard__form--hidden" id="update-form">
+                        <!-- Se poblará dinámicamente al buscar el cultivo -->
+                        <div class="dashboard__form-actions">
+                            <button class="dashboard__button dashboard__button--primary" type="submit">Actualizar</button>
+                            <button class="dashboard__button dashboard__button--secondary" type="button" id="cancel-update">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Sección Habilitar Asociación -->
+            <section class="dashboard__section" id="enable-panel">
+                <div class="dashboard__heading">
+                    <h2 class="dashboard__title">
+                        <i class="material-icons dashboard__icon">toggle_on</i>
+                        Habilitar/Deshabilitar
+                    </h2>
+                    <p class="dashboard__subtitle">Gestione el estado de las asociaciones de cultivo</p>
+                </div>
+                
+                <div class="dashboard__widget">
+                    <form class="dashboard__form" id="enable-form">
+                        <div class="dashboard__form-group">
+                            <label class="dashboard__label" for="sensor-id">ID del Sensor</label>
+                            <div class="dashboard__input-group">
+                                <input class="dashboard__input" type="text" id="sensor-id" required>
+                                <button class="dashboard__button dashboard__button--primary" type="submit">Buscar</button>
+                            </div>
+                            <span class="dashboard__error" id="sensor-id-error"></span>
+                        </div>
+                    </form>
                     
-                    <div class="form__group">
-                        <label class="form__label">Formato</label>
-                        <div class="form__radio-group">
-                            <label class="form__radio">
-                                <input type="radio" name="format" value="excel" checked>
-                                <span class="form__radio-label">Excel</span>
-                            </label>
-                            <label class="form__radio">
-                                <input type="radio" name="format" value="pdf">
-                                <span class="form__radio-label">PDF</span>
-                            </label>
+                    <div class="dashboard__result dashboard__result--hidden" id="enable-result">
+                        <div class="dashboard__result-header">
+                            <h3 class="dashboard__result-title">Estado del Ciclo de Cultivo</h3>
+                        </div>
+                        <div class="dashboard__result-content">
+                            <!-- Aquí se mostrarán los resultados -->
+                        </div>
+                        <div class="dashboard__result-actions">
+                            <button class="dashboard__button dashboard__button--accent" id="toggle-status">Cambiar Estado</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Listar Asociaciones -->
+            <section class="dashboard__section" id="list-panel">
+                <div class="dashboard__heading">
+                    <h2 class="dashboard__title">
+                        <i class="material-icons dashboard__icon">list_alt</i>
+                        Listar Asociaciones
+                    </h2>
+                    <p class="dashboard__subtitle">Visualice y gestione todas las asociaciones existentes</p>
+                </div>
+                
+                <div class="dashboard__widget">
+                    <div class="dashboard__list-controls">
+                        <div class="dashboard__search">
+                            <i class="material-icons dashboard__search-icon">search</i>
+                            <input class="dashboard__search-input" type="text" id="search-cultivation" placeholder="Buscar cultivo...">
+                        </div>
+                        <div class="dashboard__filter">
+                            <label class="dashboard__filter-label">Filtrar por:</label>
+                            <select class="dashboard__filter-select" id="filter-status">
+                                <option value="all">Todos los estados</option>
+                                <option value="active">Activo</option>
+                                <option value="inactive">Inactivo</option>
+                            </select>
                         </div>
                     </div>
                     
-                    <div class="form__actions">
-                        <button class="button button--primary" type="submit">Generar Reporte</button>
+                    <div class="dashboard__table-container">
+                        <table class="dashboard__table">
+                            <thead class="dashboard__table-head">
+                                <tr class="dashboard__table-row">
+                                    <th class="dashboard__table-header">ID</th>
+                                    <th class="dashboard__table-header">Nombre</th>
+                                    <th class="dashboard__table-header">Ciclo</th>
+                                    <th class="dashboard__table-header">Usuario</th>
+                                    <th class="dashboard__table-header">Estado</th>
+                                    <th class="dashboard__table-header">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="dashboard__table-body" id="cultivation-list">
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
                     </div>
-                </form>
+                    
+                    <div class="dashboard__pagination">
+                        <button class="dashboard__pagination-button" id="prev-page">
+                            <i class="material-icons">chevron_left</i>
+                        </button>
+                        <span class="dashboard__pagination-info" id="page-info">Página 1 de 1</span>
+                        <button class="dashboard__pagination-button" id="next-page">
+                            <i class="material-icons">chevron_right</i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Generar Reporte -->
+            <section class="dashboard__section" id="report-panel">
+                <div class="dashboard__heading">
+                    <h2 class="dashboard__title">
+                        <i class="material-icons dashboard__icon">description</i>
+                        Generar Reporte
+                    </h2>
+                    <p class="dashboard__subtitle">Genere reportes personalizados de las asociaciones</p>
+                </div>
+                
+                <div class="dashboard__widget">
+                    <form class="dashboard__form" id="report-form">
+                        <div class="dashboard__form-group">
+                            <label class="dashboard__label">Período</label>
+                            <div class="dashboard__date-range">
+                                <div class="dashboard__date-field">
+                                    <label class="dashboard__sublabel" for="start-date">Fecha Inicio</label>
+                                    <input class="dashboard__input" type="date" id="start-date" required>
+                                </div>
+                                <div class="dashboard__date-field">
+                                    <label class="dashboard__sublabel" for="end-date">Fecha Fin</label>
+                                    <input class="dashboard__input" type="date" id="end-date" required>
+                                </div>
+                            </div>
+                            <span class="dashboard__error" id="date-range-error"></span>
+                        </div>
+                        
+                        <div class="dashboard__form-group">
+                            <label class="dashboard__label">Formato</label>
+                            <div class="dashboard__radio-group">
+                                <label class="dashboard__radio">
+                                    <input type="radio" name="format" value="excel" checked>
+                                    <span class="dashboard__radio-label">
+                                        <i class="material-icons">grid_on</i> Excel
+                                    </span>
+                                </label>
+                                <label class="dashboard__radio">
+                                    <input type="radio" name="format" value="pdf">
+                                    <span class="dashboard__radio-label">
+                                        <i class="material-icons">picture_as_pdf</i> PDF
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard__form-actions">
+                            <button class="dashboard__button dashboard__button--primary" type="submit">Generar Reporte</button>
+                        </div>
+                    </form>
+                </div>
             </section>
         </main>
 

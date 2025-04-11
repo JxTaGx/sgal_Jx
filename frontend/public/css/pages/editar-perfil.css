@@ -240,6 +240,11 @@ html {
     margin-right: 9.5rem;
 }
 
+.button-group--purple a{
+    text-decoration: none;
+}
+
+
 .button-group--green {
     display: flex;
     justify-content: space-between;
