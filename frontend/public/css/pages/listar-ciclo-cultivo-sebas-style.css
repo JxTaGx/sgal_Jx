@@ -279,6 +279,7 @@ h1 {
     border: 0.1rem solid var(--black);
     border-radius: 0.6rem;
     margin-top: 15%;
+    margin-left: -90%;
 }
 
 .button--crear {
@@ -290,6 +291,7 @@ h1 {
     border: 0.1rem solid var(--black);
     border-radius: 0.6rem;
     margin-top: 15%;
+    margin-left: 10%;
 }
 
 .footer__buttons {
@@ -321,7 +323,7 @@ h1 {
     justify-content: space-around;
     align-items: center;
     margin-top: 22rem;
-    margin-right: 8rem;
+    margin-left: 6rem;
 }
 
 /* Media Queries */
