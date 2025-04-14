@@ -1,59 +1,225 @@
 :root {
-    /* Primary color*/
-
-    --primary-950: #4DB100;
-    --primary-900: #55B40C;
-    --primary-800: #67BC26;
-    --primary-700: #79C43F;
-    --primary-600: #8BCC59;
-    --primary-500: #9DD472;
-    --primary-400: #AEDB8C;
-    --primary-300: #C0E3A5;
-    --primary-200: #D2EBBF;
-    --primary-100: #EAF3D8;
+    /* Primary color */
     --primary-50: #F6FBF2;
+    --primary-100: #EAF3D8;
+    --primary-200: #D2EBBF;
+    --primary-300: #C0E3A5;
+    --primary-400: #AEDB8C;
+    --primary-500: #9DD472;
+    --primary-600: #8BCC59;
+    --primary-700: #79C43F;
+    --primary-800: #67BC26;
+    --primary-900: #55B40C;
+    --primary-950: #4DB100;
 
-    /* Secundary color*/
+    /* Secondary color */
+    --secondary-50: #FEFCF5;
+    --secondary-100: #FEF8E1;
+    --secondary-200: #FEF4CD;
+    --secondary-300: #FEF0B9;
+    --secondary-400: #FEECA5;
+    --secondary-500: #FEE891;
+    --secondary-600: #FEE47D;
+    --secondary-700: #FEE069;
+    --secondary-800: #FEDC55;
+    --secondary-900: #FED841;
+    --secondary-950: #FED638;
 
-    --secundary-950:#FED638;
-    --secundary-900:#FED841;
-    --secundary-800:#FEDC55;
-    --secundary-700:#FEE069;
-    --secundary-600:#FEE47D;
-    --secundary-500:#FEE891;
-    --secundary-400:#FEECA5;
-    --secundary-300:#FEF0B9;
-    --secundary-200:#FEF4CD;
-    --secundary-100:#FEF8E1;
-    --secundary-50:#FEFCF5;
+    /* Secondary color variations */
+    --secondary-1-50: #E8ECEF;
+    --secondary-1-100: #D1DBDF;
+    --secondary-1-200: #B9C7CE;
+    --secondary-1-300: #A2B4BE;
+    --secondary-1-400: #8B9DD6;
+    --secondary-1-500: #748E9E;
+    --secondary-1-600: #5D7B8E;
+    --secondary-1-700: #46687E;
+    --secondary-1-800: #2E566D;
+    --secondary-1-900: #17435D;
+    --secondary-1-950: #00304D;
 
-    /* Basic color*/
+    --secondary-2-50: #F2EBF3;
+    --secondary-2-100: #E5D8E7;
+    --secondary-2-200: #D8C4DB;
+    --secondary-2-300: #CBB0CD;
+    --secondary-2-400: #BE9DC3;
+    --secondary-2-500: #B289B6;
+    --secondary-2-600: #A576AA;
+    --secondary-2-700: #98629E;
+    --secondary-2-800: #8B4E92;
+    --secondary-2-900: #7E3B86;
+    --secondary-2-950: #71277A;
+
+    --secondary-3-50: #EFFDFE;
+    --secondary-3-100: #DFFAFE;
+    --secondary-3-200: #CFD0FD;
+    --secondary-3-300: #BFFAFD;
+    --secondary-3-400: #AFF3FC;
+    --secondary-3-500: #A0F1FC;
+    --secondary-3-600: #90EEF7;
+    --secondary-3-700: #80EECF;
+    --secondary-3-800: #70EAFA;
+    --secondary-3-900: #60E7FA;
+    --secondary-3-950: #50E5F9;
+
+    --secondary-4-50: #FFF6E8;
+    --secondary-4-100: #FFF4D1;
+    --secondary-4-200: #FEEFB9;
+    --secondary-4-300: #FEE9A2;
+    --secondary-4-400: #FEE48B;
+    --secondary-4-500: #FEDE74;
+    --secondary-4-600: #FEDB5D;
+    --secondary-4-700: #FED346;
+    --secondary-4-800: #FDCE2E;
+    --secondary-4-900: #FDC817;
+    --secondary-4-950: #FDC300;
+
+    /* Basic colors */
     --white: #fff;
     --black: #000;
-    --gray-950: #101010;
-    --gray-900: #262626;
-    --gray-800: #3B3B3B;
-    --gray-700: #515151;
-    --gray-600: #676767;
-    --gray-500: #7D7D7D;
-    --gray-400: #929292;
-    --gray-300: #A8A8A8;
-    --gray-200: #BEBEBE;
-    --gray-100: #D4D4D4;
+    
+    /* Gray scale */
     --gray-50: #E9E9E9;
+    --gray-100: #D4D4D4;
+    --gray-150: #F6F6F6;
+    --gray-200: #BEBEBE;
+    --gray-300: #A8A8A8;
+    --gray-350: #C5C5C5;
+    --gray-400: #929292;
+    --gray-500: #7D7D7D;
+    --gray-550: #949494;
+    --gray-600: #676767;
+    --gray-700: #515151;
+    --gray-750: #626262;
+    --gray-800: #3B3B3B;
+    --gray-900: #262626;
+    --gray-950: #101010;
 
-    /* Font-family */
+    /* Font families */
     --main-font: Helvetica, Arial, sans-serif;
+    --font-primary: "Work Sans", sans-serif;
+    --font-secondary: "Calibri", sans-serif;
+    --font-family-secondary: var(--font-secondary), sans-serif;
 
-    /* Font-size */
+    /* Font weights */
+    --font-light: 300;
+    --font-regular: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+
+    /* Font sizes */
+    --font-size-base: 1.6rem;
     --fs-xxxxl: 8.0rem; /* Ultra grande */
     --fs-xxxl: 6.4rem; /* Súper grande */
     --fs-xxl: 4.8rem; /* Extra grande */
     --fs-xl: 4.0rem;  /* Muy grande */
     --fs-lg: 3.2rem;  /* Grande */
+    --font-size-h1: 3.2rem;
     --fs-md: 2.4rem;  /* Mediano */
+    --font-size-h2: 2.4rem;
     --fs-sm: 2.0rem;  /* Pequeño */
+    --font-size-h3: 2.0rem;
     --fs-xs: 1.6rem;  /* Extra pequeño */
+    --font-size-h4: 1.6rem;
     --fs-xxs: 1.4rem; /* Extra extra pequeño */
+    --font-size-h5: 1.4rem;
     --fs-xxxs: 1.2rem; /* Mínimo */
+    --font-size-h6: 1.2rem;
+
+    /* UI Colors */
+    --color-primary: var(--primary-700);
+    --color-primary-dark: var(--primary-900);
+    --color-primary-light: var(--primary-200);
+    --color-accent: var(--secondary-2-800);
+    --color-text-primary: var(--gray-950);
+    --color-text-secondary: var(--gray-750);
+    --color-background: var(--gray-150);
+    --color-surface: var(--white);
+    --color-success: var(--primary-800);
+    --color-warning: var(--secondary-4-900);
+    --color-info: var(--secondary-1-700);
+    
+    /* Elevations (shadows) */
+    --elevation-1: 0 0.2rem 0.1rem -0.1rem rgba(0,0,0,0.2), 0 0.1rem 0.1rem 0 rgba(0,0,0,0.14), 0 0.1rem 0.3rem 0 rgba(0,0,0,0.12);
+    --elevation-2: 0 0.3rem 0.1rem -0.2rem rgba(0,0,0,0.2), 0 0.2rem 0.2rem 0 rgba(0,0,0,0.14), 0 0.1rem 0.5rem 0 rgba(0,0,0,0.12);
+    --elevation-4: 0 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.03), 0 0.2rem 0.3rem 0 rgba(0,0,0,0.14), 0 0.1rem 1rem 0 rgba(0,0,0,0.10);
+    --elevation-8: 0 0.5rem 0.5rem -0.3rem rgba(0,0,0,0.2), 0 0.8rem 1rem 0.1rem rgba(0,0,0,0.14), 0 0.3rem 1.4rem 0.2px rgba(0,0,0,0.12);
+    
+    /* Spacing */
+    --spacing-xs: calc(var(--spacing-unit) * 0.5);
+    --spacing-sm: var(--spacing-unit);
+    --spacing-md: calc(var(--spacing-unit) * 2);
+    --spacing-lg: calc(var(--spacing-unit) * 3);
+    --spacing-xl: calc(var(--spacing-unit) * 4);
+    
+    /* Border radius */
+    --border-radius-sm: 0.4rem;
+    --border-radius-md: 0.8rem;
+    --border-radius-lg: 1.6rem;
+    
+    /* Transitions */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Estilos generales */
+body {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-h4); /* Base */
+}
+
+h1 {
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-bold);
+}
+
+h2 {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-semibold);
+}
+
+h3 {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-medium);
+}
+
+h4 {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-regular);
+}
+
+h5 {
+    font-size: var(--font-size-h5);
+    font-weight: var(--font-light);
+}
+
+h6 {
+    font-size: var(--font-size-h6);
+    font-weight: var(--font-light);
+}
+
+/* Tipografía secundaria */
+.calibri {
+    font-family: var(--font-secondary);
+}
+
+/* Estilo global */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+/* Hack para usar los rem de manera fácil */
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
 }

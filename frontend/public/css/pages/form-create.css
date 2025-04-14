@@ -96,7 +96,7 @@ html {
     box-sizing: border-box;
     font-size: 62.5%;
     height: 100%;
-    overflow: hidden; /* Evitar scroll */
+    overflow: hidden;
 }
 
 html::before {
@@ -124,7 +124,7 @@ body {
     height: 100%;
     font-family: var(--font-primary);
     font-size: var(--font-size-h4);
-    overflow: hidden; /* Evitar scroll */
+    overflow: hidden;
 }
 
 h1 {
@@ -163,8 +163,8 @@ h6 {
     margin: 0;
 }
 
-/* Layout principal */
-.ciclo-cultivo {
+/* Layout principal - Estilos BEM unificados */
+.form-crear {
     width: 100%;
     max-width: 120rem;
     height: 100vh;
@@ -177,7 +177,7 @@ h6 {
 }
 
 /* Header y elementos de navegación */
-.ciclo-cultivo__header {
+.form-crear__header {
     width: 100%;
     display: flex;
     justify-content: flex-start;
@@ -186,7 +186,7 @@ h6 {
     height: 5rem;
 }
 
-.ciclo-cultivo__logo {
+.form-crear__logo {
     width: 8rem;
     height: auto;
     position: absolute;
@@ -195,7 +195,7 @@ h6 {
     z-index: 2;
 }
 
-.ciclo-cultivo__title {
+.form-crear__title {
     font-size: var(--font-size-h1);
     color: var(--black);
     position: absolute;
@@ -204,7 +204,7 @@ h6 {
     white-space: nowrap;
 }
 
-.ciclo-cultivo__icon {
+.form-crear__icon {
     position: absolute;
     left: 3rem;
     top: 9.3rem;
@@ -214,7 +214,7 @@ h6 {
 }
 
 /* Formulario principal */
-.ciclo-cultivo__form {
+.form-crear__form {
     width: 100%;
     height: calc(100vh - 12rem);
     background-color: var(--white);
@@ -226,10 +226,10 @@ h6 {
     align-items: flex-start;
     position: relative;
     border: 0.1rem solid var(--black);
-    overflow: hidden; /* Evitar scroll interno */
+    overflow: hidden;
 }
 
-.ciclo-cultivo__form::before {
+.form-crear__form::before {
     content: ""; 
     position: absolute; 
     inset: 0;
@@ -241,13 +241,13 @@ h6 {
     border-radius: 0.5rem;
 }
 
-.ciclo-cultivo__form > * {
+.form-crear__form > * {
     position: relative; 
     z-index: 1; 
 }
 
 /* Columnas del formulario */
-.ciclo-cultivo__column {
+.form-crear__column {
     width: 45%;
     display: flex;
     flex-direction: column;
@@ -256,16 +256,12 @@ h6 {
     top: 10rem;
 }
 
-.ciclo-cultivo__column--right {
-    margin-left: 6rem;    
-}
-
 /* Grupos de formulario */
-.ciclo-cultivo__form-group {
+.form-crear__form-group {
     margin-bottom: 1rem;
 }
 
-.ciclo-cultivo__label {
+.form-crear__label {
     display: block;
     font-size: var(--font-size-h5);
     margin-bottom: 0.1rem;
@@ -273,7 +269,7 @@ h6 {
     text-align: left;
 }
 
-.ciclo-cultivo__input {
+.form-crear__input {
     width: 32rem;
     height: 4.8rem;
     padding: 1rem;
@@ -282,8 +278,8 @@ h6 {
     border-radius: 0.5rem;
 }
 
-.ciclo-cultivo__textarea {
-    resize: none; /* Evitar redimensionamiento que cause scroll */
+.form-crear__textarea {
+    resize: none;
     height: 10rem;
     width: 32rem;
     padding: 1rem;
@@ -293,9 +289,9 @@ h6 {
 }
 
 /* Área de carga de archivos */
-.ciclo-cultivo__upload-area {
+.form-crear__upload-area {
     width: 32rem;
-    height: 10rem; /* Reducido para evitar scroll */
+    height: 10rem;
     border: 0.2rem dashed var(--gray-350);
     display: flex;
     justify-content: center;
@@ -304,21 +300,21 @@ h6 {
     cursor: pointer;
 }
 
-.ciclo-cultivo__upload-text {
+.form-crear__upload-text {
     margin: 0;
 }
 
 /* Botones y acciones */
-.ciclo-cultivo__actions {
+.form-crear__actions {
     width: 100%;
     display: flex;
     justify-content: center;
     gap: 4rem;
     padding: 1rem 0;
-    margin-top: auto; /* Empujar los botones al fondo del formulario */
+    margin-top: auto;
 }
 
-.ciclo-cultivo__btn {
+.form-crear__btn {
     padding: 1.2rem 2.4rem;
     font-size: var(--font-size-h5);
     color: var(--white);
@@ -329,61 +325,132 @@ h6 {
     white-space: nowrap;
 }
 
-.ciclo-cultivo__btn--volver {
+.form-crear__btn--volver {
     background-color: var(--gray-550);
 }
 
-.ciclo-cultivo__btn--crear {
+.form-crear__btn--crear {
     background-color: var(--primary-900);
+}
+
+/* Estilos específicos para el formulario de cultivo */
+.form-crear--cultivo .form-crear__column {
+    padding-left: 8rem;
+}
+
+.form-crear--cultivo .form-crear__upload-area {
+    height: 15rem;
+    padding: 5rem;
+}
+
+/* Estilos específicos para el formulario de insumo */
+.form-crear--insumo .form-crear__logo {
+    margin-right: 138rem;
+    margin-top: 5rem;
+}
+
+.form-crear--insumo .form-crear__title {
+    margin-right: 50rem;
+}
+
+.form-crear--insumo .form-crear__icon {
+    margin-right: 103rem;
+    margin-bottom: -11.5rem;
+}
+
+.form-crear--insumo .form-crear__column--right {
+    margin-top: 7rem;
+}
+
+/* Estilos específicos para el formulario de sensor */
+.form-crear--sensor .form-crear__logo {
+    margin-right: 139rem;
+    margin-top: 10rem;
+    margin-bottom: -2rem;
+}
+
+.form-crear--sensor .form-crear__icon {
+    margin-right: 106rem;
+    margin-bottom: -10.5rem;
+}
+
+.form-crear--sensor .form-crear__title {
+    margin-right: 50rem;
+}
+
+.form-crear--sensor .form-crear__column--right {
+    margin-top: 7rem;
+    margin-bottom: -20rem;
+}
+
+.form-crear--sensor .form-crear__upload-area {
+    height: 15rem;
+    padding: 5rem;
 }
 
 /* Media Queries para diferentes tamaños de pantalla */
 @media (max-width: 1200px) {
-    .ciclo-cultivo__logo {
+    .form-crear__logo {
         width: 6rem;
         left: 1rem;
         top: -1rem;
     }
 
-    .ciclo-cultivo__title {
+    .form-crear__title {
         font-size: var(--font-size-h2);
         left: 10rem;
         top: -7rem;
     }
 
-    .ciclo-cultivo__input,
-    .ciclo-cultivo__textarea,
-    .ciclo-cultivo__upload-area {
+    .form-crear__input,
+    .form-crear__textarea,
+    .form-crear__upload-area {
         width: 28rem;
     }
     
-    .ciclo-cultivo__actions {
+    .form-crear__actions {
         gap: 5rem;
         margin-top: 3rem;
         position: relative;
         bottom: 2rem;
         clear: both;
     }
+
+    /* Ajustes específicos para insumo y sensor en desktop mediano */
+    .form-crear--insumo .form-crear__logo,
+    .form-crear--sensor .form-crear__logo {
+        margin-right: 100rem;
+    }
+
+    .form-crear--insumo .form-crear__icon,
+    .form-crear--sensor .form-crear__icon {
+        margin-right: 80rem;
+    }
+
+    .form-crear--insumo .form-crear__title,
+    .form-crear--sensor .form-crear__title {
+        margin-right: 30rem;
+    }
 }
 
 @media (max-width: 768px) {
-    .ciclo-cultivo__header {
+    .form-crear__header {
         height: 6rem;
     }
     
-    .ciclo-cultivo__logo {
+    .form-crear__logo {
         width: 5rem;
         left: 1rem;
         top: 0.5rem;
     }
     
-    .ciclo-cultivo__title {
+    .form-crear__title {
         font-size: var(--font-size-h3);
         left: 8rem;
         top: -7rem;
     }
     
-    .ciclo-cultivo__form {
+    .form-crear__form {
         flex-direction: column;
         align-items: center;
         height: auto;
@@ -393,47 +460,77 @@ h6 {
         padding: 1rem;
     }
     
-    .ciclo-cultivo__column {
+    .form-crear__column {
         width: 95%;
         margin: 0 0 1rem 0;
         top: 2rem;
     }
     
-    .ciclo-cultivo__column--right {
-        margin-left: 0;
-    }
-    
-    .ciclo-cultivo__input,
-    .ciclo-cultivo__textarea,
-    .ciclo-cultivo__upload-area {
+    .form-crear__input,
+    .form-crear__textarea,
+    .form-crear__upload-area {
         width: 100%;
     }
     
-    .ciclo-cultivo__textarea {
+    .form-crear__textarea {
         height: 8rem;
     }
     
-    .ciclo-cultivo__upload-area {
+    .form-crear__upload-area {
         height: 8rem;
     }
     
-    .ciclo-cultivo__actions {
+    .form-crear__actions {
         gap: 2rem;
         margin-top: 4rem;
         padding-bottom: 2rem;
         position: static;
     }
+
+    /* Ajustes específicos para tablet */
+    .form-crear--cultivo .form-crear__column,
+    .form-crear--insumo .form-crear__column,
+    .form-crear--sensor .form-crear__column {
+        padding-left: 0;
+        align-items: center;
+    }
+
+    .form-crear--insumo .form-crear__logo,
+    .form-crear--sensor .form-crear__logo {
+        margin-right: 0;
+        margin-top: 2rem;
+        position: static;
+    }
+
+    .form-crear--insumo .form-crear__icon,
+    .form-crear--sensor .form-crear__icon {
+        margin-right: 0;
+        margin-bottom: 1rem;
+        position: static;
+    }
+
+    .form-crear--insumo .form-crear__title,
+    .form-crear--sensor .form-crear__title {
+        margin-right: 0;
+        text-align: center;
+    }
+
+    .form-crear--insumo .form-crear__column--right,
+    .form-crear--sensor .form-crear__column--right {
+        margin-top: 2rem;
+        margin-bottom: 0;
+    }
 }
 
 @media (max-width: 480px) {
-    .ciclo-cultivo {
+    .form-crear {
         padding: 0.5rem;
         height: auto;
         min-height: 100vh;
         justify-content: space-between;
     }
     
-    .ciclo-cultivo__header {
+    .form-crear__header {
         height: auto;
         flex-direction: column;
         align-items: center;
@@ -441,23 +538,23 @@ h6 {
         padding-top: 1rem;
     }
     
-    .ciclo-cultivo__logo {
+    .form-crear__logo {
         position: static;
         width: 4rem;
         margin: 0.5rem 0;
     }
     
-    .ciclo-cultivo__title {
+    .form-crear__title {
         position: static;
         font-size: var(--font-size-h4);
         margin: 0.5rem 0;
     }
     
-    .ciclo-cultivo__icon {
-        display: none; /* Ocultar en pantallas muy pequeñas para ahorrar espacio */
+    .form-crear__icon {
+        display: none;
     }
     
-    .ciclo-cultivo__form {
+    .form-crear__form {
         height: auto;
         max-height: 86vh;
         min-height: 60vh;
@@ -465,39 +562,45 @@ h6 {
         margin-bottom: 1rem;
     }
     
-    .ciclo-cultivo__column {
+    .form-crear__column {
         padding: 0 0.5rem;
         gap: 1rem;
         top: 0;
     }
     
-    .ciclo-cultivo__form-group {
+    .form-crear__form-group {
         margin-bottom: 0.8rem;
     }
     
-    .ciclo-cultivo__input {
+    .form-crear__input {
         height: 4rem;
     }
     
-    .ciclo-cultivo__textarea {
+    .form-crear__textarea {
         height: 6rem;
     }
     
-    .ciclo-cultivo__upload-area {
+    .form-crear__upload-area {
         height: 6rem;
     }
     
-    .ciclo-cultivo__actions {
+    .form-crear__actions {
         flex-direction: column;
         align-items: center;
         gap: 1rem;
         padding: 1rem 0;
         margin-top: 2rem;
-        position: static;
     }
     
-    .ciclo-cultivo__btn {
+    .form-crear__btn {
         width: 80%;
         padding: 1rem 1.5rem;
+    }
+
+    /* Ajustes específicos para móvil */
+    .form-crear--cultivo .form-crear__upload-area,
+    .form-crear--sensor .form-crear__upload-area {
+        height: 6rem;
+        padding: 0;
     }
 }
