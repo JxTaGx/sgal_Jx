@@ -123,7 +123,7 @@ html {
     opacity: 0.2;
 }
 
-.header__logo {
+.page__header-logo {
     width: 8rem;
     height: auto;
     margin-left: -28rem;
@@ -186,18 +186,18 @@ html {
     margin: 1rem 1.2rem 0;
 }
 
-.form-field {
+.profile__form-field {
     margin-bottom: 1.5rem;
     width: calc(100%/2 - 2rem);
 }
 
-.form-field__label {
+.form__field-label {
     display: block;
     font-weight: var(--font-medium);
     margin-bottom: 0.5rem;
 }
 
-.form-field__input {
+.form__field-input {
     height: 4.8rem;
     width: 32rem; 
     border-radius: 0.7rem;
@@ -235,17 +235,17 @@ html {
     background: var(--primary-900);
 }
 
-.button-group--purple {
-    margin-top: 4rem;
+.button__group--purple {
+    margin-top: 2.7rem;
     margin-right: 9.5rem;
 }
 
-.button-group--purple a{
+.button__group--purple a{
     text-decoration: none;
 }
 
 
-.button-group--green {
+.button__group--green {
     display: flex;
     justify-content: space-between;
     gap: 3rem;
@@ -266,7 +266,7 @@ html {
 
 .notification--error {
     background-color: var(--secondary-4-950);
-    color: white;
+    color: var(--white);
 }
 
 @media screen and (max-width: 1200px) {
@@ -275,15 +275,15 @@ html {
         max-width: 80rem;
     }
     
-    .header__logo {
+    .page__header-logo {
         margin-left: -20rem;
     }
     
-    .form-field {
+    .profile__form-field {
         width: calc(100%/2 - 1.5rem);
     }
     
-    .button-group--green {
+    .button__group--green {
         gap: 2rem;
     }
 }
@@ -295,7 +295,7 @@ html {
         margin-top: 6rem;
     }
     
-    .header__logo {
+    .page__header-logo {
         width: 6rem;
         margin-left: 0;
         margin-bottom: 0;
@@ -322,12 +322,12 @@ html {
         margin: 0;
     }
     
-    .form-field {
+    .profile__form-field {
         width: 100%;
         margin-bottom: 1rem;
     }
     
-    .button-group--green {
+    .button__group--green {
         flex-direction: column;
         gap: 1rem;
     }
@@ -348,7 +348,7 @@ html {
         margin-top: 5rem;
     }
     
-    .header__logo {
+    .page__header-logo {
         width: 5rem;
     }
     
@@ -369,7 +369,7 @@ html {
         margin-bottom: 2rem;
     }
     
-    .form-field__input {
+    .form__field-input {
         height: 4rem;
     }
     
@@ -383,7 +383,7 @@ html {
         padding: 0.8rem 1.6rem;
     }
     
-    .button-group--purple {
+    .button__group--purple {
         margin-right: 0;
     }
 }

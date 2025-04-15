@@ -7,14 +7,14 @@
     <title>Lista de usuarios</title>
 </head>
 <body>
-    <header class="header">
-        <div class="header__logo">
-            <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="header__logo-img">
+    <header class="header"> <!--Bloque-->
+        <div class="header__logo header__logo-img"> <!--elemento-->
+            <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA">
         </div>
-        <div class="header__title-container">
+        <div class="header__title-container"> <!--elemento-->
             <h1 class="header__title">Sistema Gestión Agrícola Lembo <br><span class="header__subtitle">S.G.A.L</span></h1>
         </div>
-        <div class="header__user-info">
+        <div class="header__user"> <!--elemento-->
             <a href="../views/editar-perfil.html" class="header__nav-link">User 
                 <svg class="header__icon-user" width="25" height="27" viewBox="0 0 25 27" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="window.location.href='editar-perfil.html'">
                     <path d="M8.8827 12.8942C10.3293 12.8942 11.7167 12.3195 12.7396 11.2966C13.7626 10.2737 14.3372 8.88629 14.3372 7.43965C14.3372 5.99302 13.7626 4.60563 12.7396 3.58271C11.7167 2.55978 10.3293 1.98511 8.8827 1.98511C7.43607 1.98511 6.04868 2.55978 5.02576 3.58271C4.00283 4.60563 3.42816 5.99302 3.42816 7.43965C3.42816 8.88629 4.00283 10.2737 5.02576 11.2966C6.04868 12.3195 7.43607 12.8942 8.8827 12.8942ZM8.8827 12.8942C11.0787 12.8942 12.9976 13.7233 14.3623 15.1011M8.8827 12.8942C4.51907 12.8942 1.24634 16.1669 1.24634 20.5306V25.9851H8.8827M25.2463 17.2578L21.9736 13.9851L15.4282 20.5306M19.2463 16.7124L22.5191 19.9851M11.0645 22.1669C11.0648 22.8905 11.3525 23.5844 11.8644 24.0959C12.3763 24.6073 13.0704 24.8945 13.794 24.8942C14.5176 24.8939 15.2114 24.6062 15.7229 24.0943C16.2344 23.5824 16.5215 22.8884 16.5212 22.1647C16.521 21.4411 16.2332 20.7473 15.7214 20.2358C15.2095 19.7244 14.5154 19.4372 13.7918 19.4375C13.0682 19.4378 12.3743 19.7255 11.8629 20.2374C11.3514 20.7492 11.0642 21.4433 11.0645 22.1669Z" stroke="black" stroke-width="2"/>
@@ -25,12 +25,12 @@
             </svg>
         </div>
     </header>
-    <main class="users">
-        <h2 class="users__title">Lista de usuarios</h2>
+    <main class="users"> <!--bloque-->
+        <h2 class="users__title">Lista de usuarios</h2> <!--elemento-->
         <div class="users__controls">
             <input type="text" placeholder="Buscar usuarios..." class="users__search">
-            <button type="submit" class="users__button users__button--green" onclick="window.location.href='register.html'">Crear Usuario</button>
-            <button type="submit" class="users__button users__button--gray"onclick="window.location.href='excel.html'" >Generar Reporte</button>
+            <button type="submit" class="users__button users__button--green" onclick="window.location.href='register.html'">Crear Usuario</button> <!--modificador-->
+            <button type="submit" class="users__button users__button--gray"onclick="window.location.href='excel.html'" >Generar Reporte</button> <!--modificador-->
         </div>
         <table class="users__table-header">
             <thead>
@@ -110,7 +110,7 @@
                 </td>
             </tr>
         </table>
-        <input type="submit" class="users__button users__button--back" onclick="window.location.href='/frontend/public/views/home.html'"  value="Volver">
+        <input type="submit" class="users__button users__button--back" onclick="window.location.href='/frontend/public/views/home.html'"  value="Volver"> <!--modificador-->
     </main>
 </body>
 </html>

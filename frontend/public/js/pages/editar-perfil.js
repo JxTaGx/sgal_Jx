@@ -1,4 +1,4 @@
-document.querySelectorAll('.form-field__input--text').forEach(input => {
+document.querySelectorAll('.form__field-input--text').forEach(input => {
     input.addEventListener('keypress', function(e) {
         if (!/^[a-zA-Z´ñÑáéíóú]$/.test(e.key)) {
             e.preventDefault();
@@ -87,7 +87,7 @@ function validateForm() {
     }
     
     // Validar formato del teléfono (solo números)
-    const telefono = document.getElementById('telefono').value;
+    const telefono = document.getElementById('form-field__input--number').value;
     if (!/^\d+$/.test(telefono)) {
         showErrorNotification('El número telefónico solo debe contener dígitos');
         return false;
@@ -98,7 +98,7 @@ function validateForm() {
 
 // Asignar validación al botón "Guardar"
 document.addEventListener('DOMContentLoaded', function() {
-    const saveLink = document.querySelector('.button-group--green a:last-of-type');
+    const saveLink = document.querySelector('.button__group--green a:last-of-type');
     
     if (saveLink) {
         saveLink.addEventListener('click', function(e) {
@@ -128,7 +128,7 @@ document.getElementById('telefono').addEventListener('input', function() {
     this.value = this.value.replace(/[^\d]/g, '');
 });
 
-const backLink = document.querySelector('.button-group--green a:first-of-type');
+const backLink = document.querySelector('.button__group--green a:first-of-type');
 if (backLink) {
     backLink.addEventListener('click', function(e) {
     });

@@ -6,58 +6,67 @@
     <link rel="stylesheet" href="../css/pages/editar-perfil.css">
     <title>Editar perfil</title>
 </head>
-<body class="page">
-    <header class="header">
-        <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="header__logo">
+<body class="page"> <!--bloque-->
+    <header>
+        <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="page__header-logo"> <!--elemento-->
     </header>
-    <div class="profile">
+    <div class="profile"> <!--bloque-->
         <svg class="profile__icon-circle" width="122" height="122" viewBox="0 0 122 122" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M61 121C94.1371 121 121 94.1371 121 61C121 27.8629 94.1371 1 61 1C27.8629 1 1 27.8629 1 61C1 94.1371 27.8629 121 61 121Z" fill="#F5F7F5" stroke="#4CAF50" stroke-width="2"/>
-        </svg>
+        </svg> <!--elemento-->
+        
         <svg class="profile__icon-user" width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M26 28.7778C34.6294 28.7778 41.625 22.5595 41.625 14.8889C41.625 7.21827 34.6294 1 26 1C17.3706 1 10.375 7.21827 10.375 14.8889C10.375 22.5595 17.3706 28.7778 26 28.7778Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M51 51.0001C51 45.1064 48.3661 39.454 43.6777 35.2866C38.9893 31.1191 32.6304 28.7778 26 28.7778C19.3696 28.7778 13.0107 31.1191 8.32233 35.2866C3.63392 39.454 1 45.1064 1 51.0001" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        </svg> <!--elemento-->
         <h1 class="profile__title">EDITAR PERFIL</h1>
-        <form class="profile__form">
-            <div class="form-field">
-                <span class="form-field__label">NOMBRE DE USUARIO</span>
-                <input type="text" id="nombre-de-usuario" class="form-field__input form-field__input--text" required>
-            </div>
-            <div class="form-field">
-                <span class="form-field__label">TIPO DE DOCUMENTO</span>
-                <input type="text" id="tipo-de-documento" class="form-field__input form-field__input--text" required>
-            </div>
-            <div class="form-field">
-                <span class="form-field__label">NÚMERO DE DOCUMENTO</span>
-                <input type="number" id="numero-de-documento" class="form-field__input form-field__input--number" required>
-            </div>
-            <div class="form-field">
-                <span class="form-field__label">TIPO DE USUARIO</span>
-                <input type="text" id="tipo-de-usuario" class="form-field__input form-field__input--text" required>
-            </div>
-            <div class="form-field">
-                <span class="form-field__label">CORREO ELECTRONICO</span>
-                <input type="email" id="email" class="form-field__input form-field__input--email" required>
-            </div>
-            <div class="form-field">
-                <span class="form-field__label">CONFIRMACIÓN CORREO ELECTRONICO</span>
-                <input type="email" id="confirmar-email" class="form-field__input form-field__input--email" required>
-            </div>
-            <div class="form-field">
-                <span class="form-field__label">NÚMERO TELEFONICO</span>
-                <input type="tel" id="telefono" class="form-field__input form-field__input--tel" required>
+        <form class="profile__form"> <!--bloque-->
+            <div class="profile__form-field">
+                <span class="form__field-label">NOMBRE DE USUARIO</span>
+                <input type="text" id="nombre-de-usuario" class="form__field-input form__field-input--text" required>
             </div> 
-            <div class="button-group button-group--purple">
+
+            <div class="profile__form-field">
+                <span class="form__field-label">TIPO DE DOCUMENTO</span>
+                <input type="text" id="tipo-de-documento" class="form__field-input form__field-input--text" required>
+            </div> 
+
+            <div class="profile__form-field">
+                <span class="form__field-label">NÚMERO DE DOCUMENTO</span>
+                <input type="number" id="numero-de-documento" class="form__field-input form__field-input--number" required>
+            </div> 
+
+            <div class="profile__form-field">
+                <span class="form__field-label">TIPO DE USUARIO</span>
+                <input type="text" id="tipo-de-usuario" class="form__field-input form__field-input--text" required>
+            </div>
+
+            <div class="profile__form-field">
+                <span class="form__field-label">CORREO ELECTRONICO</span>
+                <input type="email" id="email" class="form__field-input form__field-input--email" required>
+            </div>
+
+            <div class="profile__form-field">
+                <span class="form__field-label">CONFIRMACIÓN CORREO ELECTRONICO</span>
+                <input type="email" id="confirmar-email" class="form__field-input form__field-input--email" required>
+            </div>
+
+            <div class="profile__form-field">
+                <span class="form__field-label">NÚMERO TELEFONICO</span>
+                <input type="tel" id="telefono" class="form__field-input form__field-input--tel" required>
+            </div> 
+
+            <div class="button__group button__group--purple">
                 <a href="../views/lista-usuario.html">
                     <button type="button" class="button button--purple">Habilitar / Deshabilitar</button>
                 </a>
             </div>
-            <div class="button-group button-group--green">
+
+            <div class="button__group button__group--green">
                 <a href="../views/lista-usuario.html">
                     <button type="button" class="button button--back">Volver</button>
                 </a>
-                <a href="../lista de usuario/index.html">
+                <a href="../views/index.html">
                     <button type="button" class="button button--green">Guardar</button>
                 </a>
             </div>

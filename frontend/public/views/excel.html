@@ -3,74 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Usuarios</title>
+    <title>Reporte Ecxel</title>
     <link rel="stylesheet" href="../css/pages/excel.css">
 </head>
 <body>
-    <main class="container">
-        <table class="users-table">
-            <thead class="users-table__head">
-                <tr class="users-table__row">
-                    <th class="users-table__header">ID</th>
-                    <th class="users-table__header">Tipo Documento</th>
-                    <th class="users-table__header">Número Documento</th>
-                    <th class="users-table__header">Nombre</th>
-                    <th class="users-table__header">Correo Electrónico</th>
-                    <th class="users-table__header">Teléfono</th>
-                    <th class="users-table__header">Tipo de Usuario</th>
-                    <th class="users-table__header">Estado</th>
-                    <th class="users-table__header">Acciones</th>
+    <main class="users"> <!--bloque-->
+        <table class="users__table"> <!--elemento-->
+            <thead class="users__table-head"> <!--elemento-->
+                <tr class="users__table-row">
+                    <th class="users__table-header">ID</th>
+                    <th class="users__table-header">Tipo Documento</th>
+                    <th class="users__table-header">Número Documento</th>
+                    <th class="users__table-header">Nombre</th>
+                    <th class="users__table-header">Correo Electrónico</th>
+                    <th class="users__table-header">Teléfono</th>
+                    <th class="users__table-header">Tipo de Usuario</th>
+                    <th class="users__table-header">Estado</th>
+                    <th class="users__table-header">Acciones</th>
                 </tr>
             </thead>
             <tbody class="users-table__body">
-                <tr class="users-table__row">
-                    <td class="users-table__cell">1</td>
-                    <td class="users-table__cell">CC</td>
-                    <td class="users-table__cell">11111</td>
-                    <td class="users-table__cell">USER</td>
-                    <td class="users-table__cell">USER@BSS</td>
-                    <td class="users-table__cell">32232322</td>
-                    <td class="users-table__cell">ADMIN</td>
-                    <td class="users-table__cell">
-                        <img src="../img/mdi--check.svg" alt="Activo" class="users-table__icon users-table__icon--status">
+                <tr class="users__table-row">
+                    <td class="users__table-cell">1</td>
+                    <td class="users__table-cell">CC</td>
+                    <td class="users__table-cell">11111</td>
+                    <td class="users__table-cell">USER</td>
+                    <td class="users__table-cell">USER@BSS</td>
+                    <td class="users__table-cell">32232322</td>
+                    <td class="users__table-cell">ADMIN</td>
+                    <td class="users__table-cell">
+                        <img src="/frontend/IMG/mdi--check.svg" alt="Activo" class="users__table-icon users-table__icon--status">
                     </td>
-                    <td class="users-table__cell">
-                        <img src="../img/mingcute--edit-line.svg" alt="Editar" class="users-table__icon users-table__icon--edit">
-                    </td>
-                </tr>
-                <tr class="users-table__row">
-                    <td class="users-table__cell">2</td>
-                    <td class="users-table__cell">CC</td>
-                    <td class="users-table__cell">11111</td>
-                    <td class="users-table__cell">USER</td>
-                    <td class="users-table__cell">USER@AA</td>
-                    <td class="users-table__cell">1244312</td>
-                    <td class="users-table__cell">ADMIN</td>
-                    <td class="users-table__cell">
-                        <img src="../img/mdi--check.svg" alt="Activo" class="users-table__icon users-table__icon--status">
-                    </td>
-                    <td class="users-table__cell">
-                        <img src="../img/mingcute--edit-line.svg" alt="Editar" class="users-table__icon users-table__icon--edit">
+                    <td class="users__table-cell">
+                        <img src="/frontend/IMG/mingcute--edit-line.svg" alt="Editar" class="users__table-icon users-table__icon--edit">
                     </td>
                 </tr>
-                <tr class="users-table__row">
-                    <td class="users-table__cell">3</td>
-                    <td class="users-table__cell">CC</td>
-                    <td class="users-table__cell">11111</td>
-                    <td class="users-table__cell">USER</td>
-                    <td class="users-table__cell">USER@HH</td>
-                    <td class="users-table__cell">1231322</td>
-                    <td class="users-table__cell">ADMIN</td>
-                    <td class="users-table__cell">
-                        <img src="../img/mdi--check.svg" alt="Activo" class="users-table__icon users-table__icon--status">
+                <tr class="users__table-row">
+                    <td class="users__table-cell">2</td>
+                    <td class="users__table-cell">CC</td>
+                    <td class="users__table-cell">11111</td>
+                    <td class="users__table-cell">USER</td>
+                    <td class="users__table-cell">USER@AA</td>
+                    <td class="users__table-cell">1244312</td>
+                    <td class="users__table-cell">ADMIN</td>
+                    <td class="users__table-cell">
+                        <img src="/frontend/IMG/mdi--check.svg" alt="Activo" class="users__table-icon users-table__icon--status">
                     </td>
-                    <td class="users-table__cell">
-                        <img src="../img/mingcute--edit-line.svg" alt="Editar" class="users-table__icon users-table__icon--edit">
+                    <td class="users__table-cell">
+                        <img src="/frontend/IMG/mingcute--edit-line.svg" alt="Editar" class="users__table-icon users-table__icon--edit">
+                    </td>
+                </tr>
+                <tr class="users__table-row">
+                    <td class="users__table-cell">3</td>
+                    <td class="users__table-cell">CC</td>
+                    <td class="users__table-cell">11111</td>
+                    <td class="users__table-cell">USER</td>
+                    <td class="users__table-cell">USER@HH</td>
+                    <td class="users__table-cell">1231322</td>
+                    <td class="users__table-cell">ADMIN</td>
+                    <td class="users__table-cell">
+                        <img src="/frontend/IMG/mdi--check.svg" alt="Activo" class="users__table-icon users-table__icon--status">
+                    </td>
+                    <td class="users__table-cell">
+                        <img src="/frontend/IMG/mingcute--edit-line.svg" alt="Editar" class="users__table-icon users-table__icon--edit">
                     </td>
                 </tr>
             </tbody>
         </table>
-        <button class="button button--green">Volver</button>
+        <button class="button button--green">Volver</button> <!--modificador-->
     </main>
 </body>
 </html>
