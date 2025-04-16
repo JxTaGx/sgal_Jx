@@ -6,65 +6,63 @@
     <title>Sistema Gestión Agrícola Lembo</title>
     <link rel="stylesheet" href="../css/pages/home-style.css">
 </head>
-<body class="page">
-    <header class="header">
-        <div class="header__logo"></div>
-        <h1 class="header__title">Sistema Gestión Agrícola Lembo <br><span class="header__subtitle">S.G.A.L</span></h1>
+<body class="page"> <!--bloque-->
+    <header class="page__header"> <!--elemento-->
+        <div class="page__header-logo"></div>
+        <h1 class="page__header-title">Sistema Gestión Agrícola Lembo <br><span class="page__header-subtitle">S.G.A.L</span></h1>
     <nav class="nav">
         <ul class="nav__list">
-            <li class="nav__item"><a href="../views/listar-ciclo-cultivo-sebas.html" class="nav__link">Ciclo Cultivo</a></li>
-            <li class="nav__item"><a href="../views/listar-sensor-sebas.html" class="nav__link">Sensores</a></li>
-            <li class="nav__item"><a href="../views/listar-insumo-sebas.html" class="nav__link">Insumos</a></li>
-            <li class="nav__item"><a href="../views/listar-cultivo-sebas.html" class="nav__link">Cultivos</a></li>
-            <li class="nav__item"><a href="../views/lista-usuario.html" class="nav__link">Usuarios</a></li>
-            <li class="nav__item"><a href="../views/integracion.html" class="nav__link">Integración</a></li>
+            <li class="nav__list-item"><a href="../views/listar-ciclo-cultivo-sebas.html" class="nav__list-link">Ciclo Cultivo</a></li>
+            <li class="nav__list-item"><a href="../views/listar-sensor-sebas.html" class="nav__list-link">Sensores</a></li>
+            <li class="nav__list-item"><a href="../views/listar-insumo-sebas.html" class="nav__list-link">Insumos</a></li>
+            <li class="nav__list-item"><a href="../views/listar-cultivo-sebas.html" class="nav__list-link">Cultivos</a></li>
+            <li class="nav__list-item"><a href="../views/lista-usuario.html" class="nav__list-link">Usuarios</a></li>
+            <li class="nav__list-item"><a href="../views/integracion.html" class="nav__list-link">Integración</a></li>
         </ul>
     </nav>
-    <div class="header__user-options">
-        <a href="/frontend/public/views/editar-perfil.html" class="header__user-link">
-            <span class="header__user-name">USER</span>
-        </a>
-        <a href="/frontend/public/views/login.html" class="header__logout-link">LOGOUT</a>
+    <div class="page__header-user--options">
+        <a href="/frontend/public/views/editar-perfil.html" class="page__header-user--link">USER</a>
+        <a href="/frontend/public/views/login.html" class="page__header-logout--link">LOGOUT</a>
     </div>
 </header>
-    <main class="main">
-        <section class="welcome">
-            <h2 class="welcome__title">Bienvenid@ "User"</h2>
-        </section>
-        <section class="content">
-            <div class="cards">
-                <div class="card card--cultivos">
-                    <h3 class="card__title">Cultivos</h3>
-                    <div class="card__image"></div>
-                    <p class="card__text">Tomates</p>
-                    <p class="card__text">Fecha siembra: 15/03/2023</p>
-                    <p class="card__text">Período: 90-120 días</p><br>
-                    <p class="card__text">Maíz</p>
-                    <p class="card__text">Fecha siembra: 01/05/2023</p>
-                    <p class="card__text">Período: 90-120 días</p>
-                    <p class="card__text">Temperatura: 22-28°C</p>
+    <main class="main"> <!--bloque-->
+        <section class="main__welcome"> 
+            <h2 class="main__welcome-title">Bienvenid@ "User"</h2>
+        </section> <!--elemento-->
+        <section class="content"> <!--bloque-->
+            <div class="content__cards"> <!--elemento-->
+                <div class="content__cards-card content__cards-card--cultivos">
+                    <h3 class="content__card-title">Cultivos</h3>
+                    <div class="content__card-image"></div>
+                    <p class="content__card-text">Tomates</p>
+                    <p class="content__card-text">Fecha siembra: 15/03/2023</p>
+                    <p class="content__card-text">Período: 90-120 días</p><br>
+                    <p class="content__card-text">Maíz</p>
+                    <p class="content__card-text">Fecha siembra: 01/05/2023</p>
+                    <p class="content__card-text">Período: 90-120 días</p>
+                    <p class="content__card-text">Temperatura: 22-28°C</p>
                 </div>
-                <div class="card card--sensores">
-                    <h3 class="card__title">Sensores</h3>
-                    <div class="card__image"></div>
-                    <p class="card__text">Temperatura</p>
-                    <p class="card__text">Rango óptimo: 18-25°C</p>
-                    <p class="card__text">Valor actual: 22°C</p>
-                    <p class="card__text">Histórico: Estable</p><br>
-                    <p class="card__text">Humedad</p>
-                    <p class="card__text">Rango óptimo: 55-75%</p>
-                    <p class="card__text">Valor actual: 65%</p>
-                    <p class="card__text">Histórico: Estable</p>
+                <div class="content__cards-card content__cards-card--sensores">
+                    <h3 class="content__card-title">Sensores</h3>
+                    <div class="content__card-image"></div>
+                    <p class="content__card-text">Temperatura</p>
+                    <p class="content__card-text">Rango óptimo: 18-25°C</p>
+                    <p class="content__card-text">Valor actual: 22°C</p>
+                    <p class="content__card-text">Histórico: Estable</p><br>
+                    <p class="content__card-text">Humedad</p>
+                    <p class="content__card-text">Rango óptimo: 55-75%</p>
+                    <p class="content__card-text">Valor actual: 65%</p>
+                    <p class="content__card-text">Histórico: Estable</p>
                 </div>
-                <div class="card card--info">
-                    <h3 class="card__title">Información Útil</h3>
-                    <div class="card__image"></div>
-                    <p class="card__text">Alerta de Helada</p>
-                    <p class="card__text">Riesgo alto en las próximas 12 horas</p><br>
-                    <p class="card__text">Recomendación</p>
-                    <p class="card__text">Cubrir los cultivos sensibles a la helada</p>
-                    <p class="card__text">Índice UV</p>
-                    <p class="card__text">Nivel actual: 8 (Alto)</p>
+                <div class="content__cards-card content__cards-card--info">
+                    <h3 class="content__card-title">Información Útil</h3>
+                    <div class="content__card-image"></div>
+                    <p class="content__card-text">Alerta de Helada</p>
+                    <p class="content__card-text">Riesgo alto en las próximas 12 horas</p><br>
+                    <p class="content__card-text">Recomendación</p>
+                    <p class="content__card-text">Cubrir los cultivos sensibles a la helada</p>
+                    <p class="content__card-text">Índice UV</p>
+                    <p class="content__card-text">Nivel actual: 8 (Alto)</p>
                 </div>
             </div>
         </section>

@@ -7,18 +7,18 @@
     <link rel="stylesheet" href="../css/pages/code-style.css">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="header__logo">
+    <div class="container"> <!--blooque-->
+        <header class="container__header"> <!--elemento-->
+            <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="container__header-logo"> <!--elemento-->
         </header>
-        <main class="main">
-            <section class="verification">
-                <div class="verification__background">
-                    <div class="verification__icon-container">
+        <main class="main"> <!--blooque-->
+            <section class="main__verification"> <!--elemento-->
+                <div class="main__verification-background"> <!--elemento-->
+                    <div class="verification__icon-container"> <!--elemento-->
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="verification__icon"><path fill="none" stroke="currentColor" d="M3 .5h18m-18 23h18m-15.5 0v-6l2.856-1.714a4.415 4.415 0 0 0 0-7.572L5.5 6.5v-6m13 0v6l-2.856 1.714a4.416 4.416 0 0 0 0 7.572L18.5 17.5v6"/></svg>
                     </div>
-                    <div class="verification__form-container">
-                        <div class="verification__left-column">
+                    <div class="verification__form-container"> <!--elemento-->
+                        <div class="verification__form--left"> <!--modificador-->
                             <h2 class="verification__title">Ingresa el código de 6 dígitos que se ha enviado <br> a su correo electrónico registrado</h2>
                             <div class="verification__input-group">
                                 <input type="text" class="verification__input" required placeholder="1">
@@ -29,7 +29,7 @@
                                 <input type="text" class="verification__input" required placeholder="6">
                             </div>
                         </div>
-                        <div class="verification__right-column">
+                        <div class="verification__form--right"> <!--modificador-->
                         </div>
                     </div>
                     <button class="verification__button verification__button--verify">Verificar</button>

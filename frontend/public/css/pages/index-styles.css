@@ -111,7 +111,7 @@ html {
   overflow-x: hidden;
 }
 
-.header {
+.page__header {
   background-color: var(--white);
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
   padding: 3rem 4rem;
@@ -120,7 +120,7 @@ html {
   z-index: 1;
 }
 
-.header::before {
+.page__header::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -131,7 +131,7 @@ html {
   z-index: -1; 
 }
 
-.header__content {
+.page__header-content {
   max-width: 144rem;
   margin: 0 auto;
   display: flex;
@@ -139,14 +139,14 @@ html {
   align-items: center;
 }
 
-.header__logo {
+.page__header-logo {
   height: 8rem;
   width: auto;
   margin-right: 2rem;
   margin-top: -1rem;
 }
 
-.header__title {
+.page__header-title {
   font-size: var(--font-size-h2);
   font-weight: var(--font-bold);
   margin: 0;
@@ -155,11 +155,11 @@ html {
   color: var(--black);
 }
 
-.header__subtitle {
+.page__header-subtitle {
   margin-left: 16rem;
 }
 
-.header__button {
+.page__header-link {
   font-size: var(--font-size-h5);
   font-weight: var(--font-medium);
   color: var(--black);
@@ -170,7 +170,7 @@ html {
   margin-top: 3.5rem;
 }
 
-.header__icon {
+.page__header-icon {
   width: 2rem;
   height: 2rem;
 }
@@ -192,27 +192,27 @@ html {
   flex: 1;
 }
 
-.content-box {
+.main__content-box {
   background-color: var(--white);
   border-radius: 0.8rem;
   box-shadow: 0 0 0.1rem rgb(74, 255, 1);
   padding: 4rem;
 }
 
-.content-box__title {
+.main__content-box-title {
   font-size: var(--font-size-h1);
   font-weight: var(--font-medium);
   margin-top: 0;
   margin-bottom: 2rem;
 }
 
-.content-box__text {
+.main__content-box-text {
   font-size: var(--font-size-h4);
   line-height: 1.5;
   margin-bottom: 3rem;
 }
 
-.content-box__button {
+.main__content-box--button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -225,19 +225,19 @@ html {
   padding: 1.2rem 2.4rem;
 }
 
-.content-box__icon {
+.main__content-box--icon {
   width: 2rem;
   height: 2rem;
 }
 
-.content-box__image {
+.main__content-box--image {
   max-width: 15rem;
   display: block;
   margin: 0 auto;
   margin-right: 5rem;
 }
 
-.illustration {
+.main__illustration {
   background-image: url(/frontend/IMG/prehomefondo.png);
   background-size: cover;
   background-position: center;
@@ -246,11 +246,11 @@ html {
 }
 
 @media screen and (max-width: 1200px) {
-  .header__title {
+  .page__header-title {
       margin-right: 30rem;
   }
   
-  .header__content {
+  .page__header-content {
       padding: 0 2rem;
   }
   
@@ -259,31 +259,31 @@ html {
       flex-direction: column;
   }
   
-  .content-box {
+  .main__content-box {
       margin-bottom: 2rem;
   }
 }
 
 @media screen and (max-width: 768px) {
-  .header__title {
+  .page__header-title {
       margin-right: 10rem;
       font-size: 2rem;
   }
   
-  .header__subtitle {
+  .page__header-subtitle {
       margin-left: 8rem;
   }
   
-  .header__logo {
+  .page__header-logo {
       height: 6rem;
   }
   
-  .header {
+  .page__header {
       height: auto;
       padding: 1.5rem 2rem;
   }
   
-  .header__button {
+  .page__header-link {
       margin-top: 0;
   }
   
@@ -291,50 +291,50 @@ html {
       margin: 2rem auto;
   }
   
-  .content-box {
+  .main__content-box {
       padding: 2rem;
   }
   
-  .content-box__image {
+  .main__content-box--image {
       max-width: 10rem;
       margin-right: 2rem;
   }
 }
 
 @media screen and (max-width: 480px) {
-  .header__content {
+  .page__header-content {
       flex-direction: column;
       align-items: center;
   }
   
-  .header__title {
+  .page__header-title {
       margin-right: 0;
       text-align: center;
       margin-top: 1rem;
   }
   
-  .header__subtitle {
+  .page__header-subtitle {
       margin-left: 0;
   }
   
-  .header__button {
+  .page__header-link {
       margin-top: 1rem;
   }
   
-  .content-box__title {
+  .main__content-box--title {
       font-size: 2.4rem;
   }
   
-  .content-box__text {
+  .main__content-box--text {
       font-size: 1.4rem;
   }
   
-  .content-box__button {
+  .main__content-box--button {
       width: 100%;
       padding: 1rem;
   }
   
-  .content-box__image {
+  .main__content-box--image {
       max-width: 8rem;
       margin-right: 0;
   }

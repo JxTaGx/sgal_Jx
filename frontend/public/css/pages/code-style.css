@@ -169,20 +169,13 @@ h6 {
     height: 100%;
 }
 
-.header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 2rem;
-}
-
-.header__logo {
+.container__header-logo {
     width: 8rem;
     height: auto;
     margin-right: 135rem;
 }
 
-.verification {
+.main__verification {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -190,7 +183,7 @@ h6 {
     margin-right: 35rem;
 }
 
-.verification__background {
+.main__verification-background {
     position: relative;
     background-image: url(/frontend/IMG/wallpaper-code.jpeg);
     margin-left: 38rem;
@@ -203,7 +196,7 @@ h6 {
     margin-top: -9rem;
 }
 
-.verification__background::after {
+.main__verification-background::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -244,13 +237,13 @@ h6 {
     z-index: 2;
 }
 
-.verification__left-column {
+.verification__form--left {
     width: 48%;
     padding: 1rem;
     margin-left: -30rem;
 }
 
-.verification__right-column {
+.verification__form--right {
     width: 48%;
     padding: 1rem;
     margin-right: 18rem;
@@ -314,12 +307,67 @@ h6 {
     margin-left: 30rem;
 }
 
+/*Complete recover*/
+.verification__icon-wrapper {
+    background-color: var(--gray-550);
+    width: 8rem;
+    height: 8rem;
+    margin-left: 33rem;
+    border-radius: 10rem;
+    border: 0.1rem solid var(--black);
+}
+
+.verification__form-group {
+    margin-bottom: 5rem;
+    display: grid;
+    width: 1rem;
+    margin-left: 9rem;
+    gap: 1rem;
+}
+
+.verification__button--finish {
+    width: 9.7rem;
+    position: absolute;
+    bottom: 1rem;
+    left: 2rem;
+    background-color: var(--primary-900);
+    color: var(--white);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: var(--font-size-h4);
+    padding: 1rem;
+    border: 0.1rem solid var(--black);
+    z-index: 3;
+    margin: 1rem;
+    margin-left: 30rem;
+}
+
+.verification__form-title {
+    position: relative;
+}
+
+.verification__form-heading {
+    font-size: var(--font-size-h3);
+    color: var(--black);
+    margin-right: -8rem;
+    margin-bottom: 5rem;
+    display: flex;
+    text-align: center;
+    background-color: var(--secondary-3-100);
+    width: 48.5rem;
+    padding: 1rem;
+    position: relative;
+    z-index: 3;
+    font-style: italic;
+}
+
 @media screen and (max-width: 1200px) {
     .container {
         padding: 1.5rem;
     }
 
-    .header__logo {
+    .container__header-logo {
         margin-right: 0;
     }
 
@@ -374,20 +422,7 @@ h6 {
 }
 
 @media screen and (max-width: 768px) {
-    :root {
-        --font-size-h1: 3.2rem;
-        --font-size-h2: 2.4rem;
-        --font-size-h3: 2.0rem;
-        --font-size-h4: 1.6rem;
-        --font-size-h5: 1.4rem;
-        --font-size-h6: 1.2rem;
-    }
-
-    html, body {
-        overflow: auto;
-    }
-
-    .header {
+    .container__header {
         margin-bottom: 1.5rem;
     }
 
@@ -435,20 +470,11 @@ h6 {
 }
 
 @media screen and (max-width: 480px) {
-    :root {
-        --font-size-h1: 3.2rem;
-        --font-size-h2: 2.4rem;
-        --font-size-h3: 2.0rem;
-        --font-size-h4: 1.6rem;
-        --font-size-h5: 1.4rem;
-        --font-size-h6: 1.2rem;
-    }
-
     .container {
         padding: 1rem;
     }
 
-    .header__logo {
+    .container__header-logo {
         width: 6rem;
     }
 
@@ -490,6 +516,151 @@ h6 {
     }
 
     .verification__button--verify {
+        padding: 0.8rem 1.5rem;
+        font-size: var(--font-size-h5);
+    }
+}
+
+/*responsive completerecover*/
+@media screen and (max-width: 1200px) {
+    .container {
+        padding: 1.5rem;
+    }
+
+    .main__verification {
+        margin-top: 8rem;
+        margin-right: 0;
+    }
+
+    .main__verification-background {
+        margin-left: 0;
+        width: 90%;
+        max-width: 70rem;
+    }
+
+    .verification__form-container {
+        flex-direction: column;
+        margin-left: 0;
+    }
+
+    .verification__form--left, 
+    .verification__form--right {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .verification__form-heading {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .verification__icon-wrapper {
+        margin-left: 0;
+        margin: 0 auto 2rem;
+    }
+
+    .verification__form-group {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .verification__button--finish {
+        position: static;
+        margin: 2rem auto;
+        width: auto;
+        padding: 1rem 2rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    
+    html, body {
+        overflow: auto;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .header__logo {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+
+    .main__verification {
+        margin-top: 4rem;
+    }
+
+    .main__verification-background {
+        padding-top: 2rem;
+        margin-top: -5rem;
+        border-radius: 3rem;
+    }
+
+    .verification__form-container {
+        padding: 1.5rem;
+    }
+
+    .verification__form-heading {
+        font-size: var(--font-size-h4);
+        margin-bottom: 3rem;
+    }
+
+    .verification__icon-wrapper {
+        width: 6rem;
+        height: 6rem;
+    }
+
+    .verification__icon {
+        width: 3rem;
+        margin-top: 1.5rem;
+        margin-left: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+
+    .container {
+        padding: 1rem;
+    }
+
+    .header__logo {
+        width: 6rem;
+    }
+
+    .main__verification {
+        margin-top: 2rem;
+    }
+
+    .main__verification-background {
+        padding-top: 1.5rem;
+        margin-top: -3rem;
+        border-radius: 2rem;
+    }
+
+    .verification__form-group {
+        padding: 0.5rem;
+    }
+
+    .verification__icon-wrapper {
+        width: 5rem;
+        height: 5rem;
+    }
+
+    .verification__icon {
+        width: 2.5rem;
+        margin-top: 1.2rem;
+        margin-left: 1.2rem;
+    }
+
+    .verification__form-container {
+        padding: 1rem;
+    }
+
+    .verification__button--finish {
         padding: 0.8rem 1.5rem;
         font-size: var(--font-size-h5);
     }

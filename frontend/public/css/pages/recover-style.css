@@ -122,7 +122,7 @@ html {
 }
 
 /* Contenedor principal */
-.container {
+.page__container {
     width: 100%;
     max-width: 120rem;
     margin: 0 auto;
@@ -132,14 +132,14 @@ html {
 }
 
 /* Encabezado */
-.header {
+.page__header {
     text-align: left;
     display: flex;
     align-items: center;
     margin-bottom: 2rem;
 }
 
-.header__logo {
+.page__header-logo {
     width: 8rem;
     height: auto;
     margin-right: 2rem;
@@ -147,7 +147,7 @@ html {
 }
 
 /* Sección de recuperación */
-.recovery {
+.main__recovery {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -155,7 +155,7 @@ html {
     margin-right: 35rem;
 }
 
-.recovery__background {
+.main__recovery-background {
     position: relative;
     background-image: url(/frontend/IMG/imagen-register.jpeg);
     margin-left: 38rem;
@@ -168,7 +168,7 @@ html {
     margin-top: -9rem;
 }
 
-.recovery__background::after {
+.main__recovery-background::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -179,7 +179,7 @@ html {
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
 }
 
-.recovery__title {
+.main__recovery-title {
     font-size: var(--font-size-h2);
     margin: 0;
     color: var(--black);
@@ -191,7 +191,7 @@ html {
     z-index: 3;
 }
 
-.recovery__form {
+.main__recovery-form {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -204,21 +204,21 @@ html {
     z-index: 2;
 }
 
-.recovery__column {
+.main__recovery-column {
     width: 48%;
 }
 
-.recovery__column--left {
+.main__recovery-column--left {
     padding: 1rem;
     margin-left: -30rem;
 }
 
-.recovery__column--right {
+.main__recovery-column--right {
     padding: 1rem;
     margin-right: 18rem;
 }
 
-.recovery__heading {
+.main__recovery-heading {
     font-size: var(--font-size-h3);
     color: var(--black);
     margin-bottom: 5rem;
@@ -231,7 +231,7 @@ html {
     font-weight: var(--font-semibold);
 }
 
-.recovery__link-text {
+.main__recovery-link--text {
     font-size: var(--font-size-h5);
     white-space: nowrap;
     margin-left: 21rem;
@@ -245,11 +245,11 @@ a {
     color: var(--black);
 }
 
-.recovery__field {
+.main__recovery-field {
     margin-bottom: 2rem;
 }
 
-.recovery__input {
+.main__recovery-input {
     width: 32rem;
     height: 4.8rem;
     padding: 1rem;
@@ -293,69 +293,69 @@ a {
 }
 
 @media screen and (max-width: 1200px) {
-    .recovery__background {
+    .main__recovery-background {
         margin-left: 20rem;
     }
     
-    .recovery__form {
+    .main__recovery-form {
         margin-left: 22rem;
         max-width: 60rem;
     }
     
-    .recovery__column--left {
+    .main__recovery-column--left {
         margin-left: -20rem;
     }
     
-    .recovery__column--right {
+    .main__recovery-column--right {
         margin-right: 10rem;
     }
     
-    .recovery__input {
+    .main__recovery-input {
         width: 28rem;
     }
     
-    .recovery {
+    .main__recovery {
         margin-right: 20rem;
     }
 }
 
 @media screen and (max-width: 768px) {
-    .recovery__background {
+    .main__recovery-background {
         margin-left: 5rem;
     }
     
-    .recovery__form {
+    .main__recovery-form {
         margin-left: 7rem;
         flex-direction: column;
     }
     
-    .recovery__column {
+    .main__recovery-column {
         width: 100%;
     }
     
-    .recovery__column--left {
+    .main__recovery-column--left {
         margin-left: 0;
     }
     
-    .recovery__column--right {
+    .main__recovery-column--right {
         margin-right: 0;
     }
     
-    .recovery__heading {
+    .main__recovery-heading {
         margin-right: 0;
         font-size: 1.8rem;
     }
     
-    .recovery__link-text {
+    .main__recovery-link--text {
         margin-left: 0;
         text-align: center;
     }
     
-    .recovery__input {
+    .main__recovery-input {
         width: 100%;
     }
     
-    .recovery {
+    .main__recovery {
         margin-right: 0;
         margin-top: 8rem;
     }
@@ -366,22 +366,22 @@ a {
 }
 
 @media screen and (max-width: 480px) {
-    .recovery__background {
+    .main__recovery-background {
         margin-left: 0;
         border-radius: 2rem;
         margin-top: -5rem;
     }
     
-    .recovery__background::after {
+    .main__recovery-background::after {
         border-radius: 2rem;
     }
     
-    .recovery__form {
+    .main__recovery-form {
         margin-left: 0;
         padding: 1rem;
     }
     
-    .recovery__heading {
+    .main__recovery-heading {
         font-size: 1.6rem;
         margin-bottom: 3rem;
         white-space: normal;
@@ -399,11 +399,11 @@ a {
         right: 2rem;
     }
     
-    .container {
+    .page__container {
         padding: 1rem;
     }
     
-    .header__logo {
+    .page__header-logo {
         width: 6rem;
     }
 }

@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SISTEMA GESTION AGRICOLA LEMBO (S.G.A.L)</title>
-    <link rel="stylesheet" href="../css/pages/completerecover-style.css">
+    <link rel="stylesheet" href="../css/pages/code-style.css">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="header__logo">
+    <div class="container"> <!--bloquei-->
+        <header class="container__header"> <!--elemneto-->
+            <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="container__header-logo">
         </header>
-        <main class="main">
-            <section class="verification">
-                <div class="verification__background">
+        <main class="main"> <!--bloque-->
+            <section class="main__verification"> <!--elemento-->
+                <div class="main__verification-background">
                     <div class="verification__icon-wrapper">
                         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="verification__icon">
                             <mask id="mask0_4210_134"  maskUnits="userSpaceOnUse" x="2" y="9" width="38" height="23">
@@ -26,18 +26,20 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="verification__container">
-                        <div class="verification__content">
-                            <div class="verification__title">
-                                <h2 class="verification__heading">Se ha verificado el código del correo electrónico. <br> Su contraseña se envió a su bandeja</h2>
+                    <div class="verification__form-container">
+                        <div class="verification__form--left">
+                            <div class="verification__form-title">
+                                <h2 class="verification__form-heading">Se ha verificado el código del correo electrónico. <br> Su contraseña se envió a su bandeja</h2>
                             </div>
                             <div class="verification__form-group">
                             </div>
                         </div>
-                        <div class="verification__side">
+                        <div class="verification__form--right">
                         </div>
                     </div>
+                    <a href="home.html">
                     <button class="verification__button verification__button--finish">Finalizar</button>
+                </a>
                 </div>
             </section>
         </main>
