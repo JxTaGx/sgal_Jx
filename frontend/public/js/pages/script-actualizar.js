@@ -2,13 +2,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mapeo de los campos antiguos a los nuevos selectores
     const fieldSelectors = {
         // Campos de texto (por orden en el formulario)
-        'tipoInsumo': '.sensor__form-group:nth-child(1) .sensor__input',
-        'nombreInsumo': '.sensor__form-group:nth-child(3) .sensor__input',
-        'unidadMedida': '.sensor__form-group:nth-child(4) .sensor__input',
+        'tipoInsumo': '.sensor__form-group:nth-child(1) .sensor__form-input',
+        'nombreInsumo': '.sensor__form-group:nth-child(3) .sensor__form-input',
+        'unidadMedida': '.sensor__form-group:nth-child(4) .sensor__form-input',
         // Campos numéricos
-        'cantidad': '.sensor__form-group:nth-child(5) .sensor__input',
-        'valorUnitario': '.sensor__form-group:nth-child(6) .sensor__input',
-        'valorTotal': '.sensor__form-group:nth-child(7) .sensor__input',
+        'cantidad': '.sensor__form-group:nth-child(5) .sensor__form-input',
+        'valorUnitario': '.sensor__form-group:nth-child(6) .sensor__form-input',
+        'valorTotal': '.sensor__form-group:nth-child(7) .sensor__form-input',
         'descripcion': '.sensor__textarea'
     };
 
