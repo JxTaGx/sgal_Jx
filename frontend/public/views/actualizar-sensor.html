@@ -7,13 +7,13 @@
     <link rel="stylesheet" href="../css/pages/actualizar-sensor-style.css">
 </head>
 <body class="page">
-    <header class="header">
-        <div class="header__logo"></div>
-        <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="header__logo">
+    <header class="page__header">
+        <div class="page__header-logo"></div>
+        <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="page__header-logo">
     </header>
     <main class="container">
-        <section class="sensor">
-            <h1 class="sensor__title">
+        <section class="container__ sensor">
+            <h1 class="conatiner__sensor-title">
                 <svg width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.5 0L10.5 5L5.5 10L0.5 5L5.5 0Z" fill="#4BBD17"/>
                 </svg>
@@ -21,38 +21,38 @@
             </h1>
             <form class="sensor__form">
                 <div class="sensor__form-group">
-                    <label class="sensor__label" for="idInsumo">ID del Sensor</label>
-                    <input class="sensor__input sensor__input--disabled"  type="text"  value="INS-001" disabled title="ID del sensor (campo no editable)" />
+                    <label class="sensor__form-label" for="idInsumo">ID del Sensor</label>
+                    <input class="sensor__form-input sensor__form-input--disabled"  type="text"  value="INS-001" disabled title="ID del sensor (campo no editable)" />
                 </div>
 
                 <div class="sensor__form-group">
-                    <label class="sensor__label" for="nombreInsumo">Nombre del Sensor *</label>
-                    <input class="sensor__input" type="text" value="Sensor de temperatura" required placeholder="Escribe el nombre del sensor" title="Nombre del sensor" />
+                    <label class="sensor__form-label" for="nombreInsumo">Nombre del Sensor *</label>
+                    <input class="sensor__form-input" type="text" value="Sensor de temperatura" required placeholder="Escribe el nombre del sensor" title="Nombre del sensor" />
                 </div>
 
                 <div class="sensor__form-group">
-                    <label class="sensor__label" for="unidadMedida">Ubicación *</label>
-                    <input class="sensor__input" type="text" required placeholder="Escribe aquí..." title="Ubicación del sensor" />
+                    <label class="sensor__form-label" for="unidadMedida">Ubicación *</label>
+                    <input class="sensor__form-input" type="text" required placeholder="Escribe aquí..." title="Ubicación del sensor" />
                 </div>
 
                 <div class="sensor__form-group">
-                    <label class="sensor__label" for="cantidad">Unidad de medida *</label>
-                    <input class="sensor__input" type="number" value="50" required placeholder="Ej: 50" title="Unidad de medida" />
+                    <label class="sensor__form-label" for="cantidad">Unidad de medida *</label>
+                    <input class="sensor__form-input" type="number" value="50" required placeholder="Ej: 50" title="Unidad de medida" />
                 </div>
 
                 <div class="sensor__form-group">
-                    <label class="sensor__label" for="valorUnitario">Valor mínimo *</label>
-                    <input class="sensor__input" type="text" value="$2,500" required placeholder="Ej: $2,500" title="Valor unitario mínimo" />
+                    <label class="sensor__form-label" for="valorUnitario">Valor mínimo *</label>
+                    <input class="sensor__form-input" type="text" value="$2,500" required placeholder="Ej: $2,500" title="Valor unitario mínimo" />
                 </div>
 
-                <div class="sensor__form-group sensor__form-group--full-width">
-                    <label class="sensor__label" for="valorTotal">Valor Maximo</label>
-                    <input class="sensor__input sensor__input--disabled" type="text" value="$125,000" disabled title="Valor máximo del sensor (no editable)" />
+                <div class="sensor__form-group sensor__form-group-full--width">
+                    <label class="sensor__form-label" for="valorTotal">Valor Maximo</label>
+                    <input class="sensor__form-input sensor__form-input--disabled" type="text" value="$125,000" disabled title="Valor máximo del sensor (no editable)" />
                 </div>
 
-                <div class="sensor__form-group sensor__form-group--full-width">
-                    <label class="sensor__label" for="descripcion">Intervalo de lectura (minutos)</label>
-                    <textarea class="sensor__textarea" placeholder="Ej: Cada 15 minutos" title="Ingresa el intervalo de lectura en minutos"></textarea>
+                <div class="sensor__form-group sensor__form-group-full--width">
+                    <label class="sensor__form-label" for="descripcion">Intervalo de lectura (minutos)</label>
+                    <textarea class="sensor__form-textarea" placeholder="Ej: Cada 15 minutos" title="Ingresa el intervalo de lectura en minutos"></textarea>
                 </div>
 
                 <div class="sensor__button-group">

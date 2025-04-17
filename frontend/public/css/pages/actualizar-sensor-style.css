@@ -161,14 +161,14 @@ h6 {
 }
 
 /* Header */
-.header {
+.page__header {
     width: 100%;
     display: flex;
     justify-content: flex-start;
     padding: 1rem;
 }
 
-.header__logo {
+.page__header-logo {
     width: 8rem;
     height: 8rem;
     background-size: cover;
@@ -205,7 +205,7 @@ h6 {
 }
 
 /* Sensor section */
-.sensor__title {
+.conatiner__sensor-title {
     text-align: center;
     font-size: var(--font-size-h2);
     color: var(--black);
@@ -215,7 +215,7 @@ h6 {
     margin-right: 3rem;
 }
 
-.sensor__title svg {
+.container__sensor-title svg {
     margin-right: 1rem;
     margin-bottom: 0.2rem;
 }
@@ -236,17 +236,17 @@ h6 {
     max-width: 38rem;
 }
 
-.sensor__form-group--full-width {
+.sensor__form-group-full--width {
     flex: 1 1 100%;
 }
 
-.sensor__label {
+.sensor__form-label {
     font-size: var(--font-size-h5);
     margin-bottom: 0.8rem;
     color: var(--gray-550);
 }
 
-.sensor__input {
+.sensor__form-input {
     width: 32rem;
     height: 4.8rem;
     padding: 1rem;
@@ -256,12 +256,12 @@ h6 {
     background-color: var(--gray-150);
 }
 
-.sensor__input--disabled {
+.sensor__form-input--disabled {
     background-color: var(--gray-150);
     color: var(--gray-550);
 }
 
-.sensor__textarea {
+.sensor__form-textarea {
     width: 32rem;
     height: 6rem;
     padding: 1rem;
@@ -312,7 +312,7 @@ h6 {
         width: 95%;
     }
 
-    .sensor__title {
+    .conatiner__sensor-title {
         margin-right: 0;
     }
 
@@ -325,8 +325,8 @@ h6 {
         max-width: 35rem;
     }
 
-    .sensor__input,
-    .sensor__textarea {
+    .sensor__form-input,
+    .sensor__form-textarea {
         width: 30rem;
     }
 
@@ -338,11 +338,11 @@ h6 {
 
 /* Media query para pantallas de hasta 768px (tablets) */
 @media screen and (max-width: 768px) {
-    .header {
+    .page__header {
         justify-content: center;
     }
 
-    .header__logo {
+    .page__header-logo {
         margin-left: 0;
     }
 
@@ -351,7 +351,7 @@ h6 {
         padding: 1.5rem;
     }
 
-    .sensor__title {
+    .conatiner__sensor-title {
         margin-top: -5rem;
         margin-bottom: 12rem;
     }
@@ -368,8 +368,8 @@ h6 {
         width: 100%;
     }
 
-    .sensor__input,
-    .sensor__textarea {
+    .sensor__form-input,
+    .sensor__form-textarea {
         width: 100%;
     }
 
@@ -390,7 +390,7 @@ h6 {
 
 /* Media query para pantallas de hasta 480px (móviles) */
 @media screen and (max-width: 480px) {
-    .header__logo {
+    .page__header-logo {
         width: 6rem;
         height: 6rem;
     }
@@ -400,7 +400,7 @@ h6 {
         padding: 1rem;
     }
 
-    .sensor__title {
+    .conatiner__sensor-title {
         font-size: var(--font-size-h3);
         margin-top: -4rem;
         margin-bottom: 10rem;
@@ -415,12 +415,12 @@ h6 {
         max-width: 100%;
     }
 
-    .sensor__label {
+    .sensor__form-label {
         font-size: var(--font-size-h6);
     }
 
-    .sensor__input,
-    .sensor__textarea {
+    .sensor__form-input,
+    .sensor__form-textarea {
         height: 4rem;
         padding: 0.8rem;
         font-size: var(--font-size-h6);

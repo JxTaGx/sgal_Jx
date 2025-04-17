@@ -222,7 +222,7 @@ html > * {
     margin-top: 4rem;
 }
 
-.sensor__button--green-alt {
+.sensor__button--secundary {
     border: none;
     background: var(--primary-900);
     color: var(--white);
