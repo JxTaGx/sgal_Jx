@@ -705,6 +705,7 @@ body {
 .dashboard__button--primary {
   background-color: var(--color-primary);
   color: var(--white);
+  margin-top: 1rem;
 }
 
 .dashboard__button--primary:hover {
@@ -712,10 +713,42 @@ body {
   box-shadow: var(--elevation-2);
 }
 
+/*estilos para poder cambiar el tamño de los botones guardar y crear*/
+.dashboard__button--save {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 0.1rem solid var(--color-primary);
+  margin-top: 4.5rem;
+  padding: 1.2rem 2.4rem;
+  width: 21.5rem;
+  height: 3.4rem;
+}
+
+.dashboard__button--save:hover {
+  background-color: rgba(111, 192, 70, 0.08);
+}
+
+.dashboard__button--create {
+  background-color: var(--color-primary);
+  color: var(--white);
+  margin-top: 1rem;
+  margin-top: 4.5rem;
+  padding: 1.2rem 2.4rem;
+  width: 21.5rem;
+  height: 3.4rem;
+}
+
+.dashboard__button--create:hover {
+  background-color: var(--color-primary-dark);
+  box-shadow: var(--elevation-2);
+}
+/*fin de estilos para los botones*/
+
 .dashboard__button--secondary {
   background-color: transparent;
   color: var(--color-primary);
   border: 0.1rem solid var(--color-primary);
+  margin-top: 1rem;
 }
 
 .dashboard__button--secondary:hover {
@@ -725,6 +758,12 @@ body {
 .dashboard__button--tertiary {
   background-color: var(--gray-350);
   color: var(--color-text-primary);
+  margin-top: 4.5rem;
+  width: 7.7rem;
+  height: 3.4rem;
+  border: 0.1rem solid var(--black);
+  padding: 1.2rem 2.4rem;
+  padding-right: 6rem;
 }
 
 .dashboard__button--tertiary:hover {
