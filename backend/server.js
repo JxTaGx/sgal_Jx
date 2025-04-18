@@ -538,7 +538,7 @@ app.post("/insumo", (req, res) => {
 });
 
 // Ruta para obtener todos los insumos
-app.get("/insumos", (req, res) => {
+app.get("/api/insumos", (req, res) => {
     const sql = "SELECT * FROM insumos ORDER BY fecha_creacion DESC";
     
     db.query(sql, (err, results) => {
@@ -550,7 +550,7 @@ app.get("/insumos", (req, res) => {
             });
         }
         
-        res.status(200).json(results);
+        res.status(200).json({ success: true, data: results });
     });
 });
 
@@ -689,6 +689,27 @@ app.get("/insumos/buscar", (req, res) => {
         res.status(200).json(results);
     });
 });
+
+app.post('/obtener-insumos', async (req, res) => {
+    const { idsInsumos } = req.body;
+
+    if (!Array.isArray(idsInsumos) || idsInsumos.length === 0) {
+        return res.status(400).json({ error: 'No se recibieron insumos' });
+    }
+
+    try {
+        const placeholders = idsInsumos.map(() => '?').join(',');
+        const [insumos] = await db.query(
+            `SELECT idInsumo, nombre, precio FROM insumos WHERE idInsumo IN (${placeholders})`,
+            idsInsumos
+        );
+        res.json(insumos);
+    } catch (error) {
+        console.error('Error al obtener insumos:', error);
+        res.status(500).json({ error: 'Error al obtener insumos' });
+    }
+});
+
 
 // ===== RUTAS PARA SENSORES =====
 
@@ -936,3 +957,201 @@ app.get("/sensores/buscar", (req, res) => {
         res.status(200).json(results);
     });
 });
+
+// ===== RUTAS PARA EL MÓDULO DE INTEGRACIÓN =====
+
+// Ruta para obtener datos para los dropdowns
+app.get('/api/integracion/data', (req, res) => {
+    // Ejecutar todas las consultas en paralelo
+    Promise.all([
+        queryPromise("SELECT id, CONCAT(firstName, ' ', lastName) as name FROM user"),
+        queryPromise("SELECT id_cultivo as id, nombre_cultivo as name FROM cultivos"),
+        queryPromise("SELECT id_ciclo as id, nombre_ciclo as name FROM ciclo_cultivo"),
+        queryPromise("SELECT id, CONCAT(nombre_sensor, ' (', tipo_sensor, ')') as name FROM sensores"),
+        queryPromise("SELECT id, CONCAT(nombre_insumo, ' - $', valor_unitario) as name FROM insumos")
+    ])
+    .then(([users, cultivations, cycles, sensors, supplies]) => {
+        res.json({
+            success: true,
+            data: {
+                users,
+                cultivations,
+                cycles,
+                sensors,
+                supplies
+            }
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching integration data:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Error al obtener datos para integración'
+        });
+    });
+});
+
+// Ruta para operaciones CRUD de producciones
+const productionRoutes = express.Router();
+
+// Crear una nueva producción
+productionRoutes.post('/', (req, res) => {
+    const { name, responsible, cultivation, cycle, sensors, supplies, startDate, endDate } = req.body;
+    
+    // Validación básica
+    if (!name || !responsible || !cultivation || !cycle || !startDate || !endDate) {
+        return res.status(400).json({ error: 'Faltan campos obligatorios' });
+    }
+
+    // Convertir arrays a strings si es necesario
+    const sensorsStr = Array.isArray(sensors) ? sensors.join(',') : sensors;
+    const suppliesStr = Array.isArray(supplies) ? supplies.join(',') : supplies;
+
+    const sql = `
+        INSERT INTO productions 
+        (name, responsible, cultivation, cycle, sensors, supplies, start_date, end_date, status)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'active')
+    `;
+
+    db.query(sql, [name, responsible, cultivation, cycle, sensorsStr, suppliesStr, startDate, endDate], (err, result) => {
+        if (err) {
+            console.error('Error creating production:', err);
+            return res.status(500).json({ error: 'Error al crear producción' });
+        }
+        
+        res.json({
+            success: true,
+            id: result.insertId,
+            message: 'Producción creada exitosamente'
+        });
+    });
+});
+
+// Obtener todas las producciones
+productionRoutes.get('/', (req, res) => {
+    const sql = `
+        SELECT p.*, 
+               CONCAT(u.firstName, ' ', u.lastName) as responsible_name,
+               c.nombre_cultivo as cultivation_name,
+               cc.nombre_ciclo as cycle_name
+        FROM productions p
+        LEFT JOIN user u ON p.responsible = u.id
+        LEFT JOIN cultivos c ON p.cultivation = c.id_cultivo
+        LEFT JOIN ciclo_cultivo cc ON p.cycle = cc.id_ciclo
+        ORDER BY p.start_date DESC
+    `;
+    
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Error fetching productions:', err);
+            return res.status(500).json({ error: 'Error al obtener producciones' });
+        }
+        
+        // Convertir strings de sensores y supplies a arrays
+        const formattedResults = results.map(prod => ({
+            ...prod,
+            sensors: prod.sensors ? prod.sensors.split(',') : [],
+            supplies: prod.supplies ? prod.supplies.split(',') : []
+        }));
+        
+        res.json({ success: true, data: formattedResults });
+    });
+});
+
+// Obtener una producción específica
+productionRoutes.get('/:id', (req, res) => {
+    const sql = `
+        SELECT p.*, 
+               CONCAT(u.firstName, ' ', u.lastName) as responsible_name,
+               c.nombre_cultivo as cultivation_name,
+               cc.nombre_ciclo as cycle_name
+        FROM productions p
+        LEFT JOIN user u ON p.responsible = u.id
+        LEFT JOIN cultivos c ON p.cultivation = c.id_cultivo
+        LEFT JOIN ciclo_cultivo cc ON p.cycle = cc.id_ciclo
+        WHERE p.id = ?
+    `;
+    
+    db.query(sql, [req.params.id], (err, results) => {
+        if (err) {
+            console.error('Error fetching production:', err);
+            return res.status(500).json({ error: 'Error al obtener producción' });
+        }
+        
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Producción no encontrada' });
+        }
+        
+        const production = {
+            ...results[0],
+            sensors: results[0].sensors ? results[0].sensors.split(',') : [],
+            supplies: results[0].supplies ? results[0].supplies.split(',') : []
+        };
+        
+        res.json({ success: true, data: production });
+    });
+});
+
+// Actualizar una producción
+productionRoutes.put('/:id', (req, res) => {
+    const { name, responsible, cultivation, cycle, sensors, supplies, startDate, endDate, status } = req.body;
+    
+    // Convertir arrays a strings si es necesario
+    const sensorsStr = Array.isArray(sensors) ? sensors.join(',') : sensors;
+    const suppliesStr = Array.isArray(supplies) ? supplies.join(',') : supplies;
+
+    const sql = `
+        UPDATE productions 
+        SET name = ?, responsible = ?, cultivation = ?, cycle = ?, 
+            sensors = ?, supplies = ?, start_date = ?, end_date = ?, status = ?
+        WHERE id = ?
+    `;
+
+    db.query(sql, [
+        name, responsible, cultivation, cycle, 
+        sensorsStr, suppliesStr, startDate, endDate, status, 
+        req.params.id
+    ], (err, result) => {
+        if (err) {
+            console.error('Error updating production:', err);
+            return res.status(500).json({ error: 'Error al actualizar producción' });
+        }
+        
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Producción no encontrada' });
+        }
+        
+        res.json({ success: true, message: 'Producción actualizada exitosamente' });
+    });
+});
+
+// Eliminar una producción
+productionRoutes.delete('/:id', (req, res) => {
+    const sql = 'DELETE FROM productions WHERE id = ?';
+    
+    db.query(sql, [req.params.id], (err, result) => {
+        if (err) {
+            console.error('Error deleting production:', err);
+            return res.status(500).json({ error: 'Error al eliminar producción' });
+        }
+        
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Producción no encontrada' });
+        }
+        
+        res.json({ success: true, message: 'Producción eliminada exitosamente' });
+    });
+});
+
+// Montar las rutas de producciones
+app.use('/api/productions', productionRoutes);
+
+// Función de ayuda para promisificar las consultas
+function queryPromise(sql, params = []) {
+    return new Promise((resolve, reject) => {
+        db.query(sql, params, (err, results) => {
+            if (err) reject(err);
+            else resolve(results);
+        });
+    });
+}
