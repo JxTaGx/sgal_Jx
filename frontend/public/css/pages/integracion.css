@@ -320,6 +320,8 @@ body {
   font-family: var(--font-primary);
   font-size: var(--font-size-base);
   transition: all var(--transition-fast);
+  width: 36rem;
+  height: 4.8rem;
 }
 
 .dashboard__input:focus,
@@ -706,6 +708,7 @@ body {
   background-color: var(--color-primary);
   color: var(--white);
   margin-top: 1rem;
+  height: 4.2rem;
 }
 
 .dashboard__button--primary:hover {
@@ -718,10 +721,10 @@ body {
   background-color: transparent;
   color: var(--color-primary);
   border: 0.1rem solid var(--color-primary);
-  margin-top: 4.5rem;
+  margin-top: 4.8rem;
   padding: 1.2rem 2.4rem;
   width: 21.5rem;
-  height: 3.4rem;
+  height: 4.2rem;
 }
 
 .dashboard__button--save:hover {
@@ -732,10 +735,10 @@ body {
   background-color: var(--color-primary);
   color: var(--white);
   margin-top: 1rem;
-  margin-top: 4.5rem;
+  margin-top: 4.8rem;
   padding: 1.2rem 2.4rem;
   width: 21.5rem;
-  height: 3.4rem;
+  height: 4.2rem;
 }
 
 .dashboard__button--create:hover {
@@ -749,6 +752,7 @@ body {
   color: var(--color-primary);
   border: 0.1rem solid var(--color-primary);
   margin-top: 1rem;
+  height: 4.2rem;
 }
 
 .dashboard__button--secondary:hover {
@@ -758,9 +762,9 @@ body {
 .dashboard__button--tertiary {
   background-color: var(--gray-350);
   color: var(--color-text-primary);
-  margin-top: 4.5rem;
+  margin-top: 4.8rem;
   width: 7.7rem;
-  height: 3.4rem;
+  height: 4.2rem;
   border: 0.1rem solid var(--black);
   padding: 1.2rem 2.4rem;
   padding-right: 6rem;
