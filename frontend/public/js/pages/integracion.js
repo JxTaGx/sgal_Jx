@@ -107,15 +107,19 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             // Generar ID automático para nueva producción
-            const prodResponse = await fetch(`${API_BASE_URL}/productions`);
-            const productions = await prodResponse.json();
-            document.querySelector('[data-field="production-id"]').value = `prod-${productions.data.length + 1}`;
-            
-        } catch (error) {
-            console.error('Error al poblar dropdowns:', error);
-            showSnackbar('Error al cargar datos de los dropdowns', 'error');
-        }
+           // Obtener el próximo ID
+        const prodResponse = await fetch(`${API_BASE_URL}/productions`);
+        const productions = await prodResponse.json();
+        const nextId = productions.data.length > 0 ? 
+            Math.max(...productions.data.map(p => p.id)) + 1 : 1;
+        
+        document.querySelector('[data-field="production-id"]').value = `prod-${nextId}`;
+        
+    } catch (error) {
+        console.error('Error al poblar dropdowns:', error);
+        showSnackbar('Error al cargar datos de los dropdowns', 'error');
     }
+}
 
     // Configurar formulario de creación
     function setupCreateForm() {
@@ -212,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!validateCreateForm()) return;
         
         const form = document.querySelector('[data-form="create"]');
-        const id = form.querySelector('[data-field="production-id"]').value;
+        const idDisplay = form.querySelector('[data-field="production-id"]').value;
         
         const newProduction = {
             name: form.querySelector('[data-field="name"]').value,
@@ -236,16 +240,16 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const result = await response.json();
             
-            if (!result.success) {
+            if (!response.ok) {
                 throw new Error(result.error || 'Error al crear producción');
             }
             
-            showSnackbar('Producción creada exitosamente');
+            showSnackbar(`Producción creada exitosamente con ID: ${result.displayId}`);
             resetForms();
             await loadProductionsList();
         } catch (error) {
             console.error('Error al crear producción:', error);
-            showSnackbar('Error al crear producción', 'error');
+            showSnackbar(error.message || 'Error al crear producción', 'error');
         }
     }
 
@@ -279,15 +283,22 @@ document.addEventListener('DOMContentLoaded', function() {
     async function viewProduction(productionId) {
         try {
             const response = await fetch(`${API_BASE_URL}/productions/${productionId}`);
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al obtener producción');
+            }
+    
             const result = await response.json();
             
-            if (!result.success || !result.data) {
-                throw new Error('No se encontró la producción');
+            // Verificar si realmente hay datos
+            if (!result.data) {
+                throw new Error('Producción no encontrada');
             }
             
             const production = result.data;
-            currentProductionId = productionId;
-            
+            currentProductionId = production.id; // Usar el ID real de la base de datos
+    
             // Mostrar sección de resultados
             const resultSection = document.querySelector('[data-result="view"]');
             resultSection.classList.remove('dashboard__result--hidden');
@@ -382,7 +393,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch (error) {
             console.error('Error al visualizar producción:', error);
-            showSnackbar('No se encontró la producción', 'error');
+            // Solo mostrar error si realmente no se encontró
+            if (error.message.includes('no encontrada') || error.message.includes('not found')) {
+                showSnackbar('Producción no encontrada', 'error');
+            }
         }
     }
 
@@ -460,12 +474,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Llenar formulario con datos existentes
                 updateForm.innerHTML = '';
-                
+    
+                // Obtener datos para los dropdowns
+                const dropdownsResponse = await fetch(`${API_BASE_URL}/integracion/data`);
+                const dropdownsData = await dropdownsResponse.json();
+    
                 const fields = [
                     { label: 'Nombre de Producción', type: 'text', name: 'name', value: production.name, required: true },
-                    { label: 'Fecha Estimada de Fin', type: 'date', name: 'end-date', value: production.end_date, required: true }
+                    { label: 'Responsable', type: 'select', name: 'responsible', options: dropdownsData.data.users, selected: production.responsible, required: true },
+                    { label: 'Cultivo', type: 'select', name: 'cultivation', options: dropdownsData.data.cultivations, selected: production.cultivation, required: true },
+                    { label: 'Ciclo', type: 'select', name: 'cycle', options: dropdownsData.data.cycles, selected: production.cycle, required: true },
+                    { label: 'Sensores', type: 'select-multiple', name: 'sensors', options: dropdownsData.data.sensors, selected: production.sensors, required: true },
+                    { label: 'Insumos', type: 'select-multiple', name: 'supplies', options: dropdownsData.data.supplies, selected: production.supplies, required: true },
+                    { label: 'Fecha de Inicio', type: 'date', name: 'start-date', value: production.start_date, required: true },
+                    { label: 'Fecha Estimada de Fin', type: 'date', name: 'end-date', value: production.end_date, required: true },
+                    { label: 'Estado', type: 'select', name: 'status', options: [
+                        {id: 'active', name: 'Activo'}, 
+                        {id: 'inactive', name: 'Inactivo'}
+                    ], selected: production.status, required: true }
                 ];
-                
+    
+                // Función auxiliar para crear campos del formulario
                 fields.forEach(field => {
                     const group = document.createElement('div');
                     group.className = 'dashboard__form-group';
@@ -474,18 +503,56 @@ document.addEventListener('DOMContentLoaded', function() {
                     label.className = 'dashboard__label';
                     label.textContent = field.label;
                     
-                    const input = document.createElement('input');
-                    input.className = 'dashboard__input';
-                    input.type = field.type;
-                    input.setAttribute('data-field', field.name);
-                    input.value = field.value;
-                    if (field.required) input.required = true;
-                    
                     group.appendChild(label);
-                    group.appendChild(input);
+                    
+                    if (field.type === 'select') {
+                        const select = document.createElement('select');
+                        select.className = 'dashboard__select';
+                        select.setAttribute('data-field', field.name);
+                        if (field.required) select.required = true;
+                        
+                        field.options.forEach(option => {
+                            const optElement = document.createElement('option');
+                            optElement.value = option.id;
+                            optElement.textContent = option.name;
+                            if (option.id == field.selected) optElement.selected = true;
+                            select.appendChild(optElement);
+                        });
+                        
+                        group.appendChild(select);
+                    } else if (field.type === 'select-multiple') {
+                        const select = document.createElement('select');
+                        select.className = 'dashboard__select';
+                        select.multiple = true;
+                        select.size = 3;
+                        select.setAttribute('data-field', field.name);
+                        if (field.required) select.required = true;
+                        
+                        field.options.forEach(option => {
+                            const optElement = document.createElement('option');
+                            optElement.value = option.id;
+                            optElement.textContent = option.name;
+                            if (field.selected && field.selected.includes(option.id.toString())) {
+                                optElement.selected = true;
+                            }
+                            select.appendChild(optElement);
+                        });
+                        
+                        group.appendChild(select);
+                    } else {
+                        const input = document.createElement('input');
+                        input.className = 'dashboard__input';
+                        input.type = field.type;
+                        input.setAttribute('data-field', field.name);
+                        input.value = field.value;
+                        if (field.required) input.required = true;
+                        
+                        group.appendChild(input);
+                    }
+                    
                     updateForm.insertBefore(group, updateForm.querySelector('.dashboard__form-actions'));
                 });
-                
+    
                 // Botones de acciones
                 const actions = document.createElement('div');
                 actions.className = 'dashboard__form-actions';
@@ -528,7 +595,14 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const updatedData = {
                 name: form.querySelector('[data-field="name"]').value,
-                end_date: form.querySelector('[data-field="end-date"]').value
+                responsible: form.querySelector('[data-field="responsible"]').value,
+                cultivation: form.querySelector('[data-field="cultivation"]').value,
+                cycle: form.querySelector('[data-field="cycle"]').value,
+                sensors: Array.from(form.querySelector('[data-field="sensors"]').selectedOptions).map(opt => opt.value),
+                supplies: Array.from(form.querySelector('[data-field="supplies"]').selectedOptions).map(opt => opt.value),
+                start_date: form.querySelector('[data-field="start-date"]').value,
+                end_date: form.querySelector('[data-field="end-date"]').value,
+                status: form.querySelector('[data-field="status"]').value || 'active'
             };
             
             const response = await fetch(`${API_BASE_URL}/productions/${currentProductionId}`, {
@@ -541,17 +615,16 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const result = await response.json();
             
-            if (!result.success) {
+            if (!response.ok) {
                 throw new Error(result.error || 'Error al actualizar producción');
             }
             
             showSnackbar('Producción actualizada exitosamente');
             form.classList.add('dashboard__form--hidden');
-            await viewProduction(currentProductionId);
             await loadProductionsList();
         } catch (error) {
             console.error('Error al actualizar producción:', error);
-            showSnackbar('Error al actualizar la producción', 'error');
+            showSnackbar(error.message || 'Error al actualizar la producción', 'error');
         }
     }
 
@@ -561,27 +634,38 @@ document.addEventListener('DOMContentLoaded', function() {
         
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
-            const productionId = form.querySelector('[data-field="production-id"]').value;
+            const productionId = form.querySelector('[data-field="production-id"]').value.trim();
             
+            if (!productionId) {
+                showSnackbar('Ingrese un ID de producción', 'error');
+                return;
+            }
+    
             try {
                 const response = await fetch(`${API_BASE_URL}/productions/${productionId}`);
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Error al buscar producción');
+                }
+    
                 const result = await response.json();
                 
-                if (!result.success || !result.data) {
-                    throw new Error('No se encontró la producción');
+                if (!result.data) {
+                    throw new Error('Producción no encontrada');
                 }
-                
+    
                 const production = result.data;
-                currentProductionId = productionId;
-                
+                currentProductionId = production.id;
+    
                 const resultSection = document.querySelector('[data-result="enable"]');
                 resultSection.classList.remove('dashboard__result--hidden');
-                
+    
                 const content = document.querySelector('[data-content="status"]');
                 content.innerHTML = `
                     <div class="dashboard__info-item">
                         <div class="dashboard__info-label">Producción</div>
-                        <div class="dashboard__info-value">${production.name}</div>
+                        <div class="dashboard__info-value">${production.name} (ID: ${production.id})</div>
                     </div>
                     <div class="dashboard__info-item">
                         <div class="dashboard__info-label">Estado actual</div>
@@ -592,36 +676,49 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     </div>
                 `;
-                
+    
                 // Configurar botón para cambiar estado
                 const toggleButton = document.querySelector('[data-action="toggle-status"]');
                 toggleButton.onclick = async function() {
                     try {
                         const newStatus = production.status === 'active' ? 'inactive' : 'active';
-                        const updateResponse = await fetch(`${API_BASE_URL}/productions/${productionId}`, {
+                        const updateResponse = await fetch(`${API_BASE_URL}/productions/${production.id}`, {
                             method: 'PUT',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify({ status: newStatus })
+                            body: JSON.stringify({ 
+                                status: newStatus,
+                                // Mantener todos los demás campos igual
+                                name: production.name,
+                                responsible: production.responsible,
+                                cultivation: production.cultivation,
+                                cycle: production.cycle,
+                                sensors: production.sensors,
+                                supplies: production.supplies,
+                                start_date: production.start_date,
+                                end_date: production.end_date
+                            })
                         });
-                        
-                        const updateResult = await updateResponse.json();
-                        
-                        if (!updateResult.success) {
-                            throw new Error(updateResult.error || 'Error al cambiar estado');
+    
+                        if (!updateResponse.ok) {
+                            const errorData = await updateResponse.json();
+                            throw new Error(errorData.error || 'Error al actualizar estado');
                         }
+    
+                        showSnackbar(`Estado cambiado a ${newStatus === 'active' ? 'Activo' : 'Inactivo'} correctamente`);
                         
-                        showSnackbar(`Estado cambiado a ${newStatus === 'active' ? 'Activo' : 'Inactivo'}`);
-                        setupEnableForm();
+                        // Actualizar la vista
+                        form.dispatchEvent(new Event('submit'));
                     } catch (error) {
                         console.error('Error al cambiar estado:', error);
-                        showSnackbar('Error al cambiar estado', 'error');
+                        showSnackbar(error.message || 'Error al cambiar estado', 'error');
                     }
                 };
             } catch (error) {
-                console.error('Error al buscar producción:', error);
-                showSnackbar('No se encontró la producción', 'error');
+                console.error('Error:', error);
+                showSnackbar(error.message.includes('no encontrada') ? 
+                    'Producción no encontrada' : 'Error al buscar producción', 'error');
             }
         });
     }
@@ -669,7 +766,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const response = await fetch(`${API_BASE_URL}/productions`);
             const result = await response.json();
             
-            if (!result.success) {
+            if (!response.ok) {
                 throw new Error('Error al obtener producciones');
             }
             
@@ -717,15 +814,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            paginatedProductions.forEach(production => {
-                const row = document.createElement('tr');
-                row.className = 'dashboard__table-row';
-                
-                // ID
-                const idCell = document.createElement('td');
-                idCell.className = 'dashboard__table-cell';
-                idCell.textContent = production.id;
-                row.appendChild(idCell);
+            // En la creación de filas de la tabla, modifica:
+        paginatedProductions.forEach(production => {
+            const row = document.createElement('tr');
+            row.className = 'dashboard__table-row';
+            
+            // ID (mostrar como prod-X)
+            const idCell = document.createElement('td');
+            idCell.className = 'dashboard__table-cell';
+            idCell.textContent = `prod-${production.id}`;
+            row.appendChild(idCell);
                 
                 // Nombre
                 const nameCell = document.createElement('td');

@@ -1003,25 +1003,32 @@ productionRoutes.post('/', (req, res) => {
         return res.status(400).json({ error: 'Faltan campos obligatorios' });
     }
 
-    // Convertir arrays a strings si es necesario
-    const sensorsStr = Array.isArray(sensors) ? sensors.join(',') : sensors;
-    const suppliesStr = Array.isArray(supplies) ? supplies.join(',') : supplies;
-
     const sql = `
         INSERT INTO productions 
         (name, responsible, cultivation, cycle, sensors, supplies, start_date, end_date, status)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'active')
     `;
 
-    db.query(sql, [name, responsible, cultivation, cycle, sensorsStr, suppliesStr, startDate, endDate], (err, result) => {
+    db.query(sql, [
+        name, 
+        responsible, 
+        cultivation, 
+        cycle, 
+        Array.isArray(sensors) ? sensors.join(',') : sensors,
+        Array.isArray(supplies) ? supplies.join(',') : supplies,
+        startDate, 
+        endDate
+    ], (err, result) => {
         if (err) {
             console.error('Error creating production:', err);
             return res.status(500).json({ error: 'Error al crear producción' });
         }
         
+        // Devolver tanto el ID numérico como el formateado
         res.json({
             success: true,
-            id: result.insertId,
+            id: result.insertId, // ID numérico de MySQL
+            displayId: `prod-${result.insertId}`, // ID formateado
             message: 'Producción creada exitosamente'
         });
     });
@@ -1093,9 +1100,21 @@ productionRoutes.get('/:id', (req, res) => {
 });
 
 // Actualizar una producción
+// Ruta para actualizar una producción
 productionRoutes.put('/:id', (req, res) => {
-    const { name, responsible, cultivation, cycle, sensors, supplies, startDate, endDate, status } = req.body;
-    
+    const id = req.params.id;
+    const { 
+        name, 
+        responsible, 
+        cultivation, 
+        cycle, 
+        sensors, 
+        supplies, 
+        start_date, 
+        end_date, 
+        status 
+    } = req.body;
+
     // Convertir arrays a strings si es necesario
     const sensorsStr = Array.isArray(sensors) ? sensors.join(',') : sensors;
     const suppliesStr = Array.isArray(supplies) ? supplies.join(',') : supplies;
@@ -1109,19 +1128,26 @@ productionRoutes.put('/:id', (req, res) => {
 
     db.query(sql, [
         name, responsible, cultivation, cycle, 
-        sensorsStr, suppliesStr, startDate, endDate, status, 
-        req.params.id
+        sensorsStr, suppliesStr, start_date, end_date, status, 
+        id
     ], (err, result) => {
         if (err) {
             console.error('Error updating production:', err);
-            return res.status(500).json({ error: 'Error al actualizar producción' });
+            return res.status(500).json({ 
+                error: 'Error al actualizar producción', 
+                details: err.message 
+            });
         }
         
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Producción no encontrada' });
         }
         
-        res.json({ success: true, message: 'Producción actualizada exitosamente' });
+        res.json({ 
+            success: true, 
+            message: 'Producción actualizada exitosamente',
+            id: id
+        });
     });
 });
 
