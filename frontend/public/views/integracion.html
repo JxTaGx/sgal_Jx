@@ -14,10 +14,6 @@
         <header class="header">
             <div class="header__container">
                 <h1 class="header__title">Gestión de Producción</h1>
-                <div class="header__user">
-                    <span class="header__user-name">Admin</span>
-                    <i class="material-icons header__user-icon">account_circle</i>
-                </div>
             </div>
         </header>
 
@@ -35,6 +31,7 @@
         <main class="dashboard">
             <!-- Sección Crear Producción -->
             <section class="dashboard__section dashboard__section--active" data-panel="create">
+
                 <div class="dashboard__heading">
                     <h2 class="dashboard__title">
                         <i class="material-icons dashboard__icon">add_circle</i>
@@ -57,7 +54,7 @@
                                     <option value="">Seleccione un responsable</option>
                                 </select>
                                 <button class="dashboard__button dashboard__button--icon" type="button" data-action="add-user">
-                                    <i class="material-icons">person_add</i>
+                                    <i onclick="window.location.href='../views/register.html'" class="material-icons">person_add</i>
                                 </button>
                             </div>
                             <span class="dashboard__error" data-error="responsible"></span>
@@ -76,7 +73,7 @@
                                     <option value="">Seleccione un cultivo</option>
                                 </select>
                                 <button class="dashboard__button dashboard__button--icon" type="button" data-action="add-cultivation">
-                                    <i class="material-icons">add_circle</i>
+                                    <i onclick="window.location.href='../views/create-cultivo.html'" class="material-icons">add_circle</i>
                                 </button>
                             </div>
                             <span class="dashboard__error" data-error="cultivation"></span>
@@ -89,7 +86,7 @@
                                     <option value="">Seleccione un ciclo</option>
                                 </select>
                                 <button class="dashboard__button dashboard__button--icon" type="button" data-action="add-cycle">
-                                    <i class="material-icons">add_circle</i>
+                                    <i onclick="window.location.href='../views/create-ciclo-cultivo.html'" class="material-icons">add_circle</i>
                                 </button>
                             </div>
                             <span class="dashboard__error" data-error="cycle"></span>
@@ -140,6 +137,7 @@
                             <button class="dashboard__button dashboard__button--save" type="button" data-action="save-draft">Guardar Borrador</button>
                             <button class="dashboard__button dashboard__button--create" type="submit" disabled data-action="create">Crear Producción</button>
                         </div>
+                        
                     </form>
                 </div>
             </section>
