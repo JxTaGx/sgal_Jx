@@ -208,7 +208,7 @@ body {
     z-index: 1; 
 }
 
-.form-section h1 {
+.main__section h1 {
     text-align: center;
     font-size: var(--font-size-h2);
     color: var(--black);
@@ -239,18 +239,18 @@ svg {
     max-width: 38rem;
 }
 
-.form__group--full-width {
+.form__group-full--width {
     flex: 1 1 100%;
 }
 
-.form__label {
+.form__group-label  {
     font-size: var(--font-size-h5);
     margin-bottom: 0.8rem;
     color: var(--gray-550);
 }
 
-.form__input,
-.form__textarea {
+.form__group-input,
+.form__group-textarea {
     width: 32rem;
     height: 4.8rem;
     padding: 1rem;
@@ -260,12 +260,12 @@ svg {
     background-color: var(--gray-150);
 }
 
-.form__textarea {
+.form__group-textarea {
     resize: none;
     height: 6rem;
 }
 
-.form__input--disabled {
+.form__group--disabled {
     background-color: var(--gray-150);
     color: var(--gray-550);
 }

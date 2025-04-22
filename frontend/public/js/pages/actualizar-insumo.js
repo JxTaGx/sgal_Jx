@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const cantidadInput = document.querySelector('input[type="number"][value="50"]');
     const valorUnitarioInput = document.querySelector('input[value="$2,500"]');
     const valorTotalInput = document.querySelector('input[value="$125,000"]');
-    const descripcionTextarea = document.querySelector(".form__textarea");
+    const descripcionTextarea = document.querySelector(".form__group-textarea");
     const saveButton = document.querySelector(".form__button--save");
     
     // Verificación de elementos

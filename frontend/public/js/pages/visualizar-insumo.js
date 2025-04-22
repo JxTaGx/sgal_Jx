@@ -14,9 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const cantidadInput = form.querySelector('input[type="number"]');
     const valorUnitarioInput = form.querySelector('input[value="$2,500"]');
     const descripcionTextarea = form.querySelector('textarea');
-    const editBtn = form.querySelector('.editBtn');
-    const backBtn = form.querySelector('.backBtn');
-    const desBtn = form.querySelector('.desBtn');
+    const editBtn = form.querySelector('.button__edit');
+    const backBtn = form.querySelector('.button__back');
+    const desBtn = form.querySelector('.button__estado');
   
     // Configurar atributos de validación HTML5
     setupValidationAttributes();

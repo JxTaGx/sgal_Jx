@@ -172,7 +172,7 @@ body {
     padding: 1rem;
 }
 
-.logo {
+.header__logo {
     width: 8rem;
     height: 8rem;
     background-image: url("/frontend/IMG/logo-sena.png"); 
@@ -207,7 +207,7 @@ body {
     z-index: 1; 
 }
 
-.formSection h1 {
+.container__form h1 {
     text-align: center;
     font-size: var(--font-size-h2);
     color: var(--black);
@@ -216,12 +216,12 @@ body {
     margin-bottom: 20rem;
 }
 
-.decoration-title {
+.container__decoration-title {
     margin-right: 1rem;
     margin-bottom: 0.2rem;
 }
 
-.status{
+.container__logo{
     margin-left: 6rem;
     width: 73rem;   
     margin-bottom: -2rem;
@@ -236,25 +236,25 @@ body {
     margin-left: 3rem;
 }
 
-.formGroup {
+.form__group {
     flex: 1 1 45%;
     display: flex;
     flex-direction: column;
     max-width: 38rem;
 }
 
-.fullWidth {
+.form__group-fullwidth {
     flex: 1 1 100%;
 }
 
-.formGroup label {
+.form__group label {
     font-size: var(--font-size-h5);
     margin-bottom: 0.8rem;
     color: var(--gray-550);
 }
 
-.formGroup input,
-.formGroup textarea {
+.form__group input,
+.form__group textarea {
     width: 32rem;
     height: 4.8rem;
     padding: 1rem;
@@ -274,27 +274,27 @@ input[disabled] {
     color: var(--gray-550);
 }
 
-.buttonGroup {
+.button__group {
     display: flex;
     justify-content: space-around;
     width: 100%;
 }
 
-.btn {
+.button {
     padding: 1.2rem 2.4rem;
     font-size: var(--font-size-h5);
     border-radius: 0.4rem;
     cursor: pointer;
 }
 
-.backBtn {
+.button__back {
     background-color: var(--gray-550);
     color: var(--white);
     z-index: 1;
     border: 0.1rem solid var(--black);
 }
 
-.desBtn {
+.button__estado {
     background-color: var(--secondary-2-950);
     color: var(--white);
     z-index: 1;
@@ -302,7 +302,7 @@ input[disabled] {
     margin-left: 22rem;
 }
 
-.editBtn {
+.button__edit {
     background-color: var(--secondary-1-400);
     color: var(--white);
     z-index: 1;
@@ -322,12 +322,12 @@ body {
         padding: 1.5rem;
     }
 
-    .formGroup {
+    .form__group {
         flex: 1 1 100%; 
         max-width: 100%; 
     }
 
-    .status {
+    .container__logo {
         margin-left: 0; 
         width: auto; 
     }
@@ -339,11 +339,11 @@ body {
         align-items: center; 
     }
 
-    .logo {
+    .header__logo {
         margin: 1rem 0; 
     }
 
-    .formSection h1 {
+    .container__form h1 {
         font-size: var(--font-size-h3); 
         margin-top: -5rem; 
         margin-bottom: 10rem; 
@@ -354,18 +354,18 @@ body {
         margin-top: 0; 
     }
 
-    .buttonGroup {
+    .button__group {
         flex-direction: column; 
         align-items: center; 
         width: 20%;
     }
 
-    .btn {
+    .button{
         width: 100%; 
         margin-bottom: 1rem; 
     }
 
-    .desBtn {
+    .button__estado {
         margin-right: 3rem;
     }
 }
@@ -375,20 +375,20 @@ body {
         font-size: var(--font-size-h5); 
     }
 
-    .formGroup input,
-    .formGroup textarea {
+    .form__group input,
+    .form__group textarea {
         width: 100%; 
     }
 
-    .formSection h1 {
+    .container__form h1 {
         font-size: var(--font-size-h4); 
     }
 
-    .btn {
+    .button {
         padding: 1rem 2rem; 
     }
 
-    .buttonGroup {
+    .button__group {
         width: 37%;
     }
 }
