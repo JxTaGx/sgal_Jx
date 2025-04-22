@@ -164,7 +164,7 @@ h6 {
 }
 
 /* Layout principal - Estilos BEM unificados */
-.form-crear {
+.form {
     width: 100%;
     max-width: 120rem;
     height: 100vh;
@@ -177,7 +177,7 @@ h6 {
 }
 
 /* Header y elementos de navegación */
-.form-crear__header {
+.form__header {
     width: 100%;
     display: flex;
     justify-content: flex-start;
@@ -186,7 +186,7 @@ h6 {
     height: 5rem;
 }
 
-.form-crear__logo {
+.form__logo {
     width: 8rem;
     height: auto;
     position: absolute;
@@ -195,7 +195,7 @@ h6 {
     z-index: 2;
 }
 
-.form-crear__title {
+.form__title {
     font-size: var(--font-size-h1);
     color: var(--black);
     position: absolute;
@@ -204,7 +204,7 @@ h6 {
     white-space: nowrap;
 }
 
-.form-crear__icon {
+.form__icon {
     position: absolute;
     left: 3rem;
     top: 9.3rem;
@@ -214,7 +214,7 @@ h6 {
 }
 
 /* Formulario principal */
-.form-crear__form {
+.form__content {
     width: 100%;
     height: calc(100vh - 12rem);
     background-color: var(--white);
@@ -229,7 +229,7 @@ h6 {
     overflow: hidden;
 }
 
-.form-crear__form::before {
+.form__content::before {
     content: ""; 
     position: absolute; 
     inset: 0;
@@ -241,13 +241,13 @@ h6 {
     border-radius: 0.5rem;
 }
 
-.form-crear__form > * {
+.form__content > * {
     position: relative; 
     z-index: 1; 
 }
 
 /* Columnas del formulario */
-.form-crear__column {
+.form__column {
     width: 45%;
     display: flex;
     flex-direction: column;
@@ -257,11 +257,11 @@ h6 {
 }
 
 /* Grupos de formulario */
-.form-crear__form-group {
+.form__group {
     margin-bottom: 1rem;
 }
 
-.form-crear__label {
+.form__label {
     display: block;
     font-size: var(--font-size-h5);
     margin-bottom: 0.1rem;
@@ -269,7 +269,7 @@ h6 {
     text-align: left;
 }
 
-.form-crear__input {
+.form__input {
     width: 32rem;
     height: 4.8rem;
     padding: 1rem;
@@ -278,7 +278,7 @@ h6 {
     border-radius: 0.5rem;
 }
 
-.form-crear__textarea {
+.form__textarea {
     resize: none;
     height: 10rem;
     width: 32rem;
@@ -289,7 +289,7 @@ h6 {
 }
 
 /* Área de carga de archivos */
-.form-crear__upload-area {
+.form__upload-area {
     width: 32rem;
     height: 10rem;
     border: 0.2rem dashed var(--gray-350);
@@ -300,12 +300,12 @@ h6 {
     overflow: hidden;
 }
 
-.form-crear__upload-text {
+.form__upload-text {
     margin: 0;
 }
 
 /* Botones y acciones */
-.form-crear__actions {
+.form__actions {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -314,7 +314,7 @@ h6 {
     margin-top: auto;
 }
 
-.form-crear__btn {
+.form__btn {
     padding: 1.2rem 2.4rem;
     font-size: var(--font-size-h5);
     color: var(--white);
@@ -325,90 +325,90 @@ h6 {
     white-space: nowrap;
 }
 
-.form-crear__btn--volver {
+.form__btn--volver {
     background-color: var(--gray-550);
 }
 
-.form-crear__btn--crear {
+.form__btn--crear {
     background-color: var(--primary-900);
 }
 
 /* Estilos específicos para el formulario de cultivo */
-.form-crear--cultivo .form-crear__column {
+.form--cultivo .form__column {
     padding-left: 8rem;
 }
 
-.form-crear--cultivo .form-crear__upload-area {
+.form--cultivo .form__upload-area {
     height: 15rem;
     padding: 5rem;
 }
 
 /* Estilos específicos para el formulario de insumo */
-.form-crear--insumo .form-crear__logo {
+.form--insumo .form__logo {
     margin-right: 138rem;
     margin-top: 1rem;
 }
 
-.form-crear--insumo .form-crear__title {
+.form--insumo .form__title {
     margin-right: 50rem;
 }
 
-.form-crear--insumo .form-crear__icon {
+.form--insumo .form__icon {
     margin-right: 103rem;
     margin-bottom: -11.5rem;
 }
 
-.form-crear--insumo .form-crear__column--right {
+.form--insumo .form__column--right {
     margin-top: 7rem;
 }
 
 /* Estilos específicos para el formulario de sensor */
-.form-crear--sensor .form-crear__logo {
+.form--sensor .form__logo {
     margin-right: 139rem;
     margin-top: 1rem;
     margin-bottom: -2rem;
 }
 
-.form-crear--sensor .form-crear__icon {
+.form--sensor .form__icon {
     margin-right: 106rem;
     margin-bottom: -10.5rem;
 }
 
-.form-crear--sensor .form-crear__title {
+.form--sensor .form__title {
     margin-right: 50rem;
 }
 
-.form-crear--sensor .form-crear__column--right {
+.form--sensor .form__column--right {
     margin-top: 7rem;
     margin-bottom: -20rem;
 }
 
-.form-crear--sensor .form-crear__upload-area {
+.form--sensor .form__upload-area {
     height: 15rem;
     padding: 5rem;
 }
 
 /* Media Queries para diferentes tamaños de pantalla */
 @media (max-width: 1200px) {
-    .form-crear__logo {
+    .form__logo {
         width: 6rem;
         left: 1rem;
         top: -1rem;
     }
 
-    .form-crear__title {
+    .form__title {
         font-size: var(--font-size-h2);
         left: 10rem;
         top: -7rem;
     }
 
-    .form-crear__input,
-    .form-crear__textarea,
-    .form-crear__upload-area {
+    .form__input,
+    .form__textarea,
+    .form__upload-area {
         width: 28rem;
     }
     
-    .form-crear__actions {
+    .form__actions {
         gap: 5rem;
         margin-top: 3rem;
         position: relative;
@@ -417,40 +417,40 @@ h6 {
     }
 
     /* Ajustes específicos para insumo y sensor en desktop mediano */
-    .form-crear--insumo .form-crear__logo,
-    .form-crear--sensor .form-crear__logo {
+    .form--insumo .form__logo,
+    .form--sensor .form__logo {
         margin-right: 100rem;
     }
 
-    .form-crear--insumo .form-crear__icon,
-    .form-crear--sensor .form-crear__icon {
+    .form--insumo .form__icon,
+    .form--sensor .form__icon {
         margin-right: 80rem;
     }
 
-    .form-crear--insumo .form-crear__title,
-    .form-crear--sensor .form-crear__title {
+    .form--insumo .form__title,
+    .form--sensor .form__title {
         margin-right: 30rem;
     }
 }
 
 @media (max-width: 768px) {
-    .form-crear__header {
+    .form__header {
         height: 6rem;
     }
     
-    .form-crear__logo {
+    .form__logo {
         width: 5rem;
         left: 1rem;
         top: 0.5rem;
     }
     
-    .form-crear__title {
+    .form__title {
         font-size: var(--font-size-h3);
         left: 8rem;
         top: -7rem;
     }
     
-    .form-crear__form {
+    .form__content {
         flex-direction: column;
         align-items: center;
         height: auto;
@@ -460,27 +460,27 @@ h6 {
         padding: 1rem;
     }
     
-    .form-crear__column {
+    .form__column {
         width: 95%;
         margin: 0 0 1rem 0;
         top: 2rem;
     }
     
-    .form-crear__input,
-    .form-crear__textarea,
-    .form-crear__upload-area {
+    .form__input,
+    .form__textarea,
+    .form__upload-area {
         width: 100%;
     }
     
-    .form-crear__textarea {
+    .form__textarea {
         height: 8rem;
     }
     
-    .form-crear__upload-area {
+    .form__upload-area {
         height: 8rem;
     }
     
-    .form-crear__actions {
+    .form__actions {
         gap: 2rem;
         margin-top: 4rem;
         padding-bottom: 2rem;
@@ -488,49 +488,49 @@ h6 {
     }
 
     /* Ajustes específicos para tablet */
-    .form-crear--cultivo .form-crear__column,
-    .form-crear--insumo .form-crear__column,
-    .form-crear--sensor .form-crear__column {
+    .form--cultivo .form__column,
+    .form--insumo .form__column,
+    .form--sensor .form__column {
         padding-left: 0;
         align-items: center;
     }
 
-    .form-crear--insumo .form-crear__logo,
-    .form-crear--sensor .form-crear__logo {
+    .form--insumo .form__logo,
+    .form--sensor .form__logo {
         margin-right: 0;
         margin-top: 2rem;
         position: static;
     }
 
-    .form-crear--insumo .form-crear__icon,
-    .form-crear--sensor .form-crear__icon {
+    .form--insumo .form__icon,
+    .form--sensor .form__icon {
         margin-right: 0;
         margin-bottom: 1rem;
         position: static;
     }
 
-    .form-crear--insumo .form-crear__title,
-    .form-crear--sensor .form-crear__title {
+    .form--insumo .form__title,
+    .form--sensor .form__title {
         margin-right: 0;
         text-align: center;
     }
 
-    .form-crear--insumo .form-crear__column--right,
-    .form-crear--sensor .form-crear__column--right {
+    .form--insumo .form__column--right,
+    .form--sensor .form__column--right {
         margin-top: 2rem;
         margin-bottom: 0;
     }
 }
 
 @media (max-width: 480px) {
-    .form-crear {
+    .form {
         padding: 0.5rem;
         height: auto;
         min-height: 100vh;
         justify-content: space-between;
     }
     
-    .form-crear__header {
+    .form__header {
         height: auto;
         flex-direction: column;
         align-items: center;
@@ -538,23 +538,23 @@ h6 {
         padding-top: 1rem;
     }
     
-    .form-crear__logo {
+    .form__logo {
         position: static;
         width: 4rem;
         margin: 0.5rem 0;
     }
     
-    .form-crear__title {
+    .form__title {
         position: static;
         font-size: var(--font-size-h4);
         margin: 0.5rem 0;
     }
     
-    .form-crear__icon {
+    .form__icon {
         display: none;
     }
     
-    .form-crear__form {
+    .form__content {
         height: auto;
         max-height: 86vh;
         min-height: 60vh;
@@ -562,29 +562,29 @@ h6 {
         margin-bottom: 1rem;
     }
     
-    .form-crear__column {
+    .form__column {
         padding: 0 0.5rem;
         gap: 1rem;
         top: 0;
     }
     
-    .form-crear__form-group {
+    .form__group {
         margin-bottom: 0.8rem;
     }
     
-    .form-crear__input {
+    .form__input {
         height: 4rem;
     }
     
-    .form-crear__textarea {
+    .form__textarea {
         height: 6rem;
     }
     
-    .form-crear__upload-area {
+    .form__upload-area {
         height: 6rem;
     }
     
-    .form-crear__actions {
+    .form__actions {
         flex-direction: column;
         align-items: center;
         gap: 1rem;
@@ -592,14 +592,14 @@ h6 {
         margin-top: 2rem;
     }
     
-    .form-crear__btn {
+    .form__btn {
         width: 80%;
         padding: 1rem 1.5rem;
     }
 
     /* Ajustes específicos para móvil */
-    .form-crear--cultivo .form-crear__upload-area,
-    .form-crear--sensor .form-crear__upload-area {
+    .form--cultivo .form__upload-area,
+    .form--sensor .form__upload-area {
         height: 6rem;
         padding: 0;
     }

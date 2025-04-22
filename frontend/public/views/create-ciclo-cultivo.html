@@ -7,55 +7,55 @@
     <link rel="stylesheet" href="../css/pages/form-create.css">
 </head>
 <body>
-    <div class="form-crear">
-        <header class="form-crear__header">
-            <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="form-crear__logo">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="form-crear__icon">
+    <div class="form">
+        <header class="form__header">
+            <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="form__logo">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="form__icon">
                 <path d="M18 36C27.9411 36 36 27.9411 36 18C36 8.05887 27.9411 0 18 0C8.05887 0 0 8.05887 0 18C0 27.9411 8.05887 36 18 36Z" fill="#4BBD17"/>
             </svg>
         </header>
         
-        <form class="form-crear__form">
-            <div class="form-crear__column">
-                <h1 class="form-crear__title">Crear Ciclo Cultivo</h1>
+        <form class="form__content">
+            <div class="form__column">
+                <h1 class="form__title">Crear Ciclo Cultivo</h1>
                 
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="id-ciclo">ID ciclo cultivo</label>
-                    <input class="form-crear__input" type="text" name="id-ciclo" placeholder="Ingrese el ID del ciclo" title="ID del ciclo de cultivo">
+                <div class="form__group">
+                    <label class="form__label" for="id-ciclo">ID ciclo cultivo</label>
+                    <input class="form__input" type="text" name="id-ciclo" placeholder="Ingrese el ID del ciclo" title="ID del ciclo de cultivo">
                 </div>
                 
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="nombre-ciclo">Nombre ciclo cultivo</label>
-                    <input class="form-crear__input" type="text" name="nombre-ciclo" placeholder="Nombre del ciclo" title="Nombre del ciclo de cultivo">
+                <div class="form__group">
+                    <label class="form__label" for="nombre-ciclo">Nombre ciclo cultivo</label>
+                    <input class="form__input" type="text" name="nombre-ciclo" placeholder="Nombre del ciclo" title="Nombre del ciclo de cultivo">
                 </div>
                 
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="descripcion">Descripción</label>
-                    <textarea class="form-crear__textarea" name="descripcion" placeholder="Descripción del ciclo" title="Descripción del ciclo"></textarea>
+                <div class="form__group">
+                    <label class="form__label" for="descripcion">Descripción</label>
+                    <textarea class="form__textarea" name="descripcion" placeholder="Descripción del ciclo" title="Descripción del ciclo"></textarea>
                 </div>
                 
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="fotografia">Fotografía</label>
-                    <div class="form-crear__upload-area" role="button" aria-label="Subir fotografía" title="Área para subir imágenes">
-                        <p class="form-crear__upload-text">Arrastra y suelta o haz clic para subir</p>
+                <div class="form__group">
+                    <label class="form__label" for="fotografia">Fotografía</label>
+                    <div class="form__upload-area" role="button" aria-label="Subir fotografía" title="Área para subir imágenes">
+                        <p class="form__upload-text">Arrastra y suelta o haz clic para subir</p>
                     </div>
                 </div>
             </div>
             
-            <div class="form-crear__column">
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="periodo-siembra">Periodo de siembra</label>
-                    <input class="form-crear__input" type="text" name="periodo-siembra" placeholder="Ej: Primavera 2023" title="Periodo de siembra">
+            <div class="form__column">
+                <div class="form__group">
+                    <label class="form__label" for="periodo-siembra">Periodo de siembra</label>
+                    <input class="form__input" type="text" name="periodo-siembra" placeholder="Ej: Primavera 2023" title="Periodo de siembra">
                 </div>
                 
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="novedades">Novedades</label>
-                    <input class="form-crear__input" type="text" name="novedades" placeholder="Novedades del cultivo" title="Novedades del cultivo">
+                <div class="form__group">
+                    <label class="form__label" for="novedades">Novedades</label>
+                    <input class="form__input" type="text" name="novedades" placeholder="Novedades del cultivo" title="Novedades del cultivo">
                 </div>
                 
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="estado">Estado</label>
-                    <select class="form-crear__input" name="estado" title="Estado del cultivo">
+                <div class="form__group">
+                    <label class="form__label" for="estado">Estado</label>
+                    <select class="form__input" name="estado" title="Estado del cultivo">
                         <option value="">Seleccione un estado</option>
                         <option value="activo">Activo</option>
                         <option value="inactivo">Inactivo</option>
@@ -64,9 +64,9 @@
                 </div>
             </div>
             
-            <div class="form-crear__actions">
-                <button type="button" class="form-crear__btn form-crear__btn--volver" onclick="window.location.href='listar-ciclo-cultivo-sebas.html'">Volver</button>
-                <button type="submit" class="form-crear__btn form-crear__btn--crear">Crear Ciclo Cultivo</button>
+            <div class="form__actions">
+                <button type="button" class="form__btn form__btn--volver" onclick="window.location.href='listar-ciclo-cultivo-sebas.html'">Volver</button>
+                <button type="submit" class="form__btn form__btn--crear">Crear Ciclo Cultivo</button>
             </div>
         </form>
     </div>

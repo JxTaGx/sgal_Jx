@@ -7,58 +7,58 @@
     <link rel="stylesheet" href="../css/pages/form-create.css">
 </head>
 <body>
-    <div class="form-crear form-crear--insumo">
-        <header class="form-crear__header">
-            <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="form-crear__logo">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="form-crear__icon">
+    <div class="form form--insumo">
+        <header class="form__header">
+            <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="form__logo">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="form__icon">
             <path d="M18 36C27.9411 36 36 27.9411 36 18C36 8.05887 27.9411 0 18 0C8.05887 0 0 8.05887 0 18C0 27.9411 8.05887 36 18 36Z" fill="#4BBD17"/>
             </svg>
         </header>
-        <form class="form-crear__form">
-            <div class="form-crear__column">
-                <h1 class="form-crear__title">Crear Insumo</h1>
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="tipoSensor">Tipo de insumo</label>
-                    <input class="form-crear__input" type="text" name="tipoSensor" title="Ingrese el tipo de insumo" placeholder="Ej: Material eléctrico">
+        <form class="form__content">
+            <div class="form__column">
+                <h1 class="form__title">Crear Insumo</h1>
+                <div class="form__group">
+                    <label class="form__label" for="tipoSensor">Tipo de insumo</label>
+                    <input class="form__input" type="text" name="tipoSensor" title="Ingrese el tipo de insumo" placeholder="Ej: Material eléctrico">
                 </div>
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="nombreSensor">Nombre del insumo</label>
-                    <input class="form-crear__input" type="text" name="nombreSensor" title="Ingrese el nombre del insumo" placeholder="Ej: Cable UTP">
+                <div class="form__group">
+                    <label class="form__label" for="nombreSensor">Nombre del insumo</label>
+                    <input class="form__input" type="text" name="nombreSensor" title="Ingrese el nombre del insumo" placeholder="Ej: Cable UTP">
                 </div>
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="identificador">ID de insumo</label>
-                    <input class="form-crear__input" type="text" name="identificador" title="Ingrese el ID del insumo" placeholder="Ej: INS-001">
+                <div class="form__group">
+                    <label class="form__label" for="identificador">ID de insumo</label>
+                    <input class="form__input" type="text" name="identificador" title="Ingrese el ID del insumo" placeholder="Ej: INS-001">
                 </div>
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="descripcion">Descripción</label>
-                    <textarea class="form-crear__textarea" name="descripcion" title="Ingrese una descripción del insumo" placeholder="Describa las características del insumo"></textarea>
-                </div>
-            </div>
-            <div class="form-crear__column">
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="referenciaSensor">Unidad de medida</label>
-                    <input class="form-crear__input" type="text" name="referenciaSensor" title="Ingrese la unidad de medida" placeholder="Ej: metros, unidades">
-                </div>
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="unidadMedida">Cantidad</label>
-                    <input class="form-crear__input" type="text" name="unidadMedida" title="Ingrese la cantidad disponible" placeholder="Ej: 10">
-                </div>
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="tiempoEscaneo">Valor unitario</label>
-                    <input class="form-crear__input" type="text" name="tiempoEscaneo" title="Ingrese el valor unitario" placeholder="Ej: 15000">
-                </div>
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="valorTotal">Valor total</label>
-                    <input class="form-crear__input" type="text" name="valorTotal" title="Valor total calculado" placeholder="Se calculará automáticamente">
-                </div>
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="estado">Estado</label>
-                    <input class="form-crear__input" type="text" name="estado" title="Ingrese el estado del insumo" placeholder="Ej: Disponible, Agotado">
+                <div class="form__group">
+                    <label class="form__label" for="descripcion">Descripción</label>
+                    <textarea class="form__textarea" name="descripcion" title="Ingrese una descripción del insumo" placeholder="Describa las características del insumo"></textarea>
                 </div>
             </div>
-            <div class="form-crear__actions">
-                <button type="button" class="form-crear__btn form-crear__btn--volver">Volver</button>
-                <button type="submit" class="form-crear__btn form-crear__btn--crear">Crear Insumo</button>
+            <div class="form__column">
+                <div class="form__group">
+                    <label class="form__label" for="referenciaSensor">Unidad de medida</label>
+                    <input class="form__input" type="text" name="referenciaSensor" title="Ingrese la unidad de medida" placeholder="Ej: metros, unidades">
+                </div>
+                <div class="form__group">
+                    <label class="form__label" for="unidadMedida">Cantidad</label>
+                    <input class="form__input" type="text" name="unidadMedida" title="Ingrese la cantidad disponible" placeholder="Ej: 10">
+                </div>
+                <div class="form__group">
+                    <label class="form__label" for="tiempoEscaneo">Valor unitario</label>
+                    <input class="form__input" type="text" name="tiempoEscaneo" title="Ingrese el valor unitario" placeholder="Ej: 15000">
+                </div>
+                <div class="form__group">
+                    <label class="form__label" for="valorTotal">Valor total</label>
+                    <input class="form__input" type="text" name="valorTotal" title="Valor total calculado" placeholder="Se calculará automáticamente">
+                </div>
+                <div class="form__group">
+                    <label class="form__label" for="estado">Estado</label>
+                    <input class="form__input" type="text" name="estado" title="Ingrese el estado del insumo" placeholder="Ej: Disponible, Agotado">
+                </div>
+            </div>
+            <div class="form__actions">
+                <button onclick="window.location.href='listar-insumo-sebas.html'" type="button" class="form__btn form__btn--volver">Volver</button>
+                <button type="submit" class="form__btn form__btn--crear">Crear Insumo</button>
             </div>
         </form>
     </div>

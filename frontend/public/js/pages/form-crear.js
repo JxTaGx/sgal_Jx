@@ -2,10 +2,10 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     // Elementos comunes
-    const form = document.querySelector('.form-crear__form');
-    const uploadArea = document.querySelector('.form-crear__upload-area');
-    const btnCrear = document.querySelector('.form-crear__btn--crear');
-    const btnVolver = document.querySelector('.form-crear__btn--volver');
+    const form = document.querySelector('.form__content');
+    const uploadArea = document.querySelector('.form__upload-area');
+    const btnCrear = document.querySelector('.form__btn--crear');
+    const btnVolver = document.querySelector('.form__btn--volver');
     
     // Variables para manejar archivos
     let fileInput = null;
@@ -38,16 +38,16 @@ document.addEventListener('DOMContentLoaded', function() {
         // Manejar drag and drop
         uploadArea.addEventListener('dragover', function(e) {
             e.preventDefault();
-            uploadArea.classList.add('form-crear__upload-area--dragover');
+            uploadArea.classList.add('form__upload-area--dragover');
         });
 
         uploadArea.addEventListener('dragleave', function() {
-            uploadArea.classList.remove('form-crear__upload-area--dragover');
+            uploadArea.classList.remove('form__upload-area--dragover');
         });
 
         uploadArea.addEventListener('drop', function(e) {
             e.preventDefault();
-            uploadArea.classList.remove('form-crear__upload-area--dragover');
+            uploadArea.classList.remove('form__upload-area--dragover');
             
             if (e.dataTransfer.files && e.dataTransfer.files[0]) {
                 handleFileSelection(e.dataTransfer.files[0]);
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Crear elemento de imagen
         const img = document.createElement('img');
-        img.classList.add('form-crear__preview-image');
+        img.classList.add('form__preview-image');
         img.file = file;
         
         // Leer y mostrar la imagen
@@ -93,13 +93,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Agregar información del archivo
         const fileInfo = document.createElement('p');
-        fileInfo.classList.add('form-crear__file-info');
+        fileInfo.classList.add('form__file-info');
         fileInfo.textContent = file.name;
         uploadArea.appendChild(fileInfo);
         
         // Botón para eliminar
         const removeBtn = document.createElement('button');
-        removeBtn.classList.add('form-crear__remove-file');
+        removeBtn.classList.add('form__remove-file');
         removeBtn.textContent = 'Eliminar';
         removeBtn.type = 'button';
         removeBtn.addEventListener('click', function(e) {
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Resetear el área de carga
     function resetUploadArea() {
         if (uploadArea) {
-            uploadArea.innerHTML = '<p class="form-crear__upload-text">Arrastra y suelta o haz clic para subir</p>';
+            uploadArea.innerHTML = '<p class="form__upload-text">Arrastra y suelta o haz clic para subir</p>';
             selectedFile = null;
             if (fileInput) {
                 fileInput.value = '';
@@ -122,9 +122,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Validar campos obligatorios según el formulario
     function validateForm() {
-        const formType = document.querySelector('.form-crear').classList.contains('form-crear--cultivo') ? 'cultivo' :
-                         document.querySelector('.form-crear').classList.contains('form-crear--insumo') ? 'insumo' :
-                         document.querySelector('.form-crear').classList.contains('form-crear--sensor') ? 'sensor' : 'ciclo-cultivo';
+        const formType = document.querySelector('.form').classList.contains('form--cultivo') ? 'cultivo' :
+                         document.querySelector('.form').classList.contains('form--insumo') ? 'insumo' :
+                         document.querySelector('.form').classList.contains('form--sensor') ? 'sensor' : 'ciclo-cultivo';
 
         switch(formType) {
             case 'ciclo-cultivo':
@@ -203,9 +203,9 @@ document.addEventListener('DOMContentLoaded', function() {
     async function submitForm() {
         if (!validateForm()) return;
         
-        const formType = document.querySelector('.form-crear').classList.contains('form-crear--cultivo') ? 'cultivo' :
-                         document.querySelector('.form-crear').classList.contains('form-crear--insumo') ? 'insumo' :
-                         document.querySelector('.form-crear').classList.contains('form-crear--sensor') ? 'sensor' : 'ciclo-cultivo';
+        const formType = document.querySelector('.form').classList.contains('form--cultivo') ? 'cultivo' :
+                         document.querySelector('.form').classList.contains('form--insumo') ? 'insumo' :
+                         document.querySelector('.form').classList.contains('form--sensor') ? 'sensor' : 'ciclo-cultivo';
         
         const formData = new FormData();
         const endpoint = `http://localhost:3000/${formType}`;
@@ -328,9 +328,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Manejar botón volver
     if (btnVolver) {
         btnVolver.addEventListener('click', function() {
-            const formType = document.querySelector('.form-crear').classList.contains('form-crear--cultivo') ? 'cultivo' :
-                             document.querySelector('.form-crear').classList.contains('form-crear--insumo') ? 'insumo' :
-                             document.querySelector('.form-crear').classList.contains('form-crear--sensor') ? 'sensor' : 'ciclo-cultivo';
+            const formType = document.querySelector('.form').classList.contains('form--cultivo') ? 'cultivo' :
+                             document.querySelector('.form').classList.contains('form--insumo') ? 'insumo' :
+                             document.querySelector('.form').classList.contains('form--sensor') ? 'sensor' : 'ciclo-cultivo';
             
             window.location.href = `listar-${formType}-sebas.html`;
         });

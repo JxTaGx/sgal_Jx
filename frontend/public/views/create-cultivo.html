@@ -7,99 +7,99 @@
     <link rel="stylesheet" href="../css/pages/form-create.css">
 </head>
 <body>
-    <div class="form-crear form-crear--cultivo">
-        <header class="form-crear__header">
-            <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="form-crear__logo" title="Logo del SENA">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="form-crear__icon" aria-hidden="true">
+    <div class="form form--cultivo">
+        <header class="form__header">
+            <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="form__logo" title="Logo del SENA">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="form__icon" aria-hidden="true">
                 <path d="M18 36C27.9411 36 36 27.9411 36 18C36 8.05887 27.9411 0 18 0C8.05887 0 0 8.05887 0 18C0 27.9411 8.05887 36 18 36Z" fill="#4BBD17"/>
             </svg>
         </header>
-        <form class="form-crear__form">
-            <div class="form-crear__column">
-                <h1 class="form-crear__title">Crear Cultivo</h1>
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="tipoCultivo">Tipo de cultivo</label>
+        <form class="form__content">
+            <div class="form__column">
+                <h1 class="form__title">Crear Cultivo</h1>
+                <div class="form__group">
+                    <label class="form__label" for="tipoCultivo">Tipo de cultivo</label>
                     <input 
-                        class="form-crear__input" 
+                        class="form__input" 
                         type="text" 
                         name="tipoCultivo"
                         placeholder="Ej: Maíz, Café, Arroz"
                         title="Ingrese el tipo de cultivo"
                         aria-label="Tipo de cultivo">
                 </div>
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="nombreCultivo">Nombre del cultivo</label>
+                <div class="form__group">
+                    <label class="form__label" for="nombreCultivo">Nombre del cultivo</label>
                     <input 
-                        class="form-crear__input" 
+                        class="form__input" 
                         type="text" 
                         name="nombreCultivo"
                         placeholder="Ej: Cultivo de maíz 2024"
                         title="Ingrese el nombre del cultivo"
                         aria-label="Nombre del cultivo">
                 </div>
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="identificador">ID de cultivo</label>
+                <div class="form__group">
+                    <label class="form__label" for="identificador">ID de cultivo</label>
                     <input 
-                        class="form-crear__input" 
+                        class="form__input" 
                         type="text" 
                         name="identificador"
                         placeholder="Ej: CULT-001"
                         title="Ingrese el ID del cultivo"
                         aria-label="ID del cultivo">
                 </div>
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="fotografia">Fotografía</label>
-                    <div class="form-crear__upload-area" role="button" aria-label="Subir fotografía" title="Área para subir imágenes">
-                        <p class="form-crear__upload-text">Arrastra y suelta o haz clic para subir</p>
+                <div class="form__group">
+                    <label class="form__label" for="fotografia">Fotografía</label>
+                    <div class="form__upload-area" role="button" aria-label="Subir fotografía" title="Área para subir imágenes">
+                        <p class="form__upload-text">Arrastra y suelta o haz clic para subir</p>
                     </div>
                 </div>
             </div>
-            <div class="form-crear__column">
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="tamano">Tamaño</label>
+            <div class="form__column">
+                <div class="form__group">
+                    <label class="form__label" for="tamano">Tamaño</label>
                     <input 
-                        class="form-crear__input" 
+                        class="form__input" 
                         type="text" 
                         name="tamano"
                         placeholder="Ej: 100 m²"
                         title="Ingrese el tamaño del cultivo"
                         aria-label="Tamaño del cultivo">
                 </div>
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="ubicacion">Ubicación</label>
+                <div class="form__group">
+                    <label class="form__label" for="ubicacion">Ubicación</label>
                     <input 
-                        class="form-crear__input" 
+                        class="form__input" 
                         type="text" 
                         name="ubicacion"
                         placeholder="Ej: Finca La Esperanza"
                         title="Ingrese la ubicación del cultivo"
                         aria-label="Ubicación del cultivo">
                 </div>
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="estado">Estado</label>
+                <div class="form__group">
+                    <label class="form__label" for="estado">Estado</label>
                     <input 
-                        class="form-crear__input" 
+                        class="form__input" 
                         type="text" 
                         name="estado"
                         placeholder="Ej: Activo, En crecimiento"
                         title="Ingrese el estado del cultivo"
                         aria-label="Estado del cultivo">
                 </div>
-                <div class="form-crear__form-group">
-                    <label class="form-crear__label" for="descripcion">Descripción</label>
+                <div class="form__group">
+                    <label class="form__label" for="descripcion">Descripción</label>
                     <textarea 
-                        class="form-crear__textarea" 
+                        class="form__textarea" 
                         name="descripcion"
                         placeholder="Describa el cultivo..."
                         title="Ingrese una descripción"
                         aria-label="Descripción del cultivo"></textarea>
                 </div>
             </div>
-            <div class="form-crear__actions">
-                <button type="button" class="form-crear__btn form-crear__btn--volver" onclick="window.location.href='listar-cultivo-sebas.html'" title="Volver a la lista de cultivos" aria-label="Volver">
+            <div class="form__actions">
+                <button type="button" class="form__btn form__btn--volver" onclick="window.location.href='listar-cultivo-sebas.html'" title="Volver a la lista de cultivos" aria-label="Volver">
                     Volver
                 </button>
-                <button type="submit" class="form-crear__btn form-crear__btn--crear" title="Crear nuevo cultivo" aria-label="Crear cultivo">
+                <button type="submit" class="form__btn form__btn--crear" title="Crear nuevo cultivo" aria-label="Crear cultivo">
                     Crear Cultivo
                 </button>
             </div>
