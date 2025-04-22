@@ -173,8 +173,8 @@ h6 {
     height: 8rem;
     background-size: cover;
     background-position: center;
-    margin-left: 2rem;
     margin-top: 1rem;
+    margin-left: -2rem;
 }
 
 /* Container */

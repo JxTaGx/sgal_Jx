@@ -3,68 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/pages/listar-insumo-sebas-style.css">
+    <link rel="stylesheet" href="../css/pages/listar-ciclo-cultivo-sebas-style.css">
     <title>Listar Insumos</title>
 </head>
 <body>
     <h1>Listar Insumos</h1>
-    <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="page__logo">
-    <div class="search-panel">
-        <input type="text" placeholder="Buscar Insumo..." class="search-panel__input">
+    <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="header__logo">
+    <div class="header">
+        <input type="text" placeholder="Buscar insumo..." class="header__search">
         <input type="submit" class="button button--green" value="Filtrar">
         <div>
-            <input class="button button--gray" type="submit" onclick="window.location.href='../views/excel.html'" value="Generar Reporte">
+            <a href="../views/excel.html">
+            <input class="button button--gray" type="submit" value="Generar Reporte">
+            </a>
         </div>
     </div>
     <main>
-        <div class="insumos">
-            <div class="insumos__container">
-                <div class="insumo-card">
-                    <h3 class="insumo-card__title">Fertilizante Orgánico</h3>
-                    <p class="insumo-card__info">Código: FOP-2023</p>
-                    <p class="insumo-card__info">Cantidad: 5000 kg</p>
-                    <p class="insumo-card__info">Precio: $2.50/kg</p>
+        <div class="main__container">
+            <div class="cards">
+                <div class="card">
+                    <h3 class="card__title">Fertilizante Orgánico</h3>
+                    <p class="card__info">Código: FOP-2023</p>
+                    <p class="card__info">Cantidad: 5000 kg</p>
+                    <p class="card__info">Precio: $2.50/kg</p>
                     <a href="visualizar-insumo.html">
-                    <input type="submit" class="button insumo-card__button" value="Ver detalles">
-                </a>
+                    <input type="submit" class="card__button" value="Ver detalles">
+                    </a>
                 </div>
-                <div class="insumo-card">
-                    <h3 class="insumo-card__title">Pesticida Natural</h3>
-                    <p class="insumo-card__info">Código: PEN-2023</p>
-                    <p class="insumo-card__info">Cantidad: 1000 L</p>
-                    <p class="insumo-card__info">Precio: $15.00/L</p>
+                <div class="card">
+                    <h3 class="card__title">Pesticida Natural</h3>
+                    <p class="card__info">Código: PEN-2023</p>
+                    <p class="card__info">Cantidad: 1000 L</p>
+                    <p class="card__info">Precio: $15.00/L</p>
                     <a href="visualizar-insumo.html">
-                    <input type="submit" class="button insumo-card__button" value="Ver Detalles">
-                </a>
+                    <input type="submit" class="card__button" value="Ver detalles">
+                    </a>
                 </div>
-                <div class="insumo-card">
-                    <h3 class="insumo-card__title">Semillas de Tomate</h3>
-                    <p class="insumo-card__info">Código: SET-2023</p>
-                    <p class="insumo-card__info">Cantidad: 10000 unidades</p>
-                    <p class="insumo-card__info">Precio: $0.05/unidad</p>
+                <div class="card">
+                    <h3 class="card__title">Semillas de Tomate</h3>
+                    <p class="card__info">Código: SET-2023</p>
+                    <p class="card__info">Cantidad: 10000 unidades</p>
+                    <p class="card__info">Precio: $0.05/unidad</p>
                     <a href="visualizar-insumo.html">
-                    <input type="submit" class="button insumo-card__button" value="Ver Detalles">
-                </a>
+                    <input type="submit" class="card__button" value="Ver detalles">
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="page-footer">
-            <div class="page-footer__section">
+        <div class="footer">
+            <div class="footer__buttons">
                 <a href="../views/home.html">
-                <input type="submit" class="button button--return" value="Volver">
-            </a>
-
+                    <input type="submit" class="button button--return" value="Volver">
+                    </a>
             </div>
-            <div class="page-footer__pagination">
-                <button class="page-footer__page-button">1</button>
-                <button class="page-footer__page-button">2</button>
-                <button class="page-footer__page-button">3</button>
+            <div class="footer__pagination">
+                <button class="pagination__button">1</button>
+                <button class="pagination__button">2</button>
+                <button class="pagination__button">3</button>
             </div>
-
-            <div class="page-footer__section">
+            <div class="footer__buttons">
                 <a href="create-insumo.html">
-                <input type="submit" class="button button--crear" value="Crear Insumo">
-            </a>
+                    <input type="submit" class="button button--crear" value="Crear Insumo">
+                    </a>
             </div>
         </div>
     </main>

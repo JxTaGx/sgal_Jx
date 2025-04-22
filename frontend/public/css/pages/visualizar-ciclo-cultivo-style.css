@@ -109,7 +109,6 @@ body::before{
 }
 
 body > * {
-    position: relative; 
     z-index: 1; 
 }
 
@@ -262,7 +261,7 @@ img {
 .ciclo-cultivo__btn--back {
     background-color: var(--gray-550);
     color: var(--white);
-    margin-top: 4rem;
+    margin-top: 3rem;
     margin-left: -12rem;
 }
 
