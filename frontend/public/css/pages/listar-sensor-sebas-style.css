@@ -213,7 +213,7 @@ html > * {
 
 .sensor__button--green {
     border: none;
-    background: var(--primary-900);
+    background: var(--secondary-1-300);
     color: var(--white);
     border-radius: 0.6rem;
     padding: 1.2rem 2.4rem;
@@ -224,7 +224,7 @@ html > * {
 
 .sensor__button--secundary {
     border: none;
-    background: var(--primary-900);
+    background: var(--secondary-1-300);
     color: var(--white);
     border-radius: 0.6rem;
     padding: 1.2rem 2.4rem;
@@ -299,7 +299,7 @@ html > * {
     margin-left: 8rem;
     font-family: var(--font-primary);
     color: var(--white);
-    background: var(--primary-900);
+    background: var(--gray-550);
     margin-right: 0.5rem;
 }
 
@@ -319,13 +319,9 @@ html > * {
     padding-top: 1rem;
 }
 
-.sensor__table-row,
 .sensor__table td {
-    display: flex;
-    justify-content: space-between;
     text-align: center;
-    padding: 0.4rem;
-    padding-right: 0.6rem;
+    padding: 1rem;
 }
 
 .sensor__table button {

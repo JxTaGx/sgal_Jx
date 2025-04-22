@@ -296,8 +296,8 @@ h6 {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--gray-350);
-    cursor: pointer;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .form-crear__upload-text {
@@ -365,7 +365,7 @@ h6 {
 /* Estilos específicos para el formulario de sensor */
 .form-crear--sensor .form-crear__logo {
     margin-right: 139rem;
-    margin-top: 10rem;
+    margin-top: 1rem;
     margin-bottom: -2rem;
 }
 
