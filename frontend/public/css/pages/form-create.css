@@ -288,10 +288,25 @@ h6 {
     border-radius: 0.5rem;
 }
 
+.form__option {
+    width: 32rem;
+    height: 4.8rem;
+    padding: 1rem;
+    font-size: var(--font-size-h5);
+    border: 0.1rem solid var(--gray-350);
+    border-radius: 0.5rem;
+    color: var(--gray-550);
+}
+
+.form__picture {
+    width: 32rem;
+    height: 15rem;
+}
+
 /* Área de carga de archivos */
 .form__upload-area {
     width: 32rem;
-    height: 10rem;
+    height: 15rem;
     border: 0.2rem dashed var(--gray-350);
     display: flex;
     justify-content: center;

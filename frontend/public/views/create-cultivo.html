@@ -48,10 +48,11 @@
                         aria-label="ID del cultivo">
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="fotografia">Fotografía</label>
+                    <label class=" form__picture" for="fotografia">Fotografía</label>
                     <div class="form__upload-area" role="button" aria-label="Subir fotografía" title="Área para subir imágenes">
                         <p class="form__upload-text">Arrastra y suelta o haz clic para subir</p>
                     </div>
+                </label>
                 </div>
             </div>
             <div class="form__column">
@@ -77,13 +78,10 @@
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="estado">Estado</label>
-                    <input 
-                        class="form__input" 
-                        type="text" 
-                        name="estado"
-                        placeholder="Ej: Activo, En crecimiento"
-                        title="Ingrese el estado del cultivo"
-                        aria-label="Estado del cultivo">
+                    <select name="Estado" class="form__option">
+                        <option value="Activo">Activo</option>
+                        <option value="inactivo">Inactivo</option>
+                    </select>
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="descripcion">Descripción</label>
