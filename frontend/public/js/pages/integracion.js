@@ -665,8 +665,7 @@ window.redirectToCreate = function(moduleType, url) { // Make it globally access
         const ids = Array.isArray(sensorIds) ? sensorIds.map(String) : [];
         if (ids.length === 0) { container.innerHTML = '<p>No hay sensores asignados.</p>'; return; }
         try {
-             const sensorsResponse = await fetch(`http://localhost:3000/sensores`); // Assume endpoint exists
-             if (!sensorsResponse.ok) throw new Error('Error al cargar lista de sensores');
+            const sensorsResponse = await fetch(`http://localhost:3000/sensor/s`); // <-- URL Corregida             if (!sensorsResponse.ok) throw new Error('Error al cargar lista de sensores');
              const sensorsResult = await sensorsResponse.json(); // Assume array or {data: []}
              const allSensors = (sensorsResult && Array.isArray(sensorsResult.data)) ? sensorsResult.data : (Array.isArray(sensorsResult) ? sensorsResult : []);
 
@@ -1151,12 +1150,58 @@ window.redirectToCreate = function(moduleType, url) { // Make it globally access
     }
 
     // --- Utility Functions ---
-    function formatDate(dateString) {
-         if (!dateString || dateString === '0000-00-00' || dateString.startsWith('0001-')) return 'No definida';
-         try { const date = new Date(dateString + 'T00:00:00Z'); if (isNaN(date.getTime())) return 'Fecha inválida';
-              const options = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }; return date.toLocaleDateString('es-ES', options); }
-         catch(e) { return 'Fecha inválida'; }
+    /* frontend/public/js/pages/integracion.js (Función formatDate corregida) */
+
+function formatDate(dateInput) {
+    // 1. Verificar si la entrada es nula, indefinida o una fecha MySQL por defecto inválida
+    if (!dateInput || dateInput === '0000-00-00' || (typeof dateInput === 'string' && dateInput.startsWith('0001-'))) {
+        return 'No definida';
     }
+
+    try {
+        let date;
+        // 2. Intentar crear el objeto Date
+        //    El constructor Date() puede manejar 'YYYY-MM-DD' y formatos ISO directamente.
+        //    Si es 'YYYY-MM-DD', lo interpretará como UTC 00:00:00.
+        //    Si es ISO '...Z', ya es UTC.
+        //    Si es ISO sin Z '...T...', lo interpreta en la zona horaria local, ¡cuidado!
+        //    Por eso, es más seguro trabajar con UTC si es posible.
+
+        // Si la entrada ya es un objeto Date, usarlo directamente
+        if (dateInput instanceof Date) {
+            date = dateInput;
+        } else {
+            // Si es un string, intentar crear el objeto Date.
+            // Añadir 'T00:00:00Z' SOLO si es un string YYYY-MM-DD para asegurar UTC.
+            if (typeof dateInput === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateInput)) {
+                 date = new Date(dateInput + 'T00:00:00Z');
+            } else {
+                // Para otros formatos de string (como ISO), dejar que Date lo parsee.
+                date = new Date(dateInput);
+            }
+        }
+
+
+        // 3. Verificar si el objeto Date resultante es válido
+        if (isNaN(date.getTime())) {
+            // console.warn(`formatDate: No se pudo parsear la entrada:`, dateInput); // Opcional: para depurar
+            return 'Fecha inválida';
+        }
+
+        // 4. Formatear la fecha en español, usando UTC para consistencia
+        const options = {
+            year: 'numeric',
+            month: 'long', // 'long' para el nombre completo del mes
+            day: 'numeric',
+            timeZone: 'UTC' // Asegura que se muestre el día correcto sin importar la zona horaria del navegador
+        };
+        return date.toLocaleDateString('es-ES', options);
+
+    } catch (e) {
+        console.error(`formatDate: Error procesando la fecha "${dateInput}":`, e);
+        return 'Fecha inválida'; // Captura cualquier otro error inesperado
+    }
+}
     let snackbarTimeoutId = null;
     function showSnackbar(message, type = 'success') {
         const snackbar = document.querySelector('[data-snackbar]'); const messageElement = snackbar?.querySelector('[data-snackbar-message]'); const closeButton = snackbar?.querySelector('[data-action="close-snackbar"]');
