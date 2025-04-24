@@ -94,17 +94,33 @@
                     
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">Sensores (Máx. 3)</label>
-                            <select class="dashboard__select" data-field="sensors" multiple size="3" required>
-                                <option value="">Seleccione sensores</option>
-                            </select>
+                            <div class="dashboard__select-wrapper">
+                                <select class="dashboard__select" data-field="sensors" multiple size="3" required>
+                                    </select>
+                                <button class="dashboard__button dashboard__button--icon" type="button" onclick="window.location.href='../views/create-sensor.html'" title="Crear Nuevo Sensor">
+                                    <i class="material-icons">add_circle</i>
+                                </button>
+                            </div>
                             <span class="dashboard__error" data-error="sensors"></span>
                         </div>
-                    
-                        <div class="dashboard__form-group">
+    
+                        <div class="dashboard__form-group dashboard__form-group--full-width">
                             <label class="dashboard__label">Insumos</label>
-                            <select class="dashboard__select" data-field="supplies" multiple size="3" required>
-                                <option value="">Seleccione insumos</option>
-                            </select>
+                            <div class="dashboard__supply-selection">
+                                 <button class="dashboard__button dashboard__button--icon dashboard__button--inline" type="button" onclick="window.location.href='../views/create-insumo.html'" title="Crear Nuevo Insumo">
+                                    <i class="material-icons">add_circle</i> Crear Insumo
+                                </button>
+                                <div class="dashboard__supply-add-area">
+                                    <select class="dashboard__select" data-field="available-supplies" >
+                                        <option value="">Seleccione un insumo para agregar</option>
+                                        </select>
+                                    <input type="number" class="dashboard__input" placeholder="Cantidad" min="1" data-field="supply-quantity">
+                                    <button class="dashboard__button dashboard__button--primary" type="button" data-action="add-selected-supply">Agregar</button>
+                                </div>
+                            </div>
+                            <div class="dashboard__selected-supplies-list" data-list="selected-supplies">
+                                <p>No hay insumos agregados.</p>
+                                </div>
                             <span class="dashboard__error" data-error="supplies"></span>
                         </div>
                     
