@@ -14,87 +14,84 @@
                 <path d="M18 36C27.9411 36 36 27.9411 36 18C36 8.05887 27.9411 0 18 0C8.05887 0 0 8.05887 0 18C0 27.9411 8.05887 36 18 36Z" fill="#4BBD17"/>
             </svg>
         </header>
-        <form class="form__content">
+        <form class="form__content" novalidate>
             <div class="form__column">
                 <h1 class="form__title">Crear Cultivo</h1>
                 <div class="form__group">
                     <label class="form__label" for="tipoCultivo">Tipo de cultivo</label>
-                    <input 
-                        class="form__input" 
-                        type="text" 
-                        name="tipoCultivo"
+                    <input
+                        class="form__input"
+                        type="text"
+                        id="tipoCultivo" name="tipoCultivo"
                         placeholder="Ej: Maíz, Café, Arroz"
                         title="Ingrese el tipo de cultivo"
-                        aria-label="Tipo de cultivo">
+                        aria-label="Tipo de cultivo" required>
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="nombreCultivo">Nombre del cultivo</label>
-                    <input 
-                        class="form__input" 
-                        type="text" 
-                        name="nombreCultivo"
+                    <input
+                        class="form__input"
+                        type="text"
+                        id="nombreCultivo" name="nombreCultivo"
                         placeholder="Ej: Cultivo de maíz 2024"
                         title="Ingrese el nombre del cultivo"
-                        aria-label="Nombre del cultivo">
+                        aria-label="Nombre del cultivo" required>
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="identificador">ID de cultivo</label>
-                    <input 
-                        class="form__input" 
-                        type="text" 
-                        name="identificador"
+                    <input
+                        class="form__input"
+                        type="text"
+                        id="identificador" name="identificador"
                         placeholder="Ej: CULT-001"
                         title="Ingrese el ID del cultivo"
-                        aria-label="ID del cultivo">
+                        aria-label="ID del cultivo" required>
                 </div>
                 <div class="form__group">
-                    <label class=" form__picture" for="fotografia">Fotografía</label>
+                    <label class="form__label form__picture" for="fotografia">Fotografía</label>
+                     <input type="file" id="fotografia" name="fotografia" accept="image/*" style="display: none;">
                     <div class="form__upload-area" role="button" aria-label="Subir fotografía" title="Área para subir imágenes">
                         <p class="form__upload-text">Arrastra y suelta o haz clic para subir</p>
                     </div>
-                </label>
                 </div>
             </div>
             <div class="form__column">
                 <div class="form__group">
                     <label class="form__label" for="tamano">Tamaño</label>
-                    <input 
-                        class="form__input" 
-                        type="text" 
-                        name="tamano"
+                    <input
+                        class="form__input"
+                        type="text"
+                        id="tamano" name="tamano"
                         placeholder="Ej: 100 m²"
                         title="Ingrese el tamaño del cultivo"
                         aria-label="Tamaño del cultivo">
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="ubicacion">Ubicación</label>
-                    <input 
-                        class="form__input" 
-                        type="text" 
-                        name="ubicacion"
+                    <input
+                        class="form__input"
+                        type="text"
+                        id="ubicacion" name="ubicacion"
                         placeholder="Ej: Finca La Esperanza"
                         title="Ingrese la ubicación del cultivo"
                         aria-label="Ubicación del cultivo">
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="estado">Estado</label>
-                    <select name="Estado" class="form__option">
-                        <option value="Activo">Activo</option>
-                        <option value="inactivo">Inactivo</option>
-                    </select>
+                    <label class="form__label" for="Estado">Estado</label> <select id="Estado" name="Estado" class="form__input form__option" required> <option value="">Seleccione Estado</option> <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option> </select>
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="descripcion">Descripción</label>
-                    <textarea 
-                        class="form__textarea" 
-                        name="descripcion"
+                    <textarea
+                        class="form__textarea"
+                        id="descripcion" name="descripcion"
                         placeholder="Describa el cultivo..."
                         title="Ingrese una descripción"
                         aria-label="Descripción del cultivo"></textarea>
                 </div>
             </div>
             <div class="form__actions">
-                <button type="button" class="form__btn form__btn--volver" onclick="window.location.href='listar-cultivo-sebas.html'" title="Volver a la lista de cultivos" aria-label="Volver">
+                <button type="button" id="btn-volver" class="form__btn form__btn--volver" title="Volver" aria-label="Volver">
                     Volver
                 </button>
                 <button type="submit" class="form__btn form__btn--crear" title="Crear nuevo cultivo" aria-label="Crear cultivo">

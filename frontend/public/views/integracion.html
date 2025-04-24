@@ -29,7 +29,6 @@
         </nav>
 
         <main class="dashboard">
-            <!-- Sección Crear Producción -->
             <section class="dashboard__section dashboard__section--active" data-panel="create">
 
                 <div class="dashboard__heading">
@@ -39,81 +38,86 @@
                     </h2>
                     <p class="dashboard__subtitle">Complete el formulario para registrar una nueva producción agrícola</p>
                 </div>
-                
+
                 <div class="dashboard__widget">
                     <form class="dashboard__form dashboard__form--two-columns" data-form="create">
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">ID de Producción</label>
                             <input class="dashboard__input" type="text" data-field="production-id" readonly>
                         </div>
-                        
+
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">Responsable</label>
                             <div class="dashboard__select-wrapper">
                                 <select class="dashboard__select" data-field="responsible" required>
                                     <option value="">Seleccione un responsable</option>
-                                </select>
-                                <button class="dashboard__button dashboard__button--icon" type="button" data-action="add-user">
-                                    <i onclick="window.location.href='../views/register.html'" class="material-icons">person_add</i>
+                                    </select>
+                                <button class="dashboard__button dashboard__button--icon" type="button"
+                                        onclick="redirectToCreate('user', '../views/register.html')" title="Agregar Nuevo Responsable">
+                                    <i class="material-icons">person_add</i>
                                 </button>
                             </div>
                             <span class="dashboard__error" data-error="responsible"></span>
                         </div>
-                    
+
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">Nombre de Producción</label>
                             <input class="dashboard__input" type="text" data-field="name" required>
                             <span class="dashboard__error" data-error="name"></span>
                         </div>
-                    
+
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">Cultivo</label>
                             <div class="dashboard__select-wrapper">
                                 <select class="dashboard__select" data-field="cultivation" required>
                                     <option value="">Seleccione un cultivo</option>
-                                </select>
-                                <button class="dashboard__button dashboard__button--icon" type="button" data-action="add-cultivation">
-                                    <i onclick="window.location.href='../views/create-cultivo.html'" class="material-icons">add_circle</i>
+                                     </select>
+                                 <button class="dashboard__button dashboard__button--icon" type="button"
+                                        onclick="redirectToCreate('cultivation', '../views/create-cultivo.html')" title="Agregar Nuevo Cultivo">
+                                    <i class="material-icons">add_circle</i>
                                 </button>
                             </div>
                             <span class="dashboard__error" data-error="cultivation"></span>
                         </div>
-                    
+
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">Ciclo de Cultivo</label>
                             <div class="dashboard__select-wrapper">
                                 <select class="dashboard__select" data-field="cycle" required>
                                     <option value="">Seleccione un ciclo</option>
-                                </select>
-                                <button class="dashboard__button dashboard__button--icon" type="button" data-action="add-cycle">
-                                    <i onclick="window.location.href='../views/create-ciclo-cultivo.html'" class="material-icons">add_circle</i>
+                                     </select>
+                                <button class="dashboard__button dashboard__button--icon" type="button"
+                                        onclick="redirectToCreate('cycle', '../views/create-ciclo-cultivo.html')" title="Agregar Nuevo Ciclo">
+                                    <i class="material-icons">add_circle</i>
                                 </button>
                             </div>
                             <span class="dashboard__error" data-error="cycle"></span>
                         </div>
-                    
+
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">Sensores (Máx. 3)</label>
                             <div class="dashboard__select-wrapper">
                                 <select class="dashboard__select" data-field="sensors" multiple size="3" required>
-                                    </select>
-                                <button class="dashboard__button dashboard__button--icon" type="button" onclick="window.location.href='../views/create-sensor.html'" title="Crear Nuevo Sensor">
+                                     </select>
+                                <button class="dashboard__button dashboard__button--icon" type="button"
+                                        onclick="redirectToCreate('sensor', '../views/create-sensor.html')" title="Crear Nuevo Sensor">
                                     <i class="material-icons">add_circle</i>
                                 </button>
                             </div>
                             <span class="dashboard__error" data-error="sensors"></span>
                         </div>
-    
+
                         <div class="dashboard__form-group dashboard__form-group--full-width">
                             <label class="dashboard__label">Insumos</label>
                             <div class="dashboard__supply-selection">
-                                 <button class="dashboard__button dashboard__button--icon dashboard__button--inline" type="button" onclick="window.location.href='../views/create-insumo.html'" title="Crear Nuevo Insumo">
+                                <button class="dashboard__button dashboard__button--icon dashboard__button--inline" type="button"
+                                        onclick="redirectToCreate('supply', '../views/create-insumo.html')" title="Crear Nuevo Insumo">
                                     <i class="material-icons">add_circle</i> Crear Insumo
                                 </button>
                                 <div class="dashboard__supply-add-area">
-                                    <select class="dashboard__select" data-field="available-supplies" >
+                                    <select class="dashboard__select" data-field="available-supplies">
                                         <option value="">Seleccione un insumo para agregar</option>
-                                        </select>
+                                         </select>
                                     <input type="number" class="dashboard__input" placeholder="Cantidad" min="1" data-field="supply-quantity">
                                     <button class="dashboard__button dashboard__button--primary" type="button" data-action="add-selected-supply">Agregar</button>
                                 </div>
@@ -123,42 +127,40 @@
                                 </div>
                             <span class="dashboard__error" data-error="supplies"></span>
                         </div>
-                    
+
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">Fecha de Inicio</label>
                             <input class="dashboard__input" type="date" data-field="start-date" required>
                             <span class="dashboard__error" data-error="start-date"></span>
                         </div>
-                    
+
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">Fecha Estimada de Fin</label>
                             <input class="dashboard__input" type="date" data-field="end-date" required>
                             <span class="dashboard__error" data-error="end-date"></span>
                         </div>
-                    
+
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">Inversión Estimada</label>
                             <input class="dashboard__input" type="text" data-field="investment" readonly>
                         </div>
-                    
+
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">Meta Estimada</label>
                             <input class="dashboard__input" type="text" data-field="goal" readonly>
                         </div>
-                    
+
                         <div class="dashboard__form-actions">
-                            <a href="home.html">
-                            <button class="dashboard__button dashboard__button--tertiary" type="button" data-action="cancel">Volver</button>
+                            <a href="home.html"> <button class="dashboard__button dashboard__button--tertiary" type="button" data-action="cancel">Volver</button>
                             </a>
                             <button class="dashboard__button dashboard__button--save" type="button" data-action="save-draft">Guardar Borrador</button>
                             <button class="dashboard__button dashboard__button--create" type="submit" disabled data-action="create">Crear Producción</button>
                         </div>
-                        
+
                     </form>
                 </div>
             </section>
 
-            <!-- Sección Visualizar Producción -->
             <section class="dashboard__section" data-panel="view">
                 <div class="dashboard__heading">
                     <h2 class="dashboard__title">
@@ -167,63 +169,60 @@
                     </h2>
                     <p class="dashboard__subtitle">Busque una producción por su ID para ver los detalles</p>
                 </div>
-                
+
                 <div class="dashboard__widget">
                     <form class="dashboard__form" data-form="view">
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">ID de Producción</label>
                             <div class="dashboard__input-group">
-                                <input class="dashboard__input" type="text" data-field="production-id" required>
+                                <input class="dashboard__input" type="text" data-field="production-id" required placeholder="Ej: prod-1">
                                 <button class="dashboard__button dashboard__button--primary" type="submit">Buscar</button>
                             </div>
                             <span class="dashboard__error" data-error="production-id"></span>
                         </div>
                     </form>
-                    
+
                     <div class="dashboard__result dashboard__result--hidden" data-result="view">
                         <div class="dashboard__info-section">
                             <h3 class="dashboard__section-title">Información General</h3>
                             <div class="dashboard__info-grid" data-info="basic">
-                                <!-- Se llenará dinámicamente -->
-                            </div>
+                                </div>
                         </div>
-                        
+
                         <div class="dashboard__info-section">
-                            <h3 class="dashboard__section-title">Métricas Clave</h3>
+                            <h3 class="dashboard__section-title">Métricas Clave (Simuladas)</h3>
                             <div class="dashboard__metrics-grid">
                                 <div class="dashboard__metric-card">
-                                    <div class="dashboard__metric-value" data-metric="health">85%</div>
+                                    <div class="dashboard__metric-value" data-metric="health">--%</div>
                                     <div class="dashboard__metric-label">Salud del Cultivo</div>
-                                    <div class="dashboard__metric-trend trend-up">
-                                        <i class="material-icons">trending_up</i> 2% vs semana pasada
-                                    </div>
+                                    <div class="dashboard__metric-trend">
+                                        </div>
                                 </div>
                                 <div class="dashboard__metric-card">
-                                    <div class="dashboard__metric-value" data-metric="growth">63cm</div>
+                                    <div class="dashboard__metric-value" data-metric="growth">--cm</div>
                                     <div class="dashboard__metric-label">Crecimiento Promedio</div>
-                                    <div class="dashboard__metric-trend trend-up">
-                                        <i class="material-icons">trending_up</i> 5cm este mes
-                                    </div>
+                                     <div class="dashboard__metric-trend">
+                                        </div>
                                 </div>
                                 <div class="dashboard__metric-card">
-                                    <div class="dashboard__metric-value" data-metric="yield">78%</div>
+                                    <div class="dashboard__metric-value" data-metric="yield">--%</div>
                                     <div class="dashboard__metric-label">Rendimiento Estimado</div>
-                                    <div class="dashboard__metric-trend trend-down">
-                                        <i class="material-icons">trending_down</i> 3% vs esperado
-                                    </div>
+                                    <div class="dashboard__metric-trend">
+                                        </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="dashboard__info-section">
-                            <h3 class="dashboard__section-title">Análisis de Datos</h3>
+                            <h3 class="dashboard__section-title">Análisis de Datos (Simulados)</h3>
+                            <p class="dashboard__notice">Nota: Los gráficos muestran datos simulados y no reflejan lecturas reales de sensores.</p>
                             <div class="dashboard__charts-grid">
                                 <div class="dashboard__chart-container">
-                                    <h4 class="dashboard__chart-title">Humedad del Suelo (últimos 7 días)</h4>
+                                    <h4 class="dashboard__chart-title">Humedad del Suelo</h4>
                                     <canvas data-chart="humidity" height="200"></canvas>
                                 </div>
                                 <div class="dashboard__chart-container">
-                                    <h4 class="dashboard__chart-title">Temperatura Ambiente (últimos 7 días)</h4>
+                                    <h4 class="dashboard__chart-title">Temperatura Ambiente</h4>
                                     <canvas data-chart="temperature" height="200"></canvas>
                                 </div>
                                 <div class="dashboard__chart-container">
@@ -236,50 +235,48 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="dashboard__info-section">
-                            <h3 class="dashboard__section-title">Estado de Sensores</h3>
+                            <h3 class="dashboard__section-title">Estado de Sensores Asignados</h3>
+                             <p class="dashboard__notice">Nota: Muestra el estado configurado del sensor, no lecturas en tiempo real.</p>
                             <div class="dashboard__sensors-grid" data-info="sensors">
-                                <!-- Se llenará dinámicamente -->
-                            </div>
+                                </div>
+                        </div>
+
+                         <div class="dashboard__info-section">
+                            <h3 class="dashboard__section-title">Insumos Asignados</h3>
+                            <div data-info="supplies"> </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Sección Actualizar Producción -->
             <section class="dashboard__section" data-panel="update">
                 <div class="dashboard__heading">
                     <h2 class="dashboard__title">
                         <i class="material-icons dashboard__icon">edit</i>
                         Actualizar Producción
                     </h2>
-                    <p class="dashboard__subtitle">Busque una producción para actualizar sus datos</p>
+                    <p class="dashboard__subtitle">Busque una producción para actualizar sus datos e insumos</p>
                 </div>
-                
+
                 <div class="dashboard__widget">
                     <form class="dashboard__form" data-form="search-update">
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">ID de Producción</label>
                             <div class="dashboard__input-group">
-                                <input class="dashboard__input" type="text" data-field="production-id" required>
+                                <input class="dashboard__input" type="text" data-field="production-id" required placeholder="Ej: prod-1">
                                 <button class="dashboard__button dashboard__button--primary" type="submit">Buscar</button>
                             </div>
                             <span class="dashboard__error" data-error="production-id"></span>
                         </div>
                     </form>
 
-                    <form class="dashboard__form dashboard__form--hidden" data-form="update">
-                        <!-- Se poblará dinámicamente -->
-                        <div class="dashboard__form-actions">
-                            <button class="dashboard__button dashboard__button--primary" type="submit">Actualizar</button>
-                            <button class="dashboard__button dashboard__button--secondary" type="button" data-action="cancel-update">Cancelar</button>
-                        </div>
-                    </form>
+                    <form class="dashboard__form dashboard__form--two-columns dashboard__form--hidden" data-form="update">
+                        </form>
                 </div>
             </section>
 
-            <!-- Sección Habilitar/Deshabilitar Producción -->
             <section class="dashboard__section" data-panel="enable">
                 <div class="dashboard__heading">
                     <h2 class="dashboard__title">
@@ -288,34 +285,32 @@
                     </h2>
                     <p class="dashboard__subtitle">Gestione el estado de las producciones</p>
                 </div>
-                
+
                 <div class="dashboard__widget">
                     <form class="dashboard__form" data-form="enable">
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">ID de Producción</label>
                             <div class="dashboard__input-group">
-                                <input class="dashboard__input" type="text" data-field="production-id" required>
+                                <input class="dashboard__input" type="text" data-field="production-id" required placeholder="Ej: prod-1">
                                 <button class="dashboard__button dashboard__button--primary" type="submit">Buscar</button>
                             </div>
                             <span class="dashboard__error" data-error="production-id"></span>
                         </div>
                     </form>
-                    
+
                     <div class="dashboard__result dashboard__result--hidden" data-result="enable">
                         <div class="dashboard__result-header">
                             <h3 class="dashboard__result-title">Estado de la Producción</h3>
                         </div>
                         <div class="dashboard__result-content" data-content="status">
-                            <!-- Aquí se mostrarán los resultados -->
-                        </div>
+                            </div>
                         <div class="dashboard__result-actions">
-                            <button class="dashboard__button dashboard__button--accent" data-action="toggle-status">Cambiar Estado</button>
+                            <button class="dashboard__button dashboard__button--accent" data-action="toggle-status" disabled>Cambiar Estado</button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Sección Listar Producciones -->
             <section class="dashboard__section" data-panel="list">
                 <div class="dashboard__heading">
                     <h2 class="dashboard__title">
@@ -324,23 +319,23 @@
                     </h2>
                     <p class="dashboard__subtitle">Visualice y gestione todas las producciones existentes</p>
                 </div>
-                
+
                 <div class="dashboard__widget">
                     <div class="dashboard__list-controls">
                         <div class="dashboard__search">
                             <i class="material-icons dashboard__search-icon">search</i>
-                            <input class="dashboard__search-input" type="text" data-field="search" placeholder="Buscar producción...">
+                            <input class="dashboard__search-input" type="text" data-field="search" placeholder="Buscar por ID, nombre, cultivo, ciclo, responsable...">
                         </div>
                         <div class="dashboard__filter">
-                            <label class="dashboard__filter-label">Filtrar por:</label>
+                            <label class="dashboard__filter-label">Filtrar por Estado:</label>
                             <select class="dashboard__filter-select" data-field="filter-status">
-                                <option value="all">Todos los estados</option>
+                                <option value="all">Todos</option>
                                 <option value="active">Activo</option>
                                 <option value="inactive">Inactivo</option>
                             </select>
                         </div>
                     </div>
-                    
+
                     <div class="dashboard__table-container">
                         <table class="dashboard__table">
                             <thead class="dashboard__table-head">
@@ -354,33 +349,32 @@
                                 </tr>
                             </thead>
                             <tbody class="dashboard__table-body" data-list="productions">
-                                <!-- Se llenará dinámicamente -->
+                                <tr><td colspan="6" class="dashboard__table-cell dashboard__table-cell--loading">Cargando...</td></tr>
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <div class="dashboard__pagination">
-                        <button class="dashboard__pagination-button" data-action="prev-page">
+                        <button class="dashboard__pagination-button" data-action="prev-page" disabled>
                             <i class="material-icons">chevron_left</i>
                         </button>
-                        <span class="dashboard__pagination-info" data-info="page">Página 1 de 1</span>
-                        <button class="dashboard__pagination-button" data-action="next-page">
+                        <span class="dashboard__pagination-info" data-info="page">Página - de -</span>
+                        <button class="dashboard__pagination-button" data-action="next-page" disabled>
                             <i class="material-icons">chevron_right</i>
                         </button>
                     </div>
                 </div>
             </section>
 
-            <!-- Sección Generar Reporte -->
             <section class="dashboard__section" data-panel="report">
                 <div class="dashboard__heading">
                     <h2 class="dashboard__title">
                         <i class="material-icons dashboard__icon">description</i>
-                        Generar Reporte
+                        Generar Reporte (Simulado)
                     </h2>
                     <p class="dashboard__subtitle">Genere reportes personalizados de las producciones</p>
                 </div>
-                
+
                 <div class="dashboard__widget">
                     <form class="dashboard__form" data-form="report">
                         <div class="dashboard__form-group">
@@ -397,7 +391,7 @@
                             </div>
                             <span class="dashboard__error" data-error="date-range"></span>
                         </div>
-                        
+
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">Formato</label>
                             <div class="dashboard__radio-group">
@@ -415,7 +409,7 @@
                                 </label>
                             </div>
                         </div>
-                        
+
                         <div class="dashboard__form-actions">
                             <button class="dashboard__button dashboard__button--primary" type="submit">Generar Reporte</button>
                         </div>
@@ -424,7 +418,6 @@
             </section>
         </main>
 
-        <!-- Modal para agregar nuevos elementos -->
         <div class="modal" data-modal="add-item">
             <div class="modal__overlay" data-action="close-modal"></div>
             <div class="modal__content">
@@ -433,8 +426,7 @@
                     <button class="modal__close" data-action="close-modal">&times;</button>
                 </div>
                 <div class="modal__body" data-modal-body>
-                    <!-- Contenido dinámico -->
-                </div>
+                    </div>
                 <div class="modal__footer">
                     <button class="dashboard__button dashboard__button--secondary" data-action="cancel-modal">Cancelar</button>
                     <button class="dashboard__button dashboard__button--primary" data-action="save-modal">Guardar</button>

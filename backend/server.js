@@ -381,6 +381,10 @@ app.delete("/cultivo/:id", async (req, res) => { // Example async/await refactor
     } catch (err) {
         console.error("Error al eliminar cultivo:", err);
         if (connection) await connection.rollback();
+        // Check for foreign key constraint error if productions depend on cultivos
+        if (err.code === 'ER_ROW_IS_REFERENCED_2') {
+            return res.status(409).json({ error: 'No se puede eliminar el cultivo porque está asociado a una producción.' });
+        }
         res.status(500).json({ error: "Error al eliminar cultivo", details: err.message });
     } finally {
         if (connection) connection.release();
@@ -663,7 +667,7 @@ app.get('/api/integracion/data', async (req, res) => {
 });
 
 
-// --- Production Routes (Using Router and async/await) ---
+// --- Production Routes (Using Router and async/await - Updated PUT) ---
 const productionRoutes = express.Router();
 
 // POST /api/productions - Create a new production
@@ -759,26 +763,44 @@ productionRoutes.get('/:id', async (req, res) => {
     }
 });
 
-// PUT /api/productions/:id - Update a production
+// PUT /api/productions/:id - Update a production (Handles Supplies)
 productionRoutes.put('/:id', async (req, res) => {
     const id = req.params.id;
     if (!id || isNaN(parseInt(id))) {
         return res.status(400).json({ success: false, error: 'ID de producción inválido' });
     }
-    const { name, responsible, cultivation, cycle, sensors, /* NO start_date */ end_date, status } = req.body;
+
+    const {
+        name, responsible, cultivation, cycle,
+        sensors, supplies, // Expect supplies array
+        /* NO start_date */ end_date, status
+    } = req.body;
 
     // Validation
-    if (!name || !responsible || !cultivation || !cycle || !end_date || !status || !Array.isArray(sensors)) {
-        return res.status(400).json({ error: 'Faltan campos obligatorios o tienen formato incorrecto (sensors debe ser array)' });
+    if (!name || !responsible || !cultivation || !cycle || !end_date || !status || !Array.isArray(sensors) || !Array.isArray(supplies)) { // Check supplies array
+        return res.status(400).json({ error: 'Faltan campos obligatorios o tienen formato incorrecto (sensors/supplies deben ser arrays)' });
     }
     if (isNaN(new Date(end_date).getTime())) {
         return res.status(400).json({ error: 'Formato de fecha de fin inválido.' });
     }
 
+    // Convert arrays to strings for DB storage
     const sensorsStr = sensors.join(',');
-    // SQL without start_date and supplies (assuming supplies not editable here)
-    const sql = `UPDATE productions SET name = ?, responsible = ?, cultivation = ?, cycle = ?, sensors = ?, end_date = ?, status = ? WHERE id = ?`;
-    const params = [name, responsible, cultivation, cycle, sensorsStr, end_date, status, id];
+    const suppliesStr = supplies.join(','); // Convert supplies to string
+
+    // SQL includes supplies field
+    const sql = `
+        UPDATE productions
+        SET name = ?, responsible = ?, cultivation = ?, cycle = ?,
+            sensors = ?, supplies = ?, end_date = ?, status = ?
+        WHERE id = ?`;
+
+    // Params include suppliesStr
+    const params = [
+        name, responsible, cultivation, cycle,
+        sensorsStr, suppliesStr, end_date, status,
+        id
+    ];
 
     try {
         const [result] = await db.query(sql, params);

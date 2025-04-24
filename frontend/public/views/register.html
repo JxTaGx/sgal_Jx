@@ -16,72 +16,67 @@
                 <h2 class="register__title register__title--subtitle">Registro</h2>
                 <div class="register__background">
                     <h1 class="register__heading">SISTEMA GESTION AGRICOLA LEMBO <br>(S.G.A.L)</h1>
-                    
-                    <form action="http://localhost:3000/user" class="register__container" method="POST">
+
+                    <form class="register__container" novalidate>
                         <div class="register__column register__column--left">
                             <h2 class="register__section-title">Tipo de Documento</h2>
                             <div class="register__form-group">
                                 <label for="documentType" class="register__label">Tipo de Documento</label>
-                                <select id="documentType" name="documentType" class="register__select" >
-                                    <option value="tp">TI</option>
-                                    <option value="cc">CC</option>
-                                    <option value="cc">CE</option>
-                                    <option value="ppt">PPT</option>
-                                    <option value="ppt">PEP</option>
+                                <select id="documentType" name="documentType" class="register__select" required>
+                                    <option value="">Seleccione...</option> <option value="TI">TI</option> <option value="CC">CC</option>
+                                    <option value="CE">CE</option>
+                                    <option value="PPT">PPT</option>
+                                    <option value="PEP">PEP</option>
                                 </select>
-                            </div>
+                                </div>
                             <div class="register__form-group">
                                 <label for="documentNumber" class="register__label">Número de Documento</label>
-                                <input type="text" placeholder="Numero de Documento" name="documentNumber" class="register__input" >
-                            </div>
+                                <input type="text" id="documentNumber" placeholder="Numero de Documento" name="documentNumber" class="register__input" required>
+                                </div>
                             <div class="register__form-group">
                                 <label for="userType" class="register__label">Tipo de Usuario</label>
-                                <select id="userType" name="userType" class="register__input" >
-                                    <option value="" disabled selected>Seleccione un tipo de usuario</option>
-                                    <option value="SADMIN">Súper administrador</option>
+                                <select id="userType" name="userType" class="register__select" required>
+                                    <option value="" >Seleccione un tipo</option> <option value="SADMIN">Súper administrador</option>
                                     <option value="ADMIN">Administrador</option>
                                     <option value="PAP">Personal apoyo</option>
                                     <option value="VTE">Visitante</option>
                                 </select>
-                            </div>
+                                </div>
                         </div>
                         <div class="register__column register__column--right">
                             <h2 class="register__section-title">Formulario</h2>
                             <div class="register__form-group">
                                 <label for="firstName" class="register__label">Nombre</label>
-                                <input type="text" placeholder="Nombre" name="firstName" class="register__input register__input--name" >
-                            </div>
+                                <input type="text" id="firstName" placeholder="Nombre" name="firstName" class="register__input register__input--name" required>
+                                </div>
                             <div class="register__form-group">
                                 <label for="lastName" class="register__label">Apellido</label>
-                                <input type="text" placeholder="Apellido" name="lastName" class="register__input register__input--lastname" >
-                            </div>
+                                <input type="text" id="lastName" placeholder="Apellido" name="lastName" class="register__input register__input--lastname" required>
+                                </div>
                             <div class="register__form-group">
                                 <label for="phone" class="register__label">Teléfono</label>
-                                <input type="text" placeholder="Teléfono" name="phone" class="register__input register__input--tel" >
-                            </div>
+                                <input type="tel" id="phone" placeholder="Teléfono" name="phone" class="register__input register__input--tel" required>
+                                </div>
                             <div class="register__form-group">
                                 <label for="password" class="register__label">Contraseña</label>
-                                <input type="password" placeholder="Contraseña" name="password" class="register__input register__input--password" >
-                            </div>
+                                <input type="password" id="password" placeholder="Contraseña (mín. 8 caracteres)" name="password" class="register__input register__input--password" required>
+                                </div>
                             <div class="register__form-group">
                                 <label for="email" class="register__label">Correo Electrónico</label>
-                                <input type="email" placeholder="Correo Electrónico" name="email" class="register__input register__input--email" >
-                            </div>
+                                <input type="email" id="email" placeholder="Correo Electrónico" name="email" class="register__input register__input--email" required>
+                                </div>
                             <div class="register__form-group">
                                 <label for="confirmEmail" class="register__label">Confirmar Correo Electrónico</label>
-                                <input type="email" placeholder="Confirmar Correo Electrónico" name="confirmEmail" class="register__input register__input--confirmEmail" >
-                            </div>
+                                <input type="email" id="confirmEmail" placeholder="Confirmar Correo Electrónico" name="confirmEmail" class="register__input register__input--confirmEmail" required>
+                                </div>
                             <button type="submit" class="register__button register__button--submit">Registrarse</button>
                         </div>
                     </form>
                 </div>
             </section>
-            <a href="../views/lista-usuario.html">
-                <button class="page__button page__button--back">Volver</button>
-            </a>
+            <button type="button" id="btn-volver-registro" class="page__button page__button--back">Volver</button>
         </main>
     </div>
     <script src="../js/pages/script-register.js"></script>
-    <script src="../server.js"></script>
-</body>
+    </body>
 </html>

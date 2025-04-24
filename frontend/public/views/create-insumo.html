@@ -14,50 +14,49 @@
             <path d="M18 36C27.9411 36 36 27.9411 36 18C36 8.05887 27.9411 0 18 0C8.05887 0 0 8.05887 0 18C0 27.9411 8.05887 36 18 36Z" fill="#4BBD17"/>
             </svg>
         </header>
-        <form class="form__content">
+        <form class="form__content" novalidate>
             <div class="form__column">
                 <h1 class="form__title">Crear Insumo</h1>
                 <div class="form__group">
-                    <label class="form__label" for="tipoSensor">Tipo de insumo</label>
-                    <input class="form__input" type="text" name="tipoSensor" title="Ingrese el tipo de insumo" placeholder="Ej: Material eléctrico">
+                    <label class="form__label" for="tipo_insumo">Tipo de insumo</label>
+                    <input class="form__input" type="text" id="tipo_insumo" name="tipo_insumo" title="Ingrese el tipo de insumo" placeholder="Ej: Material eléctrico" required>
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="nombreSensor">Nombre del insumo</label>
-                    <input class="form__input" type="text" name="nombreSensor" title="Ingrese el nombre del insumo" placeholder="Ej: Cable UTP">
+                     <label class="form__label" for="nombre_insumo">Nombre del insumo</label>
+                    <input class="form__input" type="text" id="nombre_insumo" name="nombre_insumo" title="Ingrese el nombre del insumo" placeholder="Ej: Cable UTP" required>
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="identificador">ID de insumo</label>
-                    <input class="form__input" type="text" name="identificador" title="Ingrese el ID del insumo" placeholder="Ej: INS-001">
+                     <label class="form__label" for="id_insumo">ID de insumo</label>
+                    <input class="form__input" type="text" id="id_insumo" name="id_insumo" title="Ingrese el ID del insumo" placeholder="Ej: INS-001" required>
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="descripcion">Descripción</label>
-                    <textarea class="form__textarea" name="descripcion" title="Ingrese una descripción del insumo" placeholder="Describa las características del insumo"></textarea>
+                    <textarea class="form__textarea" id="descripcion" name="descripcion" title="Ingrese una descripción del insumo" placeholder="Describa las características del insumo"></textarea>
                 </div>
             </div>
             <div class="form__column">
                 <div class="form__group">
-                    <label class="form__label" for="referenciaSensor">Unidad de medida</label>
-                    <input class="form__input" type="text" name="referenciaSensor" title="Ingrese la unidad de medida" placeholder="Ej: metros, unidades">
+                     <label class="form__label" for="unidad_medida">Unidad de medida</label>
+                    <input class="form__input" type="text" id="unidad_medida" name="unidad_medida" title="Ingrese la unidad de medida" placeholder="Ej: metros, unidades" required>
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="unidadMedida">Cantidad</label>
-                    <input class="form__input" type="text" name="unidadMedida" title="Ingrese la cantidad disponible" placeholder="Ej: 10">
+                     <label class="form__label" for="cantidad">Cantidad</label>
+                    <input class="form__input" type="number" id="cantidad" name="cantidad" min="0" step="any" title="Ingrese la cantidad disponible" placeholder="Ej: 10" required>
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="tiempoEscaneo">Valor unitario</label>
-                    <input class="form__input" type="text" name="tiempoEscaneo" title="Ingrese el valor unitario" placeholder="Ej: 15000">
+                    <label class="form__label" for="valor_unitario">Valor unitario</label>
+                    <input class="form__input" type="number" id="valor_unitario" name="valor_unitario" min="0" step="any" title="Ingrese el valor unitario" placeholder="Ej: 15000" required>
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="valorTotal">Valor total</label>
-                    <input class="form__input" type="text" name="valorTotal" title="Valor total calculado" placeholder="Se calculará automáticamente">
-                </div>
+                    <input class="form__input" type="text" id="valorTotal" name="valorTotal" title="Valor total calculado" placeholder="Se calculará automáticamente" readonly> </div>
                 <div class="form__group">
                     <label class="form__label" for="estado">Estado</label>
-                    <input class="form__input" type="text" name="estado" title="Ingrese el estado del insumo" placeholder="Ej: Disponible, Agotado">
+                    <input class="form__input" type="text" id="estado" name="estado" title="Ingrese el estado del insumo" placeholder="Ej: Disponible, Agotado">
                 </div>
             </div>
             <div class="form__actions">
-                <button onclick="window.location.href='listar-insumo-sebas.html'" type="button" class="form__btn form__btn--volver">Volver</button>
+                 <button type="button" id="btn-volver" class="form__btn form__btn--volver">Volver</button>
                 <button type="submit" class="form__btn form__btn--crear">Crear Insumo</button>
             </div>
         </form>

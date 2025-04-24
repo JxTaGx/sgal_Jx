@@ -14,24 +14,25 @@
                 <path d="M18 36C27.9411 36 36 27.9411 36 18C36 8.05887 27.9411 0 18 0C8.05887 0 0 8.05887 0 18C0 27.9411 8.05887 36 18 36Z" fill="#4BBD17"/>
             </svg>
         </header>
-        <form class="form__content">
+        <form class="form__content" novalidate>
             <div class="form__column">
                 <h1 class="form__title">Crear Sensor</h1>
-                
+
                 <div class="form__group">
                     <label class="form__label" for="tipoSensor">Tipo de Sensor</label>
-                    <input class="form__input" type="text" name="tipoSensor" placeholder="Ingrese el tipo de sensor" title="Tipo de sensor" required>
+                    <input class="form__input" type="text" id="tipoSensor" name="tipoSensor" placeholder="Ingrese el tipo de sensor" title="Tipo de sensor" required>
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="nombreSensor">Nombre del Sensor</label>
-                    <input class="form__input" type="text" name="nombreSensor" placeholder="Ingrese el nombre del sensor" title="Nombre del sensor" required>
+                    <input class="form__input" type="text" id="nombreSensor" name="nombreSensor" placeholder="Ingrese el nombre del sensor" title="Nombre del sensor" required>
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="identificador">Identificador</label>
-                    <input class="form__input" type="text" name="identificador" placeholder="Ingrese el identificador" title="Identificador del sensor" required>
+                    <input class="form__input" type="text" id="identificador" name="identificador" placeholder="Ingrese el identificador" title="Identificador del sensor" required>
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="fotografia">Fotografía</label>
+                    <input type="file" id="fotografia" name="fotografia" accept="image/*" style="display: none;">
                     <div class="form__upload-area">
                         <p class="form__upload-text">Arrastra y suelta o haz clic para subir</p>
                     </div>
@@ -40,35 +41,28 @@
             <div class="form__column">
                 <div class="form__group">
                     <label class="form__label" for="referenciaSensor">Referencia del Sensor</label>
-                    <input class="form__input" type="text" name="referenciaSensor" placeholder="Ingrese la referencia" title="Referencia del sensor" required>
+                    <input class="form__input" type="text" id="referenciaSensor" name="referenciaSensor" placeholder="Ingrese la referencia" title="Referencia del sensor" required>
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="unidadMedida">Unidad de Medida</label>
-                    <input class="form__input" type="text" name="unidadMedida" placeholder="Ingrese la unidad de medida" title="Unidad de medida" required>
+                    <input class="form__input" type="text" id="unidadMedida" name="unidadMedida" placeholder="Ingrese la unidad de medida" title="Unidad de medida" required>
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="tiempoEscaneo">Tiempo de Escaneo</label>
-                    <input class="form__input" type="text" name="tiempoEscaneo" placeholder="Ingrese el tiempo de escaneo" title="Tiempo de escaneo" required>
+                    <input class="form__input" type="text" id="tiempoEscaneo" name="tiempoEscaneo" placeholder="Ingrese el tiempo de escaneo" title="Tiempo de escaneo" required>
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="estado">Estado</label>
-                    <select name="Estado" class="form__option">
-                        <option value="Activo">Activo</option>
-                        <option value="inactivo">Inactivo</option>
-                    </select>
+                    <label class="form__label" for="Estado">Estado</label> <select id="Estado" name="Estado" class="form__input form__option" required> <option value="">Seleccione Estado</option> <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option> </select>
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="descripcion">Descripción</label>
-                    <textarea class="form__textarea" name="descripcion" placeholder="Ingrese una descripción" title="Descripción del sensor"></textarea>
+                    <textarea class="form__textarea" id="descripcion" name="descripcion" placeholder="Ingrese una descripción" title="Descripción del sensor"></textarea>
                 </div>
             </div>
             <div class="form__actions">
-                <a href="listar-sensor-sebas.html" class="form__link">
-                    <button type="button" class="form__btn form__btn--volver">Volver</button>
-                </a>
-                <a href="listar-sensor-sebas.html" class="form__link">
-                    <button type="submit" class="form__btn form__btn--crear">Crear Sensor</button>
-                </a>
+                 <button type="button" id="btn-volver" class="form__btn form__btn--volver">Volver</button>
+                <button type="submit" class="form__btn form__btn--crear">Crear Sensor</button>
             </div>
         </form>
     </div>

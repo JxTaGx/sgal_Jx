@@ -298,6 +298,16 @@ h6 {
     color: var(--gray-550);
 }
 
+/* --- AJUSTE PARA PREVISUALIZACIÓN DE IMAGEN --- */
+.form__preview-image {
+    display: block;      /* Asegura que la imagen sea un bloque */
+    width: 100%;         /* Ocupa el ancho del contenedor */
+    height: 100%;        /* Ocupa la altura del contenedor */
+    object-fit: contain; /* Escala la imagen manteniendo proporción hasta caber */
+    /* object-position: center; */ /* Centra la imagen si 'contain' deja espacio */
+}
+/* --- FIN AJUSTE --- */    
+
 .form__picture {
     width: 32rem;
     height: 15rem;

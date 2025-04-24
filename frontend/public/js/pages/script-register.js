@@ -1,182 +1,123 @@
+// script-register.js (Updated with Conditional Back Button Logic)
+
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector(".register__container");
+    const btnVolver = document.querySelector('#btn-volver-registro'); // Target the specific button ID
+    const submitButton = document.querySelector('.register__button--submit'); // Target submit button
 
-    // Preparamos contenedores de error para cada campo
+    // --- Error Handling Functions ---
     const prepareErrorContainers = () => {
         const formGroups = document.querySelectorAll('.register__form-group');
         formGroups.forEach(group => {
-            const errorContainer = document.createElement('div');
-            errorContainer.className = 'error-container';
-            errorContainer.style.height = '20px'; // Altura fija
-            errorContainer.style.visibility = 'hidden'; // Inicialmente oculto
-            group.appendChild(errorContainer);
+            // Avoid adding multiple containers if script runs again
+            if (!group.querySelector('.error-container')) {
+                const errorContainer = document.createElement('div');
+                errorContainer.className = 'error-container';
+                errorContainer.style.height = '20px';
+                errorContainer.style.visibility = 'hidden';
+                errorContainer.style.color = 'red'; // Make errors visible
+                errorContainer.style.fontSize = '0.8em';
+                errorContainer.style.marginTop = '4px';
+                group.appendChild(errorContainer);
+            }
         });
     };
-
     prepareErrorContainers();
 
-    // Función para mostrar errores
     const showError = (input, message) => {
         const formGroup = input.closest('.register__form-group');
-        const errorContainer = formGroup.querySelector('.error-container');
-        
-        errorContainer.textContent = message;
-        errorContainer.style.visibility = 'visible';
-        input.classList.add('input-error');
+        const errorContainer = formGroup?.querySelector('.error-container');
+        if (errorContainer) {
+            errorContainer.textContent = message;
+            errorContainer.style.visibility = 'visible';
+        }
+        input.classList.add('input-error'); // Add error class for styling
     };
 
-    // Función para limpiar errores
     const clearError = (input) => {
         const formGroup = input.closest('.register__form-group');
-        const errorContainer = formGroup.querySelector('.error-container');
-        
-        errorContainer.style.visibility = 'hidden';
+        const errorContainer = formGroup?.querySelector('.error-container');
+        if (errorContainer) {
+            errorContainer.textContent = '';
+            errorContainer.style.visibility = 'hidden';
+        }
         input.classList.remove('input-error');
     };
 
-    // Validaciones individuales (igual que antes)
-    const validateDocumentType = (value) => {
-        const validTypes = ['tp', 'cc', 'ce', 'ppt', 'pep'];
-        return validTypes.includes(value);
-    };
+    // --- Input Validation Functions ---
+    const validateDocumentType = (value) => value !== ''; // Ensure a selection is made
+    const validateDocumentNumber = (value) => /^\d{8,15}$/.test(value);
+    const validateUserType = (value) => value !== ''; // Ensure a selection is made
+    const validateName = (value) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s']{2,50}$/.test(value); // Allow apostrophe
+    const validatePhone = (value) => /^[0-9]{7,15}$/.test(value);
+    const validateEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    const validatePassword = (value) => value.length >= 8;
 
-    const validateDocumentNumber = (value) => {
-        return /^\d{8,15}$/.test(value);
-    };
-
-    const validateUserType = (value) => {
-        const validTypes = ['SADMIN', 'ADMIN', 'PAP', 'VTE'];
-        return validTypes.includes(value);
-    };
-
-    const validateName = (value) => {
-        return /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{2,50}$/.test(value);
-    };
-
-    const validatePhone = (value) => {
-        return /^[0-9]{7,15}$/.test(value);
-    };
-
-    const validateEmail = (value) => {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-    };
-
-    const validatePassword = (value) => {
-        return value.length >= 8;
-    };
-
-    // Validación general del formulario (igual que antes)
+    // --- Form Validation Function ---
     const validateForm = (formData) => {
         let isValid = true;
+        // Clear all previous errors
+        document.querySelectorAll('.register__input, .register__select').forEach(clearError);
 
-        // Validar tipo de documento
-        if (!validateDocumentType(formData.documentType)) {
-            showError(document.querySelector("select[name='documentType']"), "Seleccione un tipo de documento válido");
-            isValid = false;
-        }
-
-        // Validar número de documento
-        if (!validateDocumentNumber(formData.documentNumber)) {
-            showError(document.querySelector("input[name='documentNumber']"), "Número de documento inválido (8-15 dígitos)");
-            isValid = false;
-        }
-
-        // Validar tipo de usuario
-        if (!validateUserType(formData.userType)) {
-            showError(document.querySelector("select[name='userType']"), "Seleccione un tipo de usuario válido");
-            isValid = false;
-        }
-
-        // Validar nombre
-        if (!validateName(formData.firstName)) {
-            showError(document.querySelector("input[name='firstName']"), "Nombre inválido (solo letras, 2-50 caracteres)");
-            isValid = false;
-        }
-
-        // Validar apellido
-        if (!validateName(formData.lastName)) {
-            showError(document.querySelector("input[name='lastName']"), "Apellido inválido (solo letras, 2-50 caracteres)");
-            isValid = false;
-        }
-
-        // Validar teléfono
-        if (!validatePhone(formData.phone)) {
-            showError(document.querySelector("input[name='phone']"), "Teléfono inválido (7-15 dígitos)");
-            isValid = false;
-        }
-
-        // Validar email
-        if (!validateEmail(formData.email)) {
-            showError(document.querySelector("input[name='email']"), "Correo electrónico inválido");
-            isValid = false;
-        }
-
-        // Validar confirmación de email
-        if (formData.email !== formData.confirmEmail) {
-            showError(document.querySelector("input[name='confirmEmail']"), "Los correos no coinciden");
-            isValid = false;
-        }
-
-        // Validar contraseña
-        if (!validatePassword(formData.password)) {
-            showError(document.querySelector("input[name='password']"), "La contraseña debe tener al menos 8 caracteres");
-            isValid = false;
-        }
+        if (!validateDocumentType(formData.documentType)) { showError(document.querySelector("select[name='documentType']"), "Seleccione un tipo"); isValid = false; }
+        if (!validateDocumentNumber(formData.documentNumber)) { showError(document.querySelector("input[name='documentNumber']"), "Número inválido (8-15 dígitos)"); isValid = false; }
+        if (!validateUserType(formData.userType)) { showError(document.querySelector("select[name='userType']"), "Seleccione un tipo"); isValid = false; }
+        if (!validateName(formData.firstName)) { showError(document.querySelector("input[name='firstName']"), "Nombre inválido"); isValid = false; }
+        if (!validateName(formData.lastName)) { showError(document.querySelector("input[name='lastName']"), "Apellido inválido"); isValid = false; }
+        if (!validatePhone(formData.phone)) { showError(document.querySelector("input[name='phone']"), "Teléfono inválido (7-15 dígitos)"); isValid = false; }
+        if (!validateEmail(formData.email)) { showError(document.querySelector("input[name='email']"), "Correo inválido"); isValid = false; }
+        if (formData.email !== formData.confirmEmail) { showError(document.querySelector("input[name='confirmEmail']"), "Los correos no coinciden"); isValid = false; }
+        else if (!validateEmail(formData.confirmEmail)) { showError(document.querySelector("input[name='confirmEmail']"), "Confirme el correo"); isValid = false;} // Also check if confirm email is valid format
+        if (!validatePassword(formData.password)) { showError(document.querySelector("input[name='password']"), "Mínimo 8 caracteres"); isValid = false; }
 
         return isValid;
     };
 
-    // Event listeners para validación en tiempo real (igual que antes)
-    document.querySelector("select[name='documentType']").addEventListener('change', (e) => {
-        clearError(e.target);
+    // --- Event Listeners for Real-time Validation ---
+    form.querySelectorAll('.register__input, .register__select').forEach(input => {
+        input.addEventListener('input', () => clearError(input)); // Clear error on input/change
+        input.addEventListener('change', () => clearError(input));
+         // Special handling for confirm email
+         if (input.name === 'email' || input.name === 'confirmEmail') {
+             input.addEventListener('input', () => {
+                 const emailInput = document.querySelector("input[name='email']");
+                 const confirmEmailInput = document.querySelector("input[name='confirmEmail']");
+                 if (emailInput.value && confirmEmailInput.value && emailInput.value !== confirmEmailInput.value) {
+                     showError(confirmEmailInput, "Los correos no coinciden");
+                 } else if (emailInput.value && confirmEmailInput.value) {
+                      clearError(confirmEmailInput); // Clear if they match now
+                 }
+             });
+         }
     });
 
-    document.querySelector("input[name='documentNumber']").addEventListener('input', (e) => {
-        clearError(e.target);
-    });
 
-    document.querySelector("select[name='userType']").addEventListener('change', (e) => {
-        clearError(e.target);
-    });
-
-    document.querySelector("input[name='firstName']").addEventListener('input', (e) => {
-        clearError(e.target);
-    });
-
-    document.querySelector("input[name='lastName']").addEventListener('input', (e) => {
-        clearError(e.target);
-    });
-
-    document.querySelector("input[name='phone']").addEventListener('input', (e) => {
-        clearError(e.target);
-    });
-
-    document.querySelector("input[name='email']").addEventListener('input', (e) => {
-        clearError(e.target);
-        const confirmEmail = document.querySelector("input[name='confirmEmail']");
-        if (confirmEmail.value && confirmEmail.value !== e.target.value) {
-            showError(confirmEmail, "Los correos no coinciden");
-        } else {
-            clearError(confirmEmail);
+    // --- Conditional Back Button Logic ---
+    function setupVolverButtonRegistro() {
+        if (!btnVolver) {
+            console.warn("Botón Volver (#btn-volver-registro) no encontrado.");
+            return;
         }
-    });
+        const urlParams = new URLSearchParams(window.location.search);
+        const origin = urlParams.get('origin');
 
-    document.querySelector("input[name='confirmEmail']").addEventListener('input', (e) => {
-        const email = document.querySelector("input[name='email']").value;
-        if (e.target.value !== email) {
-            showError(e.target, "Los correos no coinciden");
-        } else {
-            clearError(e.target);
-        }
-    });
+        btnVolver.addEventListener('click', () => {
+            if (origin === 'produccion') {
+                window.location.href = '../views/integracion.html#create'; // Adjust path if needed
+            } else {
+                window.location.href = '../views/lista-usuario.html'; // Adjust path if needed
+            }
+        });
+        console.log(`Botón Volver (Registro) configurado para ir a: ${origin === 'produccion' ? '../views/integracion.html#create' : '../views/lista-usuario.html'}`);
+    }
+    setupVolverButtonRegistro(); // Initialize the back button logic
 
-    document.querySelector("input[name='password']").addEventListener('input', (e) => {
-        clearError(e.target);
-    });
-
-    // Evento submit del formulario (igual que antes)
+    // --- Form Submit Logic ---
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
+        // Disable button during submission
+        if(submitButton) submitButton.disabled = true; submitButton.textContent = 'Registrando...';
+
 
         const formData = {
             documentType: document.querySelector("select[name='documentType']").value,
@@ -190,13 +131,9 @@ document.addEventListener("DOMContentLoaded", () => {
             password: document.querySelector("input[name='password']").value
         };
 
-        // Limpiar todos los errores antes de validar
-        document.querySelectorAll('.register__input, .register__select').forEach(input => {
-            clearError(input);
-        });
-
         if (!validateForm(formData)) {
-            return;
+             if(submitButton) submitButton.disabled = false; submitButton.textContent = 'Registrarse'; // Re-enable button
+            return; // Stop submission if validation fails
         }
 
         console.log("Enviando datos:", formData);
@@ -204,25 +141,35 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const response = await fetch("http://localhost:3000/user", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)
             });
 
+            const result = await response.json(); // Try parsing JSON regardless of status
+
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || "Error en la conexión con el servidor");
+                // Use error message from backend if available
+                throw new Error(result.error || result.message || `Error ${response.status}`);
             }
 
-            const result = await response.json();
             console.log("Respuesta del servidor:", result);
             alert("Usuario registrado con éxito");
 
-            form.reset();
+            // Decide where to redirect after successful creation
+             const urlParams = new URLSearchParams(window.location.search);
+             const origin = urlParams.get('origin');
+             if (origin === 'produccion') {
+                 window.location.href = '../views/integracion.html#create'; // Go back to production create
+             } else {
+                 window.location.href = '../views/lista-usuario.html'; // Go to user list
+             }
+             // Don't reset form if redirecting immediately
+             // form.reset();
+
         } catch (error) {
             console.error("Error:", error);
-            alert(error.message || "Hubo un problema al registrar el usuario");
+            alert(`Error al registrar: ${error.message}`);
+             if(submitButton) submitButton.disabled = false; submitButton.textContent = 'Registrarse'; // Re-enable button on error
         }
     });
 });
