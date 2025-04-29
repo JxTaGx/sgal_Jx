@@ -175,10 +175,171 @@ async function deleteProduction(req, res) {
     }
 }
 
+/**
+ * Obtiene datos agregados para el Dashboard de Visualización.
+ */
+async function getDashboardSummary(req, res) {
+    let connection;
+    try {
+        connection = await db.pool.getConnection();
+
+        // 1. Obtener todas las producciones con información relacionada
+        const [productions] = await connection.query(`
+            SELECT
+                p.id, p.name, p.status, p.start_date, p.end_date,
+                CONCAT(u.firstName, ' ', u.lastName) as responsible_name,
+                c.nombre_cultivo as cultivation_name,
+                cc.nombre_ciclo as cycle_name,
+                p.supplies  -- Obtenemos los IDs de insumos
+            FROM productions p
+            LEFT JOIN user u ON p.responsible = u.id
+            LEFT JOIN cultivos c ON p.cultivation = c.id_cultivo
+            LEFT JOIN ciclo_cultivo cc ON p.cycle = cc.id_ciclo
+            ORDER BY p.created_at DESC
+        `);
+
+        // 2. Obtener todos los insumos para calcular valor total y buscar por ID
+        const [allInsumos] = await connection.query("SELECT id, nombre_insumo, cantidad, valor_unitario FROM insumos");
+
+        // 3. Obtener todos los sensores para el resumen
+        const [allSensores] = await connection.query("SELECT tipo_sensor FROM sensores WHERE estado = 'Activo'"); // Asumimos una tabla de lecturas si existiera
+
+        // --- Procesamiento y Cálculos ---
+
+        // KPI: Producciones Activas
+        const activeProductionsCount = productions.filter(p => p.status === 'active').length;
+
+        // KPI: Cultivos Únicos (contando los activos en producción)
+        const uniqueCrops = new Set(productions.filter(p => p.status === 'active' && p.cultivation_name).map(p => p.cultivation_name));
+        const uniqueCropsCount = uniqueCrops.size;
+
+        // KPI: Valor Total del Inventario de Insumos (Proxy de Inversión Total)
+        let totalInsumoInventoryValue = 0;
+        allInsumos.forEach(insumo => {
+            const quantity = parseFloat(insumo.cantidad) || 0;
+            const unitValue = parseFloat(insumo.valor_unitario) || 0;
+            totalInsumoInventoryValue += quantity * unitValue;
+        });
+
+        // Datos para Gráfico: Distribución de Estados
+        const statusDistribution = {
+            labels: ['Activo', 'Inactivo'],
+            data: [
+                activeProductionsCount,
+                productions.length - activeProductionsCount
+            ]
+        };
+
+        // Datos para Tabla: Inversión (Modificado para mostrar detalles básicos)
+        const investmentDetails = productions.slice(0, 10).map(p => ({ // Limitar a 10 para la tabla
+            productionId: p.id,
+            productionName: p.name || 'N/A',
+            responsibleName: p.responsible_name || 'N/A',
+            status: p.status === 'active' ? 'Activo' : 'Inactivo'
+            // No podemos calcular inversión por producción aquí
+        }));
+
+        // Datos para Progreso de Ciclos Activos
+        const now = new Date();
+        const cycleProgress = productions
+            .filter(p => p.status === 'active' && p.start_date && p.end_date)
+            .map(p => {
+                const startDate = new Date(p.start_date);
+                const endDate = new Date(p.end_date);
+                let percentage = 0;
+                if (endDate > startDate && now >= startDate) {
+                    const totalDuration = endDate.getTime() - startDate.getTime();
+                    const elapsedDuration = now.getTime() - startDate.getTime();
+                    percentage = Math.min(100, Math.max(0, (elapsedDuration / totalDuration) * 100));
+                } else if (now < startDate) {
+                    percentage = 0; // Aún no ha empezado
+                } else {
+                     percentage = 100; // Ya debería haber terminado o fechas inválidas
+                }
+                return {
+                    id: p.id,
+                    name: p.name || `Producción ${p.id}`,
+                    startDate: p.start_date,
+                    endDate: p.end_date,
+                    percentage: percentage
+                };
+            }).slice(0, 5); // Limitar a 5 para la lista
+
+        // --- Simulación de Datos Faltantes ---
+        // KPI: Ganancia/Pérdida (No calculable)
+        const profitLoss = null;
+
+        // Gráfico: Rendimiento por Cultivo (Simulado)
+        const yieldByCrop = {
+            labels: Array.from(uniqueCrops).slice(0, 5), // Tomar hasta 5 cultivos
+            data: Array.from(uniqueCrops).slice(0, 5).map(() => Math.random() * 30 + 60) // Simular 60-90%
+        };
+         // Asegurarse que haya datos para los labels
+         if (yieldByCrop.labels.length === 0 && productions.length > 0) {
+            yieldByCrop.labels = ['Cultivo A', 'Cultivo B'];
+            yieldByCrop.data = [75, 82];
+         }
+
+        // Gráfico: Evolución Comparativa (Simulado)
+        const comparativeEvolution = {
+            labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
+            investmentData: [180000, 195000, 205000, 210000], // Valores simulados
+            productionData: [activeProductionsCount * 0.8, activeProductionsCount * 0.9, activeProductionsCount, activeProductionsCount * 1.1] // Simulado basado en conteo
+        };
+
+        // Medidores (Simulado)
+        const gauges = {
+            yieldCycleAvg: Math.random() * 25 + 70, // 70-95%
+            yieldUserAvg: Math.random() * 30 + 65 // 65-95%
+        };
+
+        // Resumen de Sensores (Simulado)
+        const sensorSummary = {
+            temperature: Math.random() * 5 + 20, // 20-25 °C
+            humidity: Math.random() * 15 + 55,    // 55-70 %
+            nutrients: Math.random() * 200 + 400, // 400-600 ppm (simulado)
+            light: Math.random() * 5000 + 15000  // 15000-20000 lux (simulado)
+        };
+
+
+        // --- Ensamblar Respuesta ---
+        const dashboardData = {
+            kpis: {
+                activeProductions: activeProductionsCount,
+                uniqueCrops: uniqueCropsCount,
+                totalInvestment: totalInsumoInventoryValue, // Cambiado a Valor Inventario Insumos
+                profitLoss: profitLoss // Será null
+            },
+            charts: {
+                yieldByCrop: yieldByCrop,
+                statusDistribution: statusDistribution,
+                comparativeEvolution: comparativeEvolution
+            },
+            gauges: gauges,
+            cycleProgress: cycleProgress,
+            investmentDetails: investmentDetails, // Cambiado a detalles básicos
+            sensorSummary: sensorSummary
+        };
+
+        res.json({ success: true, data: dashboardData });
+
+    } catch (error) {
+        console.error('Error fetching dashboard summary:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Error al obtener resumen del dashboard',
+            details: error.message
+        });
+    } finally {
+        if (connection) connection.release();
+    }
+}
+
 module.exports = {
     createProduction,
     getAllProductions,
     getProductionById,
     updateProduction,
     deleteProduction,
+    getDashboardSummary,
 };
