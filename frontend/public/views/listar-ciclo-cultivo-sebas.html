@@ -9,52 +9,29 @@
 <body>
     <h1>Listar Ciclo Cultivos</h1>
     <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="header__logo">
+
     <div class="header">
         <input type="text" placeholder="Buscar ciclo de cultivo..." class="header__search">
         <input type="submit" class="button button--green" value="Filtrar">
         <div>
             <a href="../views/excel.html">
-            <input class="button button--gray" type="submit" value="Generar Reporte">
+                <input class="button button--gray" type="submit" value="Generar Reporte">
             </a>
         </div>
     </div>
+
     <main>
         <div class="main__container">
-            <div class="cards">
-                <div class="card">
-                    <h3 class="card__title">Fertilizante Orgánico</h3>
-                    <p class="card__info">Código: FOP-2023</p>
-                    <p class="card__info">Cantidad: 5000 kg</p>
-                    <p class="card__info">Precio: $2.50/kg</p>
-                    <a href="visualizar-ciclo-cultivo.html">
-                    <input type="submit" class="card__button" value="Ver detalles">
-                    </a>
-                </div>
-                <div class="card">
-                    <h3 class="card__title">Pesticida Natural</h3>
-                    <p class="card__info">Código: PEN-2023</p>
-                    <p class="card__info">Cantidad: 1000 L</p>
-                    <p class="card__info">Precio: $15.00/L</p>
-                    <a href="visualizar-ciclo-cultivo.html">
-                    <input type="submit" class="card__button" value="Ver detalles">
-                    </a>
-                </div>
-                <div class="card">
-                    <h3 class="card__title">Semillas de Tomate</h3>
-                    <p class="card__info">Código: SET-2023</p>
-                    <p class="card__info">Cantidad: 10000 unidades</p>
-                    <p class="card__info">Precio: $0.05/unidad</p>
-                    <a href="visualizar-ciclo-cultivo.html">
-                    <input type="submit" class="card__button" value="Ver detalles">
-                    </a>
-                </div>
+            <div class="cards" id="cards">
+                <!-- Tarjetas generadas dinámicamente aquí -->
             </div>
         </div>
+
         <div class="footer">
             <div class="footer__buttons">
                 <a href="../views/home.html">
                     <input type="submit" class="button button--return" value="Volver">
-                    </a>
+                </a>
             </div>
             <div class="footer__pagination">
                 <button class="pagination__button">1</button>
@@ -64,10 +41,42 @@
             <div class="footer__buttons">
                 <a href="create-ciclo-cultivo.html">
                     <input type="submit" class="button button--crear" value="Crear Ciclo Cultivo">
-                    </a>
+                </a>
             </div>
         </div>
     </main>
-    <script src="../js/pages/listar-ciclo-cultivo.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('http://localhost:3000/ciclo_cultivo')
+                .then(response => response.json())
+                .then(data => {
+                    const cardsContainer = document.getElementById('cards');
+                    cardsContainer.innerHTML = '';
+
+                    data.forEach(ciclo => {
+                        const card = document.createElement('div');
+                        card.classList.add('card');
+                        card.innerHTML = `
+                            <h3 class="card__title">${ciclo.nombre_ciclo || 'Sin nombre'}</h3>
+                            <p class="card__info">ID: ${ciclo.id_ciclo || 'Sin id'}</p>
+                            <p class="card__info">Estado: ${ciclo.estado || 'Sin estado'}</p>
+                            <p class="card__info">Periodo de siembra: ${ciclo.periodo_siembra}</p>
+                            <input type="submit" class="card__button" value="Ver detalles" onclick="verDetalles(${ciclo.id})">
+                        `;
+                        cardsContainer.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al listar ciclos de cultivo:', error);
+                });
+        });
+
+        function verDetalles(id) {
+            localStorage.setItem('idCicloCultivo', id);
+            window.location.href = 'visualizar-ciclo-cultivo.html';
+        }
+    </script>
+    <script src="/frontend/public/js/pages/listar-ciclo-cultivo.js"></script>
 </body>
 </html>

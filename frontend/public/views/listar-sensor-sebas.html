@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">  
 <head>     
     <meta charset="UTF-8">     
@@ -10,6 +10,7 @@
     <main class="sensor">         
         <h1 class="sensor__title">Listado de Sensores</h1>          
         <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="sensor__logo">          
+
         <div class="sensor__control-panel">             
             <input type="text" placeholder="Buscar usuarios..." class="sensor__search">             
             <div class="sensor__button-group">
@@ -18,72 +19,70 @@
             </div>                      
             <button type="submit" class="sensor__button sensor__button--gray" onclick="window.location.href='../views/excel.html'">Generar Reporte</button>              
         </div>          
+
         <table class="sensor__table-header">             
             <thead>                 
                 <tr>                     
                     <th>ID</th>                     
                     <th>Nombre</th>                     
                     <th>Tipo</th>                     
-                    <th>Ubicación</th>                     
+                    <th>Referencia</th>                     
                     <th>Estado</th>                     
                     <th>Acciones</th>                 
                 </tr>             
             </thead>         
         </table>          
+
         <table class="sensor__table">             
-            <tr class="sensor__table-row">                 
-                <td>001</td>                 
-                <td>Sensor de Temperatura 1</td>                 
-                <td>Temperatura</td>                 
-                <td>Sala de servidores</td>                 
-                <td>Activo</td>                 
-                <td>                                     
-                    <button onclick="window.location.href='../views/visualizar-sensor.html'" type="submit" class="sensor__button sensor__button--blue">Editar</button>             
-                    <button type="submit" class="sensor__button sensor__button--purple">Habilitar</button>             
-                </td>             
-            </tr>         
-            <tr class="sensor__table-row">                 
-                <td>002</td>                 
-                <td>Sensor Climatico</td>                 
-                <td>Climatico</td>                 
-                <td>Cultivos</td>                 
-                <td>Activo</td>                 
-                <td>                     
-                    <button onclick="window.location.href='../views/visualizar-sensor.html'" type="submit" class="sensor__button sensor__button--blue">Editar</button>                
-                    <button type="submit" class="sensor__button sensor__button--purple">Habilitar</button>             
-                </td>             
-            </tr>         
-            <tr class="sensor__table-row">                 
-                <td>003</td>                 
-                <td>Sensor de Proximidad</td>                 
-                <td>Proximidad</td>                 
-                <td>Sala Principal</td>                 
-                <td>Activo</td>                 
-                <td>                     
-                    <button onclick="window.location.href='../views/visualizar-sensor.html'" type="submit" class="sensor__button sensor__button--blue">Editar</button>               
-                    <button type="submit" class="sensor__button sensor__button--purple">Habilitar</button>             
-                </td>             
-            </tr>         
-            <tr class="sensor__table-row">                 
-                <td>004</td>                 
-                <td>Sensor de Escaneo</td>                 
-                <td>Escaneo</td>                 
-                <td>Sala de servidores</td>                 
-                <td>Activo</td>                 
-                <td>                     
-                    <button onclick="window.location.href='../views/visualizar-sensor.html'" type="submit" class="sensor__button sensor__button--blue">Editar</button>                
-                    <button type="submit" class="sensor__button sensor__button--purple">Habilitar</button>             
-                </td>             
-            </tr>         
+            <tbody id="sensorTableBody">
+                <!-- Aquí se insertan los sensores dinámicamente -->
+            </tbody>
         </table>         
+
         <div class="bottom-buttons">
             <a href="../views/home.html">
                 <button class="sensor__button--return">Volver</button>
             </a>
             <a href="create-sensor.html">
-            <button class="sensor__button--green1">Crear Sensor</button>
-        </a>
+                <button class="sensor__button--green1">Crear Sensor</button>
+            </a>
         </div>    
     </main> 
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('http://localhost:3000/sensores')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('sensorTableBody');
+                tableBody.innerHTML = ''; // Limpiar contenido
+
+                data.forEach(sensor => {
+                    const row = document.createElement('tr');
+                    row.classList.add('sensor__table-row');
+                    row.innerHTML = `
+                        <td>${sensor.id}</td>
+                        <td>${sensor.nombre_sensor}</td>
+                        <td>${sensor.tipo_sensor}</td>
+                        <td>${sensor.referencia_sensor}</td>
+                        <td>${sensor.estado}</td>
+                        <td>
+                            <button onclick="verSensor(${sensor.id})" class="sensor__button sensor__button--blue">Editar</button>
+                            <button class="sensor__button sensor__button--purple">Habilitar</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error al listar sensores:', error);
+            });
+    });
+
+    function verSensor(id) {
+        localStorage.setItem('idSensor', id);
+        window.location.href = '../views/visualizar-sensor.html';
+    }
+    </script>
 </body> 
 </html>

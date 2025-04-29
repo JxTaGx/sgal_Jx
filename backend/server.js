@@ -69,7 +69,7 @@ db.testConnection().then(isConnected => {
      process.exit(1);
 });
 
-//Esto es una prueba
+//Esto es una prueba para los listar
 // Listar todos los cultivos
 const { pool } = require('./config/db');
 
@@ -81,5 +81,35 @@ app.get('/cultivos', async (req, res) => {
     } catch (error) {
         console.error('Error al listar cultivos:', error);
         res.status(500).send('Error al listar cultivos');
+    }
+});
+
+app.get('/ciclo_cultivo', async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM ciclo_cultivo');
+        res.json(rows);
+    } catch (err) {
+        console.error('Error al listar ciclos:', err);
+        res.status(500).json({ error: 'Error al obtener los ciclos de cultivo' });
+    }
+});
+
+app.get('/sensores', async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM sensores');
+        res.json(rows);
+    } catch (error) {
+        console.error('Error al obtener sensores:', error);
+        res.status(500).json({ error: 'Error al obtener sensores' });
+    }
+});
+
+app.get('/insumos', async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM insumos');
+        res.json(rows);
+    } catch (error) {
+        console.error('Error al obtener insumos:', error);
+        res.status(500).json({ error: 'Error al obtener insumos' });
     }
 });
