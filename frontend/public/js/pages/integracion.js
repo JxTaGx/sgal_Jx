@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let filteredProductions = []; // Holds productions after filtering for list view
     const API_BASE_URL = 'http://localhost:3000/api'; // Base URL for most API calls
     const SESSION_STORAGE_KEY = 'productionFormData'; // Key for saving form state
+    let dashboardChartInstances = {}; // Para almacenar instancias de gráficos del dashboard
+    let allDashboardData = null; // Para almacenar los datos cargados del dashboard
 
     // --- Initialization ---
     async function init() {
@@ -1152,56 +1154,27 @@ window.redirectToCreate = function(moduleType, url) { // Make it globally access
     // --- Utility Functions ---
     /* frontend/public/js/pages/integracion.js (Función formatDate corregida) */
 
-function formatDate(dateInput) {
-    // 1. Verificar si la entrada es nula, indefinida o una fecha MySQL por defecto inválida
-    if (!dateInput || dateInput === '0000-00-00' || (typeof dateInput === 'string' && dateInput.startsWith('0001-'))) {
-        return 'No definida';
-    }
-
-    try {
-        let date;
-        // 2. Intentar crear el objeto Date
-        //    El constructor Date() puede manejar 'YYYY-MM-DD' y formatos ISO directamente.
-        //    Si es 'YYYY-MM-DD', lo interpretará como UTC 00:00:00.
-        //    Si es ISO '...Z', ya es UTC.
-        //    Si es ISO sin Z '...T...', lo interpreta en la zona horaria local, ¡cuidado!
-        //    Por eso, es más seguro trabajar con UTC si es posible.
-
-        // Si la entrada ya es un objeto Date, usarlo directamente
-        if (dateInput instanceof Date) {
-            date = dateInput;
-        } else {
-            // Si es un string, intentar crear el objeto Date.
-            // Añadir 'T00:00:00Z' SOLO si es un string YYYY-MM-DD para asegurar UTC.
-            if (typeof dateInput === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateInput)) {
-                 date = new Date(dateInput + 'T00:00:00Z');
-            } else {
-                // Para otros formatos de string (como ISO), dejar que Date lo parsee.
-                date = new Date(dateInput);
-            }
+    function formatDate(dateInput) {
+        // ... (código de la función formatDate proporcionado anteriormente) ...
+         if (!dateInput || dateInput === '0000-00-00' || (typeof dateInput === 'string' && dateInput.startsWith('0001-'))) {
+            return 'No definida';
         }
-
-
-        // 3. Verificar si el objeto Date resultante es válido
-        if (isNaN(date.getTime())) {
-            // console.warn(`formatDate: No se pudo parsear la entrada:`, dateInput); // Opcional: para depurar
+        try {
+            let date;
+            if (dateInput instanceof Date) { date = dateInput; }
+            else {
+                if (typeof dateInput === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateInput)) {
+                     date = new Date(dateInput + 'T00:00:00Z');
+                } else { date = new Date(dateInput); }
+            }
+            if (isNaN(date.getTime())) { return 'Fecha inválida'; }
+            const options = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
+            return date.toLocaleDateString('es-ES', options);
+        } catch (e) {
+            console.error(`formatDate: Error procesando la fecha "${dateInput}":`, e);
             return 'Fecha inválida';
         }
-
-        // 4. Formatear la fecha en español, usando UTC para consistencia
-        const options = {
-            year: 'numeric',
-            month: 'long', // 'long' para el nombre completo del mes
-            day: 'numeric',
-            timeZone: 'UTC' // Asegura que se muestre el día correcto sin importar la zona horaria del navegador
-        };
-        return date.toLocaleDateString('es-ES', options);
-
-    } catch (e) {
-        console.error(`formatDate: Error procesando la fecha "${dateInput}":`, e);
-        return 'Fecha inválida'; // Captura cualquier otro error inesperado
     }
-}
     let snackbarTimeoutId = null;
     function showSnackbar(message, type = 'success') {
         const snackbar = document.querySelector('[data-snackbar]'); const messageElement = snackbar?.querySelector('[data-snackbar-message]'); const closeButton = snackbar?.querySelector('[data-action="close-snackbar"]');
@@ -1233,26 +1206,417 @@ function formatDate(dateInput) {
     }
      // General Setup Navigation (Tabs)
      function setupNavigation() {
-         const tabs = document.querySelectorAll('.navigation__tab');
-         const sections = document.querySelectorAll('.dashboard__section');
-         tabs.forEach(tab => {
-             tab.addEventListener('click', function() {
-                 const tabName = this.getAttribute('data-tab');
-                 tabs.forEach(t => t.classList.remove('navigation__tab--active'));
-                 this.classList.add('navigation__tab--active');
-                 sections.forEach(section => {
-                     section.classList.remove('dashboard__section--active');
-                     if (section.getAttribute('data-panel') === tabName) {
-                         section.classList.add('dashboard__section--active');
-                     }
-                 });
-                  // Optionally reset forms when changing tabs (except maybe create?)
-                  // resetForms(); // Uncomment or modify if needed
-                  if (tabName === 'list') loadProductionsList(); // Refresh list when clicking tab
-             });
-         });
+        const tabs = document.querySelectorAll('.navigation__tab');
+        const sections = document.querySelectorAll('.dashboard__section');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.getAttribute('data-tab');
+                tabs.forEach(t => t.classList.remove('navigation__tab--active'));
+                this.classList.add('navigation__tab--active');
+                sections.forEach(section => {
+                    section.classList.remove('dashboard__section--active');
+                    if (section.getAttribute('data-panel') === tabName) {
+                        section.classList.add('dashboard__section--active');
+                    }
+                });
+    
+                // *** Cargar datos del dashboard cuando se activa la pestaña "Visualizar" ***
+                if (tabName === 'view') {
+                    // Limpiar el contenido anterior antes de cargar? Opcional.
+                    // const viewPanel = document.querySelector('[data-panel="view"]');
+                    // if(viewPanel) viewPanel.innerHTML = '<p>Cargando dashboard...</p>'; // Simple limpieza
+                    loadAndRenderDashboard();
+                } else if (tabName === 'list') {
+                     loadProductionsList(); // Cargar lista normal
+                }
+                 // Resetear el ID actual si salimos de update o enable
+                 if (tabName !== 'update' && tabName !== 'enable') {
+                     currentProductionId = null;
+                     // Opcional: Limpiar formularios de update/enable si es necesario
+                 }
+            });
+        });
+    
+        // ** Llamada inicial si 'view' es la pestaña por defecto **
+        // Comentar si la pestaña por defecto es otra
+        // if (document.querySelector('.navigation__tab--active')?.getAttribute('data-tab') === 'view') {
+        //     loadAndRenderDashboard();
+        // }
+    }
+
+     // --- Función Principal para Cargar y Renderizar el Dashboard ---
+     async function loadAndRenderDashboard() {
+        const viewPanel = document.querySelector('[data-panel="view"]');
+        if (!viewPanel || !viewPanel.classList.contains('dashboard__section--active')) {
+            return;
+        }
+    
+        showDashboardLoading(true);
+    
+        try {
+            // 1. Fetch data from the new backend endpoint
+            const response = await fetch(`${API_BASE_URL}/productions/dashboard/summary`); // <-- LLAMADA REAL
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({ error: 'Error desconocido del servidor' })); // Intenta parsear error
+                throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
+            }
+            allDashboardData = await response.json();
+            if (!allDashboardData || !allDashboardData.success) {
+                throw new Error(allDashboardData?.error || 'No se recibieron datos válidos del servidor');
+            }
+    
+            // *** Simulación Eliminada ***
+    
+            // 2. Populate KPIs
+            populateKPIs(allDashboardData.data);
+    
+            // 3. Create/Update Charts
+            createDashboardCharts(allDashboardData.data);
+    
+            // 4. Update Gauges
+            updateGauges(allDashboardData.data);
+    
+            // 5. Populate Progress List
+            populateCycleProgress(allDashboardData.data);
+    
+            // 6. Populate Tables (Investment/Details Table)
+            // Asegúrate que la función populateInvestmentTable use los datos correctos
+            populateDetailsTable(allDashboardData.data); // Renombrar si es necesario
+    
+            // 7. Update Sensor Summaries
+            updateSensorSummaries(allDashboardData.data);
+    
+            showDashboardLoading(false);
+    
+        } catch (error) {
+            console.error('Error cargando datos del dashboard:', error);
+            showSnackbar(`Error al cargar el dashboard: ${error.message}`, 'error');
+            showDashboardLoading(false);
+            viewPanel.innerHTML = `<div class="dashboard__widget"><p class="dashboard__error">No se pudo cargar la información del dashboard. Intente nuevamente.</p></div>`;
+        }
+    }
+
+    // Renombra la función si cambiaste el propósito de la tabla
+function populateDetailsTable(data) {
+    const tableBody = document.querySelector('[data-table="investment-details"]'); // Mismo selector por ahora
+    if (!tableBody) return;
+
+    tableBody.innerHTML = ''; // Clear previous
+
+    if (!data.investmentDetails || data.investmentDetails.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="4">No hay producciones para mostrar.</td></tr>';
+        return;
+    }
+
+    data.investmentDetails.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>prod-${item.productionId}</td>
+            <td>${item.productionName || 'N/A'}</td>
+            <td>${item.responsibleName || 'N/A'}</td>
+            <td><span class="status-badge status-badge--${item.status === 'Activo' ? 'active' : 'inactive'}">${item.status || 'N/A'}</span></td>
+        `; // Mostrar estado en lugar de inversión
+        tableBody.appendChild(row);
+    });
+}
+// --- Funciones Auxiliares para Renderizar ---
+
+function showDashboardLoading(isLoading) {
+    const viewPanel = document.querySelector('[data-panel="view"]');
+    if (!viewPanel) return;
+    let loadingIndicator = viewPanel.querySelector('.dashboard__loading');
+    if (isLoading) {
+        if (!loadingIndicator) {
+            loadingIndicator = document.createElement('div');
+            loadingIndicator.className = 'dashboard__loading';
+            loadingIndicator.innerHTML = `<p style="text-align: center; padding: 2rem;">Cargando datos del dashboard...</p>`;
+            // Insertar al principio o en un lugar adecuado
+            viewPanel.prepend(loadingIndicator);
+        }
+        loadingIndicator.style.display = 'block';
+        // Opcional: ocultar otros widgets mientras carga
+        viewPanel.querySelectorAll('.dashboard__widget, .dashboard__grid').forEach(el => el.style.opacity = '0.5');
+    } else {
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'none';
+        }
+         viewPanel.querySelectorAll('.dashboard__widget, .dashboard__grid').forEach(el => el.style.opacity = '1');
+    }
+}
+
+
+function populateKPIs(data) {
+    const activeProductionsEl = document.querySelector('[data-kpi="active-productions"]');
+    const uniqueCropsEl = document.querySelector('[data-kpi="unique-crops"]');
+    const totalInvestmentEl = document.querySelector('[data-kpi="total-investment"]');
+    const profitLossEl = document.querySelector('[data-kpi="profit-loss"]'); // Para mostrar N/A
+
+    if (activeProductionsEl) activeProductionsEl.textContent = data.kpis?.activeProductions ?? '--';
+    if (uniqueCropsEl) uniqueCropsEl.textContent = data.kpis?.uniqueCrops ?? '--';
+    if (totalInvestmentEl) totalInvestmentEl.textContent = `$ ${data.kpis?.totalInvestment?.toLocaleString('es-CO', {maximumFractionDigits: 0}) ?? '--'}`;
+    if (profitLossEl) profitLossEl.textContent = 'N/A*'; // Indicar no disponible
+}
+
+function createDashboardCharts(data) {
+    // Destruir gráficos anteriores si existen
+    Object.values(dashboardChartInstances).forEach(chart => chart.destroy());
+    dashboardChartInstances = {};
+
+    // Gráfico 1: Rendimiento por Cultivo (Barra)
+    const yieldCtx = document.querySelector('[data-chart="yield-by-crop"]')?.getContext('2d');
+    const yieldEmptyMsg = document.querySelector('[data-chart-empty="yield-by-crop"]');
+    if (yieldCtx && data.charts?.yieldByCrop?.labels?.length > 0) {
+        if(yieldEmptyMsg) yieldEmptyMsg.style.display = 'none';
+        dashboardChartInstances.yield = new Chart(yieldCtx, {
+            type: 'bar',
+            data: {
+                labels: data.charts.yieldByCrop.labels,
+                datasets: [{
+                    label: 'Rendimiento Promedio (%)',
+                    data: data.charts.yieldByCrop.data,
+                    backgroundColor: 'rgba(75, 189, 23, 0.6)', // Verde SGAL
+                    borderColor: 'rgba(75, 189, 23, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } }, plugins: { legend: { display: false } } }
+        });
+    } else if (yieldEmptyMsg) {
+        yieldEmptyMsg.style.display = 'block';
+        if(yieldCtx) yieldCtx.canvas.style.display = 'none'; // Ocultar canvas si no hay datos
+    } else if(yieldCtx) {
+        yieldCtx.canvas.style.display = 'none';
+    }
+
+
+    // Gráfico 2: Distribución de Estados (Dona)
+    const statusCtx = document.querySelector('[data-chart="production-status-distribution"]')?.getContext('2d');
+     const statusEmptyMsg = document.querySelector('[data-chart-empty="production-status-distribution"]');
+    if (statusCtx && data.charts?.statusDistribution?.labels?.length > 0) {
+         if(statusEmptyMsg) statusEmptyMsg.style.display = 'none';
+         statusCtx.canvas.style.display = 'block';
+        dashboardChartInstances.status = new Chart(statusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: data.charts.statusDistribution.labels,
+                datasets: [{
+                    label: 'Producciones',
+                    data: data.charts.statusDistribution.data,
+                    backgroundColor: [
+                        'rgba(75, 189, 23, 0.7)', // Verde (Activo)
+                        'rgba(211, 47, 47, 0.7)'   // Rojo (Inactivo)
+                    ],
+                    borderColor: [
+                        'rgba(75, 189, 23, 1)',
+                        'rgba(211, 47, 47, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+        });
+    } else if (statusEmptyMsg) {
+         statusEmptyMsg.style.display = 'block';
+         if(statusCtx) statusCtx.canvas.style.display = 'none';
+    } else if(statusCtx) {
+         statusCtx.canvas.style.display = 'none';
+    }
+
+    // Gráfico 3: Evolución Comparativa (Línea - Ejemplo)
+    const evolutionCtx = document.querySelector('[data-chart="comparative-evolution"]')?.getContext('2d');
+    const evolutionEmptyMsg = document.querySelector('[data-chart-empty="comparative-evolution"]');
+    if (evolutionCtx && data.charts?.comparativeEvolution?.labels?.length > 0) {
+         if(evolutionEmptyMsg) evolutionEmptyMsg.style.display = 'none';
+         evolutionCtx.canvas.style.display = 'block';
+        dashboardChartInstances.evolution = new Chart(evolutionCtx, {
+            type: 'line',
+            data: {
+                labels: data.charts.comparativeEvolution.labels, // Meses, semanas, etc.
+                datasets: [
+                    {
+                        label: 'Inversión',
+                        data: data.charts.comparativeEvolution.investmentData,
+                        borderColor: 'rgba(255, 99, 132, 1)', // Rojo
+                        tension: 0.1,
+                        fill: false
+                    },
+                    {
+                        label: 'Producción (Unidades)', // Ejemplo
+                        data: data.charts.comparativeEvolution.productionData,
+                        borderColor: 'rgba(54, 162, 235, 1)', // Azul
+                        tension: 0.1,
+                        fill: false
+                    }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { position: 'bottom' } } }
+        });
+     } else if (evolutionEmptyMsg) {
+         evolutionEmptyMsg.style.display = 'block';
+         if(evolutionCtx) evolutionCtx.canvas.style.display = 'none';
+     } else if(evolutionCtx) {
+         evolutionCtx.canvas.style.display = 'none';
      }
+}
+
+function updateGauges(data) {
+    const yieldCycleGauge = document.querySelector('[data-gauge="yield-cycle-avg"]');
+    const yieldUserGauge = document.querySelector('[data-gauge="yield-user-avg"]');
+
+    if (yieldCycleGauge) {
+        const value = data.gauges?.yieldCycleAvg ?? 0;
+        yieldCycleGauge.querySelector('.dashboard__gauge-value').textContent = `${value.toFixed(0)}%`;
+        yieldCycleGauge.querySelector('.dashboard__gauge-bar').style.width = `${value}%`;
+        yieldCycleGauge.style.setProperty('--gauge-value', value); // Para posible animación/estilo CSS
+    }
+    if (yieldUserGauge) {
+        const value = data.gauges?.yieldUserAvg ?? 0;
+        yieldUserGauge.querySelector('.dashboard__gauge-value').textContent = `${value.toFixed(0)}%`;
+        yieldUserGauge.querySelector('.dashboard__gauge-bar').style.width = `${value}%`;
+         yieldUserGauge.style.setProperty('--gauge-value', value);
+    }
+}
+
+function populateCycleProgress(data) {
+    const progressList = document.querySelector('[data-list="cycle-progress"]');
+    if (!progressList) return;
+
+    progressList.innerHTML = ''; // Clear previous
+
+    if (!data.cycleProgress || data.cycleProgress.length === 0) {
+        progressList.innerHTML = '<p>No hay ciclos activos para mostrar progreso.</p>';
+        return;
+    }
+
+    data.cycleProgress.forEach(cycle => {
+        const item = document.createElement('div');
+        item.className = 'dashboard__progress-item';
+        const percentage = Math.min(100, Math.max(0, cycle.percentage)); // Clamp between 0-100
+
+        item.innerHTML = `
+            <div class="dashboard__progress-info">
+                <span>${cycle.name} (ID: ${cycle.id})</span>
+                <span>${percentage.toFixed(0)}%</span>
+            </div>
+            <div class="dashboard__progress-bar-container">
+                <div class="dashboard__progress-bar" style="width: ${percentage}%;"></div>
+            </div>
+            <div class="dashboard__progress-dates">
+                <small>Inicio: ${formatDate(cycle.startDate)}</small>
+                <small>Fin Est: ${formatDate(cycle.endDate)}</small>
+            </div>
+        `;
+        progressList.appendChild(item);
+    });
+}
+
+function populateInvestmentTable(data) {
+    const tableBody = document.querySelector('[data-table="investment-details"]');
+    if (!tableBody) return;
+
+    tableBody.innerHTML = ''; // Clear previous
+
+    if (!data.investmentDetails || data.investmentDetails.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="4">No hay datos de inversión para mostrar.</td></tr>';
+        return;
+    }
+
+    data.investmentDetails.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>prod-${item.productionId}</td>
+            <td>${item.productionName}</td>
+            <td>${item.responsibleName}</td>
+            <td>$ ${item.investmentAmount.toLocaleString('es-CO', {maximumFractionDigits: 0})}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+function updateSensorSummaries(data) {
+     const tempEl = document.querySelector('[data-sensor-summary="temperature"]');
+     const humEl = document.querySelector('[data-sensor-summary="humidity"]');
+     const nutrEl = document.querySelector('[data-sensor-summary="nutrients"]');
+     const lightEl = document.querySelector('[data-sensor-summary="light"]');
+
+     if(tempEl) tempEl.textContent = `${data.sensorSummary?.temperature?.toFixed(1) ?? '--'} °C`;
+     if(humEl) humEl.textContent = `${data.sensorSummary?.humidity?.toFixed(1) ?? '--'} %`;
+     if(nutrEl) nutrEl.textContent = `${data.sensorSummary?.nutrients?.toFixed(0) ?? '--'} ppm`;
+     if(lightEl) lightEl.textContent = `${data.sensorSummary?.light?.toFixed(0) ?? '--'} lux`;
+}
+
+
+// --- Simulación de Datos (Reemplazar con llamada fetch real) ---
+function getSimulatedDashboardData() {
+    // Simula datos que el backend enviaría desde /api/dashboard/summary
+    const productionCount = Math.floor(Math.random() * 10) + 5;
+    const investmentDetails = [];
+    let totalInvestment = 0;
+    for (let i = 1; i <= productionCount; i++) {
+        const investment = Math.random() * 500000 + 100000;
+        investmentDetails.push({
+            productionId: i,
+            productionName: `Producción ${String.fromCharCode(65 + i)} #${i}`,
+            responsibleName: ['Juan Perez', 'Maria Garcia', 'Carlos Lopez'][i % 3],
+            investmentAmount: investment
+        });
+        totalInvestment += investment;
+    }
+
+    const activeCount = Math.floor(productionCount * (Math.random() * 0.4 + 0.5)); // 50-90% activos
+    const inactiveCount = productionCount - activeCount;
+
+    return {
+        success: true,
+        data: {
+            kpis: {
+                activeProductions: activeCount,
+                uniqueCrops: Math.floor(Math.random() * 5) + 2,
+                totalInvestment: totalInvestment,
+                profitLoss: null // No se puede calcular sin ingresos
+            },
+            charts: {
+                yieldByCrop: {
+                    labels: ['Tomate', 'Lechuga', 'Maíz', 'Pepino'],
+                    data: [85, 92, 78, 88].map(v => v * (Math.random() * 0.2 + 0.9)) // +/- 10%
+                },
+                statusDistribution: {
+                    labels: ['Activo', 'Inactivo'],
+                    data: [activeCount, inactiveCount]
+                },
+                 comparativeEvolution: {
+                    labels: ['Ene', 'Feb', 'Mar', 'Abr'], // Meses
+                    investmentData: [150000, 180000, 165000, 210000],
+                    productionData: [500, 550, 520, 600] // Ejemplo: unidades producidas
+                }
+            },
+             gauges: {
+                yieldCycleAvg: Math.random() * 30 + 65, // 65-95%
+                yieldUserAvg: Math.random() * 25 + 70 // 70-95%
+            },
+             cycleProgress: [
+                { id: 1, name: 'Ciclo Tomate A', startDate: '2025-03-01', endDate: '2025-06-15', percentage: 60 },
+                { id: 3, name: 'Ciclo Maíz X', startDate: '2025-04-10', endDate: '2025-07-20', percentage: 35 },
+                 { id: 4, name: 'Ciclo Lechuga B', startDate: '2025-04-25', endDate: '2025-05-30', percentage: 10 },
+            ],
+            investmentDetails: investmentDetails.slice(0, 5), // Mostrar solo algunos para la tabla
+             sensorSummary: {
+                temperature: Math.random() * 5 + 20, // 20-25
+                humidity: Math.random() * 15 + 55,    // 55-70
+                nutrients: Math.random() * 200 + 400, // 400-600
+                light: Math.random() * 5000 + 15000  // 15000-20000
+            }
+        }
+    };
+}
 
     // --- Run Initialization ---
     init();
 });
+
+// --- Añadir al final del archivo ---
+// Llama a loadAndRenderDashboard si la pestaña 'view' está activa al cargar la página
+if (document.querySelector('.navigation__tab--active')?.getAttribute('data-tab') === 'view') {
+    // Pequeño retraso para asegurar que el DOM esté listo y los estilos aplicados
+    setTimeout(loadAndRenderDashboard, 100);
+}
