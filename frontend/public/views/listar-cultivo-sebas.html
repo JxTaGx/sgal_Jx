@@ -9,47 +9,24 @@
 <body>
     <h1>Listar Cultivos</h1>
     <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="header__logo">
+    
     <div class="header">
         <input type="text" placeholder="Buscar cultivos..." class="header__search">
         <input type="submit" class="button button--green" value="Filtrar">
         <div>
             <a href="../views/excel.html">
-            <input class="button button--gray" type="submit" value="Generar Reporte">
+                <input class="button button--gray" type="submit" value="Generar Reporte">
             </a>
         </div>
     </div>
+
     <main>
         <div class="main__container">
-            <div class="cards">
-                <div class="card">
-                    <h3 class="card__title">Tomate Cherry Orgánico</h3>
-                    <p class="card__info">Variedad: Sweet 100</p>
-                    <p class="card__info">Fecha de Siembra: 15/03/2023</p>
-                    <p class="card__info">Etapa Actual: Crecimiento vegetativo</p>
-                    <a href="visualizar-cultivo.html">
-                    <input type="submit" class="card__button" value="Ver detalles">
-                    </a>
-                </div>
-                <div class="card">
-                    <h3 class="card__title">Lechuga Hidropónica</h3>
-                    <p class="card__info">Variedad: Butterhead</p>
-                    <p class="card__info">Fecha de Siembra: 01/04/2023</p>
-                    <p class="card__info">Etapa Actual: Cosecha</p>
-                    <a href="visualizar-cultivo.html">
-                    <input type="submit" class="card__button" value="Ver detalles">
-                    </a>
-                </div>
-                <div class="card">
-                    <h3 class="card__title">Pepino Orgánico</h3>
-                    <p class="card__info">Variedad: Marketmore</p>
-                    <p class="card__info">Fecha de Siembra: 20/04/2023</p>
-                    <p class="card__info">Etapa Actual: Floración</p>
-                    <a href="visualizar-cultivo.html">
-                    <input type="submit" class="card__button" value="Ver detalles">
-                    </a>
-                </div>
+            <div id="cards" class="cards">
+                <!-- Aquí se insertarán las tarjetas dinámicamente -->
             </div>
         </div>
+
         <div class="footer">
             <div class="footer__buttons">
                 <a href="../views/home.html">
@@ -68,6 +45,43 @@
             </div>
         </div>
     </main>
-    <script src="../js/pages/listar-ciclo-cultivo.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('http://localhost:3000/cultivos')
+            .then(response => response.json())
+            .then(data => {
+                const cardsContainer = document.getElementById('cards');
+                cardsContainer.innerHTML = ''; // Limpia las tarjetas estáticas
+
+                data.forEach(cultivo => {
+                    const card = document.createElement('div');
+                    card.classList.add('card');
+                    card.innerHTML = `
+                        <h3 class="card__title">${cultivo.nombre_cultivo}</h3>
+                        <p class="card__info">Tipo: ${cultivo.tipo_cultivo}</p>
+                        <p class="card__info">Ubicación: ${cultivo.ubicacion}</p>
+                        <p class="card__info">Estado: ${cultivo.estado}</p>
+                        <input type="submit" class="card__button" value="Ver detalles" onclick="visualizarCultivo(${cultivo.id})">
+                    `;
+                    cardsContainer.appendChild(card);
+                });
+            })
+            .catch(error => {
+                console.error('Error al listar cultivos:', error);
+            });
+    });
+
+    function editarCultivo(id) {
+        localStorage.setItem('idCultivo', id);
+        window.location.href = 'actualizar-cultivo.html';
+    }
+
+    function visualizarCultivo(id) {
+        localStorage.setItem('idCultivo', id);
+        window.location.href = 'visualizar-cultivo.html';
+    }
+    </script>
+    <script src="/frontend/public/js/pages/listar-ciclo-cultivo.js"></script>
 </body>
 </html>

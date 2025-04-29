@@ -68,3 +68,18 @@ db.testConnection().then(isConnected => {
      console.error("❌ Error durante el test de conexión a la BD:", err);
      process.exit(1);
 });
+
+//Esto es una prueba
+// Listar todos los cultivos
+const { pool } = require('./config/db');
+
+// Ruta para listar todos los cultivos
+app.get('/cultivos', async (req, res) => {
+    try {
+        const [resultados] = await pool.query('SELECT * FROM cultivos');
+        res.json(resultados);
+    } catch (error) {
+        console.error('Error al listar cultivos:', error);
+        res.status(500).send('Error al listar cultivos');
+    }
+});
