@@ -164,133 +164,91 @@
             <section class="dashboard__section" data-panel="view">
                 <div class="dashboard__heading">
                     <h2 class="dashboard__title">
-                        <i class="material-icons dashboard__icon">dashboard</i>
-                        Visualizar Producción - Dashboard General
+                        <i class="material-icons dashboard__icon">visibility</i>
+                        Visualizar Producción
                     </h2>
-                    <p class="dashboard__subtitle">Resumen general del estado de las producciones agrícolas</p>
+                    <p class="dashboard__subtitle">Busque una producción por su ID para ver los detalles</p>
                 </div>
 
-                <div class="dashboard__grid dashboard__grid--kpi">
-                    <div class="dashboard__widget dashboard__widget--kpi">
-                        <h3 class="dashboard__widget-title">Producciones Activas</h3>
-                        <div class="dashboard__widget-value" data-kpi="active-productions">--</div>
-                        <i class="material-icons dashboard__widget-icon">agriculture</i>
-                    </div>
-                    <div class="dashboard__widget dashboard__widget--kpi">
-                        <h3 class="dashboard__widget-title">Cultivos Únicos</h3>
-                        <div class="dashboard__widget-value" data-kpi="unique-crops">--</div>
-                         <i class="material-icons dashboard__widget-icon">grass</i>
-                    </div>
-                    <div class="dashboard__widget dashboard__widget--kpi">
-                        <h3 class="dashboard__widget-title">Inversión Total (Insumos)</h3>
-                        <div class="dashboard__widget-value" data-kpi="total-investment">$ --</div>
-                         <i class="material-icons dashboard__widget-icon">payments</i>
-                    </div>
-                     <div class="dashboard__widget dashboard__widget--kpi dashboard__widget--warning">
-                        <h3 class="dashboard__widget-title">Ganancia/Pérdida</h3>
-                        <div class="dashboard__widget-value" data-kpi="profit-loss">N/A*</div>
-                        <p class="dashboard__widget-note">*Se requieren datos de ingresos</p>
-                         <i class="material-icons dashboard__widget-icon">trending_up</i>
-                    </div>
-                </div>
-
-                 <div class="dashboard__grid dashboard__grid--charts-main">
-                    <div class="dashboard__widget">
-                        <h3 class="dashboard__widget-title">Rendimiento Estimado por Cultivo (Último Ciclo)</h3>
-                        <div class="dashboard__chart-container" style="height: 300px;">
-                            <canvas data-chart="yield-by-crop"></canvas>
-                             <p class="dashboard__chart-empty-message" data-chart-empty="yield-by-crop" style="display: none;">No hay datos de rendimiento para mostrar.</p>
+                <div class="dashboard__widget">
+                    <form class="dashboard__form" data-form="view">
+                        <div class="dashboard__form-group">
+                            <label class="dashboard__label">ID de Producción</label>
+                            <div class="dashboard__input-group">
+                                <input class="dashboard__input" type="text" data-field="production-id" required placeholder="Ej: prod-1">
+                                <button class="dashboard__button dashboard__button--primary" type="submit">Buscar</button>
+                            </div>
+                            <span class="dashboard__error" data-error="production-id"></span>
                         </div>
-                    </div>
-                     <div class="dashboard__widget">
-                        <h3 class="dashboard__widget-title">Distribución de Estados de Producción</h3>
-                        <div class="dashboard__chart-container" style="height: 300px;">
-                            <canvas data-chart="production-status-distribution"></canvas>
-                            <p class="dashboard__chart-empty-message" data-chart-empty="production-status-distribution" style="display: none;">No hay datos de estado para mostrar.</p>
-                        </div>
-                    </div>
-                 </div>
+                    </form>
 
-                 <div class="dashboard__grid dashboard__grid--yield-progress">
-                    <div class="dashboard__widget">
-                        <h3 class="dashboard__widget-title">Rendimiento por Ciclo (Promedio)</h3>
-                         <div class="dashboard__gauge-container">
-                             <div class="dashboard__gauge" data-gauge="yield-cycle-avg">
-                                 <div class="dashboard__gauge-value">--%</div>
-                                 <div class="dashboard__gauge-bar"></div>
-                             </div>
-                         </div>
-                    </div>
-                     <div class="dashboard__widget">
-                        <h3 class="dashboard__widget-title">Rendimiento por Usuario (Promedio)</h3>
-                         <div class="dashboard__gauge-container">
-                            <div class="dashboard__gauge" data-gauge="yield-user-avg">
-                                <div class="dashboard__gauge-value">--%</div>
-                                <div class="dashboard__gauge-bar"></div>
+                    <div class="dashboard__result dashboard__result--hidden" data-result="view">
+                        <div class="dashboard__info-section">
+                            <h3 class="dashboard__section-title">Información General</h3>
+                            <div class="dashboard__info-grid" data-info="basic">
+                                </div>
+                        </div>
+
+                        <div class="dashboard__info-section">
+                            <h3 class="dashboard__section-title">Métricas Clave (Simuladas)</h3>
+                            <div class="dashboard__metrics-grid">
+                                <div class="dashboard__metric-card">
+                                    <div class="dashboard__metric-value" data-metric="health">--%</div>
+                                    <div class="dashboard__metric-label">Salud del Cultivo</div>
+                                    <div class="dashboard__metric-trend">
+                                        </div>
+                                </div>
+                                <div class="dashboard__metric-card">
+                                    <div class="dashboard__metric-value" data-metric="growth">--cm</div>
+                                    <div class="dashboard__metric-label">Crecimiento Promedio</div>
+                                     <div class="dashboard__metric-trend">
+                                        </div>
+                                </div>
+                                <div class="dashboard__metric-card">
+                                    <div class="dashboard__metric-value" data-metric="yield">--%</div>
+                                    <div class="dashboard__metric-label">Rendimiento Estimado</div>
+                                    <div class="dashboard__metric-trend">
+                                        </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                     <div class="dashboard__widget">
-                         <h3 class="dashboard__widget-title">Progreso Ciclos Activos</h3>
-                         <div class="dashboard__progress-list" data-list="cycle-progress">
-                             <p>No hay ciclos activos para mostrar progreso.</p>
-                             </div>
-                     </div>
-                 </div>
 
-                <div class="dashboard__grid dashboard__grid--tables">
-                    <div class="dashboard__widget dashboard__widget--table">
-                        <h3 class="dashboard__widget-title">Detalle de Inversión por Producción</h3>
-                        <div class="dashboard__table-container">
-                            <table class="dashboard__table">
-                                <thead>
-                                    <tr>
-                                        <th>Producción (ID)</th>
-                                        <th>Nombre</th>
-                                        <th>Responsable</th>
-                                        <th>Inversión Estimada (Insumos)</th>
-                                    </tr>
-                                </thead>
-                                <tbody data-table="investment-details">
-                                    <tr><td colspan="4">Cargando datos...</td></tr>
-                                </tbody>
-                            </table>
+                        <div class="dashboard__info-section">
+                            <h3 class="dashboard__section-title">Análisis de Datos (Simulados)</h3>
+                            <p class="dashboard__notice">Nota: Los gráficos muestran datos simulados y no reflejan lecturas reales de sensores.</p>
+                            <div class="dashboard__charts-grid">
+                                <div class="dashboard__chart-container">
+                                    <h4 class="dashboard__chart-title">Humedad del Suelo</h4>
+                                    <canvas data-chart="humidity" height="200"></canvas>
+                                </div>
+                                <div class="dashboard__chart-container">
+                                    <h4 class="dashboard__chart-title">Temperatura Ambiente</h4>
+                                    <canvas data-chart="temperature" height="200"></canvas>
+                                </div>
+                                <div class="dashboard__chart-container">
+                                    <h4 class="dashboard__chart-title">Niveles de Nutrientes</h4>
+                                    <canvas data-chart="nutrients" height="200"></canvas>
+                                </div>
+                                <div class="dashboard__chart-container">
+                                    <h4 class="dashboard__chart-title">Progreso de Crecimiento</h4>
+                                    <canvas data-chart="growth" height="200"></canvas>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="dashboard__widget dashboard__widget--table">
-                        <h3 class="dashboard__widget-title">Evolución Comparativa (Ejemplo)</h3>
-                         <div class="dashboard__chart-container" style="height: 250px;">
-                             <canvas data-chart="comparative-evolution"></canvas>
-                             <p class="dashboard__chart-empty-message" data-chart-empty="comparative-evolution" style="display: none;">No hay datos históricos suficientes.</p>
-                         </div>
+
+                        <div class="dashboard__info-section">
+                            <h3 class="dashboard__section-title">Estado de Sensores Asignados</h3>
+                             <p class="dashboard__notice">Nota: Muestra el estado configurado del sensor, no lecturas en tiempo real.</p>
+                            <div class="dashboard__sensors-grid" data-info="sensors">
+                                </div>
+                        </div>
+
+                         <div class="dashboard__info-section">
+                            <h3 class="dashboard__section-title">Insumos Asignados</h3>
+                            <div data-info="supplies"> </div>
+                        </div>
                     </div>
                 </div>
-
-                 <div class="dashboard__widget">
-                    <h3 class="dashboard__widget-title">Resumen de Sensores (Valores Actuales Promedio)</h3>
-                    <div class="dashboard__grid dashboard__grid--sensors-summary">
-                        <div class="dashboard__sensor-summary">
-                            <i class="material-icons">thermostat</i>
-                            <span>Temperatura</span>
-                            <strong data-sensor-summary="temperature">-- °C</strong>
-                        </div>
-                        <div class="dashboard__sensor-summary">
-                             <i class="material-icons">opacity</i>
-                             <span>Humedad</span>
-                            <strong data-sensor-summary="humidity">-- %</strong>
-                        </div>
-                         <div class="dashboard__sensor-summary">
-                            <i class="material-icons">eco</i>
-                            <span>Nutrientes</span>
-                            <strong data-sensor-summary="nutrients">-- ppm</strong>
-                        </div>
-                        <div class="dashboard__sensor-summary">
-                             <i class="material-icons">wb_sunny</i>
-                            <span>Luz</span>
-                            <strong data-sensor-summary="light">-- lux</strong>
-                        </div>
-                    </div>
-                 </div>
             </section>
 
             <section class="dashboard__section" data-panel="update">

@@ -7,22 +7,19 @@ const router = express.Router();
 
 // --- Production Routes --- (Prefijo /api/productions se añadirá en server.js)
 
-// GET /dashboard/summary - Nueva ruta para los datos del dashboard
-router.get('/dashboard/summary', productionController.getDashboardSummary); // <-- NUEVA RUTA
-
 // POST / - Crear una nueva producción
 router.post('/', productionController.createProduction);
 
-// GET / - Obtener todas las producciones (para la lista)
+// GET / - Obtener todas las producciones
 router.get('/', productionController.getAllProductions);
 
-// GET /:id - Obtener una producción específica por ID
+// GET /:id - Obtener una producción específica por ID (PK numérico)
 router.get('/:id', productionController.getProductionById);
 
-// PUT /:id - Actualizar una producción por ID
+// PUT /:id - Actualizar una producción por ID (PK numérico)
 router.put('/:id', productionController.updateProduction);
 
-// DELETE /:id - Eliminar una producción por ID
+// DELETE /:id - Eliminar una producción por ID (PK numérico)
 router.delete('/:id', productionController.deleteProduction);
 
 module.exports = router;
