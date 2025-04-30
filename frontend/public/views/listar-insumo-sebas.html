@@ -9,52 +9,29 @@
 <body>
     <h1>Listar Insumos</h1>
     <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="header__logo">
+    
     <div class="header">
         <input type="text" placeholder="Buscar insumo..." class="header__search">
         <input type="submit" class="button button--green" value="Filtrar">
         <div>
             <a href="../views/excel.html">
-            <input class="button button--gray" type="submit" value="Generar Reporte">
+                <input class="button button--gray" type="submit" value="Generar Reporte">
             </a>
         </div>
     </div>
+
     <main>
         <div class="main__container">
-            <div class="cards">
-                <div class="card">
-                    <h3 class="card__title">Fertilizante Orgánico</h3>
-                    <p class="card__info">Código: FOP-2023</p>
-                    <p class="card__info">Cantidad: 5000 kg</p>
-                    <p class="card__info">Precio: $2.50/kg</p>
-                    <a href="visualizar-insumo.html">
-                    <input type="submit" class="card__button" value="Ver detalles">
-                    </a>
-                </div>
-                <div class="card">
-                    <h3 class="card__title">Pesticida Natural</h3>
-                    <p class="card__info">Código: PEN-2023</p>
-                    <p class="card__info">Cantidad: 1000 L</p>
-                    <p class="card__info">Precio: $15.00/L</p>
-                    <a href="visualizar-insumo.html">
-                    <input type="submit" class="card__button" value="Ver detalles">
-                    </a>
-                </div>
-                <div class="card">
-                    <h3 class="card__title">Semillas de Tomate</h3>
-                    <p class="card__info">Código: SET-2023</p>
-                    <p class="card__info">Cantidad: 10000 unidades</p>
-                    <p class="card__info">Precio: $0.05/unidad</p>
-                    <a href="visualizar-insumo.html">
-                    <input type="submit" class="card__button" value="Ver detalles">
-                    </a>
-                </div>
+            <div id="cards" class="cards">
+                <!-- Aquí se insertarán los insumos dinámicamente -->
             </div>
         </div>
+
         <div class="footer">
             <div class="footer__buttons">
                 <a href="../views/home.html">
                     <input type="submit" class="button button--return" value="Volver">
-                    </a>
+                </a>
             </div>
             <div class="footer__pagination">
                 <button class="pagination__button">1</button>
@@ -64,10 +41,42 @@
             <div class="footer__buttons">
                 <a href="create-insumo.html">
                     <input type="submit" class="button button--crear" value="Crear Insumo">
-                    </a>
+                </a>
             </div>
         </div>
     </main>
-    <script src="../js/pages/listar-insumo.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('http://localhost:3000/insumos') // Ajusta esta URL si tu endpoint es diferente
+            .then(response => response.json())
+            .then(data => {
+                const cardsContainer = document.getElementById('cards');
+                cardsContainer.innerHTML = '';
+
+                data.forEach(insumo => {
+                    const card = document.createElement('div');
+                    card.classList.add('card');
+                    card.innerHTML = `
+                        <h3 class="card__title">${insumo.nombre_insumo}</h3>
+                        <p class="card__info">ID: ${insumo.id_insumo}</p>
+                        <p class="card__info">Cantidad: ${insumo.cantidad}</p>
+                        <p class="card__info">Precio: $${insumo.valor_unitario}</p>
+                        <input type="submit" class="card__button" value="Ver detalles" onclick="visualizarInsumo(${insumo.id})">
+                    `;
+                    cardsContainer.appendChild(card);
+                });
+            })
+            .catch(error => {
+                console.error('Error al listar insumos:', error);
+            });
+    });
+
+    function visualizarInsumo(id) {
+        localStorage.setItem('idInsumo', id);
+        window.location.href = 'visualizar-insumo.html';
+    }
+    </script>
+    <script src="/frontend/public/js/pages/listar-insumo.js"></script>
 </body>
 </html>

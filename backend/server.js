@@ -113,3 +113,13 @@ app.get('/insumos', async (req, res) => {
         res.status(500).json({ error: 'Error al obtener insumos' });
     }
 });
+
+app.get('/user', async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM user');
+        res.json(rows);
+    } catch (error) {
+        console.error('Error al obtener usuario:', error);
+        res.status(500).json({ error: 'Error al obtener usuario:' });
+    }
+});
