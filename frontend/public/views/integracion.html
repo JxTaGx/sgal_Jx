@@ -94,18 +94,22 @@
                             <span class="dashboard__error" data-error="cycle"></span>
                         </div>
 
-                        <div class="dashboard__form-group">
-                            <label class="dashboard__label">Sensores (Máx. 3)</label>
-                            <div class="dashboard__select-wrapper">
-                                <select class="dashboard__select" data-field="sensors" multiple size="3" required>
-                                     </select>
-                                <button class="dashboard__button dashboard__button--icon" type="button"
-                                        onclick="redirectToCreate('sensor', '../views/create-sensor.html')" title="Crear Nuevo Sensor">
-                                    <i class="material-icons">add_circle</i>
-                                </button>
-                            </div>
-                            <span class="dashboard__error" data-error="sensors"></span>
-                        </div>
+                        <div class="dashboard__form-group dashboard__form-group--full-width">
+    <label class="dashboard__label">Sensores Asignados (Máx. 3)</label>
+    <div class="dashboard__sensor-add-area">
+        <select class="dashboard__select" data-field="available-sensors">
+            <option value="">Seleccione un sensor para agregar...</option>
+            </select>
+        <button class="dashboard__button dashboard__button--icon" type="button"
+                onclick="redirectToCreate('sensor', '../views/create-sensor.html')" title="Crear Nuevo Sensor">
+            <i class="material-icons">add_circle</i>
+        </button>
+        <button class="dashboard__button dashboard__button--primary" type="button" data-action="add-selected-sensor">Agregar Sensor</button>
+    </div>
+    <div class="dashboard__selected-items-list" data-list="selected-sensors">
+        <p>No hay sensores agregados.</p>
+        </div>
+    <span class="dashboard__error" data-error="sensors"></span> </div>
 
                         <div class="dashboard__form-group dashboard__form-group--full-width">
                             <label class="dashboard__label">Insumos</label>
