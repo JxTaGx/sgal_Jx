@@ -41,9 +41,17 @@
 
                 <div class="dashboard__widget">
                     <form class="dashboard__form dashboard__form--two-columns" data-form="create">
+
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">ID de Producción</label>
                             <input class="dashboard__input" type="text" data-field="production-id" readonly>
+                            <span class="dashboard__error" data-error="production-id"></span>
+                        </div>
+
+                        <div class="dashboard__form-group">
+                            <label class="dashboard__label">Nombre de Producción</label>
+                            <input class="dashboard__input" type="text" data-field="name" required>
+                            <span class="dashboard__error" data-error="name"></span>
                         </div>
 
                         <div class="dashboard__form-group">
@@ -60,19 +68,13 @@
                             <span class="dashboard__error" data-error="responsible"></span>
                         </div>
 
-                        <div class="dashboard__form-group">
-                            <label class="dashboard__label">Nombre de Producción</label>
-                            <input class="dashboard__input" type="text" data-field="name" required>
-                            <span class="dashboard__error" data-error="name"></span>
-                        </div>
-
-                        <div class="dashboard__form-group">
+                         <div class="dashboard__form-group">
                             <label class="dashboard__label">Cultivo</label>
                             <div class="dashboard__select-wrapper">
                                 <select class="dashboard__select" data-field="cultivation" required>
                                     <option value="">Seleccione un cultivo</option>
-                                     </select>
-                                 <button class="dashboard__button dashboard__button--icon" type="button"
+                                    </select>
+                                <button class="dashboard__button dashboard__button--icon" type="button"
                                         onclick="redirectToCreate('cultivation', '../views/create-cultivo.html')" title="Agregar Nuevo Cultivo">
                                     <i class="material-icons">add_circle</i>
                                 </button>
@@ -85,51 +87,13 @@
                             <div class="dashboard__select-wrapper">
                                 <select class="dashboard__select" data-field="cycle" required>
                                     <option value="">Seleccione un ciclo</option>
-                                     </select>
+                                    </select>
                                 <button class="dashboard__button dashboard__button--icon" type="button"
                                         onclick="redirectToCreate('cycle', '../views/create-ciclo-cultivo.html')" title="Agregar Nuevo Ciclo">
                                     <i class="material-icons">add_circle</i>
                                 </button>
                             </div>
                             <span class="dashboard__error" data-error="cycle"></span>
-                        </div>
-
-                        <div class="dashboard__form-group dashboard__form-group--full-width">
-    <label class="dashboard__label">Sensores Asignados (Máx. 3)</label>
-    <div class="dashboard__sensor-add-area">
-        <select class="dashboard__select" data-field="available-sensors">
-            <option value="">Seleccione un sensor para agregar...</option>
-            </select>
-        <button class="dashboard__button dashboard__button--icon" type="button"
-                onclick="redirectToCreate('sensor', '../views/create-sensor.html')" title="Crear Nuevo Sensor">
-            <i class="material-icons">add_circle</i>
-        </button>
-        <button class="dashboard__button dashboard__button--primary" type="button" data-action="add-selected-sensor">Agregar Sensor</button>
-    </div>
-    <div class="dashboard__selected-items-list" data-list="selected-sensors">
-        <p>No hay sensores agregados.</p>
-        </div>
-    <span class="dashboard__error" data-error="sensors"></span> </div>
-
-                        <div class="dashboard__form-group dashboard__form-group--full-width">
-                            <label class="dashboard__label">Insumos</label>
-                            <div class="dashboard__supply-selection">
-                                <button class="dashboard__button dashboard__button--icon dashboard__button--inline" type="button"
-                                        onclick="redirectToCreate('supply', '../views/create-insumo.html')" title="Crear Nuevo Insumo">
-                                    <i class="material-icons">add_circle</i> Crear Insumo
-                                </button>
-                                <div class="dashboard__supply-add-area">
-                                    <select class="dashboard__select" data-field="available-supplies">
-                                        <option value="">Seleccione un insumo para agregar</option>
-                                         </select>
-                                    <input type="number" class="dashboard__input" placeholder="Cantidad" min="1" data-field="supply-quantity">
-                                    <button class="dashboard__button dashboard__button--primary" type="button" data-action="add-selected-supply">Agregar</button>
-                                </div>
-                            </div>
-                            <div class="dashboard__selected-supplies-list" data-list="selected-supplies">
-                                <p>No hay insumos agregados.</p>
-                                </div>
-                            <span class="dashboard__error" data-error="supplies"></span>
                         </div>
 
                         <div class="dashboard__form-group">
@@ -144,6 +108,46 @@
                             <span class="dashboard__error" data-error="end-date"></span>
                         </div>
 
+                        <div class="dashboard__form-group dashboard__form-group--full-width">
+                            <label class="dashboard__label">Sensores Asignados (Máx. 3)</label>
+                            <div class="dashboard__sensor-add-area">
+                                <select class="dashboard__select" data-field="available-sensors">
+                                    <option value="">Seleccione un sensor para agregar...</option>
+                                    </select>
+                                 <input type="number" class="dashboard__input" data-field="sensor-quantity" placeholder="Cantidad" min="1" max="3" title="Ingrese la cantidad (1-3)">
+                                <button class="dashboard__button dashboard__button--icon" type="button"
+                                        onclick="redirectToCreate('sensor', '../views/create-sensor.html')" title="Crear Nuevo Sensor">
+                                    <i class="material-icons">add_circle</i>
+                                </button>
+                                <button class="dashboard__button dashboard__button--primary" type="button" data-action="add-selected-sensor">Agregar Sensor</button>
+                            </div>
+                            <div class="dashboard__selected-items-list" data-list="selected-sensors">
+                                <p>No hay sensores agregados.</p>
+                            </div>
+                            <span class="dashboard__error" data-error="sensors"></span>
+                        </div>
+
+                        <div class="dashboard__form-group dashboard__form-group--full-width">
+                            <label class="dashboard__label">Insumos</label>
+                             <div class="dashboard__supply-selection">
+                                <button class="dashboard__button dashboard__button--icon dashboard__button--inline" type="button"
+                                        onclick="redirectToCreate('supply', '../views/create-insumo.html')" title="Crear Nuevo Insumo">
+                                    <i class="material-icons">add_circle</i>
+                                </button>
+                                <div class="dashboard__supply-add-area">
+                                    <select class="dashboard__select" data-field="available-supplies">
+                                        <option value="">Seleccione un insumo para agregar</option>
+                                        </select>
+                                    <input type="number" class="dashboard__input" placeholder="Cantidad" min="1" data-field="supply-quantity">
+                                    <button class="dashboard__button dashboard__button--primary" type="button" data-action="add-selected-supply">Agregar</button>
+                                </div>
+                            </div>
+                            <div class="dashboard__selected-items-list" data-list="selected-supplies">
+                                <p>No hay insumos agregados.</p>
+                            </div>
+                            <span class="dashboard__error" data-error="supplies"></span>
+                        </div>
+
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">Inversión Estimada</label>
                             <input class="dashboard__input" type="text" data-field="investment" readonly>
@@ -155,14 +159,15 @@
                         </div>
 
                         <div class="dashboard__form-actions">
-                            <a href="home.html"> <button class="dashboard__button dashboard__button--tertiary" type="button" data-action="cancel">Volver</button>
+                            <a href="home.html">
+                                <button class="dashboard__button dashboard__button--tertiary" type="button" data-action="cancel">Volver</button>
                             </a>
-                            <button class="dashboard__button dashboard__button--save" type="button" data-action="save-draft">Guardar Borrador</button>
-                            <button class="dashboard__button dashboard__button--create" type="submit" disabled data-action="create">Crear Producción</button>
+                            <button class="dashboard__button dashboard__button--secondary" type="button" data-action="save-draft">Guardar Borrador</button>
+                            <button class="dashboard__button dashboard__button--primary" type="submit" disabled data-action="create">Crear Producción</button>
                         </div>
 
                     </form>
-                </div>
+                    </div>
             </section>
 
             <section class="dashboard__section" data-panel="view">

@@ -267,9 +267,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (supplyId) removeSelectedSupply(supplyId, 'create');
             }
         });
-
-        // Initial validation and button state
-        validateCreateForm(); // Call this to set initial state
     }
 
     function setupViewForm() {
