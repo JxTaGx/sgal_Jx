@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log("Form state saved to sessionStorage.");
             } catch (e) {
                 console.error("Error saving form state to sessionStorage:", e);
-                 showSnackbar("Error al guardar el estado del formulario.", "error");
+                showSnackbar("Error al guardar el estado del formulario.", "error");
             }
         }
     }
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log("Selected supplies restored.");
             }
 
-             // Repopulate selected sensors list
+            // Repopulate selected sensors list
             if (Array.isArray(formData.selectedSensors)) {
                 selectedSensorsCreate = formData.selectedSensors;
                 renderSelectedSensors('create'); // Use new render function
@@ -113,7 +113,8 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log("Form state restored and removed from sessionStorage.");
 
             // Re-validate form to enable/disable create button and update estimations
-            validateCreateForm();
+            // validateCreateForm(); // Removed initial validation call here
+            checkFormValidityForSubmitButton(); // Check if button should be enabled
 
         } catch (e) {
             console.error("Error restoring form state:", e);
@@ -143,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Initial ID Generation ---
     async function setInitialProductionId() {
-         const prodIdInput = document.querySelector('[data-form="create"] [data-field="production-id"]');
+        const prodIdInput = document.querySelector('[data-form="create"] [data-field="production-id"]');
         if (!prodIdInput) return; // Ensure the input exists
 
         try {
@@ -154,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const nextId = productionsData.length > 0 ?
                 Math.max(0, ...productionsData.map(p => parseInt(p.id) || 0)) + 1 : 1;
             prodIdInput.value = `prod-${nextId}`;
-        } catch(e) {
+        } catch (e) {
             console.error("Error fetching next production ID:", e);
             prodIdInput.value = 'prod-error';
             showSnackbar('Error al generar ID de producción.', 'error');
@@ -167,52 +168,52 @@ document.addEventListener('DOMContentLoaded', function() {
             const integrationDataResponse = await fetch(`${API_BASE_URL}/integracion/data`);
             if (!integrationDataResponse.ok) throw new Error('Error al obtener datos de integración');
             const integrationDataResult = await integrationDataResponse.json();
-             if (!integrationDataResult.success) throw new Error(integrationDataResult.error || 'Error en datos de integración');
-             const data = integrationDataResult.data;
+            if (!integrationDataResult.success) throw new Error(integrationDataResult.error || 'Error en datos de integración');
+            const data = integrationDataResult.data;
 
-             // Populate standard selects (Users, Cultivations, Cycles, Status)
-             document.querySelectorAll('[data-field="responsible"]').forEach(select => populateSelect(select, data.users || [], "Seleccione un responsable"));
-             document.querySelectorAll('[data-field="cultivation"]').forEach(select => populateSelect(select, data.cultivations || [], "Seleccione un cultivo"));
-             document.querySelectorAll('[data-field="cycle"]').forEach(select => populateSelect(select, data.cycles || [], "Seleccione un ciclo"));
-             document.querySelectorAll('[data-field="status"]').forEach(select => populateSelect(select, [{id: 'active', name: 'Activo'}, {id: 'inactive', name: 'Inactivo'}], "Seleccione estado"));
+            // Populate standard selects (Users, Cultivations, Cycles, Status)
+            document.querySelectorAll('[data-field="responsible"]').forEach(select => populateSelect(select, data.users || [], "Seleccione un responsable"));
+            document.querySelectorAll('[data-field="cultivation"]').forEach(select => populateSelect(select, data.cultivations || [], "Seleccione un cultivo"));
+            document.querySelectorAll('[data-field="cycle"]').forEach(select => populateSelect(select, data.cycles || [], "Seleccione un ciclo"));
+            document.querySelectorAll('[data-field="status"]').forEach(select => populateSelect(select, [{ id: 'active', name: 'Activo' }, { id: 'inactive', name: 'Inactivo' }], "Seleccione estado"));
 
-             // Fetch and store ALL sensor data
-             const sensorsResponse = await fetch(`http://localhost:3000/sensor/s`); // Use the correct endpoint for sensors
-             if (!sensorsResponse.ok) throw new Error(`Error al obtener lista de sensores: ${sensorsResponse.statusText}`);
-             const sensorsResult = await sensorsResponse.json();
-              // Adjust based on the actual structure returned by /sensor/s
-             allSensorsData = sensorsResult.success ? sensorsResult.data : (Array.isArray(sensorsResult) ? sensorsResult : []);
-             if (!Array.isArray(allSensorsData)) {
-                  allSensorsData = [];
-                  console.warn('Formato inesperado de datos de sensores:', sensorsResult);
-                  throw new Error('Formato inesperado de datos de sensores detallados');
-             }
+            // Fetch and store ALL sensor data
+            const sensorsResponse = await fetch(`http://localhost:3000/sensor/s`); // Use the correct endpoint for sensors
+            if (!sensorsResponse.ok) throw new Error(`Error al obtener lista de sensores: ${sensorsResponse.statusText}`);
+            const sensorsResult = await sensorsResponse.json();
+            // Adjust based on the actual structure returned by /sensor/s
+            allSensorsData = sensorsResult.success ? sensorsResult.data : (Array.isArray(sensorsResult) ? sensorsResult : []);
+            if (!Array.isArray(allSensorsData)) {
+                allSensorsData = [];
+                console.warn('Formato inesperado de datos de sensores:', sensorsResult);
+                throw new Error('Formato inesperado de datos de sensores detallados');
+            }
 
-             // Populate the AVAILABLE sensor dropdown (single select) in Create and Update forms
-             document.querySelectorAll('[data-field="available-sensors"]').forEach(select => {
+            // Populate the AVAILABLE sensor dropdown (single select) in Create and Update forms
+            document.querySelectorAll('[data-field="available-sensors"]').forEach(select => {
                 populateSelect(select, allSensorsData || [], "Seleccione un sensor");
-             });
+            });
 
-             // Fetch and store ALL supply data
-             const suppliesResponse = await fetch(`http://localhost:3000/api/insumos`);
-             if (!suppliesResponse.ok) throw new Error(`Error al obtener lista de insumos: ${suppliesResponse.statusText}`);
-             const suppliesResult = await suppliesResponse.json();
-             allSuppliesData = suppliesResult.success ? suppliesResult.data : (Array.isArray(suppliesResult) ? suppliesResult : []);
-             if (!Array.isArray(allSuppliesData)) {
-                  allSuppliesData = [];
-                  console.warn('Formato inesperado de datos de insumos:', suppliesResult);
-                  throw new Error('Formato inesperado de datos de insumos detallados');
-             }
+            // Fetch and store ALL supply data
+            const suppliesResponse = await fetch(`http://localhost:3000/api/insumos`);
+            if (!suppliesResponse.ok) throw new Error(`Error al obtener lista de insumos: ${suppliesResponse.statusText}`);
+            const suppliesResult = await suppliesResponse.json();
+            allSuppliesData = suppliesResult.success ? suppliesResult.data : (Array.isArray(suppliesResult) ? suppliesResult : []);
+            if (!Array.isArray(allSuppliesData)) {
+                allSuppliesData = [];
+                console.warn('Formato inesperado de datos de insumos:', suppliesResult);
+                throw new Error('Formato inesperado de datos de insumos detallados');
+            }
 
-             // Populate the AVAILABLE supply dropdown (single select)
-             document.querySelectorAll('[data-field="available-supplies"]').forEach(select => {
+            // Populate the AVAILABLE supply dropdown (single select)
+            document.querySelectorAll('[data-field="available-supplies"]').forEach(select => {
                 populateSelect(select, allSuppliesData || [], "Seleccione un insumo para agregar");
-             });
+            });
 
-         } catch (error) {
-             console.error('Error al poblar datos:', error);
-             showSnackbar(`Error al cargar datos iniciales: ${error.message || 'Error desconocido'}`, 'error');
-         }
+        } catch (error) {
+            console.error('Error al poblar datos:', error);
+            showSnackbar(`Error al cargar datos iniciales: ${error.message || 'Error desconocido'}`, 'error');
+        }
     }
 
     // Helper for populating selects
@@ -221,22 +222,19 @@ document.addEventListener('DOMContentLoaded', function() {
         selectElement.innerHTML = `<option value="">${defaultOptionText}</option>`;
         options.forEach(opt => {
             // Adjust property names based on data source (user, cultivation, cycle, sensor, supply)
-             const id = opt.id || opt.id_cultivo || opt.id_ciclo || opt.id_insumo || opt.id_sensor; // Use sensor id too
-             const name = opt.name || opt.nombre_cultivo || opt.nombre_ciclo || opt.nombre_insumo || opt.nombre_sensor; // Use sensor name too
+            const id = opt.id || opt.id_cultivo || opt.id_ciclo || opt.id_insumo || opt.id_sensor; // Use sensor id too
+            const name = opt.name || opt.nombre_cultivo || opt.nombre_ciclo || opt.nombre_insumo || opt.nombre_sensor; // Use sensor name too
 
-             if (id !== undefined && name !== undefined) {
-                 const option = document.createElement('option');
-                 option.value = id;
-                 option.textContent = name;
-                 selectElement.appendChild(option);
-             } else {
-                 console.warn("Opción inválida para select:", opt);
-             }
+            if (id !== undefined && name !== undefined) {
+                const option = document.createElement('option');
+                option.value = id;
+                option.textContent = name;
+                selectElement.appendChild(option);
+            } else {
+                console.warn("Opción inválida para select:", opt);
+            }
         });
     }
-
-    // REMOVE populateMultiSelect as it's no longer used for sensors
-
 
     // --- Form Setups ---
     function setupCreateForm() {
@@ -245,10 +243,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
         form.querySelector('[data-action="cancel"]')?.addEventListener('click', resetForms);
         form.querySelector('[data-action="save-draft"]')?.addEventListener('click', saveAsDraft);
-        form.addEventListener('submit', async (e) => { e.preventDefault(); await createProduction(); });
+        form.addEventListener('submit', async(e) => { e.preventDefault(); await createProduction(); });
 
-        // Listeners for validation
-        form.querySelectorAll('[required]').forEach(input => input.addEventListener('change', validateCreateForm));
+        // Listeners for validation on interaction
+        form.querySelectorAll('[required]:not([disabled])').forEach(input => {
+            input.addEventListener('change', (event) => {
+                validateSingleField(event.target);
+                checkFormValidityForSubmitButton();
+            });
+            input.addEventListener('input', (event) => {
+                validateSingleField(event.target);
+                checkFormValidityForSubmitButton();
+            });
+        });
 
         // Add listener for new "Agregar Sensor" button
         form.querySelector('[data-action="add-selected-sensor"]')?.addEventListener('click', () => addSelectedSensorToList('create'));
@@ -267,6 +274,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (supplyId) removeSelectedSupply(supplyId, 'create');
             }
         });
+
+        // Initial button state (disabled)
+        const createButton = form.querySelector('[data-action="create"]');
+        if (createButton) {
+            createButton.disabled = true;
+        }
     }
 
     function setupViewForm() {
@@ -293,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const productionIdInput = searchForm.querySelector('[data-field="production-id"]');
             const productionId = productionIdInput?.value?.trim();
             const errorSpan = searchForm.querySelector('[data-error="production-id"]');
-            if(errorSpan) { errorSpan.textContent = ''; errorSpan.style.display = 'none'; }
+            if (errorSpan) { errorSpan.textContent = ''; errorSpan.style.display = 'none'; }
             if (!productionId) {
                 showSnackbar("Ingrese ID", "warning");
                 if (errorSpan) { errorSpan.textContent = 'Ingrese ID'; errorSpan.style.display = 'block'; }
@@ -323,23 +336,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Delegate event listeners for buttons INSIDE the dynamic update form
         updateFormEl.addEventListener('click', (e) => {
-             if (e.target.matches('[data-action="cancel-update"]')) {
-                 updateFormEl.classList.add('dashboard__form--hidden');
-                 updateFormEl.innerHTML = '';
-                 selectedSuppliesUpdate = [];
-                 selectedSensorsUpdate = []; // Clear update sensors
-                 currentProductionId = null;
-             } else if (e.target.matches('[data-action="add-selected-supply-update"]')) {
-                 addSelectedSupplyToList('update');
-             } else if (e.target.matches('[data-action="add-selected-sensor-update"]')) { // Add listener for adding sensor in update
-                 addSelectedSensorToList('update');
-             } else if (e.target.matches('.dashboard__button--remove-supply')) {
-                 const supplyId = e.target.getAttribute('data-supply-id');
-                 if (supplyId) removeSelectedSupply(supplyId, 'update');
-             } else if (e.target.matches('.dashboard__button--remove-sensor')) { // Add listener for removing sensor in update
-                 const sensorId = e.target.getAttribute('data-sensor-id');
-                 if (sensorId) removeSelectedSensor(sensorId, 'update');
-             }
+            if (e.target.matches('[data-action="cancel-update"]')) {
+                updateFormEl.classList.add('dashboard__form--hidden');
+                updateFormEl.innerHTML = '';
+                selectedSuppliesUpdate = [];
+                selectedSensorsUpdate = []; // Clear update sensors
+                currentProductionId = null;
+            } else if (e.target.matches('[data-action="add-selected-supply-update"]')) {
+                addSelectedSupplyToList('update');
+            } else if (e.target.matches('[data-action="add-selected-sensor-update"]')) { // Add listener for adding sensor in update
+                addSelectedSensorToList('update');
+            } else if (e.target.matches('.dashboard__button--remove-supply')) {
+                const supplyId = e.target.getAttribute('data-supply-id');
+                if (supplyId) removeSelectedSupply(supplyId, 'update');
+            } else if (e.target.matches('.dashboard__button--remove-sensor')) { // Add listener for removing sensor in update
+                const sensorId = e.target.getAttribute('data-sensor-id');
+                if (sensorId) removeSelectedSensor(sensorId, 'update');
+            }
         });
 
         updateFormEl.addEventListener('submit', async function(e) {
@@ -347,19 +360,19 @@ document.addEventListener('DOMContentLoaded', function() {
             await updateProduction();
         });
 
-         // Modify validation listeners for update form
-         updateFormEl.addEventListener('change', (e) => {
-             // Validate on change for selects and potentially number inputs
-             if (e.target.matches('select[required], input[type="number"], input[type="date"]')) {
-                 validateUpdateForm();
-             }
-         });
-         updateFormEl.addEventListener('input', (e) => {
-             // Validate on input for text fields
-             if (e.target.matches('input[required]:not([type="number"]):not([type="date"])')) {
-                 validateUpdateForm();
-             }
-         });
+        // Modify validation listeners for update form
+        updateFormEl.addEventListener('change', (e) => {
+            // Validate on change for selects and potentially number inputs
+            if (e.target.matches('select[required], input[type="number"], input[type="date"]')) {
+                validateUpdateForm();
+            }
+        });
+        updateFormEl.addEventListener('input', (e) => {
+            // Validate on input for text fields
+            if (e.target.matches('input[required]:not([type="number"]):not([type="date"])')) {
+                validateUpdateForm();
+            }
+        });
     }
 
     function setupEnableForm() {
@@ -368,61 +381,61 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!form || !resultSection) return;
 
         form.addEventListener('submit', async function(e) {
-             e.preventDefault();
-             const idInput = form.querySelector('[data-field="production-id"]');
-             const productionId = idInput?.value?.trim();
-             const errorSpan = form.querySelector('[data-error="production-id"]');
-             if(errorSpan) { errorSpan.textContent = ''; errorSpan.style.display = 'none'; }
+            e.preventDefault();
+            const idInput = form.querySelector('[data-field="production-id"]');
+            const productionId = idInput?.value?.trim();
+            const errorSpan = form.querySelector('[data-error="production-id"]');
+            if (errorSpan) { errorSpan.textContent = ''; errorSpan.style.display = 'none'; }
 
-             if (!productionId) {
-                 showSnackbar('Ingrese ID de producción', 'warning');
-                 if (errorSpan) { errorSpan.textContent = 'Ingrese ID'; errorSpan.style.display = 'block'; }
-                 return;
-             }
+            if (!productionId) {
+                showSnackbar('Ingrese ID de producción', 'warning');
+                if (errorSpan) { errorSpan.textContent = 'Ingrese ID'; errorSpan.style.display = 'block'; }
+                return;
+            }
 
-             resultSection.classList.add('dashboard__result--hidden');
+            resultSection.classList.add('dashboard__result--hidden');
 
-             const idMatch = productionId.match(/(\d+)$/);
-             const actualId = idMatch ? idMatch[1] : productionId;
+            const idMatch = productionId.match(/(\d+)$/);
+            const actualId = idMatch ? idMatch[1] : productionId;
 
-             try {
-                 showSnackbar("Buscando producción...", "info");
+            try {
+                showSnackbar("Buscando producción...", "info");
                 const response = await fetch(`${API_BASE_URL}/productions/${actualId}`);
-                 if (!response.ok) throw new Error(response.status === 404 ? 'Producción no encontrada' : `Error al buscar: ${response.statusText}`);
-                 const result = await response.json();
-                 if (!result.success || !result.data) throw new Error(result.error || 'No se encontraron datos');
+                if (!response.ok) throw new Error(response.status === 404 ? 'Producción no encontrada' : `Error al buscar: ${response.statusText}`);
+                const result = await response.json();
+                if (!result.success || !result.data) throw new Error(result.error || 'No se encontraron datos');
 
-                 const production = result.data;
-                 currentProductionId = production.id; // Guarda ID numérico para toggle
+                const production = result.data;
+                currentProductionId = production.id; // Guarda ID numérico para toggle
 
-                 const content = resultSection.querySelector('[data-content="status"]');
-                 if (content) {
-                      const statusText = production.status === 'active' ? 'Activo' : 'Inactivo';
-                      const statusClass = production.status === 'active' ? 'active' : 'inactive';
-                     content.innerHTML = `
-                         <div class="dashboard__info-item"> <div class="dashboard__info-label">Producción</div> <div class="dashboard__info-value">${production.name || 'N/A'} (ID: prod-${production.id})</div> </div>
-                         <div class="dashboard__info-item"> <div class="dashboard__info-label">Estado Actual</div> <div class="dashboard__info-value"> <span class="status-badge status-badge--${statusClass}">${statusText}</span> </div> </div>`;
-                 }
+                const content = resultSection.querySelector('[data-content="status"]');
+                if (content) {
+                    const statusText = production.status === 'active' ? 'Activo' : 'Inactivo';
+                    const statusClass = production.status === 'active' ? 'active' : 'inactive';
+                    content.innerHTML = `
+                            <div class="dashboard__info-item"> <div class="dashboard__info-label">Producción</div> <div class="dashboard__info-value">${production.name || 'N/A'} (ID: prod-${production.id})</div> </div>
+                            <div class="dashboard__info-item"> <div class="dashboard__info-label">Estado Actual</div> <div class="dashboard__info-value"> <span class="status-badge status-badge--${statusClass}">${statusText}</span> </div> </div>`;
+                }
 
-                 const toggleButton = resultSection.querySelector('[data-action="toggle-status"]');
-                 if (toggleButton) {
-                     toggleButton.textContent = production.status === 'active' ? 'Deshabilitar' : 'Habilitar';
-                     // Remover listener anterior antes de añadir uno nuevo para evitar duplicados
-                     const newButton = toggleButton.cloneNode(true);
-                     toggleButton.parentNode.replaceChild(newButton, toggleButton);
-                     newButton.addEventListener('click', async () => await toggleProductionStatus(production));
-                     newButton.disabled = false; // Habilitar botón
-                 }
-                 resultSection.classList.remove('dashboard__result--hidden');
+                const toggleButton = resultSection.querySelector('[data-action="toggle-status"]');
+                if (toggleButton) {
+                    toggleButton.textContent = production.status === 'active' ? 'Deshabilitar' : 'Habilitar';
+                    // Remover listener anterior antes de añadir uno nuevo para evitar duplicados
+                    const newButton = toggleButton.cloneNode(true);
+                    toggleButton.parentNode.replaceChild(newButton, toggleButton);
+                    newButton.addEventListener('click', async() => await toggleProductionStatus(production));
+                    newButton.disabled = false; // Habilitar botón
+                }
+                resultSection.classList.remove('dashboard__result--hidden');
 
-             } catch (error) {
-                 console.error('Error buscando para habilitar/deshabilitar:', error);
-                 showSnackbar(error.message, 'error');
-                  if (errorSpan) { errorSpan.textContent = error.message; errorSpan.style.display = 'block'; }
-                 resultSection.classList.add('dashboard__result--hidden');
-                 const toggleButton = resultSection.querySelector('[data-action="toggle-status"]');
-                 if (toggleButton) toggleButton.disabled = true;
-             }
+            } catch (error) {
+                console.error('Error buscando para habilitar/deshabilitar:', error);
+                showSnackbar(error.message, 'error');
+                if (errorSpan) { errorSpan.textContent = error.message; errorSpan.style.display = 'block'; }
+                resultSection.classList.add('dashboard__result--hidden');
+                const toggleButton = resultSection.querySelector('[data-action="toggle-status"]');
+                if (toggleButton) toggleButton.disabled = true;
+            }
         });
     }
 
@@ -436,28 +449,28 @@ document.addEventListener('DOMContentLoaded', function() {
         const nextButton = listSection.querySelector('[data-action="next-page"]');
 
         let searchTimeout;
-         if(searchInput) {
+        if (searchInput) {
             searchInput.addEventListener('input', () => {
-                 clearTimeout(searchTimeout);
-                 searchTimeout = setTimeout(() => { currentPage = 1; loadProductionsList(); }, 350); // Debounce
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => { currentPage = 1; loadProductionsList(); }, 350); // Debounce
             });
-         }
-         if(filterSelect) { filterSelect.addEventListener('change', () => { currentPage = 1; loadProductionsList(); }); }
-         if(prevButton) { prevButton.addEventListener('click', () => { if (currentPage > 1) { currentPage--; loadProductionsList(); } }); }
-         if(nextButton) {
-             nextButton.addEventListener('click', () => {
-                 const paginationInfo = listSection.querySelector('[data-info="page"]');
-                 const totalPages = parseInt(paginationInfo?.dataset.totalPages || '1');
-                 if (currentPage < totalPages) { currentPage++; loadProductionsList(); }
+        }
+        if (filterSelect) { filterSelect.addEventListener('change', () => { currentPage = 1; loadProductionsList(); }); }
+        if (prevButton) { prevButton.addEventListener('click', () => { if (currentPage > 1) { currentPage--; loadProductionsList(); } }); }
+        if (nextButton) {
+            nextButton.addEventListener('click', () => {
+                const paginationInfo = listSection.querySelector('[data-info="page"]');
+                const totalPages = parseInt(paginationInfo?.dataset.totalPages || '1');
+                if (currentPage < totalPages) { currentPage++; loadProductionsList(); }
             });
-         }
+        }
     }
 
     function setupReportForm() {
         const form = document.querySelector('[data-form="report"]');
         if (form) {
-             form.addEventListener('submit', async (e) => { e.preventDefault(); await generateReport(); });
-         } else { console.warn("Formulario de reportes no encontrado."); }
+            form.addEventListener('submit', async(e) => { e.preventDefault(); await generateReport(); });
+        } else { console.warn("Formulario de reportes no encontrado."); }
     }
 
     // --- Sensor Management Functions ---
@@ -496,11 +509,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Find sensor data to get the name
         if (!Array.isArray(allSensorsData) || allSensorsData.length === 0) {
-             showSnackbar('Error: Lista de sensores no cargada', 'error'); return;
+            showSnackbar('Error: Lista de sensores no cargada', 'error'); return;
         }
         const sensorData = allSensorsData.find(s => s.id == sensorId || s.id_sensor == sensorId); // Check both possible ID fields
         if (!sensorData || !sensorData.nombre_sensor) { // Adjust property name if needed
-             showSnackbar('Error: Datos del sensor no encontrados', 'error'); return;
+            showSnackbar('Error: Datos del sensor no encontrados', 'error'); return;
         }
 
         targetSensorList.push({
@@ -514,11 +527,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (quantityInput) quantityInput.value = "1"; // Reset quantity to 1
         if (errorSpan) errorSpan.style.display = 'none';
 
-        if (context === 'create') validateCreateForm();
-        else if (context === 'update') validateUpdateForm();
+        // if (context === 'create') validateCreateForm();
+        // else if (context === 'update') validateUpdateForm();
+        checkFormValidityForSubmitButton(context); // Check button status after adding
     }
 
-     /**
+    /**
      * Removes a sensor from the list for either Create or Update form.
      * @param {string} sensorIdToRemove - The ID of the sensor to remove.
      * @param {'create' | 'update'} context - Specifies which form's list to update.
@@ -527,11 +541,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (context === 'create') {
             selectedSensorsCreate = selectedSensorsCreate.filter(item => item.id != sensorIdToRemove);
             renderSelectedSensors('create');
-            validateCreateForm(); // Re-validate after removing
+            // validateCreateForm(); // Re-validate after removing
+            checkFormValidityForSubmitButton('create');
         } else if (context === 'update') {
             selectedSensorsUpdate = selectedSensorsUpdate.filter(item => item.id != sensorIdToRemove);
             renderSelectedSensors('update');
-            validateUpdateForm(); // Re-validate after removing
+            // validateUpdateForm(); // Re-validate after removing
+            checkFormValidityForSubmitButton('update');
         }
     }
 
@@ -552,10 +568,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (sensorList.length === 0) {
             container.innerHTML = '<p>No hay sensores agregados.</p>';
-             if (errorSpan && context === 'create') { // Show required error only on create if empty
-                errorSpan.textContent = 'Debe agregar al menos un sensor (máx. 3)';
-                errorSpan.style.display = 'block';
-            }
+            // Don't show error message here immediately, let validateForm handle it on submit attempt
+            // if (errorSpan && context === 'create') {
+            //     errorSpan.textContent = 'Debe agregar al menos un sensor (máx. 3)';
+            //     errorSpan.style.display = 'block';
+            // }
         } else {
             const list = document.createElement('ul');
             list.className = 'dashboard__items-list dashboard__sensors-list-items'; // Use a general class + specific
@@ -570,7 +587,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 list.appendChild(listItem);
             });
             container.appendChild(list);
-             if (errorSpan) errorSpan.style.display = 'none'; // Hide error if list is not empty
+            if (errorSpan) errorSpan.style.display = 'none'; // Hide error if list is not empty
         }
 
         // Disable add button if max is reached
@@ -578,11 +595,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (addButton) {
             addButton.disabled = sensorList.length >= 3;
         }
-         // Also potentially disable quantity input or sensor select if max reached
-         const sensorSelect = document.querySelector(`[data-form="${context}"] [data-field="available-sensors"]`);
-         const quantityInput = document.querySelector(`[data-form="${context}"] [data-field="sensor-quantity"]`);
-         if (sensorSelect) sensorSelect.disabled = sensorList.length >= 3;
-         if (quantityInput) quantityInput.disabled = sensorList.length >= 3;
+        // Also potentially disable quantity input or sensor select if max reached
+        const sensorSelect = document.querySelector(`[data-form="${context}"] [data-field="available-sensors"]`);
+        const quantityInput = document.querySelector(`[data-form="${context}"] [data-field="sensor-quantity"]`);
+        if (sensorSelect) sensorSelect.disabled = sensorList.length >= 3;
+        if (quantityInput) quantityInput.disabled = sensorList.length >= 3;
     }
 
     // --- Supply Management Functions ---
@@ -603,12 +620,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (targetSupplyList.some(item => item.id == supplyId)) { showSnackbar('Insumo ya agregado', 'warning'); return; }
         if (!Array.isArray(allSuppliesData) || allSuppliesData.length === 0) {
-             showSnackbar('Error: Lista de insumos no cargada', 'error'); return;
+            showSnackbar('Error: Lista de insumos no cargada', 'error'); return;
         }
 
         const supplyData = allSuppliesData.find(s => s.id == supplyId || s.id_insumo == supplyId);
         if (!supplyData || !supplyData.nombre_insumo) {
-             showSnackbar('Error: Datos del insumo no encontrados', 'error'); return;
+            showSnackbar('Error: Datos del insumo no encontrados', 'error'); return;
         }
 
         targetSupplyList.push({
@@ -623,20 +640,23 @@ document.addEventListener('DOMContentLoaded', function() {
         if (quantityInput) quantityInput.value = "";
         if (errorSpan) errorSpan.style.display = 'none';
 
-        if (context === 'create') validateCreateForm();
-        else if (context === 'update') validateUpdateForm();
+        // if (context === 'create') validateCreateForm();
+        // else if (context === 'update') validateUpdateForm();
+        checkFormValidityForSubmitButton(context); // Check button status after adding
     }
 
     function removeSelectedSupply(supplyIdToRemove, context) {
-         if (context === 'create') {
+        if (context === 'create') {
             selectedSuppliesCreate = selectedSuppliesCreate.filter(item => item.id != supplyIdToRemove);
             renderSelectedSupplies('create');
-            validateCreateForm();
-         } else if (context === 'update') {
+            // validateCreateForm();
+            checkFormValidityForSubmitButton('create');
+        } else if (context === 'update') {
             selectedSuppliesUpdate = selectedSuppliesUpdate.filter(item => item.id != supplyIdToRemove);
             renderSelectedSupplies('update');
-            validateUpdateForm();
-         }
+            // validateUpdateForm();
+            checkFormValidityForSubmitButton('update');
+        }
     }
 
     function renderSelectedSupplies(context) {
@@ -649,10 +669,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (supplyList.length === 0) {
             container.innerHTML = '<p>No hay insumos agregados.</p>';
-             if (errorSpan && context === 'create') { // Show error only on create if required
-                errorSpan.textContent = 'Debe agregar al menos un insumo';
-                errorSpan.style.display = 'block';
-            }
+            // Don't show error message here immediately
+            // if (errorSpan && context === 'create') {
+            //     errorSpan.textContent = 'Debe agregar al menos un insumo';
+            //     errorSpan.style.display = 'block';
+            // }
         } else {
             const list = document.createElement('ul');
             list.className = 'dashboard__items-list dashboard__supplies-list-items';
@@ -669,16 +690,19 @@ document.addEventListener('DOMContentLoaded', function() {
             container.appendChild(list);
             if (errorSpan) errorSpan.style.display = 'none';
         }
-         calculateEstimation(context); // Update estimation when supplies change
+        calculateEstimation(context); // Update estimation when supplies change
     }
 
 
     // --- CRUD Operations ---
 
     async function createProduction() {
-        if (!validateCreateForm()) { // Validation now includes sensor check
-             showSnackbar("Formulario inválido. Revise los campos marcados.", "warning"); return;
+        // Validate first, showing errors if necessary
+        if (!validateCreateForm(false)) { // Pass false to show errors
+            showSnackbar("Formulario inválido. Revise los campos marcados.", "warning");
+            return;
         }
+
         const form = document.querySelector('[data-form="create"]');
         const supplyIdsForApi = selectedSuppliesCreate.map(item => item.id);
         const sensorIdsForApi = selectedSensorsCreate.map(item => item.id); // Get sensor IDs
@@ -693,7 +717,7 @@ document.addEventListener('DOMContentLoaded', function() {
             startDate: form.querySelector('[data-field="start-date"]').value,
             endDate: form.querySelector('[data-field="end-date"]').value
         };
-         try {
+        try {
             const response = await fetch(`${API_BASE_URL}/productions`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newProduction) });
             const result = await response.json();
             if (!response.ok || !result.success) throw new Error(result.error || `Error HTTP ${response.status}`);
@@ -722,35 +746,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Basic Info
             const basicInfoContainer = resultSection.querySelector('[data-info="basic"]');
-             if(basicInfoContainer) {
-                 basicInfoContainer.innerHTML = '';
-                 const infoItems = [
-                      { label: 'ID', value: `prod-${production.id}` }, { label: 'Nombre', value: production.name },
-                      { label: 'Responsable', value: production.responsible_name || 'N/A' }, { label: 'Cultivo', value: production.cultivation_name || 'N/A' },
-                      { label: 'Ciclo', value: production.cycle_name || 'N/A' }, { label: 'Fecha Inicio', value: formatDate(production.start_date) },
-                      { label: 'Fecha Fin Est.', value: formatDate(production.end_date) }, { label: 'Estado', value: production.status === 'active' ? 'Activo' : 'Inactivo' }
-                 ];
-                 infoItems.forEach(item => {
-                     const infoDiv = document.createElement('div'); infoDiv.className = 'dashboard__info-item';
-                     infoDiv.innerHTML = `<div class="dashboard__info-label">${item.label}</div><div class="dashboard__info-value">${item.value || 'N/A'}</div>`;
-                     basicInfoContainer.appendChild(infoDiv);
-                 });
-             } else { console.warn("Contenedor [data-info='basic'] no encontrado en la vista."); }
+            if (basicInfoContainer) {
+                basicInfoContainer.innerHTML = '';
+                const infoItems = [
+                    { label: 'ID', value: `prod-${production.id}` }, { label: 'Nombre', value: production.name },
+                    { label: 'Responsable', value: production.responsible_name || 'N/A' }, { label: 'Cultivo', value: production.cultivation_name || 'N/A' },
+                    { label: 'Ciclo', value: production.cycle_name || 'N/A' }, { label: 'Fecha Inicio', value: formatDate(production.start_date) },
+                    { label: 'Fecha Fin Est.', value: formatDate(production.end_date) }, { label: 'Estado', value: production.status === 'active' ? 'Activo' : 'Inactivo' }
+                ];
+                infoItems.forEach(item => {
+                    const infoDiv = document.createElement('div'); infoDiv.className = 'dashboard__info-item';
+                    infoDiv.innerHTML = `<div class="dashboard__info-label">${item.label}</div><div class="dashboard__info-value">${item.value || 'N/A'}</div>`;
+                    basicInfoContainer.appendChild(infoDiv);
+                });
+            } else { console.warn("Contenedor [data-info='basic'] no encontrado en la vista."); }
 
             // Simulated Metrics and Charts
-             updateSimulatedMetrics(resultSection);
-             createAllCharts(resultSection, generateSensorData());
+            updateSimulatedMetrics(resultSection);
+            createAllCharts(resultSection, generateSensorData());
 
             // Display Sensors (using the new function)
-             const sensorsContainerView = resultSection.querySelector('[data-info="sensors"]');
-             if (sensorsContainerView) { await displayProductionSensorsView(sensorsContainerView, production.sensors || []); }
-             else { console.warn("Contenedor [data-info='sensors'] no encontrado en la vista."); }
+            const sensorsContainerView = resultSection.querySelector('[data-info="sensors"]');
+            if (sensorsContainerView) { await displayProductionSensorsView(sensorsContainerView, production.sensors || []); } else { console.warn("Contenedor [data-info='sensors'] no encontrado en la vista."); }
 
 
             // Display Supplies
-             const suppliesContainerView = resultSection.querySelector('[data-info="supplies"]');
-             if (suppliesContainerView) { await displayProductionSuppliesView(suppliesContainerView, production.supplies || []); }
-             else { console.warn("Contenedor [data-info='supplies'] no encontrado en la vista."); }
+            const suppliesContainerView = resultSection.querySelector('[data-info="supplies"]');
+            if (suppliesContainerView) { await displayProductionSuppliesView(suppliesContainerView, production.supplies || []); } else { console.warn("Contenedor [data-info='supplies'] no encontrado en la vista."); }
 
             resultSection.classList.remove('dashboard__result--hidden');
 
@@ -762,8 +784,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function updateProduction() {
-        if (!validateUpdateForm()) { // Validation now includes sensor check
-             showSnackbar("Formulario de actualización inválido.", "warning"); return;
+        // Validate first, showing errors if necessary
+        if (!validateUpdateForm(false)) { // Pass false to show errors
+            showSnackbar("Formulario de actualización inválido.", "warning");
+            return;
         }
         const form = document.querySelector('[data-form="update"]');
         if (!form || !currentProductionId) {
@@ -803,31 +827,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function toggleProductionStatus(currentProductionData) {
         if (!currentProductionData || !currentProductionData.id) {
-             showSnackbar("Error: No se pudo identificar la producción.", "error"); return;
+            showSnackbar("Error: No se pudo identificar la producción.", "error"); return;
         }
         const newStatus = currentProductionData.status === 'active' ? 'inactive' : 'active';
         const actionText = newStatus === 'active' ? 'habilitar' : 'deshabilitar';
         showSnackbar(`Intentando ${actionText}...`, "info");
 
         // Send minimal payload if backend supports partial updates, otherwise send all required fields
-         const updatePayload = {
-             ...currentProductionData, // Start with current data
-             status: newStatus, // Change status
-             // Ensure correct format for arrays/dates if sending full object
-             sensors: Array.isArray(currentProductionData.sensors) ? currentProductionData.sensors : [], // Send as array
-             supplies: Array.isArray(currentProductionData.supplies) ? currentProductionData.supplies : [], // Send as array
-             start_date: undefined, // Do NOT send start_date for status toggle
-             end_date: currentProductionData.end_date ? new Date(currentProductionData.end_date).toISOString().split('T')[0] : undefined,
-             // Remove fields not in DB table or that shouldn't be sent
-             responsible_name: undefined, cultivation_name: undefined, cycle_name: undefined, created_at: undefined, updated_at: undefined,
-             id_ciclo: undefined, id_cultivo: undefined, id_insumo: undefined, id_sensor: undefined, nombre_ciclo: undefined, nombre_cultivo: undefined, nombre_insumo: undefined, nombre_sensor: undefined
-             // Add any other fields that are part of the object but not in the 'productions' table
-         };
-         // Explicitly remove start_date if it was included by spread
-         delete updatePayload.start_date;
+        const updatePayload = {
+            ...currentProductionData, // Start with current data
+            status: newStatus, // Change status
+            // Ensure correct format for arrays/dates if sending full object
+            sensors: Array.isArray(currentProductionData.sensors) ? currentProductionData.sensors : [], // Send as array
+            supplies: Array.isArray(currentProductionData.supplies) ? currentProductionData.supplies : [], // Send as array
+            start_date: undefined, // Do NOT send start_date for status toggle
+            end_date: currentProductionData.end_date ? new Date(currentProductionData.end_date).toISOString().split('T')[0] : undefined,
+            // Remove fields not in DB table or that shouldn't be sent
+            responsible_name: undefined, cultivation_name: undefined, cycle_name: undefined, created_at: undefined, updated_at: undefined,
+            id_ciclo: undefined, id_cultivo: undefined, id_insumo: undefined, id_sensor: undefined, nombre_ciclo: undefined, nombre_cultivo: undefined, nombre_insumo: undefined, nombre_sensor: undefined
+            // Add any other fields that are part of the object but not in the 'productions' table
+        };
+        // Explicitly remove start_date if it was included by spread
+        delete updatePayload.start_date;
 
-         // Clean up undefined keys before sending
-         Object.keys(updatePayload).forEach(key => updatePayload[key] === undefined && delete updatePayload[key]);
+        // Clean up undefined keys before sending
+        Object.keys(updatePayload).forEach(key => updatePayload[key] === undefined && delete updatePayload[key]);
 
         try {
             const response = await fetch(`${API_BASE_URL}/productions/${currentProductionData.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(updatePayload) });
@@ -838,12 +862,12 @@ document.addEventListener('DOMContentLoaded', function() {
             // Refresh view and list
             const enableForm = document.querySelector('[data-form="enable"]');
             const idInput = enableForm?.querySelector('[data-field="production-id"]');
-             if(enableForm && idInput && idInput.value) {
-                 enableForm.dispatchEvent(new Event('submit', { bubbles: true })); // Resubmit search
-             } else {
-                 const resultSection = document.querySelector('[data-result="enable"]');
-                 if (resultSection) resultSection.classList.add('dashboard__result--hidden');
-             }
+            if (enableForm && idInput && idInput.value) {
+                enableForm.dispatchEvent(new Event('submit', { bubbles: true })); // Resubmit search
+            } else {
+                const resultSection = document.querySelector('[data-result="enable"]');
+                if (resultSection) resultSection.classList.add('dashboard__result--hidden');
+            }
             await loadProductionsList();
         } catch (error) {
             console.error('Error al cambiar estado:', error);
@@ -853,112 +877,136 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // --- Validation ---
-    function validateCreateForm() {
-        const form = document.querySelector('[data-form="create"]');
+    // Function to validate a single field on interaction
+    function validateSingleField(input) {
+        const form = input.closest('form'); // Find the parent form
+        if (!form) return; // Should not happen
+
+        const fieldName = input.getAttribute('data-field');
+        const errorElement = form.querySelector(`[data-error="${fieldName}"]`);
+        let fieldValid = true;
+        let errorMessage = 'Este campo es requerido';
+
+        if (input.type === 'date') {
+            if (input.required && !input.value) { fieldValid = false; }
+            if (fieldName === 'end-date') {
+                const startDateInput = form.querySelector('[data-field="start-date"]');
+                if (startDateInput && input.value && startDateInput.value && new Date(input.value) < new Date(startDateInput.value)) {
+                    fieldValid = false; errorMessage = 'La fecha de fin debe ser posterior a la de inicio.';
+                }
+            }
+        } else if (input.required && (!input.value || (typeof input.value === 'string' && !input.value.trim()))) {
+            fieldValid = false;
+        }
+        // Add more specific field validations if needed
+
+        if (!fieldValid) {
+            if (errorElement) { errorElement.textContent = errorMessage; errorElement.style.display = 'block'; }
+        } else {
+            if (errorElement) { errorElement.style.display = 'none'; }
+        }
+        return fieldValid;
+    }
+
+    // Function to check form validity for enabling/disabling submit button
+    // This function DOES NOT show/hide errors, it just returns true/false
+    function isFormValidForSubmission(context = 'create') {
+        const form = document.querySelector(`[data-form="${context}"]`);
         if (!form) return false;
         let isValid = true;
+
+        // Check standard required fields
         form.querySelectorAll('[required]:not([disabled])').forEach(input => {
-             const fieldName = input.getAttribute('data-field');
-             const errorElement = form.querySelector(`[data-error="${fieldName}"]`);
-             let fieldValid = true; let errorMessage = 'Este campo es requerido';
+            const fieldName = input.getAttribute('data-field');
+            let fieldValid = true;
 
-              if (input.type === 'date') {
-                 if (!input.value) { fieldValid = false; }
-                 // Date range validation
-                 if (fieldName === 'end-date') {
-                     const startDateInput = form.querySelector('[data-field="start-date"]');
-                     if (startDateInput && input.value && startDateInput.value && new Date(input.value) < new Date(startDateInput.value)) {
-                         fieldValid = false; errorMessage = 'La fecha de fin debe ser posterior a la de inicio.';
-                     }
-                 }
-             } else if (!input.value || (typeof input.value === 'string' && !input.value.trim())) {
-                 fieldValid = false;
-             }
-
-             if (!fieldValid) { if (errorElement) { errorElement.textContent = errorMessage; errorElement.style.display = 'block'; } isValid = false; }
-             else { if (errorElement) { errorElement.style.display = 'none'; } }
+            if (input.type === 'date') {
+                if (!input.value) { fieldValid = false; }
+                    if (fieldName === 'end-date') {
+                        const startDateInput = form.querySelector('[data-field="start-date"]');
+                        if (startDateInput && input.value && startDateInput.value && new Date(input.value) < new Date(startDateInput.value)) {
+                            fieldValid = false;
+                        }
+                    }
+            } else if (!input.value || (typeof input.value === 'string' && !input.value.trim())) {
+                fieldValid = false;
+            }
+                if (!fieldValid) isValid = false;
         });
 
-        // Validate NEW sensors (at least 1, max 3)
-        const sensorErrorElement = form.querySelector('[data-error="sensors"]');
-        if (selectedSensorsCreate.length === 0) {
-             if (sensorErrorElement) { sensorErrorElement.textContent = 'Debe agregar al menos un sensor (máx. 3)'; sensorErrorElement.style.display = 'block'; }
-             isValid = false;
-        } else if (selectedSensorsCreate.length > 3) {
-             if (sensorErrorElement) { sensorErrorElement.textContent = 'Solo puede agregar un máximo de 3 sensores.'; sensorErrorElement.style.display = 'block'; }
-             isValid = false;
-        } else {
-             if (sensorErrorElement) { sensorErrorElement.style.display = 'none'; }
-        }
-
-        // Validate supplies (at least 1)
-        const supplyErrorElement = form.querySelector('[data-error="supplies"]');
-        if (selectedSuppliesCreate.length === 0) {
-             if (supplyErrorElement) { supplyErrorElement.textContent = 'Debe agregar al menos un insumo'; supplyErrorElement.style.display = 'block'; }
-             isValid = false;
-         } else {
-             if (supplyErrorElement) { supplyErrorElement.style.display = 'none'; }
-        }
-
-         // Update estimations & button state
-         if (isValid) calculateEstimation('create'); else clearEstimation('create');
-         const createButton = form.querySelector('[data-action="create"]'); if (createButton) createButton.disabled = !isValid;
-         return isValid;
-    }
-
-    function validateUpdateForm() {
-        const form = document.querySelector('[data-form="update"]');
-        if (!form || form.classList.contains('dashboard__form--hidden')) return false;
-        let isValid = true;
-        form.querySelectorAll('[required]:not([disabled])').forEach(input => {
-             const fieldName = input.getAttribute('data-field');
-             const errorElement = form.querySelector(`[data-error="${fieldName}"]`);
-             let fieldValid = true; let errorMessage = 'Este campo es requerido';
-
-             if (input.type === 'date') {
-                 if (!input.value) { fieldValid = false; }
-                 // Date range validation (vs disabled start date)
-                 if (fieldName === 'end-date') {
-                     const startDateInput = form.querySelector('[data-field="start-date"]');
-                     if (startDateInput && input.value && startDateInput.value && new Date(input.value) < new Date(startDateInput.value)) {
-                         fieldValid = false; errorMessage = 'La fecha de fin debe ser posterior a la de inicio.';
-                     }
-                 }
-             } else if (!input.value || (typeof input.value === 'string' && !input.value.trim())) {
-                 fieldValid = false;
-             }
-
-             if (!fieldValid) { if (errorElement) { errorElement.textContent = errorMessage; errorElement.style.display = 'block'; } isValid = false; }
-             else { if (errorElement) { errorElement.style.display = 'none'; } }
-        });
-
-        // Validate NEW sensors for update form (at least 1, max 3)
-        const sensorErrorElement = form.querySelector('[data-error="sensors"]');
-        if (selectedSensorsUpdate.length === 0) {
-            if (sensorErrorElement) { sensorErrorElement.textContent = 'Debe agregar al menos un sensor (máx. 3)'; sensorErrorElement.style.display = 'block'; }
+        // Check sensor list validity
+        const sensorList = context === 'create' ? selectedSensorsCreate : selectedSensorsUpdate;
+        if (sensorList.length === 0 || sensorList.length > 3) {
             isValid = false;
-        } else if (selectedSensorsUpdate.length > 3) {
-            if (sensorErrorElement) { sensorErrorElement.textContent = 'Solo puede agregar un máximo de 3 sensores.'; sensorErrorElement.style.display = 'block'; }
-            isValid = false;
-        } else {
-            if (sensorErrorElement) { sensorErrorElement.style.display = 'none'; }
         }
 
-
-        // Validate supplies for update form (at least 1)
-        const supplyErrorElement = form.querySelector('[data-error="supplies"]');
-        if (selectedSuppliesUpdate.length === 0) {
-            if (supplyErrorElement) { supplyErrorElement.textContent = 'Debe agregar al menos un insumo'; supplyErrorElement.style.display = 'block'; }
+        // Check supply list validity
+        const supplyList = context === 'create' ? selectedSuppliesCreate : selectedSuppliesUpdate;
+        if (supplyList.length === 0) {
             isValid = false;
-        } else {
-            if (supplyErrorElement) { supplyErrorElement.style.display = 'none'; }
         }
 
-        // Enable/Disable update button
-        const updateButton = form.querySelector('button[type="submit"]');
-        if (updateButton) updateButton.disabled = !isValid;
         return isValid;
     }
+
+    // Function to check validity and update button state
+    function checkFormValidityForSubmitButton(context = 'create') {
+        const form = document.querySelector(`[data-form="${context}"]`);
+        if (!form) return;
+        const submitButton = form.querySelector('[data-action="create"], button[type="submit"]'); // Selects create or update button
+        if (submitButton) {
+            submitButton.disabled = !isFormValidForSubmission(context);
+        }
+    }
+
+
+    // Validate the entire form, SHOWING errors (used on submit attempt)
+    function validateForm(context = 'create', showErrors = true) {
+        const form = document.querySelector(`[data-form="${context}"]`);
+        if (!form) return false;
+        let isFormValid = true; // Changed variable name
+
+        // Validate standard required fields
+        form.querySelectorAll('[required]:not([disabled])').forEach(input => {
+             const fieldValid = validateSingleField(input); // Use the single field validator to show/hide error
+                if (!fieldValid) isFormValid = false;
+        });
+
+        // Validate sensor list
+        const sensorList = context === 'create' ? selectedSensorsCreate : selectedSensorsUpdate;
+        const sensorErrorElement = form.querySelector('[data-error="sensors"]');
+        if (sensorList.length === 0) {
+                if (showErrors && sensorErrorElement) { sensorErrorElement.textContent = 'Debe agregar al menos un sensor (máx. 3)'; sensorErrorElement.style.display = 'block'; }
+                isFormValid = false;
+        } else if (sensorList.length > 3) {
+                if (showErrors && sensorErrorElement) { sensorErrorElement.textContent = 'Solo puede agregar un máximo de 3 sensores.'; sensorErrorElement.style.display = 'block'; }
+                isFormValid = false;
+        } else {
+                if (sensorErrorElement) { sensorErrorElement.style.display = 'none'; }
+        }
+
+        // Validate supply list
+        const supplyList = context === 'create' ? selectedSuppliesCreate : selectedSuppliesUpdate;
+        const supplyErrorElement = form.querySelector('[data-error="supplies"]');
+        if (supplyList.length === 0) {
+                if (showErrors && supplyErrorElement) { supplyErrorElement.textContent = 'Debe agregar al menos un insumo'; supplyErrorElement.style.display = 'block'; }
+                isFormValid = false;
+            } else {
+                if (supplyErrorElement) { supplyErrorElement.style.display = 'none'; }
+        }
+
+         // Update estimations only if valid
+            if (isFormValid) calculateEstimation(context); else clearEstimation(context);
+
+         // Update button state
+            checkFormValidityForSubmitButton(context);
+
+            return isFormValid;
+    }
+
+    // Rename existing validation functions to avoid conflict
+    const validateCreateForm = (showErrors = true) => validateForm('create', showErrors);
+    const validateUpdateForm = (showErrors = true) => validateForm('update', showErrors);
 
 
     // --- Populate Update Form ---
@@ -967,52 +1015,100 @@ document.addEventListener('DOMContentLoaded', function() {
         selectedSuppliesUpdate = [];
         selectedSensorsUpdate = []; // Clear sensors update list
 
-        // Dynamically create the form structure, including the NEW sensor section
+        // --- REORGANIZED HTML STRUCTURE ---
         formElement.innerHTML = `
-            <div class="dashboard__form-group"> <label class="dashboard__label">ID Producción</label> <input class="dashboard__input" type="text" value="prod-${productionData.id}" readonly> </div>
-            <div class="dashboard__form-group"> <label class="dashboard__label">Nombre</label> <input class="dashboard__input" type="text" data-field="name" required> <span class="dashboard__error" data-error="name"></span> </div>
-            <div class="dashboard__form-group"> <label class="dashboard__label">Responsable</label> <select class="dashboard__select" data-field="responsible" required></select> <span class="dashboard__error" data-error="responsible"></span> </div>
-            <div class="dashboard__form-group"> <label class="dashboard__label">Cultivo</label> <select class="dashboard__select" data-field="cultivation" required></select> <span class="dashboard__error" data-error="cultivation"></span> </div>
-            <div class="dashboard__form-group"> <label class="dashboard__label">Ciclo</label> <select class="dashboard__select" data-field="cycle" required></select> <span class="dashboard__error" data-error="cycle"></span> </div>
-
-            <div class="dashboard__form-group dashboard__form-group--full-width">
-                <label class="dashboard__label">Sensores</label>
-                <div class="dashboard__sensor-selection">
-                    <div class="dashboard__sensor-add-area">
-                        <select class="dashboard__select" data-field="available-sensors" title="Seleccione un sensor disponible">
-                            <option value="">Seleccione un sensor</option>
-                        </select>
-                        <input type="number" class="dashboard__input" data-field="sensor-quantity" placeholder="Cant." min="1" max="3" value="1" title="Ingrese la cantidad (1-3)">
-                        <button class="dashboard__button dashboard__button--primary" type="button" data-action="add-selected-sensor-update" title="Agregar el sensor seleccionado">Agregar</button>
-                    </div>
+            <div class="dashboard__form-group">
+                <label class="dashboard__label">ID Producción</label>
+                <input class="dashboard__input" type="text" value="prod-${productionData.id}" readonly>
+            </div>
+            <div class="dashboard__form-group">
+                <label class="dashboard__label">Nombre</label>
+                <input class="dashboard__input" type="text" data-field="name" required>
+                <span class="dashboard__error" data-error="name"></span>
+            </div>
+            <div class="dashboard__form-group">
+                <label class="dashboard__label">Responsable</label>
+                <select class="dashboard__select" data-field="responsible" required></select>
+                <span class="dashboard__error" data-error="responsible"></span>
                 </div>
-                 <label class="dashboard__label" style="margin-top: 1rem;">Sensores Seleccionados (Máx. 3):</label>
-                 <div class="dashboard__selected-items-list" data-list="selected-sensors">
-                     <p>Cargando sensores asignados...</p>
-                 </div>
-                 <span class="dashboard__error" data-error="sensors"></span>
+
+            <div class="dashboard__form-group">
+                <label class="dashboard__label">Cultivo</label>
+                <select class="dashboard__select" data-field="cultivation" required></select>
+                <span class="dashboard__error" data-error="cultivation"></span>
+                </div>
+            <div class="dashboard__form-group">
+                <label class="dashboard__label">Ciclo</label>
+                <select class="dashboard__select" data-field="cycle" required></select>
+                <span class="dashboard__error" data-error="cycle"></span>
+                </div>
+
+            <div class="dashboard__form-group">
+                <label class="dashboard__label">Fecha Inicio</label>
+                <input class="dashboard__input" type="date" data-field="start-date" disabled> <span class="dashboard__error" data-error="start-date"></span>
+            </div>
+            <div class="dashboard__form-group">
+                <label class="dashboard__label">Fecha Fin Est.</label>
+                <input class="dashboard__input" type="date" data-field="end-date" required>
+                <span class="dashboard__error" data-error="end-date"></span>
             </div>
 
-             <div class="dashboard__form-group dashboard__form-group--full-width">
+            <div class="dashboard__form-group dashboard__form-group--full-width">
+                <label class="dashboard__label">Sensores Asignados (Máx. 3)</label>
+                <div class="dashboard__sensor-add-area">
+                    <select class="dashboard__select" data-field="available-sensors" title="Seleccione un sensor disponible">
+                        <option value="">Seleccione un sensor para agregar...</option>
+                        </select>
+                    <input type="number" class="dashboard__input" data-field="sensor-quantity" placeholder="Cant." min="1" max="3" value="1" title="Ingrese la cantidad (1-3)">
+                    <button class="dashboard__button dashboard__button--icon" type="button"
+                            onclick="window.location.href='../views/create-sensor.html?origin=produccionUpdate&prodId=${productionData.id}'" title="Crear Nuevo Sensor">
+                        <i class="material-icons">add_circle</i>
+                    </button>
+                    <button class="dashboard__button dashboard__button--primary" type="button" data-action="add-selected-sensor-update" title="Agregar el sensor seleccionado">Agregar Sensor</button>
+                </div>
+                <div class="dashboard__selected-items-list" data-list="selected-sensors">
+                    <p>Cargando sensores asignados...</p>
+                </div>
+                <span class="dashboard__error" data-error="sensors"></span>
+            </div>
+
+            <div class="dashboard__form-group dashboard__form-group--full-width">
                 <label class="dashboard__label">Insumos Asignados</label>
                 <div class="dashboard__supply-add-area">
-                    <select class="dashboard__select" data-field="available-supplies"> <option value="">Seleccione insumo a agregar...</option> </select>
+                    <select class="dashboard__select" data-field="available-supplies">
+                        <option value="">Seleccione insumo a agregar...</option>
+                        </select>
                     <input type="number" class="dashboard__input" placeholder="Cantidad" min="1" data-field="supply-quantity">
-                    <button class="dashboard__button dashboard__button--primary" type="button" data-action="add-selected-supply-update">Agregar</button>
+                    <button class="dashboard__button dashboard__button--icon" type="button"
+                        onclick="window.location.href='../views/create-insumo.html?origin=produccionUpdate&prodId=${productionData.id}'" title="Crear Nuevo Insumo">
+                        <i class="material-icons">add_circle</i>
+                    </button>
+                    <button class="dashboard__button dashboard__button--primary" type="button" data-action="add-selected-supply-update">Agregar Insumo</button>
                 </div>
-                <div class="dashboard__selected-items-list" data-list="selected-supplies"> <p>Cargando insumos asignados...</p> </div>
+                <div class="dashboard__selected-items-list" data-list="selected-supplies">
+                    <p>Cargando insumos asignados...</p>
+                </div>
                 <span class="dashboard__error" data-error="supplies"></span>
             </div>
 
-            <div class="dashboard__form-group"> <label class="dashboard__label">Fecha Inicio</label> <input class="dashboard__input" type="date" data-field="start-date" disabled> <span class="dashboard__error" data-error="start-date"></span> </div>
-            <div class="dashboard__form-group"> <label class="dashboard__label">Fecha Fin Est.</label> <input class="dashboard__input" type="date" data-field="end-date" required> <span class="dashboard__error" data-error="end-date"></span> </div>
-            <div class="dashboard__form-group"> <label class="dashboard__label">Estado</label> <select class="dashboard__select" data-field="status" required></select> <span class="dashboard__error" data-error="status"></span> </div>
-            <div class="dashboard__form-actions">
+            <div class="dashboard__form-group">
+                <label class="dashboard__label">Estado</label>
+                <select class="dashboard__select" data-field="status" required></select>
+                <span class="dashboard__error" data-error="status"></span>
+            </div>
+
+            <div class="dashboard__form-group">
+                </div>
+
+
+            <div class="dashboard__form-actions dashboard__form-group--full-width">
                 <button class="dashboard__button dashboard__button--secondary" type="button" data-action="cancel-update">Cancelar</button>
                 <button class="dashboard__button dashboard__button--primary" type="submit" disabled>Actualizar Producción</button>
             </div>
         `;
+        // --- FIN HTML REORGANIZADO ---
 
+        // El resto del código de la función para poblar los campos sigue igual...
         // Populate standard fields (name, dates)
         formElement.querySelector('[data-field="name"]').value = productionData.name || '';
         const startDateInput = formElement.querySelector('[data-field="start-date"]');
@@ -1030,20 +1126,20 @@ document.addEventListener('DOMContentLoaded', function() {
             populateSelectExisting(formElement.querySelector('[data-field="responsible"]'), dropdownData.users || [], productionData.responsible);
             populateSelectExisting(formElement.querySelector('[data-field="cultivation"]'), dropdownData.cultivations || [], productionData.cultivation);
             populateSelectExisting(formElement.querySelector('[data-field="cycle"]'), dropdownData.cycles || [], productionData.cycle);
-            populateSelectExisting(formElement.querySelector('[data-field="status"]'), [{id: 'active', name: 'Activo'}, {id: 'inactive', name: 'Inactivo'}], productionData.status);
+            populateSelectExisting(formElement.querySelector('[data-field="status"]'), [{ id: 'active', name: 'Activo' }, { id: 'inactive', name: 'Inactivo' }], productionData.status);
 
             // Populate AVAILABLE sensors dropdown
             const availableSensorsSelect = formElement.querySelector('[data-field="available-sensors"]');
             if (availableSensorsSelect) {
-                 populateSelect(availableSensorsSelect, allSensorsData || [], "Seleccione un sensor"); // Use global allSensorsData
-             }
+                populateSelect(availableSensorsSelect, allSensorsData || [], "Seleccione un sensor"); // Use global allSensorsData
+            }
 
-             // Populate AVAILABLE supplies dropdown
-             const availableSuppliesSelect = formElement.querySelector('[data-field="available-supplies"]');
-             if (availableSuppliesSelect) {
-                 populateSelect(availableSuppliesSelect, allSuppliesData || [], "Seleccione insumo a agregar...");
-             }
-        } catch (error) { console.error("Error populating selects:", error); showSnackbar("Error al cargar opciones.", "error");}
+            // Populate AVAILABLE supplies dropdown
+            const availableSuppliesSelect = formElement.querySelector('[data-field="available-supplies"]');
+            if (availableSuppliesSelect) {
+                populateSelect(availableSuppliesSelect, allSuppliesData || [], "Seleccione insumo a agregar...");
+            }
+        } catch (error) { console.error("Error populating selects:", error); showSnackbar("Error al cargar opciones.", "error"); }
 
         // Populate Initial SENSORS List for Update
         selectedSensorsUpdate = []; // Reset before populating
@@ -1058,8 +1154,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         quantity: 1 // Default quantity to 1 as it's not stored
                     });
                 } else {
-                     console.warn(`Data for initial sensor ID ${sensorId} not found.`);
-                     selectedSensorsUpdate.push({ id: sensorId, name: `Sensor ID ${sensorId} (No encontrado)`, quantity: 1 });
+                    console.warn(`Data for initial sensor ID ${sensorId} not found.`);
+                    selectedSensorsUpdate.push({ id: sensorId, name: `Sensor ID ${sensorId} (No encontrado)`, quantity: 1 });
                 }
             });
         }
@@ -1079,28 +1175,30 @@ document.addEventListener('DOMContentLoaded', function() {
                         unit_value: supplyData.valor_unitario
                     });
                 } else {
-                     console.warn(`Data for initial supply ID ${supplyId} not found.`);
-                     selectedSuppliesUpdate.push({ id: supplyId, name: `Insumo ID ${supplyId} (No encontrado)`, quantity: 0, unit_value: 0 });
+                    console.warn(`Data for initial supply ID ${supplyId} not found.`);
+                    selectedSuppliesUpdate.push({ id: supplyId, name: `Insumo ID ${supplyId} (No encontrado)`, quantity: 0, unit_value: 0 });
                 }
             });
         }
         renderSelectedSupplies('update');
 
-        validateUpdateForm(); // Validate form after populating everything
+        validateUpdateForm(false); // Validate form after populating everything, but don't show errors yet
+        checkFormValidityForSubmitButton('update'); // Set initial button state for update
+
     }
 
     // Helper used by populateExistingUpdateForm
     function populateSelectExisting(selectElement, options, selectedValue) {
         if (!selectElement) return;
-         selectElement.innerHTML = '<option value="">Seleccione...</option>';
-         options.forEach(opt => {
-             if (opt && opt.id !== undefined && opt.name !== undefined) {
-                 const option = document.createElement('option');
-                 option.value = opt.id; option.textContent = opt.name;
-                 if (String(opt.id) === String(selectedValue)) option.selected = true;
-                 selectElement.appendChild(option);
-             }
-         });
+        selectElement.innerHTML = '<option value="">Seleccione...</option>';
+        options.forEach(opt => {
+            if (opt && opt.id !== undefined && opt.name !== undefined) {
+                const option = document.createElement('option');
+                option.value = opt.id; option.textContent = opt.name;
+                if (String(opt.id) === String(selectedValue)) option.selected = true;
+                selectElement.appendChild(option);
+            }
+        });
     }
 
 
@@ -1140,8 +1238,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     `;
                 } else {
                     li.innerHTML = `
-                         <i class="material-icons dashboard__sensor-icon">help_outline</i>
-                         <span>Sensor ID ${id} (No encontrado)</span>`;
+                            <i class="material-icons dashboard__sensor-icon">help_outline</i>
+                            <span>Sensor ID ${id} (No encontrado)</span>`;
                 }
                 list.appendChild(li);
             });
@@ -1165,7 +1263,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!suppliesResponse.ok) throw new Error('Error al obtener lista de insumos para vista');
                 const suppliesResult = await suppliesResponse.json();
                 allSuppliesData = suppliesResult.success ? suppliesResult.data : (Array.isArray(suppliesResult) ? suppliesResult : []);
-                 if (!Array.isArray(allSuppliesData)) throw new Error('Formato inesperado de insumos');
+                if (!Array.isArray(allSuppliesData)) throw new Error('Formato inesperado de insumos');
             }
 
             container.innerHTML = '';
@@ -1192,10 +1290,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         try {
             let date;
-            if (dateInput instanceof Date) { date = dateInput; }
-            else {
-                 if (typeof dateInput === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateInput)) { date = new Date(dateInput + 'T00:00:00Z'); }
-                 else { date = new Date(dateInput); }
+            if (dateInput instanceof Date) { date = dateInput; } else {
+                if (typeof dateInput === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateInput)) { date = new Date(dateInput + 'T00:00:00Z'); } else { date = new Date(dateInput); }
             }
             if (isNaN(date.getTime())) { return 'Fecha inválida'; }
             const options = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
@@ -1218,61 +1314,61 @@ document.addEventListener('DOMContentLoaded', function() {
         snackbar.className = 'snackbar'; // Reset classes
         snackbar.classList.add(typeClasses[type] || typeClasses['info'], 'snackbar--visible');
         const hideSnackbar = () => snackbar.classList.remove('snackbar--visible');
-         if (closeButton) {
-             const newBtn = closeButton.cloneNode(true);
-             closeButton.parentNode.replaceChild(newBtn, closeButton);
-             newBtn.addEventListener('click', hideSnackbar);
-         }
+        if (closeButton) {
+            const newBtn = closeButton.cloneNode(true);
+            closeButton.parentNode.replaceChild(newBtn, closeButton);
+            newBtn.addEventListener('click', hideSnackbar);
+        }
         snackbarTimeoutId = setTimeout(hideSnackbar, 5000);
     }
 
     function resetForms() {
         document.querySelectorAll('form').forEach(form => {
-             form.reset();
-             form.querySelectorAll('.dashboard__error').forEach(span => { span.textContent=''; span.style.display='none';});
+            form.reset();
+            form.querySelectorAll('.dashboard__error').forEach(span => { span.textContent = ''; span.style.display = 'none'; });
 
-             // Reset specific sections
-             if (form.getAttribute('data-form') === 'create') {
-                 selectedSuppliesCreate = []; renderSelectedSupplies('create');
-                 selectedSensorsCreate = []; renderSelectedSensors('create'); // Reset sensors create
-                 clearEstimation('create');
-                 const createBtn = form.querySelector('[data-action="create"]'); if(createBtn) createBtn.disabled = true;
-                 const addSensorBtn = form.querySelector('[data-action="add-selected-sensor"]'); if(addSensorBtn) addSensorBtn.disabled = false;
-                 const sensorSelect = form.querySelector('[data-field="available-sensors"]'); if(sensorSelect) sensorSelect.disabled = false;
-                 const quantityInput = form.querySelector('[data-field="sensor-quantity"]'); if(quantityInput) quantityInput.disabled = false;
+            // Reset specific sections
+            if (form.getAttribute('data-form') === 'create') {
+                selectedSuppliesCreate = []; renderSelectedSupplies('create');
+                selectedSensorsCreate = []; renderSelectedSensors('create'); // Reset sensors create
+                clearEstimation('create');
+                const createBtn = form.querySelector('[data-action="create"]'); if (createBtn) createBtn.disabled = true;
+                const addSensorBtn = form.querySelector('[data-action="add-selected-sensor"]'); if (addSensorBtn) addSensorBtn.disabled = false;
+                const sensorSelect = form.querySelector('[data-field="available-sensors"]'); if (sensorSelect) sensorSelect.disabled = false;
+                const quantityInput = form.querySelector('[data-field="sensor-quantity"]'); if (quantityInput) quantityInput.disabled = false;
 
-             } else if (form.getAttribute('data-form') === 'update') {
-                 form.innerHTML = '';
-                 selectedSuppliesUpdate = [];
-                 selectedSensorsUpdate = []; // Reset sensors update
-                 form.classList.add('dashboard__form--hidden');
-             }
+            } else if (form.getAttribute('data-form') === 'update') {
+                form.innerHTML = '';
+                selectedSuppliesUpdate = [];
+                selectedSensorsUpdate = []; // Reset sensors update
+                form.classList.add('dashboard__form--hidden');
+            }
         });
-         document.querySelectorAll('.dashboard__result').forEach(el => el.classList.add('dashboard__result--hidden'));
-         document.querySelectorAll('[data-field="production-id"]:not([readonly])').forEach(input => input.value = '');
-         setInitialProductionId();
-         currentProductionId = null;
-         sessionStorage.removeItem(SESSION_STORAGE_KEY);
+        document.querySelectorAll('.dashboard__result').forEach(el => el.classList.add('dashboard__result--hidden'));
+        document.querySelectorAll('[data-field="production-id"]:not([readonly])').forEach(input => input.value = '');
+        setInitialProductionId();
+        currentProductionId = null;
+        sessionStorage.removeItem(SESSION_STORAGE_KEY);
     }
 
     function setupNavigation() {
-         const tabs = document.querySelectorAll('.navigation__tab');
-         const sections = document.querySelectorAll('.dashboard__section');
-         tabs.forEach(tab => {
-             tab.addEventListener('click', function() {
-                 const tabName = this.getAttribute('data-tab');
-                 tabs.forEach(t => t.classList.remove('navigation__tab--active'));
-                 this.classList.add('navigation__tab--active');
-                 sections.forEach(section => {
-                     section.classList.remove('dashboard__section--active');
-                     if (section.getAttribute('data-panel') === tabName) {
-                         section.classList.add('dashboard__section--active');
-                     }
-                 });
-                  if (tabName === 'list') loadProductionsList();
-             });
-         });
-     }
+        const tabs = document.querySelectorAll('.navigation__tab');
+        const sections = document.querySelectorAll('.dashboard__section');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.getAttribute('data-tab');
+                tabs.forEach(t => t.classList.remove('navigation__tab--active'));
+                this.classList.add('navigation__tab--active');
+                sections.forEach(section => {
+                    section.classList.remove('dashboard__section--active');
+                    if (section.getAttribute('data-panel') === tabName) {
+                        section.classList.add('dashboard__section--active');
+                    }
+                });
+                if (tabName === 'list') loadProductionsList();
+            });
+        });
+    }
 
     // Keep calculateEstimation, clearEstimation, saveAsDraft, loadProductionsList, navigateToActionTab, generateReport, getSensorIcon etc.
     function calculateEstimation(context) {
@@ -1288,30 +1384,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let totalInvestment = 0; let possible = true;
         supplyList.forEach(item => {
-             const unitValue = parseFloat(item.unit_value);
-             if (!isNaN(unitValue) && item.quantity > 0) { totalInvestment += unitValue * item.quantity; }
-             else { possible = false; } // Need valid unit value and quantity
-         });
+            const unitValue = parseFloat(item.unit_value);
+            if (!isNaN(unitValue) && item.quantity > 0) { totalInvestment += unitValue * item.quantity; } else { possible = false; } // Need valid unit value and quantity
+        });
 
-         if (possible) {
-             investmentInput.value = `$${totalInvestment.toFixed(2)}`;
-             const estimatedGoal = totalInvestment * 1.3; // Example goal calculation
-             goalInput.value = `$${estimatedGoal.toFixed(2)}`;
-         } else {
-             // Indicate if calculation wasn't possible due to missing data
-             investmentInput.value = 'N/A (Datos incompletos)';
-             goalInput.value = 'N/A (Datos incompletos)';
-         }
+        if (possible) {
+            investmentInput.value = `$${totalInvestment.toFixed(2)}`;
+            const estimatedGoal = totalInvestment * 1.3; // Example goal calculation
+            goalInput.value = `$${estimatedGoal.toFixed(2)}`;
+        } else {
+            // Indicate if calculation wasn't possible due to missing data
+            investmentInput.value = 'N/A (Datos incompletos)';
+            goalInput.value = 'N/A (Datos incompletos)';
+        }
     }
     function clearEstimation(context) {
-         const form = document.querySelector(`[data-form="${context}"]`);
-         if (!form) return;
-         const investmentInput = form.querySelector('[data-field="investment"]'); if(investmentInput) investmentInput.value='';
-         const goalInput = form.querySelector('[data-field="goal"]'); if(goalInput) goalInput.value='';
+        const form = document.querySelector(`[data-form="${context}"]`);
+        if (!form) return;
+        const investmentInput = form.querySelector('[data-field="investment"]'); if (investmentInput) investmentInput.value = '';
+        const goalInput = form.querySelector('[data-field="goal"]'); if (goalInput) goalInput.value = '';
     }
-     function saveAsDraft() {
-         showSnackbar('Borrador guardado exitosamente (simulado)');
-     }
+    function saveAsDraft() {
+        showSnackbar('Borrador guardado exitosamente (simulado)');
+    }
 
 
     async function loadProductionsList() {
@@ -1338,9 +1433,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const allProductions = Array.isArray(result.data) ? result.data : [];
 
             filteredProductions = allProductions.filter(p =>
-                 (filterStatus === 'all' || p.status === filterStatus) &&
-                 (!searchTerm || [`prod-${p.id}`, p.name, p.cultivation_name, p.cycle_name, p.responsible_name]
-                     .some(field => field && String(field).toLowerCase().includes(searchTerm)))
+                (filterStatus === 'all' || p.status === filterStatus) &&
+                (!searchTerm || [`prod-${p.id}`, p.name, p.cultivation_name, p.cycle_name, p.responsible_name]
+                    .some(field => field && String(field).toLowerCase().includes(searchTerm)))
             );
 
 
@@ -1352,27 +1447,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
             tableBody.innerHTML = '';
             if (paginatedProductions.length === 0) {
-                 tableBody.innerHTML = '<tr><td colspan="6" class="dashboard__table-cell dashboard__table-cell--no-results">No se encontraron producciones.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="6" class="dashboard__table-cell dashboard__table-cell--no-results">No se encontraron producciones.</td></tr>';
             } else {
                 paginatedProductions.forEach(p => {
-                     const row = document.createElement('tr'); row.className = 'dashboard__table-row';
-                     const statusText = p.status === 'active' ? 'Activo' : 'Inactivo'; const statusClass = p.status;
-                     const toggleIcon = p.status === 'active' ? 'toggle_on' : 'toggle_off'; const toggleTitle = p.status === 'active' ? 'Deshabilitar' : 'Habilitar';
-                     row.innerHTML = `
-                         <td class="dashboard__table-cell" data-label="ID">prod-${p.id}</td>
-                         <td class="dashboard__table-cell" data-label="Nombre">${p.name||'N/A'}</td>
-                         <td class="dashboard__table-cell" data-label="Cultivo">${p.cultivation_name||'N/A'}</td>
-                         <td class="dashboard__table-cell" data-label="Ciclo">${p.cycle_name||'N/A'}</td>
-                         <td class="dashboard__table-cell" data-label="Estado"><span class="status-badge status-badge--${statusClass}">${statusText}</span></td>
-                         <td class="dashboard__table-cell dashboard__table-cell--actions" data-label="Acciones">
-                             <button class="dashboard__button dashboard__button--icon action-view" title="Ver Detalles"><i class="material-icons">visibility</i></button>
-                             <button class="dashboard__button dashboard__button--icon action-edit" title="Editar"><i class="material-icons">edit</i></button>
-                             <button class="dashboard__button dashboard__button--icon action-toggle" title="${toggleTitle}"><i class="material-icons">${toggleIcon}</i></button>
-                         </td>`;
-                     row.querySelector('.action-view').addEventListener('click', () => navigateToActionTab('view', p.id));
-                     row.querySelector('.action-edit').addEventListener('click', () => navigateToActionTab('update', p.id));
-                     row.querySelector('.action-toggle').addEventListener('click', () => navigateToActionTab('enable', p.id));
-                     tableBody.appendChild(row);
+                    const row = document.createElement('tr'); row.className = 'dashboard__table-row';
+                    const statusText = p.status === 'active' ? 'Activo' : 'Inactivo'; const statusClass = p.status;
+                    const toggleIcon = p.status === 'active' ? 'toggle_on' : 'toggle_off'; const toggleTitle = p.status === 'active' ? 'Deshabilitar' : 'Habilitar';
+                    row.innerHTML = `
+                            <td class="dashboard__table-cell" data-label="ID">prod-${p.id}</td>
+                            <td class="dashboard__table-cell" data-label="Nombre">${p.name||'N/A'}</td>
+                            <td class="dashboard__table-cell" data-label="Cultivo">${p.cultivation_name||'N/A'}</td>
+                            <td class="dashboard__table-cell" data-label="Ciclo">${p.cycle_name||'N/A'}</td>
+                            <td class="dashboard__table-cell" data-label="Estado"><span class="status-badge status-badge--${statusClass}">${statusText}</span></td>
+                            <td class="dashboard__table-cell dashboard__table-cell--actions" data-label="Acciones">
+                                <button class="dashboard__button dashboard__button--icon action-view" title="Ver Detalles"><i class="material-icons">visibility</i></button>
+                                <button class="dashboard__button dashboard__button--icon action-edit" title="Editar"><i class="material-icons">edit</i></button>
+                                <button class="dashboard__button dashboard__button--icon action-toggle" title="${toggleTitle}"><i class="material-icons">${toggleIcon}</i></button>
+                            </td>`;
+                    row.querySelector('.action-view').addEventListener('click', () => navigateToActionTab('view', p.id));
+                    row.querySelector('.action-edit').addEventListener('click', () => navigateToActionTab('update', p.id));
+                    row.querySelector('.action-toggle').addEventListener('click', () => navigateToActionTab('enable', p.id));
+                    tableBody.appendChild(row);
                 });
             }
             paginationInfo.textContent = `Página ${currentPage} de ${totalPages}`;
@@ -1386,34 +1481,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-     function navigateToActionTab(tabName, productionId) {
-         const targetTab = document.querySelector(`.navigation__tab[data-tab="${tabName}"]`);
-         if (targetTab) {
+    function navigateToActionTab(tabName, productionId) {
+        const targetTab = document.querySelector(`.navigation__tab[data-tab="${tabName}"]`);
+        if (targetTab) {
             targetTab.click();
-             setTimeout(() => {
-                 let inputSelector, formSelector;
-                 if (tabName === 'view') { inputSelector = '[data-form="view"] [data-field="production-id"]'; formSelector = '[data-form="view"]'; }
-                 else if (tabName === 'update') { inputSelector = '[data-form="search-update"] [data-field="production-id"]'; formSelector = '[data-form="search-update"]'; }
-                 else if (tabName === 'enable') { inputSelector = '[data-form="enable"] [data-field="production-id"]'; formSelector = '[data-form="enable"]'; }
-                 else { return; }
+            setTimeout(() => {
+                let inputSelector, formSelector;
+                if (tabName === 'view') { inputSelector = '[data-form="view"] [data-field="production-id"]'; formSelector = '[data-form="view"]'; } else if (tabName === 'update') { inputSelector = '[data-form="search-update"] [data-field="production-id"]'; formSelector = '[data-form="search-update"]'; } else if (tabName === 'enable') { inputSelector = '[data-form="enable"] [data-field="production-id"]'; formSelector = '[data-form="enable"]'; } else { return; }
 
-                 const input = document.querySelector(inputSelector); const form = document.querySelector(formSelector);
-                 if (input && form) { input.value = `prod-${productionId}`; form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })); }
-                 else { console.warn(`Elementos no encontrados para tab ${tabName}`); }
-             }, 150);
-         } else { console.error(`Tab ${tabName} no encontrada.`); }
-     }
+                const input = document.querySelector(inputSelector); const form = document.querySelector(formSelector);
+                if (input && form) { input.value = `prod-${productionId}`; form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })); } else { console.warn(`Elementos no encontrados para tab ${tabName}`); }
+            }, 150);
+        } else { console.error(`Tab ${tabName} no encontrada.`); }
+    }
 
-     async function generateReport() {
-        const form = document.querySelector('[data-form="report"]'); if(!form) return;
+    async function generateReport() {
+        const form = document.querySelector('[data-form="report"]'); if (!form) return;
         const startDate = form.querySelector('[data-field="start-date"]').value; const endDate = form.querySelector('[data-field="end-date"]').value;
         const format = form.querySelector('input[name="format"]:checked')?.value || 'excel'; const errorSpan = form.querySelector('[data-error="date-range"]');
-         if (errorSpan) { errorSpan.textContent=''; errorSpan.style.display='none';}
-        if (!startDate || !endDate) { if(errorSpan){ errorSpan.textContent='Seleccione ambas fechas'; errorSpan.style.display='block';} showSnackbar('Seleccione un rango de fechas', 'warning'); return; }
-        if (new Date(startDate) > new Date(endDate)) { if(errorSpan){ errorSpan.textContent='Inicio > Fin'; errorSpan.style.display='block';} showSnackbar('Rango de fechas inválido', 'warning'); return; }
+        if (errorSpan) { errorSpan.textContent = ''; errorSpan.style.display = 'none'; }
+        if (!startDate || !endDate) { if (errorSpan) { errorSpan.textContent = 'Seleccione ambas fechas'; errorSpan.style.display = 'block'; } showSnackbar('Seleccione un rango de fechas', 'warning'); return; }
+        if (new Date(startDate) > new Date(endDate)) { if (errorSpan) { errorSpan.textContent = 'Inicio > Fin'; errorSpan.style.display = 'block'; } showSnackbar('Rango de fechas inválido', 'warning'); return; }
         showSnackbar(`Generando reporte ${format.toUpperCase()}...`, 'info');
-        try { await new Promise(resolve => setTimeout(resolve, 1500)); showSnackbar(`Reporte ${format.toUpperCase()} generado (simulado)`); form.reset(); }
-        catch (error) { showSnackbar('Error al generar reporte', 'error'); }
+        try { await new Promise(resolve => setTimeout(resolve, 1500)); showSnackbar(`Reporte ${format.toUpperCase()} generado (simulado)`); form.reset(); } catch (error) { showSnackbar('Error al generar reporte', 'error'); }
     }
 
     function getSensorIcon(type) {
@@ -1424,19 +1514,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Helper for simulated metrics
-     function updateSimulatedMetrics(section) {
-         const health = section.querySelector('[data-metric="health"]'); if (health) health.textContent = `${Math.floor(Math.random()*20)+70}%`;
-         const growth = section.querySelector('[data-metric="growth"]'); if (growth) growth.textContent = `${Math.floor(Math.random()*20)+50}cm`;
-         const yield_ = section.querySelector('[data-metric="yield"]'); if (yield_) yield_.textContent = `${Math.floor(Math.random()*20)+70}%`;
-     }
-     // Helper for creating all charts
-     function createAllCharts(section, data) {
-         createChart(section.querySelector('[data-chart="humidity"]'), 'Humedad (%)', data.humidity);
-         createChart(section.querySelector('[data-chart="temperature"]'), 'Temperatura (°C)', data.temperature);
-         createChart(section.querySelector('[data-chart="nutrients"]'), 'Nutrientes (%)', data.nutrients);
-         createChart(section.querySelector('[data-chart="growth"]'), 'Crecimiento (cm)', data.growth);
-     }
-     // Generate simulated sensor data
+    function updateSimulatedMetrics(section) {
+        const health = section.querySelector('[data-metric="health"]'); if (health) health.textContent = `${Math.floor(Math.random()*20)+70}%`;
+        const growth = section.querySelector('[data-metric="growth"]'); if (growth) growth.textContent = `${Math.floor(Math.random()*20)+50}cm`;
+        const yield_ = section.querySelector('[data-metric="yield"]'); if (yield_) yield_.textContent = `${Math.floor(Math.random()*20)+70}%`;
+    }
+    // Helper for creating all charts
+    function createAllCharts(section, data) {
+        createChart(section.querySelector('[data-chart="humidity"]'), 'Humedad (%)', data.humidity);
+        createChart(section.querySelector('[data-chart="temperature"]'), 'Temperatura (°C)', data.temperature);
+        createChart(section.querySelector('[data-chart="nutrients"]'), 'Nutrientes (%)', data.nutrients);
+        createChart(section.querySelector('[data-chart="growth"]'), 'Crecimiento (cm)', data.growth);
+    }
+    // Generate simulated sensor data
     function generateSensorData() {
         return {
             humidity: Array(7).fill(0).map(() => Math.floor(Math.random() * 20) + 60),
@@ -1448,16 +1538,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Helper for creating individual chart
     let charts = {}; // Store chart instances
     function createChart(canvasElement, label, data) {
-         if (!canvasElement) return;
-         const chartId = canvasElement.getAttribute('data-chart');
-         if (charts[chartId]) { charts[chartId].destroy(); } // Destroy existing chart
-         const ctx = canvasElement.getContext('2d');
-         const days = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
-         charts[chartId] = new Chart(ctx, {
-             type: 'line', data: { labels: days.slice(0, data.length), datasets: [{ label: label, data: data, borderColor: 'var(--color-primary)', backgroundColor: 'rgba(111, 192, 70, 0.1)', tension: 0.4, fill: true }] },
-             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false }, x: { ticks: { autoSkip: true, maxTicksLimit: 7 } } } }
-         });
-     }
+        if (!canvasElement) return;
+        const chartId = canvasElement.getAttribute('data-chart');
+        if (charts[chartId]) { charts[chartId].destroy(); } // Destroy existing chart
+        const ctx = canvasElement.getContext('2d');
+        const days = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+        charts[chartId] = new Chart(ctx, {
+            type: 'line', data: { labels: days.slice(0, data.length), datasets: [{ label: label, data: data, borderColor: 'var(--color-primary)', backgroundColor: 'rgba(111, 192, 70, 0.1)', tension: 0.4, fill: true }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false }, x: { ticks: { autoSkip: true, maxTicksLimit: 7 } } } }
+        });
+    }
 
     // --- Run Initialization ---
     init();
