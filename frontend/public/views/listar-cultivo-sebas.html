@@ -52,9 +52,12 @@
             .then(response => response.json())
             .then(data => {
                 const cardsContainer = document.getElementById('cards');
-                cardsContainer.innerHTML = ''; // Limpia las tarjetas estáticas
+                cardsContainer.innerHTML = '';
 
                 data.forEach(cultivo => {
+                    console.log(cultivo); 
+
+                    const id = cultivo.id_cultivo || cultivo.id;
                     const card = document.createElement('div');
                     card.classList.add('card');
                     card.innerHTML = `
@@ -62,7 +65,7 @@
                         <p class="card__info">Tipo: ${cultivo.tipo_cultivo}</p>
                         <p class="card__info">Ubicación: ${cultivo.ubicacion}</p>
                         <p class="card__info">Estado: ${cultivo.estado}</p>
-                        <input type="submit" class="card__button" value="Ver detalles" onclick="visualizarCultivo(${cultivo.id})">
+                        <input type="submit" class="card__button" value="Ver detalles" onclick="visualizarCultivo('${id}')">
                     `;
                     cardsContainer.appendChild(card);
                 });
@@ -72,14 +75,14 @@
             });
     });
 
-    function editarCultivo(id) {
-        localStorage.setItem('idCultivo', id);
-        window.location.href = 'actualizar-cultivo.html';
-    }
-
     function visualizarCultivo(id) {
         localStorage.setItem('idCultivo', id);
         window.location.href = 'visualizar-cultivo.html';
+    }
+
+    function editarCultivo(id) {
+        localStorage.setItem('idCultivo', id);
+        window.location.href = 'actualizar-cultivo.html';
     }
     </script>
     <script src="/frontend/public/js/pages/listar-ciclo-cultivo.js"></script>

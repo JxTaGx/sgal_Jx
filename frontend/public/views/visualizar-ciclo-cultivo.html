@@ -1,51 +1,86 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizar Ciclo Cultivo</title>
-    <link rel="stylesheet" href="../css/pages/visualizar-ciclo-cultivo-style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Visualizar Ciclo Cultivo</title>
+  <link rel="stylesheet" href="../css/pages/visualizar-ciclo-cultivo-style.css" />
 </head>
 <body>
-    <div class="ciclo-cultivo">
-        <header class="ciclo-cultivo__header">
-            <img src="/frontend/IMG/logo-sena.png" alt="SENA Logo" class="ciclo-cultivo__logo">
-            <h1 class="ciclo-cultivo__title">Visualizar Ciclo Cultivo</h1>
-        </header>
-        <main class="ciclo-cultivo__main">
-            <section class="ciclo-cultivo__details">
-                <div class="ciclo-cultivo__detail-item">
-                    <h2 class="ciclo-cultivo__card-title">Detalles del Ciclo del Cultivo</h2>
-                    <ul class="ciclo-cultivo__list">
-                        <li class="ciclo-cultivo__list-item"><strong>Ciclo Cultivo:</strong> Tomate Cherry Orgánico</li>
-                        <li class="ciclo-cultivo__list-item"><strong>Fecha de siembra:</strong> 15 de marzo, 2023</li>
-                        <li class="ciclo-cultivo__list-item"><strong>ID:</strong> 2.5 </li>
-                        <li class="ciclo-cultivo__list-item"><strong>Novedades:</strong> Crecimiento vegetativo</li>
-                        <li class="ciclo-cultivo__list-item"><strong>Descripcion:</strong> Fertilización foliar</li>
-                    </ul>
-                </div>
-                <div class="ciclo-cultivo__buttons">
-                    <a href="/frontend/public/views/actualizar-ciclo-cultivo.html" class="ciclo-cultivo__link">
-                    <button class="ciclo-cultivo__btn ciclo-cultivo__btn--edit">Editar</button>
-                    </a>
-                    <a href="listar-ciclo-cultivo-sebas.html" class="ciclo-cultivo__link">
-                    <button class="ciclo-cultivo__btn ciclo-cultivo__btn--disable">Deshabilitar</button>
-                </a>
-                </div>
-            </section>
-            <section class="ciclo-cultivo__tasks">
-                <h2 class="ciclo-cultivo__subtitle">Rendimiento del ciclo</h2>
-                <ul class="ciclo-cultivo__list">
-                    <li class="ciclo-cultivo__list-item">Fertilización foliar - Habitual</li>
-                    <li class="ciclo-cultivo__list-item">Control de plagas - Avanzando</li>
-                    <li class="ciclo-cultivo__list-item">Monitoreo de temperatura - Normal</li>
-                </ul>
-            </section>
-            <a href="listar-ciclo-cultivo-sebas.html" class="ciclo-cultivo__link">
-            <button class="ciclo-cultivo__btn ciclo-cultivo__btn--back">Volver</button>
-            </a>
-        </main>
-    </div>
-    <script src="../js/pages/visualizar-ciclo-cultivo.js"></script>
+  <div class="ciclo-cultivo">
+    <header class="ciclo-cultivo__header">
+      <img src="/frontend/IMG/logo-sena.png" alt="SENA Logo" class="ciclo-cultivo__logo" />
+      <h1 class="ciclo-cultivo__title">Visualizar Ciclo Cultivo</h1>
+    </header>
+    <main class="ciclo-cultivo__main">
+      <section class="ciclo-cultivo__details">
+        <div class="ciclo-cultivo__detail-item">
+          <h2 class="ciclo-cultivo__card-title">Detalles del Ciclo del Cultivo</h2>
+          <ul class="ciclo-cultivo__list" id="detalle-ciclo">
+            <li class="ciclo-cultivo__list-item"><strong>Ciclo Cultivo:</strong> Cargando...</li>
+            <li class="ciclo-cultivo__list-item"><strong>Fecha de siembra:</strong> Cargando...</li>
+            <li class="ciclo-cultivo__list-item"><strong>ID:</strong> Cargando...</li>
+            <li class="ciclo-cultivo__list-item"><strong>Novedades:</strong> Cargando...</li>
+            <li class="ciclo-cultivo__list-item"><strong>Descripción:</strong> Cargando...</li>
+          </ul>
+        </div>
+        <div class="ciclo-cultivo__buttons">
+          <a href="/frontend/public/views/actualizar-ciclo-cultivo.html" class="ciclo-cultivo__link">
+            <button class="ciclo-cultivo__btn ciclo-cultivo__btn--edit">Editar</button>
+          </a>
+          <a href="listar-ciclo-cultivo-sebas.html" class="ciclo-cultivo__link">
+            <button class="ciclo-cultivo__btn ciclo-cultivo__btn--disable">Deshabilitar</button>
+          </a>
+        </div>
+      </section>
+      <section class="ciclo-cultivo__tasks">
+        <h2 class="ciclo-cultivo__subtitle">Rendimiento del ciclo</h2>
+        <ul class="ciclo-cultivo__list" id="rendimiento-lista">
+          <li class="ciclo-cultivo__list-item">Cargando datos...</li>
+        </ul>
+      </section>
+      <a href="listar-ciclo-cultivo-sebas.html" class="ciclo-cultivo__link">
+        <button class="ciclo-cultivo__btn ciclo-cultivo__btn--back">Volver</button>
+      </a>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const id = localStorage.getItem('idCicloCultivo');
+
+      if (!id) {
+        alert('ID de ciclo no encontrado');
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:3000/ciclo_cultivo/${id}`);
+        if (!response.ok) throw new Error('No se pudo obtener el ciclo');
+
+        const ciclo = await response.json();
+
+        const lista = document.getElementById('detalle-ciclo');
+        lista.innerHTML = `
+          <li class="ciclo-cultivo__list-item"><strong>Ciclo Cultivo:</strong> ${ciclo.nombre_ciclo}</li>
+          <li class="ciclo-cultivo__list-item"><strong>Fecha de siembra:</strong> ${ciclo.periodo_siembra}</li>
+          <li class="ciclo-cultivo__list-item"><strong>ID:</strong> ${ciclo.id_ciclo}</li>
+          <li class="ciclo-cultivo__list-item"><strong>Novedades:</strong> ${ciclo.novedades || 'No hay novedades'}</li>
+          <li class="ciclo-cultivo__list-item"><strong>Descripción:</strong> ${ciclo.descripcion || 'Sin descripción'}</li>
+        `;
+
+        // Puedes actualizar esta parte según cómo guardes las tareas
+        const tareas = ciclo.tareas?.length
+          ? ciclo.tareas
+          : ['No hay datos de rendimiento'];
+        const rendimientoLista = document.getElementById('rendimiento-lista');
+        rendimientoLista.innerHTML = tareas.map(tarea => `<li class="ciclo-cultivo__list-item">${tarea}</li>`).join('');
+
+      } catch (err) {
+        console.error(err);
+        alert('Ciclo no encontrado');
+      }
+    });
+  </script>
 </body>
 </html>

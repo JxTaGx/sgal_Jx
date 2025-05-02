@@ -17,37 +17,86 @@
                 <div class="ciclo-cultivo__detail-item">
                     <h2 class="ciclo-cultivo__card-title">Detalles del cultivo</h2>
                     <ul class="ciclo-cultivo__list">
-                        <li class="ciclo-cultivo__list-item"><strong>Tipo de cultivo:</strong> Tomate Cherry Orgánico</li>
-                        <li class="ciclo-cultivo__list-item"><strong>Fecha de siembra:</strong> 15 de marzo, 2023</li>
-                        <li class="ciclo-cultivo__list-item"><strong>Área cultivada:</strong> 2.5 hectáreas</li>
-                        <li class="ciclo-cultivo__list-item"><strong>Etapa actual:</strong> Crecimiento vegetativo</li>
-                        <li class="ciclo-cultivo__list-item"><strong>Rendimiento esperado:</strong> 15 toneladas/hectárea</li>
-                        <li class="ciclo-cultivo__list-item"><strong>Método de riego:</strong> Goteo automatizado</li>
-                        <li class="ciclo-cultivo__list-item"><strong>Próxima tarea:</strong> Fertilización foliar</li>
+                        <li class="ciclo-cultivo__list-item"><strong>Tipo de cultivo:</strong> <span id="tipo-cultivo">Cargando...</span></li>
+                        <li class="ciclo-cultivo__list-item"><strong>nombre de cultivo:</strong> <span id="fecha-siembra">Cargando...</span></li>
+                        <li class="ciclo-cultivo__list-item"><strong>Ubicación:</strong> <span id="area-cultivada">Cargando...</span></li>
+                        <li class="ciclo-cultivo__list-item"><strong>Estado:</strong> <span id="etapa-actual">Cargando...</span></li>
+                        <li class="ciclo-cultivo__list-item"><strong>Tamaño:</strong> <span id="rendimiento-esperado">Cargando...</span></li>
+                        <li class="ciclo-cultivo__list-item"><strong>ID:</strong> <span id="metodo-riego">Cargando...</span></li>
+                        <li class="ciclo-cultivo__list-item"><strong>Descripción:</strong> <span id="proxima-tarea">Cargando...</span></li>
                     </ul>
                 </div>
                 <div class="ciclo-cultivo__buttons">
                     <a href="actualizar-cultivo.html" class="ciclo-cultivo__link">
-                    <button class="ciclo-cultivo__btn ciclo-cultivo__btn--edit">Editar</button>
+                        <button class="ciclo-cultivo__btn ciclo-cultivo__btn--edit">Editar</button>
                     </a>
                     <a href="listar-cultivo-sebas.html" class="ciclo-cultivo__link">
-                    <button class="ciclo-cultivo__btn ciclo-cultivo__btn--disable">Deshabilitar</button>
+                        <button class="ciclo-cultivo__btn ciclo-cultivo__btn--disable">Deshabilitar</button>
                     </a>
                 </div>
             </section>
             <section class="ciclo-cultivo__tasks">
                 <h2 class="ciclo-cultivo__subtitle">Tareas pendientes</h2>
-                <ul class="ciclo-cultivo__list">
-                    <li class="ciclo-cultivo__list-item">Fertilización foliar - Hoy</li>
-                    <li class="ciclo-cultivo__list-item">Control de plagas - Mañana</li>
-                    <li class="ciclo-cultivo__list-item">Monitoreo de temperatura - En 2 días</li>
+                <ul class="ciclo-cultivo__list" id="tareas-pendientes">
+                    <li class="ciclo-cultivo__list-item">Cargando tareas...</li>
                 </ul>
             </section>
             <a href="listar-cultivo-sebas.html" class="ciclo-cultivo__link">
-            <button class="ciclo-cultivo__btn ciclo-cultivo__btn--back">Volver</button>
+                <button class="ciclo-cultivo__btn ciclo-cultivo__btn--back">Volver</button>
             </a>
         </main>
     </div>
-    <script src="../js/pages/visualizar-ciclo-cultivo.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const idCultivo = localStorage.getItem('idCultivo');
+
+            if (!idCultivo) {
+                alert('ID de cultivo no encontrado');
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:3000/cultivo/${idCultivo}`);
+                const responseData = await response.json();
+                const cultivo = responseData.data;
+
+
+                if (!cultivo || Object.keys(cultivo).length === 0) {
+                    alert('Cultivo no encontrado');
+                    return;
+                }
+
+                // Llenar datos
+                document.getElementById('tipo-cultivo').textContent = cultivo.tipo_cultivo || 'No especificado';
+                document.getElementById('fecha-siembra').textContent = cultivo.nombre_cultivo || 'No especificado';
+                document.getElementById('area-cultivada').textContent = cultivo.ubicacion || 'No especificado';
+                document.getElementById('etapa-actual').textContent = cultivo.estado || 'No especificado';
+                document.getElementById('rendimiento-esperado').textContent = cultivo.tamano || 'No especificado';
+                document.getElementById('metodo-riego').textContent = cultivo.id_cultivo || 'No especificado';
+                document.getElementById('proxima-tarea').textContent = cultivo.descripcion || 'No especificado';
+                // Tareas pendientes (si es un array en la BD)
+                const tareas = cultivo.tareas || [];
+                const tareasList = document.getElementById('tareas-pendientes');
+                tareasList.innerHTML = '';
+
+                if (tareas.length > 0) {
+                    tareas.forEach(tarea => {
+                        const li = document.createElement('li');
+                        li.className = 'ciclo-cultivo__list-item';
+                        li.textContent = tarea;
+                        tareasList.appendChild(li);
+                    });
+                } else {
+                    tareasList.innerHTML = '<li class="ciclo-cultivo__list-item">No hay tareas pendientes</li>';
+                }
+
+            } catch (error) {
+                console.error('Error al cargar los datos del cultivo:', error);
+                alert('Error al cargar los datos');
+            }
+        });
+    </script>
+    <script src="../js/pages/visualizar-cultivo.js"></script>
 </body>
 </html>

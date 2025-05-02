@@ -69,7 +69,7 @@ db.testConnection().then(isConnected => {
      process.exit(1);
 });
 
-//Esto es una prueba para los listar
+// ESTO ES UNA PRUEBA PARA LOS LISTAR
 // Listar todos los cultivos
 const { pool } = require('./config/db');
 
@@ -121,5 +121,34 @@ app.get('/user', async (req, res) => {
     } catch (error) {
         console.error('Error al obtener usuario:', error);
         res.status(500).json({ error: 'Error al obtener usuario:' });
+    }
+});
+
+// ESTO ES UNA PRUEBA PARA LOS VISUALIZAR
+app.get('/ciclo_cultivo/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const [rows] = await pool.query('SELECT * FROM ciclo_cultivo WHERE id_ciclo = ?', [id]);
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'Ciclo no encontrado' });
+    }
+    res.json(rows[0]);
+  } catch (error) {
+    console.error('Error al obtener ciclo:', error);
+    res.status(500).json({ error: 'Error en el servidor' });
+  }
+});
+
+app.get('/cultivo/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const [rows] = await pool.query('SELECT * FROM cultivo WHERE id = ?', [id]);
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Cultivo no encontrado' });
+        }
+        res.json(rows[0]);
+    } catch (err) {
+        console.error('Error al obtener cultivo:', err);
+        res.status(500).json({ error: 'Error al obtener el cultivo' });
     }
 });

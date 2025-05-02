@@ -15,16 +15,16 @@
         <main class="main">
             <section class="main__sensor">
                 <div class="main__sensor-details">
-                    <h4 class="main__sensor-title">ID del Sensor: #12345</h4>
+                    <h4 class="main__sensor-title">ID del Sensor: <span id="sensor-id">Cargando...</span></h4>
                     <svg class="main__sensor-graph" width="1082" height="96" viewBox="0 0 1082 96" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1 88H1081" stroke="#34A853" stroke-width="2"/>
                         <path d="M1 88.0002C201 -11.9998 401 48.0002 601 8.00021C801 -31.9998 1001 128 1081 88.0002" stroke="#34A853" stroke-width="3"/>
                     </svg>
                     <ul class="main__sensor-info--list">
-                        <li class="main__sensor-info--item"><strong></strong> Tipo: Temperatura</li>
-                        <li class="main__sensor-info--item"><strong></strong> Ubicacion: Cosecha exterior</li>
-                        <li class="main__sensor-info--item"><strong></strong> Ultima lectura: 22°C</li>
-                        <li class="main__sensor-info--item"><strong></strong> Estado: Activo</li>
+                        <li class="main__sensor-info--item">Tipo: <span id="tipo-sensor">Cargando...</span></li>
+                        <li class="main__sensor-info--item">Nombre: <span id="ubicacion-sensor">Cargando...</span></li>
+                        <li class="main__sensor-info--item">Referencia: <span id="ultima-lectura">Cargando...</span></li>
+                        <li class="main__sensor-info--item">Estado: <span id="estado-sensor">Cargando...</span></li>
                     </ul>
                 </div>
                 <div class="main__sensor-actions">
@@ -34,12 +34,11 @@
                     <button class="button button--report" onclick="window.location.href='../views/excel.html'">Generar Reporte</button>
                 </div>
             </section>
+
             <section class="history">
                 <h2 class="history__title">Historial de lecturas</h2>
-                <ul class="history__list">
-                    <li class="history__item">03/12/2024 - 14:00:00 - 21.5°C</li>
-                    <li class="history__item">23/09/2024 - 14:00:00 - 21.5°C</li>
-                    <li class="history__item">14/07/2024 - 14:00:00 - 21.5°C</li>
+                <ul class="history__list" id="historial-lecturas">
+                    <li class="history__item">Cargando historial...</li>
                 </ul>
                 <a href="listar-sensor-sebas.html">
                     <button class="button button--back">Volver</button>
@@ -47,5 +46,55 @@
             </section>
         </main>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const idSensor = localStorage.getItem('idSensor');
+
+            if (!idSensor) {
+                alert('ID del sensor no encontrado');
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:3000/sensor/${idSensor}`);
+                const result = await response.json();
+
+                if (!result || !result.success || !result.data) {
+                    alert('Sensor no encontrado');
+                    return;
+                }
+
+                const sensor = result.data;
+
+                // Mostrar datos del sensor
+                document.getElementById('sensor-id').textContent = sensor.id || 'No especificado';
+                document.getElementById('tipo-sensor').textContent = sensor.tipo_sensor || 'No especificado';
+                document.getElementById('ubicacion-sensor').textContent = sensor.nombre_sensor || 'No especificado';
+                document.getElementById('ultima-lectura').textContent = sensor.referencia_sensor || 'No disponible';
+                document.getElementById('estado-sensor').textContent = sensor.estado || 'No especificado';
+
+                // Historial
+                const historial = sensor.historial || [];
+                const historialList = document.getElementById('historial-lecturas');
+                historialList.innerHTML = '';
+
+                if (historial.length > 0) {
+                    historial.forEach(lectura => {
+                        const li = document.createElement('li');
+                        li.className = 'history__item';
+                        li.textContent = lectura;
+                        historialList.appendChild(li);
+                    });
+                } else {
+                    historialList.innerHTML = '<li class="history__item">No hay historial disponible</li>';
+                }
+
+            } catch (error) {
+                console.error('Error al cargar datos del sensor:', error);
+                alert('Error al cargar los datos');
+            }
+        });
+    </script>
 </body>
 </html>
