@@ -28,9 +28,7 @@
                     </ul>
                 </div>
                 <div class="main__sensor-actions">
-                    <a href="actualizar-sensor.html">
-                        <button class="button button--edit">Actualizar Sensor</button>
-                    </a>
+                    <button class="button button--edit" onclick="irActualizarSensor()">Actualizar Sensor</button>
                     <button class="button button--report" onclick="window.location.href='../views/excel.html'">Generar Reporte</button>
                 </div>
             </section>
@@ -67,14 +65,12 @@
 
                 const sensor = result.data;
 
-                // Mostrar datos del sensor
                 document.getElementById('sensor-id').textContent = sensor.id || 'No especificado';
                 document.getElementById('tipo-sensor').textContent = sensor.tipo_sensor || 'No especificado';
                 document.getElementById('ubicacion-sensor').textContent = sensor.nombre_sensor || 'No especificado';
                 document.getElementById('ultima-lectura').textContent = sensor.referencia_sensor || 'No disponible';
                 document.getElementById('estado-sensor').textContent = sensor.estado || 'No especificado';
 
-                // Historial
                 const historial = sensor.historial || [];
                 const historialList = document.getElementById('historial-lecturas');
                 historialList.innerHTML = '';
@@ -95,6 +91,15 @@
                 alert('Error al cargar los datos');
             }
         });
+
+        function irActualizarSensor() {
+            const idSensor = localStorage.getItem('idSensor', '1');
+            if (idSensor) {
+                window.location.href = `actualizar-sensor.html?id=${idSensor}`;
+            } else {
+                alert('ID del sensor no encontrado');
+            }
+        }
     </script>
 </body>
 </html>

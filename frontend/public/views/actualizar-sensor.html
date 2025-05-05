@@ -8,7 +8,6 @@
 </head>
 <body class="page">
     <header class="page__header">
-        <div class="page__header-logo"></div>
         <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="page__header-logo">
     </header>
     <main class="container">
@@ -19,40 +18,53 @@
                 </svg>
                 Actualizar Sensor
             </h1>
-            <form class="sensor__form">
+            <form class="sensor__form" id="formActualizarSensor">
                 <div class="sensor__form-group">
-                    <label class="sensor__form-label" for="idInsumo">ID del Sensor</label>
-                    <input class="sensor__form-input sensor__form-input--disabled"  type="text"  value="INS-001" disabled title="ID del sensor (campo no editable)" />
+                    <label class="sensor__form-label" for="id">ID del Sensor</label>
+                    <input class="sensor__form-input sensor__form-input--disabled" type="text" id="id" disabled />
                 </div>
 
                 <div class="sensor__form-group">
-                    <label class="sensor__form-label" for="nombreInsumo">Nombre del Sensor *</label>
-                    <input class="sensor__form-input" type="text" value="Sensor de temperatura" required placeholder="Escribe el nombre del sensor" title="Nombre del sensor" />
+                    <label class="sensor__form-label" for="nombre_sensor">Nombre del Sensor *</label>
+                    <input class="sensor__form-input" type="text" id="nombre_sensor" required />
                 </div>
 
                 <div class="sensor__form-group">
-                    <label class="sensor__form-label" for="unidadMedida">Ubicación *</label>
-                    <input class="sensor__form-input" type="text" required placeholder="Escribe aquí..." title="Ubicación del sensor" />
+                    <label class="sensor__form-label" for="identificador">Identificador *</label>
+                    <input class="sensor__form-input" type="text" id="identificador" required />
                 </div>
 
                 <div class="sensor__form-group">
-                    <label class="sensor__form-label" for="cantidad">Unidad de medida *</label>
-                    <input class="sensor__form-input" type="number" value="50" required placeholder="Ej: 50" title="Unidad de medida" />
+                    <label class="sensor__form-label" for="referencia_sensor">Referencia *</label>
+                    <input class="sensor__form-input" type="text" id="referencia_sensor" required />
                 </div>
 
                 <div class="sensor__form-group">
-                    <label class="sensor__form-label" for="valorUnitario">Valor mínimo *</label>
-                    <input class="sensor__form-input" type="text" value="$2,500" required placeholder="Ej: $2,500" title="Valor unitario mínimo" />
+                    <label class="sensor__form-label" for="tipo_sensor">Tipo de sensor *</label>
+                    <input class="sensor__form-input" type="text" id="tipo_sensor" required />
+                </div>
+
+                <div class="sensor__form-group">
+                    <label class="sensor__form-label" for="unidad_medida">Unidad de medida *</label>
+                    <input class="sensor__form-input" type="text" id="unidad_medida" required />
+                </div>
+
+                <div class="sensor__form-group">
+                    <label class="sensor__form-label" for="tiempo_escaneo">Tiempo de escaneo (minutos) *</label>
+                    <input class="sensor__form-input" type="number" id="tiempo_escaneo" required />
+                </div>
+
+                <div class="sensor__form-group">
+                    <label class="sensor__form-label" for="estado">Estado *</label>
+                    <select class="sensor__form-input" id="estado" required>
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
                 </div>
 
                 <div class="sensor__form-group sensor__form-group-full--width">
-                    <label class="sensor__form-label" for="valorTotal">Valor Maximo</label>
-                    <input class="sensor__form-input sensor__form-input--disabled" type="text" value="$125,000" disabled title="Valor máximo del sensor (no editable)" />
-                </div>
-
-                <div class="sensor__form-group sensor__form-group-full--width">
-                    <label class="sensor__form-label" for="descripcion">Intervalo de lectura (minutos)</label>
-                    <textarea class="sensor__form-textarea" placeholder="Ej: Cada 15 minutos" title="Ingresa el intervalo de lectura en minutos"></textarea>
+                    <label class="sensor__form-label" for="descripcion">Descripción</label>
+                    <textarea class="sensor__form-textarea" id="descripcion"></textarea>
                 </div>
 
                 <div class="sensor__button-group">
@@ -60,7 +72,7 @@
                         <button type="button" class="sensor__button sensor__button--cancel">Cancelar</button>
                     </a>
                     <a href="visualizar-sensor.html">
-                        <button type="button" class="sensor__button sensor__button--save" >Guardar Cambios</button>
+                    <button type="submit" class="sensor__button sensor__button--save">Guardar Cambios</button>
                     </a>
                     <a href="listar-sensor-sebas.html">
                         <button type="button" class="sensor__button sensor__button--toggle">Habilitar / Deshabilitar</button>
@@ -69,6 +81,75 @@
             </form>
         </section>
     </main>
-    <script src="../js/pages/script-actualizar.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    if (!id) {
+        alert('No se proporcionó un ID de sensor');
+        return;
+    }
+
+    console.log('ID del sensor recibido:', id);
+
+    try {
+        const res = await fetch(`http://localhost:3000/sensores/${id}`);
+        if (!res.ok) throw new Error('Error al obtener datos');
+
+        const response = await res.json();
+        console.log('Sensor completo:', response); // Aquí se imprime todo el objeto recibido
+
+        const sensor = response.data; // Accede al objeto real
+
+        // Rellenar los campos del formulario con los datos del sensor
+        document.getElementById('id').value = sensor.id || sensor.id || 'Sin ID';
+        document.getElementById('nombre_sensor').value = sensor.nombre_sensor || '';
+        document.getElementById('identificador').value = sensor.identificador || '';
+        document.getElementById('referencia_sensor').value = sensor.referencia_sensor || '';
+        document.getElementById('tipo_sensor').value = sensor.tipo_sensor || '';
+        document.getElementById('unidad_medida').value = sensor.unidad_medida || '';
+        document.getElementById('tiempo_escaneo').value = sensor.tiempo_escaneo || '';
+        document.getElementById('estado').value = sensor.estado || 'Activo';
+        document.getElementById('descripcion').value = sensor.descripcion || '';
+
+    } catch (err) {
+        console.error('Error al cargar datos del sensor:', err);
+        alert('No se pudo cargar el sensor');
+    }
+
+    // Envío del formulario
+    document.getElementById('formActualizarSensor').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const sensorActualizado = {
+            tipo_sensor: document.getElementById('tipo_sensor').value,
+            nombre_sensor: document.getElementById('nombre_sensor').value,
+            identificador: document.getElementById('identificador').value,
+            referencia_sensor: document.getElementById('referencia_sensor').value,
+            unidad_medida: document.getElementById('unidad_medida').value,
+            tiempo_escaneo: document.getElementById('tiempo_escaneo').value,
+            estado: document.getElementById('estado').value,
+            descripcion: document.getElementById('descripcion').value,
+        };
+
+        try {
+            const res = await fetch(`http://localhost:3000/sensores/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(sensorActualizado)
+            });
+
+            if (!res.ok) throw new Error('Error al actualizar');
+            alert('Sensor actualizado correctamente');
+            window.location.href = 'visualizar-sensor.html';
+        } catch (error) {
+            console.error('Error al actualizar sensor:', error);
+            alert('No se pudo actualizar el sensor');
+        }
+    });
+});
+    </script>
 </body>
 </html>

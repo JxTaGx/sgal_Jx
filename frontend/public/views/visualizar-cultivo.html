@@ -18,12 +18,12 @@
                     <h2 class="ciclo-cultivo__card-title">Detalles del cultivo</h2>
                     <ul class="ciclo-cultivo__list">
                         <li class="ciclo-cultivo__list-item"><strong>Tipo de cultivo:</strong> <span id="tipo-cultivo">Cargando...</span></li>
-                        <li class="ciclo-cultivo__list-item"><strong>nombre de cultivo:</strong> <span id="fecha-siembra">Cargando...</span></li>
-                        <li class="ciclo-cultivo__list-item"><strong>Ubicación:</strong> <span id="area-cultivada">Cargando...</span></li>
-                        <li class="ciclo-cultivo__list-item"><strong>Estado:</strong> <span id="etapa-actual">Cargando...</span></li>
-                        <li class="ciclo-cultivo__list-item"><strong>Tamaño:</strong> <span id="rendimiento-esperado">Cargando...</span></li>
-                        <li class="ciclo-cultivo__list-item"><strong>ID:</strong> <span id="metodo-riego">Cargando...</span></li>
-                        <li class="ciclo-cultivo__list-item"><strong>Descripción:</strong> <span id="proxima-tarea">Cargando...</span></li>
+                        <li class="ciclo-cultivo__list-item"><strong>Nombre del cultivo:</strong> <span id="nombre-cultivo">Cargando...</span></li>
+                        <li class="ciclo-cultivo__list-item"><strong>Ubicación:</strong> <span id="ubicacion">Cargando...</span></li>
+                        <li class="ciclo-cultivo__list-item"><strong>Estado:</strong> <span id="estado">Cargando...</span></li>
+                        <li class="ciclo-cultivo__list-item"><strong>Tamaño:</strong> <span id="tamano">Cargando...</span></li>
+                        <li class="ciclo-cultivo__list-item"><strong>ID:</strong> <span id="id-cultivo">Cargando...</span></li>
+                        <li class="ciclo-cultivo__list-item"><strong>Descripción:</strong> <span id="descripcion">Cargando...</span></li>
                     </ul>
                 </div>
                 <div class="ciclo-cultivo__buttons">
@@ -50,6 +50,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const idCultivo = localStorage.getItem('idCultivo');
+const response = await fetch(`http://localhost:3000/cultivos/${idCultivo}`);
+
 
             if (!idCultivo) {
                 alert('ID de cultivo no encontrado');
@@ -58,24 +60,25 @@
 
             try {
                 const response = await fetch(`http://localhost:3000/cultivo/${idCultivo}`);
-                const responseData = await response.json();
-                const cultivo = responseData.data;
+                const result = await response.json();
 
+                const cultivo = result.data;
 
                 if (!cultivo || Object.keys(cultivo).length === 0) {
                     alert('Cultivo no encontrado');
                     return;
                 }
 
-                // Llenar datos
+                // Rellenar datos
                 document.getElementById('tipo-cultivo').textContent = cultivo.tipo_cultivo || 'No especificado';
-                document.getElementById('fecha-siembra').textContent = cultivo.nombre_cultivo || 'No especificado';
-                document.getElementById('area-cultivada').textContent = cultivo.ubicacion || 'No especificado';
-                document.getElementById('etapa-actual').textContent = cultivo.estado || 'No especificado';
-                document.getElementById('rendimiento-esperado').textContent = cultivo.tamano || 'No especificado';
-                document.getElementById('metodo-riego').textContent = cultivo.id_cultivo || 'No especificado';
-                document.getElementById('proxima-tarea').textContent = cultivo.descripcion || 'No especificado';
-                // Tareas pendientes (si es un array en la BD)
+                document.getElementById('nombre-cultivo').textContent = cultivo.nombre_cultivo || 'No especificado';
+                document.getElementById('ubicacion').textContent = cultivo.ubicacion || 'No especificado';
+                document.getElementById('estado').textContent = cultivo.estado || 'No especificado';
+                document.getElementById('tamano').textContent = cultivo.tamano || 'No especificado';
+                document.getElementById('id-cultivo').textContent = cultivo.id_cultivo || 'No especificado';
+                document.getElementById('descripcion').textContent = cultivo.descripcion || 'No especificado';
+
+                // Tareas pendientes
                 const tareas = cultivo.tareas || [];
                 const tareasList = document.getElementById('tareas-pendientes');
                 tareasList.innerHTML = '';
@@ -97,6 +100,5 @@
             }
         });
     </script>
-    <script src="../js/pages/visualizar-cultivo.js"></script>
 </body>
 </html>

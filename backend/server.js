@@ -73,7 +73,6 @@ db.testConnection().then(isConnected => {
 // Listar todos los cultivos
 const { pool } = require('./config/db');
 
-// Ruta para listar todos los cultivos
 app.get('/cultivos', async (req, res) => {
     try {
         const [resultados] = await pool.query('SELECT * FROM cultivos');
@@ -151,4 +150,204 @@ app.get('/cultivo/:id', async (req, res) => {
         console.error('Error al obtener cultivo:', err);
         res.status(500).json({ error: 'Error al obtener el cultivo' });
     }
+});
+
+// ESTO ES UNA PRUEBA PARA LOS EDITAR
+app.put('/ciclo_cultivo/:id', async (req, res) => {
+    const { id } = req.params; // Aquí era el error
+    const { nombre_ciclo, periodo_siembra, novedades, descripcion } = req.body;
+  
+    try {
+      const [resultado] = await pool.query(
+        `UPDATE ciclo_cultivo SET nombre_ciclo = ?, periodo_siembra = ?, novedades = ?, descripcion = ? WHERE id_ciclo = ?`,
+        [nombre_ciclo, periodo_siembra, novedades, descripcion, id]
+      );
+  
+      if (resultado.affectedRows === 0) {
+        return res.status(404).json({ error: 'Ciclo no encontrado' });
+      }
+  
+      res.json({ mensaje: 'Ciclo actualizado correctamente' });
+    } catch (error) {
+      console.error('Error al actualizar ciclo:', error);
+      res.status(500).json({ error: 'Error en el servidor' });
+    }
+  });  
+
+  app.get('/cultivos/:id', async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      const [resultado] = await pool.query('SELECT * FROM cultivos WHERE id_cultivo = ?', [id]);
+  
+      if (resultado.length === 0) {
+        return res.status(404).json({ mensaje: 'Cultivo no encontrado' });
+      }
+  
+      res.json(resultado[0]); // Envía todos los campos correctamente
+    } catch (error) {
+      console.error('Error al obtener cultivo:', error);
+      res.status(500).send('Error al obtener cultivo');
+    }
+  });
+  
+  app.put('/cultivos/:id', async (req, res) => {
+    const { id } = req.params;
+    const {
+      nombre_cultivo,
+      tipo_cultivo,
+      tamano,
+      ubicacion,
+      estado,
+      descripcion
+    } = req.body;
+  
+    try {
+      await pool.query(
+        `UPDATE cultivos SET 
+          nombre_cultivo = ?, 
+          tipo_cultivo = ?, 
+          tamano = ?, 
+          ubicacion = ?, 
+          estado = ?, 
+          descripcion = ?
+        WHERE id_cultivo = ?`,
+        [
+          nombre_cultivo,
+          tipo_cultivo,
+          tamano,
+          ubicacion,
+          estado,
+          descripcion,
+          id
+        ]
+      );
+  
+      res.send('Cultivo actualizado correctamente');
+    } catch (error) {
+      console.error('Error al actualizar cultivo:', error);
+      res.status(500).send('Error al actualizar cultivo');
+    }
+  });
+
+  app.put('/sensores/:id', async (req, res) => {
+    const { id } = req.params;
+    const {
+      nombre_sensor,
+      tipo_sensor,
+      identificador,
+      referencia_sensor,
+      unidad_medida,
+      tiempo_escaneo,
+      estado,
+      descripcion
+    } = req.body;
+  
+    try {
+      await pool.query(
+        `UPDATE sensores SET
+          nombre_sensor = ?,
+          tipo_sensor = ?,
+          unidad_medida = ?,
+          referencia_sensor = ?,
+          identificador = ?,
+          tiempo_escaneo = ?,
+          estado = ?,
+          descripcion = ?
+        WHERE id = ?`,
+        [
+          nombre_sensor,
+          tipo_sensor,
+          unidad_medida,
+          identificador,
+          referencia_sensor,
+          tiempo_escaneo,
+          estado,
+          descripcion,
+          id
+        ]
+      );
+      res.send('Sensor actualizado correctamente');
+    } catch (error) {
+      console.error('Error al actualizar sensor:', error);
+      res.status(500).send('Error al actualizar sensor');
+    }
+  });
+  
+  app.get('/sensores/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const [rows] = await pool.query('SELECT * FROM sensores WHERE id = ?', [id]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Sensor no encontrado' });
+        }
+
+        res.json({ success: true, data: rows[0] });
+    } catch (error) {
+        console.error('Error al obtener el sensor:', error);
+        res.status(500).json({ success: false, message: 'Error al obtener el sensor' });
+    }
+});
+
+app.get('/user/:id', async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+      const [rows] = await pool.query('SELECT * FROM user WHERE id = ?', [userId]);
+
+      if (rows.length === 0) {
+          return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
+      }
+
+      res.json({ success: true, data: rows[0] });
+  } catch (error) {
+      console.error('Error al obtener usuario por ID:', error);
+      res.status(500).json({ success: false, message: 'Error interno del servidor' });
+  }
+});
+
+app.put('/user/:id', async (req, res) => {
+  const { id } = req.params;
+  const {
+    documentType,
+    documentNumber,
+    userType,
+    firstName,
+    lastName,
+    phone,
+    email,
+    confirmEmail
+  } = req.body;
+
+  try {
+    await pool.query(
+      `UPDATE user SET 
+        documentType = ?, 
+        documentNumber = ?, 
+        userType = ?, 
+        firstName = ?, 
+        lastName = ?, 
+        phone = ?, 
+        email = ?, 
+        confirmEmail = ?
+      WHERE id = ?`,
+      [
+        documentType,
+        documentNumber,
+        userType,
+        firstName,
+        lastName,
+        phone,
+        email,
+        confirmEmail,
+        id
+      ]
+    );
+
+    res.send('Usuario actualizado correctamente');
+  } catch (error) {
+    console.error('Error al actualizar usuario:', error);
+    res.status(500).send('Error al actualizar usuario');
+  }
 });

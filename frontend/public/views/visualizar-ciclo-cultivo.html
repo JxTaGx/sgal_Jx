@@ -25,9 +25,7 @@
           </ul>
         </div>
         <div class="ciclo-cultivo__buttons">
-          <a href="/frontend/public/views/actualizar-ciclo-cultivo.html" class="ciclo-cultivo__link">
-            <button class="ciclo-cultivo__btn ciclo-cultivo__btn--edit">Editar</button>
-          </a>
+          <button id="editar-btn" class="ciclo-cultivo__btn ciclo-cultivo__btn--edit">Editar</button>
           <a href="listar-ciclo-cultivo-sebas.html" class="ciclo-cultivo__link">
             <button class="ciclo-cultivo__btn ciclo-cultivo__btn--disable">Deshabilitar</button>
           </a>
@@ -69,12 +67,17 @@
           <li class="ciclo-cultivo__list-item"><strong>Descripción:</strong> ${ciclo.descripcion || 'Sin descripción'}</li>
         `;
 
-        // Puedes actualizar esta parte según cómo guardes las tareas
         const tareas = ciclo.tareas?.length
           ? ciclo.tareas
           : ['No hay datos de rendimiento'];
         const rendimientoLista = document.getElementById('rendimiento-lista');
         rendimientoLista.innerHTML = tareas.map(tarea => `<li class="ciclo-cultivo__list-item">${tarea}</li>`).join('');
+
+        // Redireccionar al editar con el ID por URL
+        const botonEditar = document.getElementById('editar-btn');
+        botonEditar.addEventListener('click', () => {
+          window.location.href = `/frontend/public/views/actualizar-ciclo-cultivo.html?id=${id}`;
+        });
 
       } catch (err) {
         console.error(err);

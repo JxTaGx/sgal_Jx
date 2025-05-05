@@ -1,80 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/pages/editar-perfil.css">
-    <title>Editar perfil</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="../css/pages/editar-perfil.css" />
+  <title>Editar perfil</title>
 </head>
-<body class="page"> <!--bloque-->
-    <header>
-        <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="page__header-logo"> <!--elemento-->
-    </header>
-    <div class="profile"> <!--bloque-->
-        <svg class="profile__icon-circle" width="122" height="122" viewBox="0 0 122 122" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M61 121C94.1371 121 121 94.1371 121 61C121 27.8629 94.1371 1 61 1C27.8629 1 1 27.8629 1 61C1 94.1371 27.8629 121 61 121Z" fill="#F5F7F5" stroke="#4CAF50" stroke-width="2"/>
-        </svg> <!--elemento-->
-        
-        <svg class="profile__icon-user" width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M26 28.7778C34.6294 28.7778 41.625 22.5595 41.625 14.8889C41.625 7.21827 34.6294 1 26 1C17.3706 1 10.375 7.21827 10.375 14.8889C10.375 22.5595 17.3706 28.7778 26 28.7778Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M51 51.0001C51 45.1064 48.3661 39.454 43.6777 35.2866C38.9893 31.1191 32.6304 28.7778 26 28.7778C19.3696 28.7778 13.0107 31.1191 8.32233 35.2866C3.63392 39.454 1 45.1064 1 51.0001" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg> <!--elemento-->
-        <h1 class="profile__title">EDITAR PERFIL</h1>
-        <form class="profile__form"> <!--bloque-->
-            <div class="profile__form-field">
-                <span class="form__field-label">NOMBRE DE USUARIO</span>
-                <input type="text" id="nombre-de-usuario" class="form__field-input form__field-input--text" required>
-            </div> 
+<body class="page">
+  <header>
+    <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="page__header-logo" />
+  </header>
 
-            <div class="profile__form-field">
-                <span class="form__field-label">TIPO DE DOCUMENTO</span>
-                <input type="text" id="tipo-de-documento" class="form__field-input form__field-input--text" required>
-            </div> 
+  <div class="profile">
+    <svg class="profile__icon-circle" width="122" height="122" viewBox="0 0 122 122" fill="none">
+      <circle cx="61" cy="61" r="60" fill="#F5F7F5" stroke="#4CAF50" stroke-width="2"/>
+    </svg>
+    <svg class="profile__icon-user" width="52" height="52" viewBox="0 0 52 52" fill="none">
+      <path d="M26 28.8C34.6 28.8 41.6 22.6 41.6 14.9C41.6 7.2 34.6 1 26 1C17.4 1 10.4 7.2 10.4 14.9C10.4 22.6 17.4 28.8 26 28.8Z" stroke="black" stroke-width="2"/>
+      <path d="M51 51C51 45.1 48.4 39.5 43.7 35.3C39 31.1 32.6 28.8 26 28.8C19.4 28.8 13 31.1 8.3 35.3C3.6 39.5 1 45.1 1 51" stroke="black" stroke-width="2"/>
+    </svg>
 
-            <div class="profile__form-field">
-                <span class="form__field-label">NÚMERO DE DOCUMENTO</span>
-                <input type="number" id="numero-de-documento" class="form__field-input form__field-input--number" required>
-            </div> 
+    <h1 class="profile__title">EDITAR PERFIL</h1>
 
-            <div class="profile__form-field">
-                <span class="form__field-label">TIPO DE USUARIO</span>
-                <input type="text" id="tipo-de-usuario" class="form__field-input form__field-input--text" required>
-            </div>
+    <form id="edit-form" class="profile__form">
+      <div class="profile__form-field">
+        <span class="form__field-label">NOMBRE DE USUARIO</span>
+        <input type="text" id="nombre-de-usuario" class="form__field-input form__field-input--text" required>
+      </div>
 
-            <div class="profile__form-field">
-                <span class="form__field-label">CORREO ELECTRONICO</span>
-                <input type="email" id="email" class="form__field-input form__field-input--email" required>
-            </div>
+      <div class="profile__form-field">
+        <span class="form__field-label">TIPO DE DOCUMENTO</span>
+        <input type="text" id="tipo-de-documento" class="form__field-input form__field-input--text" required>
+      </div>
 
-            <div class="profile__form-field">
-                <span class="form__field-label">CONFIRMACIÓN CORREO ELECTRONICO</span>
-                <input type="email" id="confirmar-email" class="form__field-input form__field-input--email" required>
-            </div>
+      <div class="profile__form-field">
+        <span class="form__field-label">NÚMERO DE DOCUMENTO</span>
+        <input type="number" id="numero-de-documento" class="form__field-input form__field-input--number" required>
+      </div>
 
-            <div class="profile__form-field">
-                <span class="form__field-label">NÚMERO TELEFONICO</span>
-                <input type="tel" id="telefono" class="form__field-input form__field-input--tel" required>
-            </div> 
+      <div class="profile__form-field">
+        <span class="form__field-label">TIPO DE USUARIO</span>
+        <input type="text" id="tipo-de-usuario" class="form__field-input form__field-input--text" required>
+      </div>
 
-            <div class="button__group button__group--purple">
-                <a href="../views/lista-usuario.html">
-                    <button type="button" class="button button--purple">Habilitar / Deshabilitar</button>
-                </a>
-            </div>
+      <div class="profile__form-field">
+        <span class="form__field-label">CORREO ELECTRONICO</span>
+        <input type="email" id="email" class="form__field-input form__field-input--email" required>
+      </div>
 
-            <div class="button__group button__group--green">
-                <a href="../views/home.html">
-                    <button type="button" class="button button--back">Volver</button>
-                </a>
-                <a href="../views/home.html">
-                    <button type="button" class="button button--green">Guardar</button>
-                </a>
-            </div>
-        </form>
-    </div>
-    <div id="error-message" class="notification notification--error">
-        Los números no están permitidos en el campo de texto
-    </div>
-    <script src="../js/pages/editar-perfil.js"></script>
+      <div class="profile__form-field">
+        <span class="form__field-label">CONFIRMACIÓN CORREO ELECTRONICO</span>
+        <input type="email" id="confirmar-email" class="form__field-input form__field-input--email" required>
+      </div>
+
+      <div class="profile__form-field">
+        <span class="form__field-label">NÚMERO TELEFONICO</span>
+        <input type="tel" id="telefono" class="form__field-input form__field-input--tel" required>
+      </div>
+
+      <div class="button__group button__group--purple">
+        <a href="../views/lista-usuario.html">
+          <button type="button" class="button button--purple">Habilitar / Deshabilitar</button>
+        </a>
+      </div>
+
+      <div class="button__group button__group--green">
+        <a href="lista-usuario.html">
+          <button type="button" class="button button--back">Volver</button>
+        </a>
+        <button type="submit" class="button button--green">Guardar</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="error-message" class="notification notification--error" style="display: none;">
+    Los números no están permitidos en el campo de texto
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const params = new URLSearchParams(window.location.search);
+      const id = parseInt(params.get('id'), 10);
+      if (!id || id <= 0) {
+        console.error('ID inválido:', id);
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:3000/user/${id}`);
+        const result = await response.json();
+        const usuario = result.data;
+
+        document.getElementById('nombre-de-usuario').value = usuario.firstName || '';
+        document.getElementById('tipo-de-documento').value = usuario.documentType || '';
+        document.getElementById('numero-de-documento').value = usuario.documentNumber || '';
+        document.getElementById('tipo-de-usuario').value = usuario.userType || '';
+        document.getElementById('email').value = usuario.email || '';
+        document.getElementById('confirmar-email').value = usuario.confirmEmail || '';
+        document.getElementById('telefono').value = usuario.phone || '';
+      } catch (error) {
+        console.error('Error al cargar usuario:', error);
+      }
+
+      // Manejar la actualización del formulario
+      const form = document.getElementById('edit-form');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Evita el refresh
+
+        const data = {
+          firstName: document.getElementById('nombre-de-usuario').value,
+          documentType: document.getElementById('tipo-de-documento').value,
+          documentNumber: document.getElementById('numero-de-documento').value,
+          userType: document.getElementById('tipo-de-usuario').value,
+          email: document.getElementById('email').value,
+          confirmEmail: document.getElementById('confirmar-email').value,
+          phone: document.getElementById('telefono').value
+        };
+
+        try {
+          const updateResponse = await fetch(`http://localhost:3000/user/${id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          });
+
+          if (!updateResponse.ok) {
+            throw new Error('Error al actualizar usuario');
+          }
+
+          alert('Usuario actualizado correctamente');
+          window.location.href = 'lista-usuario.html';
+        } catch (error) {
+          console.error('Error al actualizar usuario:', error);
+          alert('Error al actualizar el usuario');
+        }
+      });
+    });
+  </script>
 </body>
 </html>
