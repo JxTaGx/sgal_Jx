@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-04-2025 a las 05:59:16
+-- Tiempo de generación: 24-04-2025 a las 05:10:23
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -47,8 +47,7 @@ INSERT INTO `ciclo_cultivo` (`id_ciclo`, `nombre_ciclo`, `descripcion`, `ruta_fo
 ('1232', 'primavera', 'ciclando', NULL, 'primavera', 'Bien', 'activo', '2025-04-18 13:43:53', '2025-04-18 13:43:53'),
 ('221', 'tomate', 'sadsasd', '/uploads/ciclos/ciclo-1743481948754-686756778.png', 'primavera 2023', 'bien', 'activo', '2025-04-01 04:32:28', '2025-04-01 04:32:28'),
 ('23223', 'arepa con huevo', 'sadasadsadsdads', '/uploads/ciclos/ciclo-1744050950722-245871497.jpg', 'primavera 2023', 'sin novedad', 'pendiente', '2025-04-07 18:35:50', '2025-04-07 18:35:50'),
-('32323', 'sdasdsa', 'sdsdasda', '/uploads/ciclos/ciclo-1745462334082-572339403.jpg', 'dsdasdasda', 'dsdasddsd', 'activo', '2025-04-24 02:38:54', '2025-04-24 02:38:54'),
-('32323dfs', 'sdasdsasd', 'sdasd', '/uploads/ciclos/ciclo-1745502944653-611868171.jpg', 'dsdasdasdasda', 'dsdasddsdsda', 'pendiente', '2025-04-24 13:55:44', '2025-04-24 13:55:44');
+('32323', 'sdasdsa', 'sdsdasda', '/uploads/ciclos/ciclo-1745462334082-572339403.jpg', 'dsdasdasda', 'dsdasddsd', 'activo', '2025-04-24 02:38:54', '2025-04-24 02:38:54');
 
 -- --------------------------------------------------------
 
@@ -127,16 +126,6 @@ CREATE TABLE `productions` (
   `supplies` text DEFAULT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  `estimated_investment` decimal(14,2) DEFAULT NULL COMMENT 'Inversión estimada calculada al crear',
-  `estimated_goal` decimal(14,2) DEFAULT NULL COMMENT 'Meta estimada calculada al crear',
-  `rendimiento_obtenido` decimal(10,2) DEFAULT NULL COMMENT 'Rendimiento real obtenido tras la cosecha',
-  `unidad_rendimiento` varchar(50) DEFAULT NULL COMMENT 'Unidad del rendimiento (ej: ton/ha, kg, unidades)',
-  `ingresos_totales` decimal(14,2) DEFAULT NULL COMMENT 'Ingresos totales generados por la venta de esta producción',
-  `costos_adicionales` decimal(14,2) DEFAULT 0.00 COMMENT 'Otros costos asociados (mano de obra, etc.) no incluidos en insumos',
-  `ganancia_neta` decimal(14,2) DEFAULT NULL COMMENT 'Ganancia neta calculada (Ingresos - Costo Insumos - Costos Adicionales)',
-  `actual_investment` decimal(14,2) DEFAULT NULL COMMENT 'Inversión real calculada/registrada',
-  `income` decimal(14,2) DEFAULT NULL COMMENT 'Ingresos/ganancias generados',
-  `losses` decimal(14,2) DEFAULT 0.00 COMMENT 'Pérdidas registradas',
   `status` enum('active','inactive') DEFAULT 'active',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -146,47 +135,11 @@ CREATE TABLE `productions` (
 -- Volcado de datos para la tabla `productions`
 --
 
-INSERT INTO `productions` (`id`, `name`, `responsible`, `cultivation`, `cycle`, `sensors`, `supplies`, `start_date`, `end_date`, `estimated_investment`, `estimated_goal`, `rendimiento_obtenido`, `unidad_rendimiento`, `ingresos_totales`, `costos_adicionales`, `ganancia_neta`, `actual_investment`, `income`, `losses`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Hola', 8, 'cult-001', '221', '1', '3', '2025-04-21', '2025-05-09', NULL, NULL, NULL, NULL, NULL, 0.00, NULL, NULL, NULL, 0.00, 'inactive', '2025-04-19 05:11:05', '2025-04-21 16:56:17'),
-(2, 'ggggg', 10, 'cult-001', '23223', '1', '3', '0000-00-00', '0000-00-00', NULL, NULL, NULL, NULL, NULL, 0.00, NULL, NULL, NULL, 0.00, 'inactive', '2025-04-19 05:12:17', '2025-04-19 05:13:20'),
-(3, 'Prueba', 10, 'cafe', '1232', '2', '6', '2025-04-17', '2025-05-07', NULL, NULL, NULL, NULL, NULL, 0.00, NULL, NULL, NULL, 0.00, 'active', '2025-04-21 16:55:22', '2025-04-21 16:55:22'),
-(4, 'Producción de tomate Zona 2', 19, 'CULT-002', '1232', '3', '6', '2025-04-22', '2025-07-23', NULL, NULL, NULL, NULL, NULL, 0.00, NULL, NULL, NULL, 0.00, 'active', '2025-04-22 20:03:54', '2025-04-22 20:06:20'),
-(5, 'asaas', 8, 'cult-001', '1232', '2', '6,1', '2025-04-23', '2025-04-24', NULL, NULL, NULL, NULL, NULL, 0.00, NULL, NULL, NULL, 0.00, 'active', '2025-04-24 03:30:41', '2025-04-24 03:30:41'),
-(6, 'no funciona', 19, 'cult-001', '23223', '1,2', '6,1', '2025-04-23', '2025-04-24', NULL, NULL, NULL, NULL, NULL, 0.00, NULL, NULL, NULL, 0.00, 'active', '2025-04-24 03:34:27', '2025-04-24 03:34:27'),
-(7, 'sadsad', 10, 'cult-001', '1232', '2', '6', '2025-04-24', '2025-05-09', NULL, NULL, NULL, NULL, NULL, 0.00, NULL, NULL, NULL, 0.00, 'active', '2025-04-24 04:11:35', '2025-04-24 04:11:35'),
-(8, 'prueba34', 8, 'cult-001', '1232', '2', '6,2', '0000-00-00', '2025-04-25', NULL, NULL, NULL, NULL, NULL, 0.00, NULL, NULL, NULL, 0.00, 'inactive', '2025-04-24 04:25:49', '2025-04-24 04:26:24'),
-(9, 'prueba55jx', 19, 'CULT-02', '221', '2,3', '6,1,2', '0000-00-00', '2025-04-30', NULL, NULL, NULL, NULL, NULL, 0.00, NULL, NULL, NULL, 0.00, 'inactive', '2025-04-24 04:27:19', '2025-04-24 17:57:43'),
-(10, 'Prueba de ya', 20, 'cult-001', '1232', '2', '6,3', '2025-04-24', '2025-04-26', NULL, NULL, NULL, NULL, NULL, 0.00, NULL, NULL, NULL, 0.00, 'active', '2025-04-24 14:13:32', '2025-04-24 14:13:32'),
-(11, 'Produccion de tomate chonto', 19, 'CULT-002', '221', '2,3', '1,2,6', '2025-04-24', '2025-05-10', NULL, NULL, NULL, NULL, NULL, 0.00, NULL, NULL, NULL, 0.00, 'active', '2025-04-24 18:04:28', '2025-04-24 18:05:42'),
-(12, 'jhhhssss', 19, 'cafe', '1232', '2,3,4', '6', '2025-04-05', '2025-05-09', NULL, NULL, NULL, NULL, NULL, 0.00, NULL, NULL, NULL, 0.00, 'inactive', '2025-04-24 18:37:07', '2025-04-24 18:38:07');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `production_insumos`
---
-
-CREATE TABLE `production_insumos` (
-  `id` int(11) NOT NULL,
-  `production_id` int(11) NOT NULL COMMENT 'FK a la tabla productions',
-  `insumo_id` int(11) NOT NULL COMMENT 'FK a la tabla insumos',
-  `cantidad_usada` decimal(10,2) NOT NULL COMMENT 'Cantidad de este insumo usada en esta producción',
-  `fecha_uso` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Fecha en que se registró el uso'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Registra la cantidad específica de insumos usados en cada producción';
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `production_supplies`
---
-
-CREATE TABLE `production_supplies` (
-  `id` int(11) NOT NULL,
-  `production_id` int(11) NOT NULL COMMENT 'FK a productions.id',
-  `insumo_id` int(11) NOT NULL COMMENT 'FK a insumos.id',
-  `quantity_used` decimal(10,2) NOT NULL COMMENT 'Cantidad del insumo usada en esta producción',
-  `registration_date` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Fecha en que se registró el uso'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Registra la cantidad de cada insumo utilizado por producción';
+INSERT INTO `productions` (`id`, `name`, `responsible`, `cultivation`, `cycle`, `sensors`, `supplies`, `start_date`, `end_date`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Hola', 8, 'cult-001', '221', '1', '3', '2025-04-21', '2025-05-09', 'inactive', '2025-04-19 05:11:05', '2025-04-21 16:56:17'),
+(2, 'ggggg', 10, 'cult-001', '23223', '1', '3', '0000-00-00', '0000-00-00', 'inactive', '2025-04-19 05:12:17', '2025-04-19 05:13:20'),
+(3, 'Prueba', 10, 'cafe', '1232', '2', '6', '2025-04-17', '2025-05-07', 'active', '2025-04-21 16:55:22', '2025-04-21 16:55:22'),
+(4, 'Producción de tomate Zona 2', 19, 'CULT-002', '1232', '3', '6', '2025-04-22', '2025-07-23', 'active', '2025-04-22 20:03:54', '2025-04-22 20:06:20');
 
 -- --------------------------------------------------------
 
@@ -216,21 +169,7 @@ CREATE TABLE `sensores` (
 INSERT INTO `sensores` (`id`, `tipo_sensor`, `nombre_sensor`, `identificador`, `referencia_sensor`, `unidad_medida`, `tiempo_escaneo`, `estado`, `descripcion`, `ruta_fotografia`, `fecha_creacion`, `fecha_actualizacion`) VALUES
 (1, 'maquina', 'hola', 'ms-11', 'metros', '12', '12343', 'disponible', 'si', '/uploads/sensores/sensor-1743515195364-577950561.jpg', '2025-04-01 13:46:35', '2025-04-01 13:46:35'),
 (2, 'Super', 'Metrica', 'SENS_02', 'MAQUINAs', 'Temp', '232', 'Activo', 'Exceleny', NULL, '2025-04-21 05:13:42', '2025-04-21 05:13:42'),
-(3, 'Temperatura', 'Sensor de temperatura', 'SENS_03', 'DHT22', 'Grados Celcius', '2 Segundos', 'Activo', 'Sensor ubicado en zona 2', '/uploads/sensores/sensor-1745351794393-548736599.jpeg', '2025-04-22 19:56:34', '2025-04-22 19:56:34'),
-(4, 'Prueba Sns', 'Sensor super', 'SENS_05', 'SSS', 'metros', '2segundos', 'Activo', 'bien', '/uploads/sensores/sensor-1745472028211-63401750.jpg', '2025-04-24 05:20:28', '2025-04-24 05:20:28');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `sensor_readings`
---
-
-CREATE TABLE `sensor_readings` (
-  `id` bigint(20) NOT NULL,
-  `sensor_id` int(11) NOT NULL COMMENT 'FK a la tabla sensores',
-  `reading_value` varchar(255) NOT NULL COMMENT 'Valor leído por el sensor (puede ser numérico o texto)',
-  `reading_timestamp` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Fecha y hora de la lectura'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Almacena las lecturas históricas de los sensores';
+(3, 'Temperatura', 'Sensor de temperatura', 'SENS_03', 'DHT22', 'Grados Celcius', '2 Segundos', 'Activo', 'Sensor ubicado en zona 2', '/uploads/sensores/sensor-1745351794393-548736599.jpeg', '2025-04-22 19:56:34', '2025-04-22 19:56:34');
 
 -- --------------------------------------------------------
 
@@ -261,8 +200,7 @@ INSERT INTO `user` (`id`, `documentType`, `documentNumber`, `userType`, `firstNa
 (8, 'CC', '10403123', 'suplente', 'jota', 'ramirae', '329484723', '$2b$10$Y/bZubFiVCoghySJsHnBJ.5y0x7KSoEiztn0jW//r6hb1O2WqzmCS', 'jacobohoyoszz@gmail.com', 'jacobohoyoszz@gmail.com', '2025-04-01 03:36:47', '2025-04-01 03:36:47'),
 (10, '', '1213223', 'PAP', 'sdsdsdsw', 'ewewewew', '3232323232', '$2b$10$UEEq2celRM9dpFoCEAAVT.bn3T.CTPEAp23uO5wESwvn6Hlbwluki', 'kasdaldsa@haajaak.com', 'kasdaldsa@haajaak.com', '2025-04-03 20:32:57', '2025-04-03 20:32:57'),
 (18, 'CC', '1030212393', 'PAP', 'tomas', 'tomate', '232778830', '$2b$10$3xaRHbuW8/ChrsrHeqYIn.5J.RKZd3akVfDasaqmNQaeQeJOWa5oK', 'tomate@gmail.com', 'tomate@gmail.com', '2025-04-21 04:57:17', '2025-04-21 04:57:17'),
-(19, 'CC', '18618000', 'PAP', 'Edward', 'Velasquez ', '3165161256', '$2b$10$8/9gZPZ8XId4Ac/H8LxeQuo7ItqA4Ullp/H3xwOTUENrquutf5X.O', 'ricoprogramar@gmail.com', 'ricoprogramar@gmail.com', '2025-04-22 19:46:59', '2025-04-22 19:46:59'),
-(20, 'PPT', '123456789', 'ADMIN', 'Jacobo', 'Ramirez', '3154682445', '$2b$10$N.fgwGcXB34SYdLxfPjVA.Bu/oue2YuT3Sb9ey2mDT8sm9bE2f.YO', 'jacobohoyoszzs@gmail.com', 'jacobohoyoszzs@gmail.com', '2025-04-24 14:12:58', '2025-04-24 14:12:58');
+(19, 'CC', '18618000', 'PAP', 'Edward', 'Velasquez ', '3165161256', '$2b$10$8/9gZPZ8XId4Ac/H8LxeQuo7ItqA4Ullp/H3xwOTUENrquutf5X.O', 'ricoprogramar@gmail.com', 'ricoprogramar@gmail.com', '2025-04-22 19:46:59', '2025-04-22 19:46:59');
 
 --
 -- Índices para tablas volcadas
@@ -298,24 +236,7 @@ ALTER TABLE `productions`
   ADD PRIMARY KEY (`id`),
   ADD KEY `responsible` (`responsible`),
   ADD KEY `cultivation` (`cultivation`),
-  ADD KEY `cycle` (`cycle`),
-  ADD KEY `idx_status` (`status`);
-
---
--- Indices de la tabla `production_insumos`
---
-ALTER TABLE `production_insumos`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_production_id` (`production_id`),
-  ADD KEY `idx_insumo_id` (`insumo_id`);
-
---
--- Indices de la tabla `production_supplies`
---
-ALTER TABLE `production_supplies`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_production_id` (`production_id`),
-  ADD KEY `idx_insumo_id` (`insumo_id`);
+  ADD KEY `cycle` (`cycle`);
 
 --
 -- Indices de la tabla `sensores`
@@ -323,14 +244,6 @@ ALTER TABLE `production_supplies`
 ALTER TABLE `sensores`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `identificador` (`identificador`);
-
---
--- Indices de la tabla `sensor_readings`
---
-ALTER TABLE `sensor_readings`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_sensor_id` (`sensor_id`),
-  ADD KEY `idx_reading_timestamp` (`reading_timestamp`);
 
 --
 -- Indices de la tabla `user`
@@ -360,31 +273,13 @@ ALTER TABLE `insumos`
 -- AUTO_INCREMENT de la tabla `productions`
 --
 ALTER TABLE `productions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
---
--- AUTO_INCREMENT de la tabla `production_insumos`
---
-ALTER TABLE `production_insumos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `production_supplies`
---
-ALTER TABLE `production_supplies`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `sensores`
 --
 ALTER TABLE `sensores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT de la tabla `sensor_readings`
---
-ALTER TABLE `sensor_readings`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `user`
@@ -403,26 +298,6 @@ ALTER TABLE `productions`
   ADD CONSTRAINT `productions_ibfk_1` FOREIGN KEY (`responsible`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `productions_ibfk_2` FOREIGN KEY (`cultivation`) REFERENCES `cultivos` (`id_cultivo`),
   ADD CONSTRAINT `productions_ibfk_3` FOREIGN KEY (`cycle`) REFERENCES `ciclo_cultivo` (`id_ciclo`);
-
---
--- Filtros para la tabla `production_insumos`
---
-ALTER TABLE `production_insumos`
-  ADD CONSTRAINT `fk_production_insumos_insumo` FOREIGN KEY (`insumo_id`) REFERENCES `insumos` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_production_insumos_production` FOREIGN KEY (`production_id`) REFERENCES `productions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `production_supplies`
---
-ALTER TABLE `production_supplies`
-  ADD CONSTRAINT `fk_insumo` FOREIGN KEY (`insumo_id`) REFERENCES `insumos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_production` FOREIGN KEY (`production_id`) REFERENCES `productions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `sensor_readings`
---
-ALTER TABLE `sensor_readings`
-  ADD CONSTRAINT `fk_sensor_readings_sensor` FOREIGN KEY (`sensor_id`) REFERENCES `sensores` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

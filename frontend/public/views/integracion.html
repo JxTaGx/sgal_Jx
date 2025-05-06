@@ -128,15 +128,16 @@
                         <div class="dashboard__form-group dashboard__form-group--full-width">
                             <label class="dashboard__label">Insumos</label>
                             <div class="dashboard__supply-selection">
-                                <button class="dashboard__button dashboard__button--icon dashboard__button--inline" type="button" onclick="redirectToCreate('supply', '../views/create-insumo.html')" title="Crear Nuevo Insumo">
-                                    <i class="material-icons">add_circle</i>
-                                </button>
+                                
                                 <div class="dashboard__supply-add-area">
                                     <select class="dashboard__select" data-field="available-supplies">
                                         <option value="">Seleccione un insumo para agregar</option>
                                     </select>
                                     <input type="number" class="dashboard__input" placeholder="Cantidad" min="1" data-field="supply-quantity">
-                                    <button class="dashboard__button dashboard__button--primary" type="button" data-action="add-selected-supply">Agregar</button>
+                                    <button class="dashboard__button dashboard__button--icon dashboard__button--inline" type="button" onclick="redirectToCreate('supply', '../views/create-insumo.html')" title="Crear Nuevo Insumo">
+                                        <i class="material-icons">add_circle</i>
+                                    </button>
+                                    <button class="dashboard__button dashboard__button--primary" type="button" data-action="add-selected-supply">Agregar</button> 
                                 </div>
                             </div>
                             <div class="dashboard__selected-items-list" data-list="selected-supplies">
@@ -228,7 +229,7 @@
                                     </div>
                                 </div>
                                 <div class="dashboard__widget">
-                                    <h3 class="dashboard__widget-title"><i class="material-icons">compare_arrows</i> Comparativa de Sensores Similares (Simulado)</h3>
+                                    <h3 class="dashboard__widget-title"><i class="material-icons">compare_arrows</i> Comparativa de Sensores Similares</h3>
                                     <div class="dashboard__chart-container" style="height: 220px;">
                                         <canvas data-chart="sensors-comparison-chart"></canvas>
                                     </div>
@@ -276,7 +277,7 @@
                                 </div>
                                 
                                 <div class="dashboard__widget">
-                                    <h3 class="dashboard__widget-title"><i class="material-icons">event_note</i> Registro de Actividad (Sim.)</h3>
+                                    <h3 class="dashboard__widget-title"><i class="material-icons">event_note</i> Registro de Actividad</h3>
                                     <ul class="dashboard__activity-log" data-info="activity-log" style="max-height: 150px;">
                                         </ul>
                                 </div>
@@ -306,7 +307,7 @@
                         </div>
                         <div class="dashboard__full-width-section">
                                 <div class="dashboard__widget">
-                                <h3 class="dashboard__widget-title"><i class="material-icons">agriculture</i> Proyección de Cosecha (Simulada)</h3>
+                                <h3 class="dashboard__widget-title"><i class="material-icons">agriculture</i> Proyección de Cosecha</h3>
                                 <div class="dashboard__chart-container" style="height: 220px;">
                                     <canvas data-chart="harvest-projection-chart"></canvas>
                                 </div>
@@ -438,7 +439,7 @@
                 <div class="dashboard__heading">
                     <h2 class="dashboard__title">
                         <i class="material-icons dashboard__icon">description</i>
-                        Generar Reporte (Simulado)
+                        Generar Reporte
                     </h2>
                     <p class="dashboard__subtitle">Genere reportes personalizados de las producciones</p>
                 </div>
