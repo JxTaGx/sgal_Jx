@@ -170,88 +170,222 @@
             <section class="dashboard__section" data-panel="view">
                 <div class="dashboard__heading">
                     <h2 class="dashboard__title">
-                        <i class="material-icons dashboard__icon">visibility</i>
-                        Visualizar Producción
+                        <i class="material-icons dashboard__icon">dashboard</i>
+                        Dashboard Analítico de Producción
                     </h2>
-                    <p class="dashboard__subtitle">Busque una producción por su ID para ver los detalles</p>
+                    <p class="dashboard__subtitle">Visualización completa de métricas y rendimientos</p>
                 </div>
-
+            
                 <div class="dashboard__widget">
                     <form class="dashboard__form" data-form="view">
                         <div class="dashboard__form-group">
                             <label class="dashboard__label">ID de Producción</label>
-                            <div class="dashboard__input-group">
+                            <div class="dashboard__input-group dashboard__input-group--search">
                                 <input class="dashboard__input" type="text" data-field="production-id" required placeholder="Ej: prod-1">
-                                <button class="dashboard__button dashboard__button--primary" type="submit">Buscar</button>
+                                <button class="dashboard__button dashboard__button--primary" type="submit">
+                                    <i class="material-icons">search</i> Cargar Dashboard
+                                </button>
                             </div>
                             <span class="dashboard__error" data-error="production-id"></span>
                         </div>
                     </form>
-
+            
                     <div class="dashboard__result dashboard__result--hidden" data-result="view">
-                        <div class="dashboard__info-section">
-                            <h3 class="dashboard__section-title">Información General</h3>
-                            <div class="dashboard__info-grid" data-info="basic">
+                        <!-- Header Superior -->
+                        <div class="analytics-header">
+                            <div class="analytics-header__info">
+                                <h3 class="analytics-header__title" data-info="production-name">Producción de Tomate</h3>
+                                <div class="analytics-header__meta">
+                                    <span class="analytics-header__badge" data-info="production-status">Activo</span>
+                                    <span class="analytics-header__period" data-info="production-dates">Ene 2023 - Mar 2023</span>
+                                </div>
+                            </div>
+                            <div class="analytics-header__actions">
+                                <button class="dashboard__button dashboard__button--secondary">
+                                    <i class="material-icons">print</i> Exportar
+                                </button>
+                                <button class="dashboard__button dashboard__button--secondary">
+                                    <i class="material-icons">share</i> Compartir
+                                </button>
                             </div>
                         </div>
-
-                        <div class="dashboard__info-section">
-                            <h3 class="dashboard__section-title">Métricas Clave (Simuladas)</h3>
-                            <div class="dashboard__metrics-grid">
-                                <div class="dashboard__metric-card">
-                                    <div class="dashboard__metric-value" data-metric="health">--%</div>
-                                    <div class="dashboard__metric-label">Salud del Cultivo</div>
-                                    <div class="dashboard__metric-trend">
+            
+                        <!-- KPI Cards -->
+                        <div class="kpi-grid">
+                            <div class="kpi-card kpi-card--primary">
+                                <div class="kpi-card__icon">
+                                    <i class="material-icons">monetization_on</i>
+                                </div>
+                                <div class="kpi-card__content">
+                                    <span class="kpi-card__label">Inversión Total</span>
+                                    <span class="kpi-card__value" data-kpi="investment">$12,450.00</span>
+                                    <span class="kpi-card__trend trend-up">
+                                        <i class="material-icons">trending_up</i> 12%
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="kpi-card kpi-card--success">
+                                <div class="kpi-card__icon">
+                                    <i class="material-icons">show_chart</i>
+                                </div>
+                                <div class="kpi-card__content">
+                                    <span class="kpi-card__label">Rendimiento</span>
+                                    <span class="kpi-card__value" data-kpi="yield">78%</span>
+                                    <span class="kpi-card__trend trend-up">
+                                        <i class="material-icons">trending_up</i> 5%
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="kpi-card kpi-card--warning">
+                                <div class="kpi-card__icon">
+                                    <i class="material-icons">local_shipping</i>
+                                </div>
+                                <div class="kpi-card__content">
+                                    <span class="kpi-card__label">Insumos Utilizados</span>
+                                    <span class="kpi-card__value" data-kpi="supplies">24/32</span>
+                                    <span class="kpi-card__trend trend-down">
+                                        <i class="material-icons">trending_down</i> 8%
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="kpi-card kpi-card--info">
+                                <div class="kpi-card__icon">
+                                    <i class="material-icons">sensors</i>
+                                </div>
+                                <div class="kpi-card__content">
+                                    <span class="kpi-card__label">Sensores Activos</span>
+                                    <span class="kpi-card__value" data-kpi="sensors">3/5</span>
+                                    <span class="kpi-card__trend trend-neutral">
+                                        <i class="material-icons">trending_flat</i> 0%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <!-- Primera Fila de Gráficos -->
+                        <div class="analytics-row">
+                            <div class="analytics-card analytics-card--large">
+                                <div class="analytics-card__header">
+                                    <h4 class="analytics-card__title">
+                                        <i class="material-icons">bar_chart</i> Rendimiento por Semana
+                                    </h4>
+                                    <select class="dashboard__select dashboard__select--small">
+                                        <option>Últimos 30 días</option>
+                                        <option>Últimos 3 meses</option>
+                                        <option>Toda la producción</option>
+                                    </select>
+                                </div>
+                                <div id="performanceChart" class="google-chart"></div>
+                            </div>
+                            
+                            <div class="analytics-card">
+                                <div class="analytics-card__header">
+                                    <h4 class="analytics-card__title">
+                                        <i class="material-icons">pie_chart</i> Distribución de Costos
+                                    </h4>
+                                </div>
+                                <div id="costDistributionChart" class="google-chart"></div>
+                            </div>
+                        </div>
+            
+                        <!-- Segunda Fila de Gráficos -->
+                        <div class="analytics-row">
+                            <div class="analytics-card">
+                                <div class="analytics-card__header">
+                                    <h4 class="analytics-card__title">
+                                        <i class="material-icons">show_chart</i> Tendencias Climáticas
+                                    </h4>
+                                </div>
+                                <div id="climateTrendsChart" class="google-chart"></div>
+                            </div>
+                            
+                            <div class="analytics-card">
+                                <div class="analytics-card__header">
+                                    <h4 class="analytics-card__title">
+                                        <i class="material-icons">water_drop</i> Humedad del Suelo
+                                    </h4>
+                                </div>
+                                <div id="soilMoistureChart" class="google-chart"></div>
+                            </div>
+                            
+                            <div class="analytics-card">
+                                <div class="analytics-card__header">
+                                    <h4 class="analytics-card__title">
+                                        <i class="material-icons">thermostat</i> Temperatura Ambiente
+                                    </h4>
+                                </div>
+                                <div id="temperatureChart" class="google-chart"></div>
+                            </div>
+                        </div>
+            
+                        <!-- Tercera Fila - Detalles -->
+                        <div class="details-row">
+                            <div class="details-card">
+                                <div class="details-card__header">
+                                    <h4 class="details-card__title">
+                                        <i class="material-icons">person</i> Responsable
+                                    </h4>
+                                </div>
+                                <div class="user-details" data-info="responsible">
+                                    <div class="user-details__avatar">
+                                        <i class="material-icons">account_circle</i>
+                                    </div>
+                                    <div class="user-details__info">
+                                        <span class="user-details__name">Juan Pérez</span>
+                                        <span class="user-details__role">Ingeniero Agrónomo</span>
+                                        <div class="user-details__meta">
+                                            <span><i class="material-icons">email</i> juan.perez@empresa.com</span>
+                                            <span><i class="material-icons">phone</i> +57 310 123 4567</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="dashboard__metric-card">
-                                    <div class="dashboard__metric-value" data-metric="growth">--cm</div>
-                                    <div class="dashboard__metric-label">Crecimiento Promedio</div>
-                                    <div class="dashboard__metric-trend">
-                                    </div>
+                            </div>
+                            
+                            <div class="details-card">
+                                <div class="details-card__header">
+                                    <h4 class="details-card__title">
+                                        <i class="material-icons">inventory</i> Insumos (Top 5)
+                                    </h4>
                                 </div>
-                                <div class="dashboard__metric-card">
-                                    <div class="dashboard__metric-value" data-metric="yield">--%</div>
-                                    <div class="dashboard__metric-label">Rendimiento Estimado</div>
-                                    <div class="dashboard__metric-trend">
-                                    </div>
+                                <div class="supplies-table" data-info="supplies">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Insumo</th>
+                                                <th>Cantidad</th>
+                                                <th>Responsable</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Datos dinámicos aquí -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div class="details-card">
+                                <div class="details-card__header">
+                                    <h4 class="details-card__title">
+                                        <i class="material-icons">sensors</i> Sensores Activos
+                                    </h4>
+                                </div>
+                                <div class="sensors-grid" data-info="sensors">
+                                    <!-- Datos dinámicos aquí -->
                                 </div>
                             </div>
                         </div>
-
-                        <div class="dashboard__info-section">
-                            <h3 class="dashboard__section-title">Análisis de Datos (Simulados)</h3>
-                            <p class="dashboard__notice">Nota: Los gráficos muestran datos simulados y no reflejan lecturas reales de sensores.</p>
-                            <div class="dashboard__charts-grid">
-                                <div class="dashboard__chart-container">
-                                    <h4 class="dashboard__chart-title">Humedad del Suelo</h4>
-                                    <canvas data-chart="humidity" height="200"></canvas>
-                                </div>
-                                <div class="dashboard__chart-container">
-                                    <h4 class="dashboard__chart-title">Temperatura Ambiente</h4>
-                                    <canvas data-chart="temperature" height="200"></canvas>
-                                </div>
-                                <div class="dashboard__chart-container">
-                                    <h4 class="dashboard__chart-title">Niveles de Nutrientes</h4>
-                                    <canvas data-chart="nutrients" height="200"></canvas>
-                                </div>
-                                <div class="dashboard__chart-container">
-                                    <h4 class="dashboard__chart-title">Progreso de Crecimiento</h4>
-                                    <canvas data-chart="growth" height="200"></canvas>
-                                </div>
+            
+                        <!-- Cuarta Fila - Tabla Completa -->
+                        <div class="analytics-card analytics-card--full">
+                            <div class="analytics-card__header">
+                                <h4 class="analytics-card__title">
+                                    <i class="material-icons">table_chart</i> Datos Financieros Completos
+                                </h4>
                             </div>
-                        </div>
-
-                        <div class="dashboard__info-section">
-                            <h3 class="dashboard__section-title">Estado de Sensores Asignados</h3>
-                            <p class="dashboard__notice">Nota: Muestra el estado configurado del sensor, no lecturas en tiempo real.</p>
-                            <div class="dashboard__sensors-grid" data-info="sensors">
-                            </div>
-                        </div>
-
-                        <div class="dashboard__info-section">
-                            <h3 class="dashboard__section-title">Insumos Asignados</h3>
-                            <div data-info="supplies"> </div>
+                            <div id="financialTable" class="google-chart"></div>
                         </div>
                     </div>
                 </div>

@@ -734,54 +734,369 @@ document.addEventListener('DOMContentLoaded', function() {
         const resultSection = document.querySelector('[data-panel="view"] [data-result="view"]');
         if (!resultSection) return;
         resultSection.classList.add('dashboard__result--hidden');
-
+    
         try {
-            const response = await fetch(`${API_BASE_URL}/productions/${productionId}`);
-            if (!response.ok) throw new Error(response.status === 404 ? 'Producción no encontrada' : `Error al obtener producción: ${response.statusText}`);
-            const result = await response.json();
-            if (!result.success || !result.data) throw new Error(result.error || 'Producción no encontrada en la respuesta');
-
-            const production = result.data;
+            showSnackbar("Cargando dashboard analítico...", "info");
+            
+            // 1. Cargar datos de producción
+            const productionResponse = await fetch(`${API_BASE_URL}/productions/${productionId}`);
+            if (!productionResponse.ok) throw new Error(productionResponse.status === 404 ? 
+                'Producción no encontrada' : `Error al buscar: ${productionResponse.statusText}`);
+            
+            const productionResult = await productionResponse.json();
+            if (!productionResult.success || !productionResult.data) {
+                throw new Error(productionResult.error || 'No se encontraron datos');
+            }
+    
+            const production = productionResult.data;
             currentProductionId = production.id;
-
-            // Basic Info
-            const basicInfoContainer = resultSection.querySelector('[data-info="basic"]');
-            if (basicInfoContainer) {
-                basicInfoContainer.innerHTML = '';
-                const infoItems = [
-                    { label: 'ID', value: `prod-${production.id}` }, { label: 'Nombre', value: production.name },
-                    { label: 'Responsable', value: production.responsible_name || 'N/A' }, { label: 'Cultivo', value: production.cultivation_name || 'N/A' },
-                    { label: 'Ciclo', value: production.cycle_name || 'N/A' }, { label: 'Fecha Inicio', value: formatDate(production.start_date) },
-                    { label: 'Fecha Fin Est.', value: formatDate(production.end_date) }, { label: 'Estado', value: production.status === 'active' ? 'Activo' : 'Inactivo' }
-                ];
-                infoItems.forEach(item => {
-                    const infoDiv = document.createElement('div'); infoDiv.className = 'dashboard__info-item';
-                    infoDiv.innerHTML = `<div class="dashboard__info-label">${item.label}</div><div class="dashboard__info-value">${item.value || 'N/A'}</div>`;
-                    basicInfoContainer.appendChild(infoDiv);
-                });
-            } else { console.warn("Contenedor [data-info='basic'] no encontrado en la vista."); }
-
-            // Simulated Metrics and Charts
-            updateSimulatedMetrics(resultSection);
-            createAllCharts(resultSection, generateSensorData());
-
-            // Display Sensors (using the new function)
-            const sensorsContainerView = resultSection.querySelector('[data-info="sensors"]');
-            if (sensorsContainerView) { await displayProductionSensorsView(sensorsContainerView, production.sensors || []); } else { console.warn("Contenedor [data-info='sensors'] no encontrado en la vista."); }
-
-
-            // Display Supplies
-            const suppliesContainerView = resultSection.querySelector('[data-info="supplies"]');
-            if (suppliesContainerView) { await displayProductionSuppliesView(suppliesContainerView, production.supplies || []); } else { console.warn("Contenedor [data-info='supplies'] no encontrado en la vista."); }
-
+    
+            // 2. Actualizar información básica
+            updateBasicInfo(resultSection, production);
+    
+            // 3. Cargar Google Charts si no está cargado
+            if (typeof google === 'undefined' || !google.charts) {
+                await loadGoogleCharts();
+            }
+    
+            // 4. Dibujar gráficos
+            drawCharts();
+    
+            // 5. Cargar y mostrar datos adicionales
+            await Promise.all([
+                updateResponsibleInfo(resultSection, production.responsible),
+                updateSuppliesInfo(resultSection, production.supplies || []),
+                updateSensorsInfo(resultSection, production.sensors || [])
+            ]);
+    
             resultSection.classList.remove('dashboard__result--hidden');
-
+            showSnackbar("Dashboard cargado exitosamente", "success");
+    
         } catch (error) {
-            console.error('Error al visualizar producción:', error);
-            showSnackbar(`Error al visualizar: ${error.message}`, 'error');
+            console.error('Error cargando dashboard:', error);
+            showSnackbar(`Error al cargar: ${error.message}`, 'error');
             resultSection.classList.add('dashboard__result--hidden');
         }
     }
+
+    // Función para actualizar información de sensores
+async function updateSensorsInfo(section, sensorIds) {
+    const container = section.querySelector('.sensors-grid');
+    if (!container) return;
+
+    container.innerHTML = '<div class="sensor-item">Cargando sensores...</div>';
+
+    try {
+        if (!Array.isArray(sensorIds) || sensorIds.length === 0) {
+            container.innerHTML = '<div class="sensor-item">No hay sensores asignados</div>';
+            return;
+        }
+
+        const response = await fetch(`${API_BASE_URL}/sensors?ids=${sensorIds.join(',')}`);
+        if (!response.ok) throw new Error('Error al obtener sensores');
+        
+        const result = await response.json();
+        const sensorsData = result.success ? result.data : [];
+
+        container.innerHTML = '';
+        sensorsData.forEach(sensor => {
+            const sensorElement = document.createElement('div');
+            sensorElement.className = 'sensor-item';
+            sensorElement.innerHTML = `
+                <div class="sensor-item__icon">
+                    <i class="material-icons">${getSensorIcon(sensor.tipo_sensor)}</i>
+                </div>
+                <div class="sensor-item__info">
+                    <span class="sensor-item__name">${sensor.nombre_sensor || 'Sensor'}</span>
+                    <span class="sensor-item__type">${sensor.tipo_sensor || 'N/A'}</span>
+                </div>
+                <span class="sensor-item__status sensor-item__status--${sensor.estado === 'Activo' ? 'active' : 'inactive'}">
+                    ${sensor.estado || 'N/A'}
+                </span>
+            `;
+            container.appendChild(sensorElement);
+        });
+    } catch (error) {
+        console.error('Error actualizando sensores:', error);
+        container.innerHTML = '<div class="sensor-item">Error al cargar sensores</div>';
+    }
+}
+
+    // Función para actualizar información de insumos
+async function updateSuppliesInfo(section, supplyIds) {
+    const tbody = section.querySelector('.supplies-table tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '<tr><td colspan="3">Cargando insumos...</td></tr>';
+
+    try {
+        if (!Array.isArray(supplyIds) || supplyIds.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3">No hay insumos registrados</td></tr>';
+            return;
+        }
+
+        const response = await fetch(`${API_BASE_URL}/supplies?ids=${supplyIds.join(',')}`);
+        if (!response.ok) throw new Error('Error al obtener insumos');
+        
+        const result = await response.json();
+        const suppliesData = result.success ? result.data : [];
+
+        tbody.innerHTML = '';
+        suppliesData.slice(0, 5).forEach(supply => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${supply.nombre_insumo || 'N/A'}</td>
+                <td>${supply.cantidad || 0} ${supply.unidad_medida || ''}</td>
+                <td>${supply.responsable || 'No asignado'}</td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        if (supplyIds.length > 5) {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td colspan="3">+${supplyIds.length - 5} insumos más...</td>`;
+            tbody.appendChild(row);
+        }
+    } catch (error) {
+        console.error('Error actualizando insumos:', error);
+        tbody.innerHTML = '<tr><td colspan="3">Error al cargar insumos</td></tr>';
+    }
+}
+
+    // Función para actualizar información del responsable
+async function updateResponsibleInfo(section, responsibleId) {
+    const responsibleElement = section.querySelector('[data-info="responsible"]');
+    if (!responsibleElement) return;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/users/${responsibleId}`);
+        if (!response.ok) throw new Error('Error al cargar responsable');
+        
+        const result = await response.json();
+        if (result.success && result.data) {
+            const user = result.data;
+            responsibleElement.querySelector('.user-details__name').textContent = 
+                `${user.firstName} ${user.lastName}` || 'Responsable no asignado';
+            responsibleElement.querySelector('.user-details__role').textContent = 
+                user.userType === 'PAP' ? 'Productor Agrícola' : 'Responsable de Producción';
+            responsibleElement.querySelector('.user-details__meta').innerHTML = `
+                <span><i class="material-icons">email</i> ${user.email || 'N/A'}</span>
+                <span><i class="material-icons">phone</i> ${user.phone || 'N/A'}</span>
+            `;
+        }
+    } catch (error) {
+        console.error('Error cargando responsable:', error);
+        responsibleElement.querySelector('.user-details__name').textContent = 'Error al cargar responsable';
+    }
+}
+
+    // Función para dibujar todos los gráficos
+function drawCharts() {
+    drawPerformanceChart();
+    drawCostDistributionChart();
+    drawClimateTrendsChart();
+    drawSoilMoistureChart();
+    drawTemperatureChart();
+    drawFinancialTable();
+}
+
+function drawTemperatureChart() {
+    if (!document.getElementById('temperatureChart')) return;
+    
+    const data = google.visualization.arrayToDataTable([
+        ['Hora', 'Temperatura (°C)'],
+        ['6:00', 18],
+        ['9:00', 22],
+        ['12:00', 28],
+        ['15:00', 30],
+        ['18:00', 25],
+        ['21:00', 20]
+    ]);
+
+    const options = {
+        title: 'Temperatura Ambiente (Últimas 24h)',
+        colors: ['#F44336'],
+        backgroundColor: 'transparent',
+        legend: { position: 'none' },
+        hAxis: { title: 'Hora' },
+        vAxis: { title: 'Temperatura (°C)', minValue: 0 }
+    };
+
+    const chart = new google.visualization.LineChart(document.getElementById('temperatureChart'));
+    chart.draw(data, options);
+}
+
+function drawFinancialTable() {
+    if (!document.getElementById('financialTable')) return;
+    
+    const data = google.visualization.arrayToDataTable([
+        ['Concepto', 'Presupuesto', 'Gastado', 'Diferencia'],
+        ['Insumos', 5000, 4500, 500],
+        ['Mano de obra', 3000, 3200, -200],
+        ['Equipos', 2000, 1800, 200],
+        ['Logística', 1000, 950, 50],
+        ['Otros', 500, 600, -100]
+    ]);
+
+    const options = {
+        title: 'Resumen Financiero',
+        showRowNumber: false,
+        width: '100%',
+        height: '300px',
+        backgroundColor: 'transparent',
+        alternatingRowStyle: true,
+        cssClassNames: {
+            tableRow: 'financial-table-row',
+            headerRow: 'financial-table-header',
+            oddTableRow: 'financial-table-odd-row'
+        }
+    };
+
+    const chart = new google.visualization.Table(document.getElementById('financialTable'));
+    chart.draw(data, options);
+}
+
+function drawSoilMoistureChart() {
+    if (!document.getElementById('soilMoistureChart')) return;
+    
+    const data = google.visualization.arrayToDataTable([
+        ['Hora', 'Humedad (%)'],
+        ['6:00', 65],
+        ['9:00', 60],
+        ['12:00', 55],
+        ['15:00', 58],
+        ['18:00', 62],
+        ['21:00', 68]
+    ]);
+
+    const options = {
+        title: 'Humedad del Suelo (Últimas 24h)',
+        colors: ['#2196F3'],
+        backgroundColor: 'transparent',
+        legend: { position: 'none' },
+        hAxis: { title: 'Hora' },
+        vAxis: { title: 'Humedad (%)', minValue: 0 }
+    };
+
+    const chart = new google.visualization.AreaChart(document.getElementById('soilMoistureChart'));
+    chart.draw(data, options);
+}
+
+function drawClimateTrendsChart() {
+    if (!document.getElementById('climateTrendsChart')) return;
+    
+    const data = google.visualization.arrayToDataTable([
+        ['Día', 'Lluvia (mm)', 'Humedad (%)', 'Horas Sol'],
+        ['1', 5, 65, 8],
+        ['2', 3, 70, 10],
+        ['3', 0, 60, 12],
+        ['4', 0, 58, 12],
+        ['5', 2, 75, 9],
+        ['6', 8, 85, 4],
+        ['7', 15, 90, 2]
+    ]);
+
+    const options = {
+        title: 'Tendencias Climáticas',
+        colors: ['#4285F4', '#0F9D58', '#F4B400'],
+        backgroundColor: 'transparent',
+        legend: { position: 'top' },
+        hAxis: { title: 'Días' },
+        vAxis: { title: 'Valores' }
+    };
+
+    const chart = new google.visualization.ColumnChart(document.getElementById('climateTrendsChart'));
+    chart.draw(data, options);
+}
+
+function drawCostDistributionChart() {
+    if (!document.getElementById('costDistributionChart')) return;
+    
+    const data = google.visualization.arrayToDataTable([
+        ['Rubro', 'Costo'],
+        ['Insumos', 45],
+        ['Mano de obra', 30],
+        ['Equipos', 15],
+        ['Otros', 10]
+    ]);
+
+    const options = {
+        title: 'Distribución de Costos',
+        pieHole: 0.4,
+        colors: ['#4CAF50', '#2196F3', '#FFC107', '#9C27B0'],
+        backgroundColor: 'transparent',
+        legend: { position: 'labeled' },
+        pieSliceText: 'value'
+    };
+
+    const chart = new google.visualization.PieChart(document.getElementById('costDistributionChart'));
+    chart.draw(data, options);
+}
+
+// Funciones para dibujar gráficos individuales
+function drawPerformanceChart() {
+    if (!document.getElementById('performanceChart')) return;
+    
+    const data = google.visualization.arrayToDataTable([
+        ['Semana', 'Rendimiento', 'Meta'],
+        ['Sem 1', 65, 70],
+        ['Sem 2', 72, 75],
+        ['Sem 3', 78, 80],
+        ['Sem 4', 82, 85],
+        ['Sem 5', 85, 85],
+        ['Sem 6', 88, 90]
+    ]);
+
+    const options = {
+        title: 'Rendimiento Semanal',
+        curveType: 'function',
+        legend: { position: 'bottom' },
+        colors: ['#4CAF50', '#FF9800'],
+        backgroundColor: 'transparent',
+        hAxis: { title: 'Semanas' },
+        vAxis: { title: 'Porcentaje', minValue: 0 }
+    };
+
+    const chart = new google.visualization.LineChart(document.getElementById('performanceChart'));
+    chart.draw(data, options);
+}
+
+    // Función para actualizar información básica
+function updateBasicInfo(section, production) {
+    section.querySelector('[data-info="production-name"]').textContent = production.name || 'Producción sin nombre';
+    
+    const statusBadge = section.querySelector('[data-info="production-status"]');
+    statusBadge.textContent = production.status === 'active' ? 'Activo' : 'Inactivo';
+    statusBadge.className = production.status === 'active' ? 
+        'analytics-header__badge sensor-item__status--active' : 
+        'analytics-header__badge sensor-item__status--inactive';
+    
+    const startDate = formatDate(production.start_date, 'short');
+    const endDate = formatDate(production.end_date, 'short');
+    section.querySelector('[data-info="production-dates"]').textContent = `${startDate} - ${endDate}`;
+
+    // Actualizar KPIs con datos simulados
+    section.querySelector('[data-kpi="investment"]').textContent = `$${(Math.random() * 15000 + 5000).toFixed(2)}`;
+    section.querySelector('[data-kpi="yield"]').textContent = `${Math.floor(Math.random() * 30) + 70}%`;
+    section.querySelector('[data-kpi="supplies"]').textContent = `${Math.floor(Math.random() * 5) + 3}/5`;
+    section.querySelector('[data-kpi="sensors"]').textContent = `${Math.floor(Math.random() * 2) + 3}/5`;
+}
+
+    // Función auxiliar para cargar Google Charts
+function loadGoogleCharts() {
+    return new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = 'https://www.gstatic.com/charts/loader.js';
+        script.onload = () => {
+            google.charts.load('current', {
+                'packages': ['corechart', 'table', 'bar'],
+                'language': 'es'
+            });
+            google.charts.setOnLoadCallback(resolve);
+        };
+        document.head.appendChild(script);
+    });
+}
 
     async function updateProduction() {
         // Validate first, showing errors if necessary
@@ -1284,23 +1599,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // --- Utility Functions ---
-    function formatDate(dateInput) {
-        if (!dateInput || dateInput === '0000-00-00' || (typeof dateInput === 'string' && dateInput.startsWith('0001-'))) {
-            return 'No definida';
-        }
-        try {
-            let date;
-            if (dateInput instanceof Date) { date = dateInput; } else {
-                if (typeof dateInput === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateInput)) { date = new Date(dateInput + 'T00:00:00Z'); } else { date = new Date(dateInput); }
-            }
-            if (isNaN(date.getTime())) { return 'Fecha inválida'; }
-            const options = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
+    // Función auxiliar para formatear fechas
+function formatDate(dateInput, format = 'long') {
+    if (!dateInput || dateInput === '0000-00-00') return 'No definida';
+    try {
+        const date = new Date(dateInput);
+        if (isNaN(date.getTime())) return 'Fecha inválida';
+        
+        if (format === 'short') {
+            return date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        } else {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
             return date.toLocaleDateString('es-ES', options);
-        } catch (e) {
-            console.error(`formatDate: Error procesando la fecha "${dateInput}":`, e);
-            return 'Fecha inválida';
         }
+    } catch (e) {
+        console.error(`formatDate error:`, e);
+        return 'Fecha inválida';
     }
+}
 
     let snackbarTimeoutId = null;
     function showSnackbar(message, type = 'success') {
@@ -1506,12 +1822,21 @@ document.addEventListener('DOMContentLoaded', function() {
         try { await new Promise(resolve => setTimeout(resolve, 1500)); showSnackbar(`Reporte ${format.toUpperCase()} generado (simulado)`); form.reset(); } catch (error) { showSnackbar('Error al generar reporte', 'error'); }
     }
 
-    function getSensorIcon(type) {
-        if (!type) return 'sensors';
-        const typeLower = type.toLowerCase();
-        const icons = { 'humedad': 'opacity', 'temperatura': 'thermostat', 'nutrientes': 'eco', 'luz': 'wb_sunny', 'ph': 'science' };
-        return icons[typeLower] || 'sensors';
-    }
+    // Función auxiliar para obtener iconos de sensores
+function getSensorIcon(type) {
+    if (!type) return 'sensors';
+    const typeLower = type.toLowerCase();
+    const icons = { 
+        'humedad': 'opacity',
+        'temperatura': 'thermostat',
+        'nutrientes': 'eco',
+        'luz': 'wb_sunny',
+        'ph': 'science',
+        'lluvia': 'water_drop',
+        'viento': 'air'
+    };
+    return icons[typeLower] || 'sensors';
+}
 
     // Helper for simulated metrics
     function updateSimulatedMetrics(section) {
