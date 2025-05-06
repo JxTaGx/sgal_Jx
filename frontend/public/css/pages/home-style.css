@@ -170,6 +170,7 @@ html {
     text-decoration: none;
     color: var(--black);
     font-size: var(--font-size-h4);
+    cursor: default;
 }
 
 .nav {

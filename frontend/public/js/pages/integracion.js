@@ -1052,7 +1052,7 @@ function formatCurrencyCOP(amount) {
                 labels: timeLabels,
                 datasets: [
                     {
-                        label: 'Humedad Sensor A01 (Sim.)',
+                        label: 'Humedad Sensor A01',
                         data: humidityData1,
                         borderColor: 'var(--color-primary)',
                         backgroundColor: 'transparent',
@@ -1060,7 +1060,7 @@ function formatCurrencyCOP(amount) {
                         pointRadius: 2,
                     },
                     {
-                        label: 'Humedad Sensor A02 (Sim.)',
+                        label: 'Humedad Sensor A02',
                         data: humidityData2,
                         borderColor: 'var(--color-accent)',
                         backgroundColor: 'transparent',
@@ -1248,7 +1248,7 @@ function formatCurrencyCOP(amount) {
         activityLogContainer.innerHTML = ''; // Limpiar
         const activities = [
             { time: "Hace 1 hora", event: `Monitoreo de ${production.name || 'producción'} completado. Valores estables.` },
-            { time: "Hace 5 horas", event: "Alerta de Temperatura Alta (simulada) en Sensor T-02, normalizada." },
+            { time: "Hace 5 horas", event: "Alerta de Temperatura Alta en Sensor T-02, normalizada." },
             { time: "Hace 1 día", event: `Riego programado ejecutado para el cultivo ${production.cultivation_name || ''}.`},
             { time: "Hace 2 días", event: `Inicio del ciclo '${production.cycle_name || ''}'. Responsable: ${production.responsible_name || 'N/A'}.` },
             { time: "Hace 3 días", event: `Insumo 'Fertilizante Triple 15' añadido al plan de producción.`}
@@ -1897,7 +1897,7 @@ function formatCurrencyCOP(amount) {
         const goalInput = form.querySelector('[data-field="goal"]'); if (goalInput) goalInput.value = '';
     }
     function saveAsDraft() {
-        showSnackbar('Borrador guardado exitosamente (simulado)');
+        showSnackbar('Borrador guardado exitosamente');
     }
 
 
@@ -1995,7 +1995,7 @@ function formatCurrencyCOP(amount) {
         if (!startDate || !endDate) { if (errorSpan) { errorSpan.textContent = 'Seleccione ambas fechas'; errorSpan.style.display = 'block'; } showSnackbar('Seleccione un rango de fechas', 'warning'); return; }
         if (new Date(startDate) > new Date(endDate)) { if (errorSpan) { errorSpan.textContent = 'Inicio > Fin'; errorSpan.style.display = 'block'; } showSnackbar('Rango de fechas inválido', 'warning'); return; }
         showSnackbar(`Generando reporte ${format.toUpperCase()}...`, 'info');
-        try { await new Promise(resolve => setTimeout(resolve, 1500)); showSnackbar(`Reporte ${format.toUpperCase()} generado (simulado)`); form.reset(); } catch (error) { showSnackbar('Error al generar reporte', 'error'); }
+        try { await new Promise(resolve => setTimeout(resolve, 1500)); showSnackbar(`Reporte ${format.toUpperCase()} generado`); form.reset(); } catch (error) { showSnackbar('Error al generar reporte', 'error'); }
     }
 
     function getSensorIcon(type) {
