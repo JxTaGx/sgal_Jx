@@ -14,6 +14,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let filteredProductions = []; // Holds productions after filtering for list view
     const API_BASE_URL = 'http://localhost:3000/api'; // Base URL for most API calls
     const SESSION_STORAGE_KEY = 'productionFormData'; // Key for saving form state
+    let cycleProgressGauge = null; // Para la instancia del chart del medidor
+    let sensorsComparisonChart = null;
+    let harvestProjectionChart = null;
 
     // --- Initialization ---
     async function init() {
@@ -29,6 +32,19 @@ document.addEventListener('DOMContentLoaded', function() {
         await setInitialProductionId(); // Generate ID for create form
         await loadProductionsList(); // Load initial list of productions
     }
+
+    // --- (Añade esto al inicio de tu integracion.js si no existe) ---
+function formatCurrencyCOP(amount) {
+    if (typeof amount !== 'number') {
+        // Try to parse if it's a string that might be a number
+        const parsedAmount = parseFloat(amount);
+        if (isNaN(parsedAmount)) {
+            return 'COP 0'; // O un placeholder como 'No disponible'
+        }
+        amount = parsedAmount;
+    }
+    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
+}
 
     // --- State Preservation Functions ---
 
@@ -283,16 +299,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function setupViewForm() {
-        const form = document.querySelector('[data-form="view"]');
+        // Cambia el selector del formulario de búsqueda
+        const form = document.querySelector('[data-form="view-search"]'); 
         if (!form) return;
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
-            const productionIdInput = form.querySelector('[data-field="production-id"]');
+            // Cambia el selector del input
+            const productionIdInput = form.querySelector('[data-field="production-id-search"]'); 
             const productionId = productionIdInput?.value?.trim();
-            if (!productionId) { showSnackbar("Ingrese ID de producción a buscar", "warning"); return; }
+            if (!productionId) { 
+                showSnackbar("Ingrese ID de producción a buscar", "warning"); 
+                // Asegúrate de que el span de error también coincida si lo usas
+                const errorSpan = form.querySelector('[data-error="production-id-search"]');
+                if (errorSpan) { errorSpan.textContent = 'Ingrese ID'; errorSpan.style.display = 'block'; }
+                return; 
+            }
             const idMatch = productionId.match(/(\d+)$/);
             const actualId = idMatch ? idMatch[1] : productionId;
-            await viewProduction(actualId);
+            await viewProductionDashboard(actualId); // Llama a la nueva función para el dashboard
         });
     }
 
@@ -730,56 +754,524 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    async function viewProduction(productionId) {
-        const resultSection = document.querySelector('[data-panel="view"] [data-result="view"]');
-        if (!resultSection) return;
-        resultSection.classList.add('dashboard__result--hidden');
-
+    async function viewProductionDashboard(productionId) {
+        const dashboardResultSection = document.querySelector('[data-result="view-production-dashboard"]');
+        if (!dashboardResultSection) {
+            console.error("Sección del dashboard de producción no encontrada.");
+            return;
+        }
+        dashboardResultSection.classList.add('dashboard__result--hidden');
+        showSnackbar("Cargando datos de producción...", "info");
+    
         try {
             const response = await fetch(`${API_BASE_URL}/productions/${productionId}`);
-            if (!response.ok) throw new Error(response.status === 404 ? 'Producción no encontrada' : `Error al obtener producción: ${response.statusText}`);
+            if (!response.ok) {
+                throw new Error(response.status === 404 ? 'Producción no encontrada' : `Error al obtener producción: ${response.statusText}`);
+            }
             const result = await response.json();
-            if (!result.success || !result.data) throw new Error(result.error || 'Producción no encontrada en la respuesta');
-
+            if (!result.success || !result.data) {
+                throw new Error(result.error || 'Producción no encontrada en la respuesta');
+            }
+    
             const production = result.data;
-            currentProductionId = production.id;
-
-            // Basic Info
-            const basicInfoContainer = resultSection.querySelector('[data-info="basic"]');
-            if (basicInfoContainer) {
-                basicInfoContainer.innerHTML = '';
-                const infoItems = [
-                    { label: 'ID', value: `prod-${production.id}` }, { label: 'Nombre', value: production.name },
-                    { label: 'Responsable', value: production.responsible_name || 'N/A' }, { label: 'Cultivo', value: production.cultivation_name || 'N/A' },
-                    { label: 'Ciclo', value: production.cycle_name || 'N/A' }, { label: 'Fecha Inicio', value: formatDate(production.start_date) },
-                    { label: 'Fecha Fin Est.', value: formatDate(production.end_date) }, { label: 'Estado', value: production.status === 'active' ? 'Activo' : 'Inactivo' }
-                ];
-                infoItems.forEach(item => {
-                    const infoDiv = document.createElement('div'); infoDiv.className = 'dashboard__info-item';
-                    infoDiv.innerHTML = `<div class="dashboard__info-label">${item.label}</div><div class="dashboard__info-value">${item.value || 'N/A'}</div>`;
-                    basicInfoContainer.appendChild(infoDiv);
+            currentProductionId = production.id; // Guarda el ID si lo necesitas globalmente
+    
+            // 1. Renderizar KPIs Financieros
+            const totalInvestmentEl = dashboardResultSection.querySelector('[data-metric="total-investment"]');
+            const maintenanceCostEl = dashboardResultSection.querySelector('[data-metric="maintenance-cost"]');
+            const estimatedProfitEl = dashboardResultSection.querySelector('[data-metric="estimated-profit"]');
+            const healthViewEl = dashboardResultSection.querySelector('[data-metric="health-view"]');
+    
+            // Cálculos financieros (basados en supuestos)
+            let calculatedTotalInvestment = 0;
+            let suppliesCostDetails = []; // Para el gráfico de desglose de insumos
+    
+            if (Array.isArray(production.supplies) && production.supplies.length > 0 && allSuppliesData.length > 0) {
+                production.supplies.forEach(supplyId => {
+                    const supplyData = allSuppliesData.find(s => String(s.id) === String(supplyId) || String(s.id_insumo) === String(supplyId));
+                    if (supplyData && supplyData.valor_unitario != null) {
+                        // Asumimos una cantidad de 1 para el costo unitario, ya que no tenemos la cantidad usada.
+                        // O si `valor_total` en insumos es representativo del costo de ese item para la producción:
+                        const costOfSupplyItem = parseFloat(supplyData.valor_unitario); // o parseFloat(supplyData.valor_total) si es más apropiado
+                        if (!isNaN(costOfSupplyItem)) {
+                            calculatedTotalInvestment += costOfSupplyItem;
+                            suppliesCostDetails.push({ 
+                                name: supplyData.nombre_insumo || `Insumo ${supplyData.id_insumo || supplyId}`, 
+                                cost: costOfSupplyItem,
+                                type: supplyData.tipo_insumo || 'Desconocido' 
+                            });
+                        }
+                    }
                 });
-            } else { console.warn("Contenedor [data-info='basic'] no encontrado en la vista."); }
+            }
+            
+            if (totalInvestmentEl) totalInvestmentEl.textContent = formatCurrencyCOP(calculatedTotalInvestment);
+            
+            // Mantenimiento y Ganancias (Simulados por ahora)
+            const simulatedMaintenanceCost = calculatedTotalInvestment * 0.1; // Ej: 10% de la inversión en insumos
+            const simulatedRevenue = calculatedTotalInvestment * 1.5; // Ej: Ingresos del 150% de la inversión
+            const simulatedProfit = simulatedRevenue - (calculatedTotalInvestment + simulatedMaintenanceCost);
+    
+            if (maintenanceCostEl) maintenanceCostEl.textContent = formatCurrencyCOP(simulatedMaintenanceCost);
+            if (estimatedProfitEl) {
+                estimatedProfitEl.textContent = formatCurrencyCOP(simulatedProfit);
+                estimatedProfitEl.style.color = simulatedProfit >= 0 ? 'var(--color-success)' : 'var(--color-error)';
+            }
+            if (healthViewEl) healthViewEl.textContent = `${Math.floor(Math.random()*20)+75}%`; // Simulado
+    
+    
+            // 2. Renderizar Detalles de la Producción
+            const detailsContainer = dashboardResultSection.querySelector('[data-info="production-details"]');
+            if (detailsContainer) {
+                detailsContainer.innerHTML = `
+                    <div class="dashboard__info-item"><div class="dashboard__info-label">ID Producción</div><div class="dashboard__info-value">prod-${production.id}</div></div>
+                    <div class="dashboard__info-item"><div class="dashboard__info-label">Nombre</div><div class="dashboard__info-value">${production.name || 'N/A'}</div></div>
+                    <div class="dashboard__info-item"><div class="dashboard__info-label">Responsable</div><div class="dashboard__info-value">${production.responsible_name || 'N/A'}</div></div>
+                    <div class="dashboard__info-item"><div class="dashboard__info-label">Cultivo</div><div class="dashboard__info-value">${production.cultivation_name || 'N/A'}</div></div>
+                    <div class="dashboard__info-item"><div class="dashboard__info-label">Ciclo</div><div class="dashboard__info-value">${production.cycle_name || 'N/A'}</div></div>
+                    <div class="dashboard__info-item"><div class="dashboard__info-label">Fecha Inicio</div><div class="dashboard__info-value">${formatDate(production.start_date)}</div></div>
+                    <div class="dashboard__info-item"><div class="dashboard__info-label">Fecha Fin Est.</div><div class="dashboard__info-value">${formatDate(production.end_date)}</div></div>
+                    <div class="dashboard__info-item"><div class="dashboard__info-label">Estado</div><div class="dashboard__info-value"><span class="status-badge status-badge--${production.status === 'active' ? 'active' : 'inactive'}">${production.status === 'active' ? 'Activo' : 'Inactivo'}</span></div></div>
+                `;
+            }
+    
+            // 3. Crear Gráfico de Desglose Financiero
+            const financialCtx = dashboardResultSection.querySelector('[data-chart="financial-breakdown"]')?.getContext('2d');
+            if (financialCtx) {
+                if (window.financialBreakdownChart instanceof Chart) {
+                    window.financialBreakdownChart.destroy();
+                }
+                window.financialBreakdownChart = new Chart(financialCtx, {
+                    type: 'doughnut', // o 'bar'
+                    data: {
+                        labels: ['Costo Insumos', 'Mantenimiento (Est.)'],
+                        datasets: [{
+                            label: 'Desglose de Costos',
+                            data: [calculatedTotalInvestment, simulatedMaintenanceCost],
+                            backgroundColor: ['rgba(75, 192, 192, 0.7)', 'rgba(255, 159, 64, 0.7)'],
+                            borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 159, 64, 1)'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'top' },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.label}: ${formatCurrencyCOP(context.raw)}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // 4. Crear Gráfico de Distribución de Costos de Insumos
+            const suppliesCostCtx = dashboardResultSection.querySelector('[data-chart="supplies-cost-distribution"]')?.getContext('2d');
+            if (suppliesCostCtx && suppliesCostDetails.length > 0) {
+                if (window.suppliesCostChart instanceof Chart) {
+                    window.suppliesCostChart.destroy();
+                }
+                // Agrupar costos por tipo de insumo
+                const costsByType = suppliesCostDetails.reduce((acc, item) => {
+                    acc[item.type] = (acc[item.type] || 0) + item.cost;
+                    return acc;
+                }, {});
+    
+                window.suppliesCostChart = new Chart(suppliesCostCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: Object.keys(costsByType),
+                        datasets: [{
+                            label: 'Costo por Tipo de Insumo',
+                            data: Object.values(costsByType),
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.7)', 'rgba(54, 162, 235, 0.7)',
+                                'rgba(255, 206, 86, 0.7)', 'rgba(75, 192, 192, 0.7)',
+                                'rgba(153, 102, 255, 0.7)', 'rgba(255, 159, 64, 0.7)',
+                                'rgba(199, 199, 199, 0.7)' 
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'right' },
+                            tooltip: { callbacks: { label: (c) => `${c.label}: ${formatCurrencyCOP(c.raw)}` } }
+                        }
+                    }
+                });
+            }
+    
+    
+            // 5. Renderizar Gráficos de Sensores (Simulados)
+            // Reutiliza tu lógica actual o la adaptas, asegurándote que los canvas tienen los nuevos `data-chart` IDs
+            const sensorSimData = generateSensorData(); // Asegúrate que esta función existe
+            createChart(dashboardResultSection.querySelector('[data-chart="humidity-view"]'), 'Humedad (%)', sensorSimData.humidity);
+            createChart(dashboardResultSection.querySelector('[data-chart="temperature-view"]'), 'Temperatura (°C)', sensorSimData.temperature);
+            createChart(dashboardResultSection.querySelector('[data-chart="nutrients-view"]'), 'Nutrientes (%)', sensorSimData.nutrients);
+            createChart(dashboardResultSection.querySelector('[data-chart="growth-view"]'), 'Crecimiento (cm)', sensorSimData.growth);
+    
+            // 6. Renderizar Lista Detallada de Sensores Asignados
+            const sensorsListViewContainer = dashboardResultSection.querySelector('[data-info="sensors-list-view"]');
+            if (sensorsListViewContainer) {
+                sensorsListViewContainer.innerHTML = '<p>Cargando sensores...</p>';
+                const sensorIds = Array.isArray(production.sensors) ? production.sensors.map(String) : [];
+                if (sensorIds.length === 0) {
+                    sensorsListViewContainer.innerHTML = '<p>No hay sensores asignados a esta producción.</p>';
+                } else if (allSensorsData.length > 0) {
+                    let listHtml = '<ul>';
+                    sensorIds.forEach(id => {
+                        const sensorData = allSensorsData.find(s => String(s.id) === id || String(s.id_sensor) === id);
+                        if (sensorData) {
+                            listHtml += `<li>
+                                           <span class="dashboard__list-item-main">${sensorData.nombre_sensor || `Sensor ${id}`} (${sensorData.tipo_sensor || 'N/A'})</span>
+                                           <span class="dashboard__list-item-detail">Estado: ${sensorData.estado || 'Desconocido'}</span>
+                                         </li>`;
+                        } else {
+                            listHtml += `<li><span class="dashboard__list-item-main">Sensor ID ${id}</span> <span class="dashboard__list-item-detail">Detalles no encontrados</span></li>`;
+                        }
+                    });
+                    listHtml += '</ul>';
+                    sensorsListViewContainer.innerHTML = listHtml;
+                } else {
+                     sensorsListViewContainer.innerHTML = '<p>Datos maestros de sensores no disponibles para mostrar detalles.</p>';
+                }
+            }
+            
+            // 7. Renderizar Lista Detallada de Insumos Asignados
+            const suppliesListViewContainer = dashboardResultSection.querySelector('[data-info="supplies-list-view"]');
+            if (suppliesListViewContainer) {
+                suppliesListViewContainer.innerHTML = '<p>Cargando insumos...</p>';
+                 if (suppliesCostDetails.length === 0) { // Usamos la info ya procesada para costos
+                    suppliesListViewContainer.innerHTML = '<p>No hay insumos asignados o con costos definidos para esta producción.</p>';
+                } else {
+                    let listHtml = '<ul>';
+                    suppliesCostDetails.forEach(item => {
+                         listHtml += `<li>
+                                       <span class="dashboard__list-item-main">${item.name}</span>
+                                       <span class="dashboard__list-item-detail">Costo Unitario: ${formatCurrencyCOP(item.cost)}</span>
+                                     </li>`;
+                    });
+                    listHtml += '</ul>';
+                    suppliesListViewContainer.innerHTML = listHtml;
+                }
+            }
+    
+            dashboardResultSection.classList.remove('dashboard__result--hidden');
+            showSnackbar("Dashboard de producción cargado.", "success");
 
-            // Simulated Metrics and Charts
-            updateSimulatedMetrics(resultSection);
-            createAllCharts(resultSection, generateSensorData());
+            // 8. Medidor de Progreso del Ciclo
+    const cycleGaugeCtx = dashboardResultSection.querySelector('[data-chart="cycle-progress-gauge"]')?.getContext('2d');
+    const cycleProgressTextEl = dashboardResultSection.querySelector('[data-info="cycle-progress-text"]');
+    if (cycleGaugeCtx && production.start_date && production.end_date) {
+        const startDate = new Date(production.start_date);
+        const endDate = new Date(production.end_date);
+        const today = new Date();
 
-            // Display Sensors (using the new function)
-            const sensorsContainerView = resultSection.querySelector('[data-info="sensors"]');
-            if (sensorsContainerView) { await displayProductionSensorsView(sensorsContainerView, production.sensors || []); } else { console.warn("Contenedor [data-info='sensors'] no encontrado en la vista."); }
+        let progressPercent = 0;
+        let daysRemaining = 0;
+        let totalCycleDays = 0;
+
+        if (startDate < endDate) {
+            totalCycleDays = Math.round((endDate - startDate) / (1000 * 60 * 60 * 24));
+            if (today < startDate) {
+                progressPercent = 0;
+                daysRemaining = totalCycleDays;
+            } else if (today > endDate) {
+                progressPercent = 100;
+                daysRemaining = 0;
+            } else {
+                const elapsedDays = Math.round((today - startDate) / (1000 * 60 * 60 * 24));
+                progressPercent = Math.min(100, Math.max(0, (elapsedDays / totalCycleDays) * 100));
+                daysRemaining = totalCycleDays - elapsedDays;
+            }
+        }
+        
+        if (cycleProgressGauge instanceof Chart) {
+            cycleProgressGauge.destroy();
+        }
+        cycleProgressGauge = new Chart(cycleGaugeCtx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [progressPercent, 100 - progressPercent],
+                    backgroundColor: ['var(--color-primary)', 'var(--gray-150, #e9ecef)'],
+                    borderWidth: 0,
+                    circumference: 180, // Medio círculo
+                    rotation: 270,     // Empieza desde abajo
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                aspectRatio: 2, // Para que el medio círculo se vea bien
+                cutout: '70%',
+                plugins: {
+                    tooltip: { enabled: false }
+                }
+            }
+        });
+
+        if (cycleProgressTextEl) {
+            cycleProgressTextEl.innerHTML = `${progressPercent.toFixed(0)}% <small>(${daysRemaining} días rest.)</small>`;
+        }
+    } else if (cycleProgressTextEl) {
+        cycleProgressTextEl.textContent = "Fechas no disp.";
+    }
 
 
-            // Display Supplies
-            const suppliesContainerView = resultSection.querySelector('[data-info="supplies"]');
-            if (suppliesContainerView) { await displayProductionSuppliesView(suppliesContainerView, production.supplies || []); } else { console.warn("Contenedor [data-info='supplies'] no encontrado en la vista."); }
+    // 9. Indicadores de Rendimiento (Simulados)
+    const yieldValueEl = dashboardResultSection.querySelector('[data-metric="yield-value"]');
+    const waterEfficiencyEl = dashboardResultSection.querySelector('[data-metric="water-efficiency"]');
+    if (yieldValueEl) yieldValueEl.textContent = `${(Math.random() * 3 + 4).toFixed(1)} kg/m² (Est.)`; // Simulado
+    if (waterEfficiencyEl) {
+        const efficiencies = ["Óptima", "Buena", "Mejorable"];
+        waterEfficiencyEl.textContent = efficiencies[Math.floor(Math.random() * efficiencies.length)];
+    }
 
-            resultSection.classList.remove('dashboard__result--hidden');
+    // 10. Gráfico de Comparativa de Sensores Similares (Simulado)
+    const sensorsCompCtx = dashboardResultSection.querySelector('[data-chart="sensors-comparison-chart"]')?.getContext('2d');
+    if (sensorsCompCtx) {
+        const numPoints = 10;
+        const timeLabels = getTimeLabels(numPoints);
+        const humidityData1 = generateRealisticSensorData('humidity', numPoints, 65, 15, -2, 2);
+        const humidityData2 = generateRealisticSensorData('humidity', numPoints, 60, 18, 0, 2.5);
 
+        if (sensorsComparisonChart instanceof Chart) {
+            sensorsComparisonChart.destroy();
+        }
+        sensorsComparisonChart = new Chart(sensorsCompCtx, {
+            type: 'line',
+            data: {
+                labels: timeLabels,
+                datasets: [
+                    {
+                        label: 'Humedad Sensor A01 (Sim.)',
+                        data: humidityData1,
+                        borderColor: 'var(--color-primary)',
+                        backgroundColor: 'transparent',
+                        tension: 0.3,
+                        pointRadius: 2,
+                    },
+                    {
+                        label: 'Humedad Sensor A02 (Sim.)',
+                        data: humidityData2,
+                        borderColor: 'var(--color-accent)',
+                        backgroundColor: 'transparent',
+                        tension: 0.3,
+                        pointRadius: 2,
+                    }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'top', labels: { font: {size: 10}} } },
+                scales: { 
+                    y: { ticks: { font: {size:10}, callback: (v) => `${v}%` } },
+                    x: { ticks: { font: {size:10} } }
+                }
+            }
+        });
+    }
+    
+    // 11. Gráfico de Proyección de Cosecha (Simulado)
+    const harvestCtx = dashboardResultSection.querySelector('[data-chart="harvest-projection-chart"]')?.getContext('2d');
+    if (harvestCtx) {
+        const estimatedYieldCurrent = (parseFloat(production.tamano) || 100) * (Math.random() * 2 + 4.5); // Asumiendo tamaño es m²
+        const targetYield = estimatedYieldCurrent * (Math.random() * 0.3 + 1.1); // Objetivo un 10-40% más
+
+        if (harvestProjectionChart instanceof Chart) {
+            harvestProjectionChart.destroy();
+        }
+        harvestProjectionChart = new Chart(harvestCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Proyección Actual', 'Objetivo de Cosecha'],
+                datasets: [{
+                    label: 'Producción Estimada (kg)',
+                    data: [estimatedYieldCurrent.toFixed(0), targetYield.toFixed(0)],
+                    backgroundColor: ['rgba(75, 192, 192, 0.7)', 'rgba(54, 162, 235, 0.7)'],
+                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(54, 162, 235, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+                plugins: { legend: { display: false } },
+                scales: { x: { beginAtZero: true, ticks: { font: {size:10}, callback: (v) => `${v} kg` } } , y: { ticks: { font: {size:10} } }}
+            }
+        });
+    }
+
+            // 5. Panel de Control de Sensores Asignados (NUEVA LÓGICA DETALLADA)
+    const sensorsPanelContainer = dashboardResultSection.querySelector('[data-info="sensors-panel"]');
+    if (sensorsPanelContainer) {
+        sensorsPanelContainer.innerHTML = ''; // Limpiar contenido previo
+        const sensorIds = Array.isArray(production.sensors) ? production.sensors.map(String) : [];
+
+        if (sensorIds.length === 0) {
+            sensorsPanelContainer.innerHTML = '<p class="dashboard__notice">No hay sensores asignados a esta producción.</p>';
+        } else if (allSensorsData.length > 0) {
+            sensorIds.forEach((id, index) => {
+                const sensorData = allSensorsData.find(s => String(s.id) === id || String(s.id_sensor) === id);
+                if (sensorData) {
+                    const card = document.createElement('div');
+                    card.className = 'dashboard__sensor-card-individual';
+                    
+                    let baseVal, variation, trend, seasonalF, unitSuffix = sensorData.unidad_medida || '';
+                    let sensorDataType = (sensorData.tipo_sensor || 'unknown').toLowerCase();
+                    // Ajustar parámetros de simulación por tipo de sensor
+                    if (sensorDataType.includes('humedad')) { 
+                        baseVal = 60; variation = 20; trend = -5; seasonalF = 3; unitSuffix = '%'; 
+                    } else if (sensorDataType.includes('temperatura')) { 
+                        baseVal = 22; variation = 8; trend = 0; seasonalF = 5; unitSuffix = '°C';
+                    } else if (sensorDataType.includes('ph')) { 
+                        baseVal = 6.5; variation = 1; trend = 0.1; seasonalF = 0; unitSuffix = '';
+                    } else if (sensorDataType.includes('ec') || sensorDataType.includes('conductividad')) { 
+                        baseVal = 1.5; variation = 0.5; trend = 0.2; seasonalF = 0; unitSuffix = 'mS/cm';
+                    } else { // Default para otros tipos
+                        baseVal = 50; variation = 20; trend = 0; seasonalF = 0;
+                    }
+
+                    const realisticData = generateRealisticSensorData(sensorDataType, 15, baseVal, variation, trend, seasonalF);
+                    const timeLabels = getTimeLabels(realisticData.length);
+                    const currentValue = realisticData[realisticData.length - 1];
+                    
+                    // Estado simulado basado en umbrales (ejemplo simple)
+                    let currentStatus = 'status-normal';
+                    let statusText = 'Normal';
+                    if (sensorDataType.includes('temperatura') && (currentValue < 15 || currentValue > 30)) {
+                        currentStatus = 'status-alert'; statusText = 'Alerta';
+                    } else if (sensorDataType.includes('humedad') && (currentValue < 40 || currentValue > 85)) {
+                        currentStatus = 'status-caution'; statusText = 'Precaución';
+                    }
+
+                    card.innerHTML = `
+                        <div class="dashboard__sensor-card-header">
+                            <h4 class="dashboard__sensor-card-title">${sensorData.nombre_sensor || `Sensor ${id}`}</h4>
+                            <span class="dashboard__sensor-card-status ${currentStatus}">${statusText}</span>
+                        </div>
+                        <div class="dashboard__sensor-card-details">
+                            Tipo: <strong>${sensorData.tipo_sensor || 'N/A'}</strong> | 
+                            Unidad: <strong>${sensorData.unidad_medida || 'N/A'}</strong> |
+                            ID: <strong>${sensorData.identificador || 'N/A'}</strong> |
+                            Estado DB: <strong>${sensorData.estado || 'Desc.'}</strong>
+                        </div>
+                        <div class="dashboard__sensor-current-value">${currentValue.toFixed(1)} ${unitSuffix}</div>
+                        <div class="dashboard__sensor-chart-container">
+                            <canvas data-chart="sensor-detail-${sensorData.id || index}"></canvas>
+                        </div>
+                    `;
+                    sensorsPanelContainer.appendChild(card);
+                    
+                    // Crear el mini-gráfico para esta tarjeta de sensor
+                    const sensorChartCtx = card.querySelector(`[data-chart="sensor-detail-${sensorData.id || index}"]`);
+                    if (sensorChartCtx) {
+                         createChart(sensorChartCtx, sensorData.nombre_sensor || `Sensor ${id}`, realisticData, timeLabels, unitSuffix);
+                    }
+                } else {
+                    const notice = document.createElement('p');
+                    notice.className = 'dashboard__notice dashboard__notice--warning';
+                    notice.textContent = `Detalles no encontrados para el Sensor ID ${id}.`;
+                    sensorsPanelContainer.appendChild(notice);
+                }
+            });
+        } else {
+            sensorsPanelContainer.innerHTML = '<p class="dashboard__notice dashboard__notice--error">Datos maestros de sensores no disponibles para mostrar detalles.</p>';
+        }
+    }
+    
+    // 6. Gestión de Insumos de la Producción (NUEVA LÓGICA DETALLADA)
+    const suppliesTableContainer = dashboardResultSection.querySelector('[data-info="supplies-table-view"]');
+    if (suppliesTableContainer) {
+        const tableBody = suppliesTableContainer.querySelector('tbody');
+        tableBody.innerHTML = ''; // Limpiar contenido previo
+
+        // Usamos `suppliesCostDetails` que ya calculamos antes para los KPIs y gráficos financieros
+        // Esta variable contiene { name, cost (unitario), type }
+        
+        if (suppliesCostDetails.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="5" class="dashboard__notice">No hay insumos asignados o con costos definidos para esta producción.</td></tr>';
+        } else {
+            suppliesCostDetails.forEach(item => {
+                // Para obtener más detalles, necesitamos buscar el insumo original en allSuppliesData
+                // Esto asume que `item.name` es único o que `item` tiene un `id` del insumo.
+                // Si `suppliesCostDetails` fue poblado con IDs, sería mejor.
+                // Asumamos que `item` es el objeto completo de `allSuppliesData` filtrado por la producción.
+                // Si no, necesitas una forma de enlazar `item` de `suppliesCostDetails` al `supplyData` completo.
+                
+                // Para este ejemplo, buscaré por nombre (lo cual NO es ideal si los nombres no son únicos)
+                // Lo ideal sería que `suppliesCostDetails` guarde el ID original del insumo.
+                // Si `production.supplies` son IDs, y `allSuppliesData` es tu lista maestra:
+                let fullSupplyData = null;
+                if (Array.isArray(production.supplies) && allSuppliesData.length > 0) {
+                    const supplyOrigin = production.supplies.map(String); // IDs de la producción
+                    // Necesitamos encontrar cuál de estos IDs corresponde al `item.name` o `item.cost`.
+                    // Esto se complica si `suppliesCostDetails` no tiene un ID.
+                    // Vamos a REHACER cómo se obtiene `suppliesCostDetails` para incluir el ID.
+                }
+
+                // -- REFACTORIZACIÓN NECESARIA ARRIBA para que suppliesCostDetails contenga el ID --
+                // Asumimos que `item` ahora es el `supplyData` completo del `allSuppliesData` que corresponde a esta producción.
+                // Este bucle debería iterar sobre los `production.supplies` (IDs) y luego buscar en `allSuppliesData`.
+
+                const productionSupplyIDs = Array.isArray(production.supplies) ? production.supplies.map(String) : [];
+                productionSupplyIDs.forEach(prodSupplyId => {
+                    const supplyData = allSuppliesData.find(s => String(s.id) === prodSupplyId || String(s.id_insumo) === prodSupplyId);
+                    if (supplyData) {
+                        const row = tableBody.insertRow();
+                        row.innerHTML = `
+                            <td>${supplyData.nombre_insumo || 'N/A'}</td>
+                            <td>${supplyData.tipo_insumo || 'N/A'}</td>
+                            <td><span class="description-truncate" title="${supplyData.descripcion || ''}">${supplyData.descripcion || 'Sin descripción'}</span></td>
+                            <td>${supplyData.unidad_medida || 'N/A'}</td>
+                            <td>${formatCurrencyCOP(parseFloat(supplyData.valor_unitario))}</td>
+                            `;
+                    }
+                });
+                 if(tableBody.rows.length === 0) { // Si después de iterar no se añadió nada
+                    tableBody.innerHTML = '<tr><td colspan="5" class="dashboard__notice">No se encontraron detalles para los insumos asignados.</td></tr>';
+                }
+            });
+        }
+    }
+
+    // 7. Registro de Actividad (Simulado)
+    const activityLogContainer = dashboardResultSection.querySelector('[data-info="activity-log"]');
+    if (activityLogContainer) {
+        activityLogContainer.innerHTML = ''; // Limpiar
+        const activities = [
+            { time: "Hace 1 hora", event: `Monitoreo de ${production.name || 'producción'} completado. Valores estables.` },
+            { time: "Hace 5 horas", event: "Alerta de Temperatura Alta (simulada) en Sensor T-02, normalizada." },
+            { time: "Hace 1 día", event: `Riego programado ejecutado para el cultivo ${production.cultivation_name || ''}.`},
+            { time: "Hace 2 días", event: `Inicio del ciclo '${production.cycle_name || ''}'. Responsable: ${production.responsible_name || 'N/A'}.` },
+            { time: "Hace 3 días", event: `Insumo 'Fertilizante Triple 15' añadido al plan de producción.`}
+        ];
+        activities.forEach(act => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `<span class="activity-time">${act.time}</span> ${act.event}`;
+            activityLogContainer.appendChild(listItem);
+        });
+    }
+    
+    dashboardResultSection.classList.remove('dashboard__result--hidden');
+    showSnackbar("Dashboard de producción actualizado y cargado.", "success");
+    
         } catch (error) {
-            console.error('Error al visualizar producción:', error);
-            showSnackbar(`Error al visualizar: ${error.message}`, 'error');
-            resultSection.classList.add('dashboard__result--hidden');
+            console.error('Error al visualizar producción en dashboard:', error);
+            showSnackbar(`Error al cargar dashboard: ${error.message}`, 'error');
+            dashboardResultSection.classList.add('dashboard__result--hidden');
+             // Limpiar campos por si acaso
+            dashboardResultSection.querySelector('[data-metric="total-investment"]').textContent = 'COP 0';
+            dashboardResultSection.querySelector('[data-metric="maintenance-cost"]').textContent = 'COP 0';
+            dashboardResultSection.querySelector('[data-metric="estimated-profit"]').textContent = 'COP 0';
+            dashboardResultSection.querySelector('[data-info="production-details"]').innerHTML = '<p>Error al cargar detalles.</p>';
         }
     }
 
@@ -1527,27 +2019,113 @@ document.addEventListener('DOMContentLoaded', function() {
         createChart(section.querySelector('[data-chart="growth"]'), 'Crecimiento (cm)', data.growth);
     }
     // Generate simulated sensor data
-    function generateSensorData() {
+    function generateSensorData() { // Datos simulados para los gráficos
         return {
-            humidity: Array(7).fill(0).map(() => Math.floor(Math.random() * 20) + 60),
-            temperature: Array(7).fill(0).map(() => Math.floor(Math.random() * 10) + 20),
-            nutrients: Array(7).fill(0).map(() => Math.floor(Math.random() * 20) + 40),
-            growth: Array(7).fill(0).map((_, i) => i * 10 + Math.floor(Math.random() * 5))
+            humidity: Array(7).fill(0).map(() => Math.floor(Math.random() * 30) + 50), // Humedad entre 50-80%
+            temperature: Array(7).fill(0).map(() => Math.floor(Math.random() * 10) + 18), // Temp entre 18-28°C
+            nutrients: Array(7).fill(0).map(() => Math.floor(Math.random() * 40) + 60), // Nutrientes entre 60-100%
+            growth: Array(7).fill(0).map((_, i) => (i + 1) * (Math.random() * 2 + 3) + Math.floor(Math.random() * 5)) // Crecimiento progresivo
         };
     }
+
+    // Función para generar datos de sensores más realistas
+function generateRealisticSensorData(sensorType, numPoints = 15, baseValue, variation, trend = 0, seasonalFactor = 0) {
+    const data = [];
+    let currentValue = baseValue;
+    for (let i = 0; i < numPoints; i++) {
+        let pointValue = currentValue;
+        // Añadir variación aleatoria
+        pointValue += (Math.random() - 0.5) * variation;
+        
+        // Simular tendencia (ej. crecimiento, agotamiento)
+        currentValue += trend / numPoints;
+
+        // Simular ciclo (ej. diurno/nocturno para temperatura, riego para humedad)
+        if (seasonalFactor !== 0) {
+            pointValue += Math.sin((i / numPoints) * 2 * Math.PI * seasonalFactor) * (variation / 2);
+        }
+
+        // Asegurar que los valores se mantengan dentro de límites lógicos
+        if (sensorType === 'humidity') pointValue = Math.max(20, Math.min(100, pointValue));
+        else if (sensorType === 'temperature') pointValue = Math.max(5, Math.min(40, pointValue));
+        else if (sensorType === 'ph') pointValue = Math.max(4, Math.min(9, pointValue));
+        else if (sensorType === 'ec') pointValue = Math.max(0.5, Math.min(3.5, pointValue));
+        else if (sensorType === 'growth') pointValue = Math.max(0, pointValue); // Crecimiento no puede ser negativo
+        
+        data.push(parseFloat(pointValue.toFixed(1)));
+    }
+    return data;
+}
+// Función para generar etiquetas de tiempo para los gráficos (ej. "Día 1", "Día 2", ...)
+function getTimeLabels(numPoints) {
+    return Array.from({ length: numPoints }, (_, i) => `T ${i + 1}`);
+}
     // Helper for creating individual chart
     let charts = {}; // Store chart instances
-    function createChart(canvasElement, label, data) {
-        if (!canvasElement) return;
-        const chartId = canvasElement.getAttribute('data-chart');
-        if (charts[chartId]) { charts[chartId].destroy(); } // Destroy existing chart
-        const ctx = canvasElement.getContext('2d');
-        const days = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
-        charts[chartId] = new Chart(ctx, {
-            type: 'line', data: { labels: days.slice(0, data.length), datasets: [{ label: label, data: data, borderColor: 'var(--color-primary)', backgroundColor: 'rgba(111, 192, 70, 0.1)', tension: 0.4, fill: true }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false }, x: { ticks: { autoSkip: true, maxTicksLimit: 7 } } } }
-        });
+    let viewCharts = {}; // Objeto para almacenar instancias de gráficos de la vista
+function createChart(canvasElement, label, data, timeLabels, unitSuffix = '') { // Añadido timeLabels y unitSuffix
+    if (!canvasElement) { console.warn("Canvas element not provided for chart:", label); return; }
+    const chartId = canvasElement.getAttribute('data-chart');
+    if (!chartId) { console.warn("Canvas element missing data-chart attribute:", canvasElement); return; }
+
+    if (viewCharts[chartId]) {
+        viewCharts[chartId].destroy();
     }
+    const ctx = canvasElement.getContext('2d');
+    viewCharts[chartId] = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: timeLabels || getTimeLabels(data.length), // Usar timeLabels si se proporcionan
+            datasets: [{
+                label: label,
+                data: data,
+                borderColor: 'var(--color-primary, #6FC046)',
+                backgroundColor: 'rgba(111, 192, 70, 0.1)',
+                tension: 0.2, // Más suave para datos de sensores
+                fill: true,
+                pointRadius: 2, // Puntos pequeños
+                pointHoverRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }, // Usualmente no necesaria para mini-gráficos
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.dataset.label}: ${context.parsed.y.toFixed(1)} ${unitSuffix}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false, // No siempre empezar en cero para sensores
+                    ticks: { 
+                        font: { size: 10 }, // Fuente más pequeña para ejes
+                        maxTicksLimit: 5,
+                        callback: function(value) {
+                            return value.toFixed(1) + ` ${unitSuffix}`;
+                        }
+                    } 
+                },
+                x: {
+                    ticks: { 
+                        font: { size: 10 },
+                        autoSkip: true, 
+                        maxRotation: 0, // Evitar rotación de etiquetas
+                        minRotation: 0,
+                        maxTicksLimit: 7 // Menos etiquetas en el eje X
+                    } 
+                }
+            }
+        }
+    });
+}
 
     // --- Run Initialization ---
     init();
