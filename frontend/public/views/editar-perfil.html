@@ -77,67 +77,6 @@
     Los números no están permitidos en el campo de texto
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      const params = new URLSearchParams(window.location.search);
-      const id = parseInt(params.get('id'), 10);
-      if (!id || id <= 0) {
-        console.error('ID inválido:', id);
-        return;
-      }
-
-      try {
-        const response = await fetch(`http://localhost:3000/user/${id}`);
-        const result = await response.json();
-        const usuario = result.data;
-
-        document.getElementById('nombre-de-usuario').value = usuario.firstName || '';
-        document.getElementById('tipo-de-documento').value = usuario.documentType || '';
-        document.getElementById('numero-de-documento').value = usuario.documentNumber || '';
-        document.getElementById('tipo-de-usuario').value = usuario.userType || '';
-        document.getElementById('email').value = usuario.email || '';
-        document.getElementById('confirmar-email').value = usuario.confirmEmail || '';
-        document.getElementById('telefono').value = usuario.phone || '';
-      } catch (error) {
-        console.error('Error al cargar usuario:', error);
-      }
-
-      // Manejar la actualización del formulario
-      const form = document.getElementById('edit-form');
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault(); // Evita el refresh
-
-        const data = {
-          firstName: document.getElementById('nombre-de-usuario').value,
-          documentType: document.getElementById('tipo-de-documento').value,
-          documentNumber: document.getElementById('numero-de-documento').value,
-          userType: document.getElementById('tipo-de-usuario').value,
-          email: document.getElementById('email').value,
-          confirmEmail: document.getElementById('confirmar-email').value,
-          phone: document.getElementById('telefono').value
-        };
-
-        try {
-          const updateResponse = await fetch(`http://localhost:3000/user/${id}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-          });
-
-          if (!updateResponse.ok) {
-            throw new Error('Error al actualizar usuario');
-          }
-
-          alert('Usuario actualizado correctamente');
-          window.location.href = 'lista-usuario.html';
-        } catch (error) {
-          console.error('Error al actualizar usuario:', error);
-          alert('Error al actualizar el usuario');
-        }
-      });
-    });
-  </script>
+  <script src="../js/pages/editar-perfil.js"></script>
 </body>
 </html>
