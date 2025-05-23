@@ -16,7 +16,8 @@
     <main class="update-crop__main">
       <div class="update-crop__content">
         <div class="update-crop__image-placeholder">
-          </div>
+          <!-- decorativo -->
+        </div>
 
         <form class="update-crop__form" id="formulario-actualizar-cultivo">
           <div class="update-crop__form-group update-crop__form-group--grid">
@@ -63,6 +64,62 @@
     </main>
   </div>
 
-  <script src="../js/pages/actualizar-cultivo.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const idCultivo = localStorage.getItem("idCultivo");
+
+      if (!idCultivo) {
+        alert("No se encontró el ID del cultivo.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`http://localhost:3000/cultivos/${idCultivo}`);
+        const cultivo = await res.json();
+
+        document.getElementById("nombreCultivo").value = cultivo.nombre_cultivo || '';
+        document.getElementById("tipoCultivo").value = cultivo.tipo_cultivo || '';
+        document.getElementById("tamano").value = cultivo.tamano || '';
+        document.getElementById("ubicacion").value = cultivo.ubicacion || '';
+        document.getElementById("estado").value = cultivo.estado || '';
+        document.getElementById("descripcion").value = cultivo.descripcion || '';
+        document.getElementById("idCultivoMostrar").value = cultivo.id_cultivo || '';
+      } catch (error) {
+        alert("Error al cargar los datos del cultivo.");
+        console.error(error);
+      }
+
+      document.getElementById("formulario-actualizar-cultivo").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const datosActualizados = {
+          nombre_cultivo: document.getElementById("nombreCultivo").value,
+          tipo_cultivo: document.getElementById("tipoCultivo").value,
+          tamano: document.getElementById("tamano").value,
+          ubicacion: document.getElementById("ubicacion").value,
+          estado: document.getElementById("estado").value,
+          descripcion: document.getElementById("descripcion").value
+        };
+
+        try {
+          const res = await fetch(`http://localhost:3000/cultivos/${idCultivo}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosActualizados)
+          });
+
+          if (res.ok) {
+            alert("Cultivo actualizado correctamente.");
+            window.location.href = "visualizar-cultivo.html";
+          } else {
+            alert("Error al actualizar el cultivo.");
+          }
+        } catch (error) {
+          alert("Error al enviar la solicitud.");
+          console.error(error);
+        }
+      });
+    });
+  </script>
 </body>
 </html>

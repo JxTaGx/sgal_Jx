@@ -43,6 +43,47 @@
     </main>
   </div>
 
-  <script src="../js/pages/visualizar-ciclo-cultivo.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const id = localStorage.getItem('idCicloCultivo');
+
+      if (!id) {
+        alert('ID de ciclo no encontrado');
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:3000/ciclo_cultivo/${id}`);
+        if (!response.ok) throw new Error('No se pudo obtener el ciclo');
+
+        const ciclo = await response.json();
+
+        const lista = document.getElementById('detalle-ciclo');
+        lista.innerHTML = `
+          <li class="ciclo-cultivo__list-item"><strong>Ciclo Cultivo:</strong> ${ciclo.nombre_ciclo}</li>
+          <li class="ciclo-cultivo__list-item"><strong>Fecha de siembra:</strong> ${ciclo.periodo_siembra}</li>
+          <li class="ciclo-cultivo__list-item"><strong>ID:</strong> ${ciclo.id_ciclo}</li>
+          <li class="ciclo-cultivo__list-item"><strong>Novedades:</strong> ${ciclo.novedades || 'No hay novedades'}</li>
+          <li class="ciclo-cultivo__list-item"><strong>Descripción:</strong> ${ciclo.descripcion || 'Sin descripción'}</li>
+        `;
+
+        const tareas = ciclo.tareas?.length
+          ? ciclo.tareas
+          : ['No hay datos de rendimiento'];
+        const rendimientoLista = document.getElementById('rendimiento-lista');
+        rendimientoLista.innerHTML = tareas.map(tarea => `<li class="ciclo-cultivo__list-item">${tarea}</li>`).join('');
+
+        // Redireccionar al editar con el ID por URL
+        const botonEditar = document.getElementById('editar-btn');
+        botonEditar.addEventListener('click', () => {
+          window.location.href = `/frontend/public/views/actualizar-ciclo-cultivo.html?id=${id}`;
+        });
+
+      } catch (err) {
+        console.error(err);
+        alert('Ciclo no encontrado');
+      }
+    });
+  </script>
 </body>
 </html>
