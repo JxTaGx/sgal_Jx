@@ -7,28 +7,24 @@ const router = express.Router();
 
 // --- Insumo Routes ---
 
-// POST / - Crear un nuevo insumo
-// Si `insumoRoutes` se monta en `/api/insumos`, esta ruta será `POST /api/insumos`
+// POST /insumo - Crear un nuevo insumo
 router.post('/', insumoController.createInsumo);
 
-// GET / - Obtener todos los insumos
-// Si `insumoRoutes` se monta en `/api/insumos`, esta ruta será `GET /api/insumos`
-router.get('/', insumoController.getAllInsumos);
+// GET /api/insumos - Obtener todos los insumos (Ruta específica usada por frontend)
+router.get('/api/insumos', insumoController.getAllInsumos);
 
-// GET /buscar - Buscar insumos por término
-// Si `insumoRoutes` se monta en `/api/insumos`, esta ruta será `GET /api/insumos/buscar`
+router.get('/', insumoController.getAllInsumos); // <--- Ruta relativa '/'
+
+// GET /insumo/buscar - Buscar insumos por término
 router.get('/buscar', insumoController.searchInsumos); // Nota: '/buscar' antes de '/:id'
 
-// GET /:id - Obtener un insumo por ID (PK autoincremental)
-// Si `insumoRoutes` se monta en `/api/insumos`, esta ruta será `GET /api/insumos/:id`
+// GET /insumo/:id - Obtener un insumo por ID (PK autoincremental)
 router.get('/:id', insumoController.getInsumoById);
 
-// PUT /:id - Actualizar un insumo por ID (PK autoincremental)
-// Si `insumoRoutes` se monta en `/api/insumos`, esta ruta será `PUT /api/insumos/:id`
+// PUT /insumo/:id - Actualizar un insumo por ID (PK autoincremental)
 router.put('/:id', insumoController.updateInsumo);
 
-// DELETE /:id - Eliminar un insumo por ID (PK autoincremental)
-// Si `insumoRoutes` se monta en `/api/insumos`, esta ruta será `DELETE /api/insumos/:id`
+// DELETE /insumo/:id - Eliminar un insumo por ID (PK autoincremental)
 router.delete('/:id', insumoController.deleteInsumo);
 
 module.exports = router;
