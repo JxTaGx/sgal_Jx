@@ -1,82 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/pages/listar-ciclo-cultivo-sebas-style.css">
-    <title>Listar Insumos</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/pages/listar-ciclo-cultivo-sebas-style.css">
+  <title>Listar Insumos</title>
 </head>
 <body>
-    <h1>Listar Insumos</h1>
-    <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="header__logo">
-    
-    <div class="header">
-        <input type="text" placeholder="Buscar insumo..." class="header__search">
-        <input type="submit" class="button button--green" value="Filtrar">
-        <div>
-            <a href="../views/excel.html">
-                <input class="button button--gray" type="submit" value="Generar Reporte">
-            </a>
-        </div>
+  <h1>Listar Insumos</h1>
+  <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="header__logo">
+  
+  <div class="header">
+    <input type="text" placeholder="Buscar insumo..." class="header__search">
+    <input type="submit" class="button button--green" value="Filtrar">
+    <div>
+      <a href="../views/excel.html">
+        <input class="button button--gray" type="submit" value="Generar Reporte">
+      </a>
+    </div>
+  </div>
+
+  <main>
+    <div class="main__container">
+      <div id="cards" class="cards">
+        <!-- Aquí se insertarán los insumos dinámicamente -->
+      </div>
     </div>
 
-    <main>
-        <div class="main__container">
-            <div id="cards" class="cards">
-                <!-- Aquí se insertarán los insumos dinámicamente -->
-            </div>
-        </div>
+    <div class="footer">
+      <div class="footer__buttons">
+        <a href="../views/home.html">
+          <input type="submit" class="button button--return" value="Volver">
+        </a>
+      </div>
+      <div class="footer__pagination">
+        <button class="pagination__button">1</button>
+        <button class="pagination__button">2</button>
+        <button class="pagination__button">3</button>
+      </div>
+      <div class="footer__buttons">
+        <a href="create-insumo.html">
+          <input type="submit" class="button button--crear" value="Crear Insumo">
+        </a>
+      </div>
+    </div>
+  </main>
 
-        <div class="footer">
-            <div class="footer__buttons">
-                <a href="../views/home.html">
-                    <input type="submit" class="button button--return" value="Volver">
-                </a>
-            </div>
-            <div class="footer__pagination">
-                <button class="pagination__button">1</button>
-                <button class="pagination__button">2</button>
-                <button class="pagination__button">3</button>
-            </div>
-            <div class="footer__buttons">
-                <a href="create-insumo.html">
-                    <input type="submit" class="button button--crear" value="Crear Insumo">
-                </a>
-            </div>
-        </div>
-    </main>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('http://localhost:3000/insumos') // Ajusta esta URL si tu endpoint es diferente
-            .then(response => response.json())
-            .then(data => {
-                const cardsContainer = document.getElementById('cards');
-                cardsContainer.innerHTML = '';
-
-                data.forEach(insumo => {
-                    const card = document.createElement('div');
-                    card.classList.add('card');
-                    card.innerHTML = `
-                        <h3 class="card__title">${insumo.nombre_insumo}</h3>
-                        <p class="card__info">ID: ${insumo.id_insumo}</p>
-                        <p class="card__info">Cantidad: ${insumo.cantidad}</p>
-                        <p class="card__info">Precio: $${insumo.valor_unitario}</p>
-                        <input type="submit" class="card__button" value="Ver detalles" onclick="visualizarInsumo(${insumo.id})">
-                    `;
-                    cardsContainer.appendChild(card);
-                });
-            })
-            .catch(error => {
-                console.error('Error al listar insumos:', error);
-            });
-    });
-
+  <script>
     function visualizarInsumo(id) {
-        localStorage.setItem('idInsumo', id);
-        window.location.href = 'visualizar-insumo.html';
+      localStorage.setItem('idInsumo', id);
+      window.location.href = 'visualizar-insumo.html';
     }
-    </script>
-    <script src="/frontend/public/js/pages/listar-insumo.js"></script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+      fetch('http://localhost:3000/insumos')
+        .then(response => response.json())
+        .then(data => {
+          const cardsContainer = document.getElementById('cards');
+          cardsContainer.innerHTML = '';
+
+          data.forEach(insumo => {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.innerHTML = `
+              <h3 class="card__title">${insumo.nombre_insumo}</h3>
+              <p class="card__info">ID: ${insumo.id_insumo}</p>
+              <p class="card__info">Cantidad: ${insumo.cantidad}</p>
+              <p class="card__info">Precio: $${insumo.valor_unitario}</p>
+              <input type="submit" class="card__button" value="Ver detalles" onclick="visualizarInsumo('${insumo.id_insumo}')">
+            `;
+            cardsContainer.appendChild(card);
+          });
+        })
+        .catch(error => {
+          console.error('Error al listar insumos:', error);
+        });
+    });
+  </script>
+  <script src="/frontend/public/js/pages/listar-insumo.js"></script>
 </body>
 </html>

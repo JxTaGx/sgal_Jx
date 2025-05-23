@@ -152,6 +152,24 @@ app.get('/cultivo/:id', async (req, res) => {
     }
 });
 
+app.get('/insumos/:id', (req, res) => {
+  const insumoId = req.params.id;
+
+  db.query('SELECT * FROM insumos WHERE id = ?', [insumoId], (err, results) => {
+    if (err) {
+      console.error('Error al consultar la base de datos:', err);
+      return res.status(500).json({ success: false, message: 'Error en el servidor' });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ success: false, message: 'Insumo no encontrado' });
+    }
+
+    res.json({ success: true, data: results[0] });
+  });
+});
+
+
 // ESTO ES UNA PRUEBA PARA LOS EDITAR
 app.put('/ciclo_cultivo/:id', async (req, res) => {
     const { id } = req.params; // Aquí era el error

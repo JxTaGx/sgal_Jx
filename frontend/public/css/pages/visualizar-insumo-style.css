@@ -179,7 +179,7 @@ body {
     background-size: cover;
     background-position: center;
     margin-left: 2rem;
-    margin-top: 1rem;
+    margin-top: -1.5rem;
 }
 
 .container {
@@ -274,10 +274,19 @@ input[disabled] {
     color: var(--gray-550);
 }
 
+.container__fields {
+    margin-top: 7rem;
+}
+
+.field {
+    margin-top: 1.5rem;
+}
+
 .button__group {
     display: flex;
     justify-content: space-around;
     width: 100%;
+    margin-top: 9rem;
 }
 
 .button {
