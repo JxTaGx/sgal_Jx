@@ -4,126 +4,94 @@
  */
 
 // Esperar a que el DOM esté completamente cargado
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Elementos del formulario
     const form = document.querySelector('.update-crop__form');
     const inputs = Array.from(form.querySelectorAll('.update-crop__input'));
     const saveButton = document.querySelector('.update-crop__button--save');
     const cancelButton = document.querySelector('.update-crop__button--cancel');
     const imageUpload = document.querySelector('.update-crop__image-placeholder');
-    
+
     // Asignar IDs a los inputs basados en sus labels si no los tienen
     inputs.forEach(input => {
         if (!input.id) {
-        const label = input.previousElementSibling;
-        if (label && label.textContent) {
-            const id = label.textContent.toLowerCase().replace(/\s/g, '').replace(/[^a-zA-Z0-9]/g, '');
-            input.id = id;
-            label.setAttribute('for', id);
-        }
+            const label = input.previousElementSibling;
+            if (label && label.textContent) {
+                const id = label.textContent.toLowerCase().replace(/\s/g, '').replace(/[^a-zA-Z0-9]/g, '');
+                input.id = id;
+                if (label.tagName === 'LABEL') { // Ensure it's a label before setting 'for'
+                    label.setAttribute('for', id);
+                }
+            }
         }
     });
-    
+
     // Mapeo de IDs de campos a sus validaciones
     const validationConfig = {
         'nombredelcultivo': {
-        required: true,
-        minLength: 3,
-        maxLength: 50,
-        errorMessage: 'El nombre del cultivo debe tener entre 3 y 50 caracteres'
+            required: true,
+            minLength: 3,
+            maxLength: 50,
+            errorMessage: 'El nombre del cultivo debe tener entre 3 y 50 caracteres'
         },
-        'variedad': {
-        required: true,
-        minLength: 2,
-        maxLength: 30,
-        errorMessage: 'La variedad debe tener entre 2 y 30 caracteres'
+        'tipocultivo': { // Corrected ID from HTML
+            required: true,
+            minLength: 2,
+            maxLength: 30,
+            errorMessage: 'El tipo de cultivo debe tener entre 2 y 30 caracteres'
         },
-        'fechadesiembra': {
-        required: true,
-        pattern: /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/,
-        errorMessage: 'Formato de fecha inválido. Use DD/MM/AAAA'
+        'tamaño': { // Corrected ID (using 'tamaño' as per label, but ensure consistency)
+            required: true,
+            // pattern: /^[0-9]+(\.[0-9]{1,2})?\s*(m²|ha)$/i, // Example: 10 m² or 1.5 ha
+            errorMessage: 'El tamaño debe ser un número seguido de m² o ha (ej: 100 m²)'
         },
-        'areacultivadaha': {
-        required: true,
-        pattern: /^[0-9]+(\.[0-9]{1,2})?$/,
-        errorMessage: 'El área debe ser un número positivo con hasta 2 decimales'
+        'ubicación': { // Corrected ID
+            required: true,
+            minLength: 3,
+            maxLength: 100,
+            errorMessage: 'La ubicación debe tener entre 3 y 100 caracteres'
         },
-        'etapaactual': {
-        required: true,
-        minLength: 3,
-        maxLength: 30,
-        errorMessage: 'La etapa actual debe tener entre 3 y 30 caracteres'
+        'estado': {
+            required: true,
+            // You might want a select for "estado" or specific allowed values
+            errorMessage: 'El estado es obligatorio'
         },
-        'metododecultivo': {
-        required: true,
-        minLength: 3,
-        maxLength: 30,
-        errorMessage: 'El método de cultivo debe tener entre 3 y 30 caracteres'
-        },
-        'rendimientoesperadotonha': {
-        required: true,
-        pattern: /^[0-9]+(\.[0-9]{1,2})?$/,
-        errorMessage: 'El rendimiento debe ser un número positivo con hasta 2 decimales'
-        },
-        'metododeriego': {
-        required: true,
-        minLength: 3,
-        maxLength: 30,
-        errorMessage: 'El método de riego debe tener entre 3 y 30 caracteres'
-        },
-        'plandefertilizacion': {
-        required: true,
-        minLength: 3,
-        maxLength: 50,
-        errorMessage: 'El plan de fertilización debe tener entre 3 y 50 caracteres'
-        },
-        'controldeplagas': {
-        required: true,
-        minLength: 3,
-        maxLength: 50,
-        errorMessage: 'El control de plagas debe tener entre 3 y 50 caracteres'
+        'descripción': { // Corrected ID
+            required: false, // Assuming description is optional
+            maxLength: 200,
+            errorMessage: 'La descripción no puede exceder los 200 caracteres'
         }
+        // ID field is disabled, so no validation needed here
     };
-    
+
+
     /**
      * Configura los atributos de validación HTML5 para cada input
      */
     const setupHtml5Validation = () => {
         try {
-        inputs.forEach(input => {
-            const fieldId = input.id.toLowerCase();
-            const config = validationConfig[fieldId];
-            
-            if (!config) {
-            console.warn(`No se encontró configuración para el campo con ID: ${fieldId}`);
-            return;
-            }
-            
-          // Agregar atributos HTML5
-            if (config.required) {
-            input.setAttribute('required', '');
-            }
-            
-            if (config.minLength) {
-            input.setAttribute('minlength', config.minLength);
-            }
-            
-            if (config.maxLength) {
-            input.setAttribute('maxlength', config.maxLength);
-            }
-            
-            if (config.pattern) {
-            input.setAttribute('pattern', config.pattern.source);
-            }
-            
-          // Para depuración
-            console.log(`Configurado campo: ${fieldId} con validaciones:`, config);
-        });
+            inputs.forEach(input => {
+                if (input.disabled) return; // Skip disabled inputs like ID
+                const fieldId = input.id.toLowerCase();
+                const config = validationConfig[fieldId];
+
+                if (!config) {
+                    // console.warn(`No se encontró configuración para el campo con ID: ${fieldId}`);
+                    return;
+                }
+
+                if (config.required) input.setAttribute('required', '');
+                if (config.minLength) input.setAttribute('minlength', config.minLength);
+                if (config.maxLength) input.setAttribute('maxlength', config.maxLength);
+                if (config.pattern) input.setAttribute('pattern', config.pattern.source);
+
+                // console.log(`Configurado campo: ${fieldId} con validaciones:`, config);
+            });
         } catch (error) {
-        console.error('Error al configurar validaciones HTML5:', error);
+            console.error('Error al configurar validaciones HTML5:', error);
         }
     };
-    
+
     /**
      * Crea y muestra un mensaje de error para un campo específico
      * @param {HTMLElement} input - El campo de entrada con error
@@ -131,47 +99,42 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     const showError = (input, message) => {
         try {
-        // Eliminar mensaje de error existente si hay uno
-        const existingError = input.parentElement.querySelector('.error-message');
-        if (existingError) {
-            existingError.remove();
-        }
-        
-        // Crear nuevo mensaje de error
-        const errorElement = document.createElement('span');
-        errorElement.className = 'error-message';
-        errorElement.style.color = 'yellow';
-        errorElement.style.fontSize = '1.2rem';
-        errorElement.style.display = 'block';
-        errorElement.style.marginTop = '0.5rem';
-        errorElement.textContent = message;
-        
-        // Agregar estilo al input con error
-        input.style.borderColor = 'yellow';
-        
-        // Insertar mensaje después del input
-        input.insertAdjacentElement('afterend', errorElement);
+            const errorContainer = input.parentElement.querySelector('.error-message') || document.createElement('span');
+            errorContainer.className = 'error-message'; // Ensure class for potential existing spans
+            errorContainer.style.color = 'var(--secondary-4-950, red)'; // Use CSS variable or fallback
+            errorContainer.style.fontSize = '1.2rem';
+            errorContainer.style.display = 'block';
+            errorContainer.style.marginTop = '0.5rem';
+            errorContainer.textContent = message;
+
+            input.style.borderColor = 'var(--secondary-4-950, red)';
+
+            if (!input.parentElement.querySelector('.error-message')) {
+                input.insertAdjacentElement('afterend', errorContainer);
+            }
         } catch (error) {
-        console.error('Error al mostrar mensaje de error:', error);
+            console.error('Error al mostrar mensaje de error:', error);
         }
     };
-    
+
+
     /**
      * Elimina el mensaje de error de un campo
      * @param {HTMLElement} input - El campo de entrada a limpiar
      */
     const clearError = (input) => {
         try {
-        const errorElement = input.nextElementSibling;
-        if (errorElement && errorElement.classList.contains('error-message')) {
-            errorElement.remove();
-        }
-        input.style.borderColor = '';
+            const errorElement = input.parentElement.querySelector('.error-message');
+            if (errorElement) {
+                errorElement.remove();
+            }
+            input.style.borderColor = '';
         } catch (error) {
-        console.error('Error al limpiar mensaje de error:', error);
+            console.error('Error al limpiar mensaje de error:', error);
         }
     };
-    
+
+
     /**
      * Valida un campo de entrada individual
      * @param {HTMLElement} input - El campo a validar
@@ -179,186 +142,155 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     const validateField = (input) => {
         try {
-        const fieldId = input.id.toLowerCase();
-        const config = validationConfig[fieldId];
-        const value = input.value.trim();
-        
-        if (!config) {
-            console.warn(`No se encontró configuración para validar el campo: ${fieldId}`);
+            if (input.disabled) return true; // Skip disabled inputs
+            const fieldId = input.id ? input.id.toLowerCase() : '';
+            const config = validationConfig[fieldId];
+            const value = input.value.trim();
+
+            if (!config) {
+                // console.warn(`No se encontró configuración para validar el campo: ${fieldId}`);
+                return true; // Consider valid if no config
+            }
+
+            clearError(input); // Clear previous error before validating
+
+            if (config.required && value === '') {
+                showError(input, 'Este campo es obligatorio.');
+                return false;
+            }
+            if (config.minLength && value.length < config.minLength) {
+                showError(input, config.errorMessage || `Mínimo ${config.minLength} caracteres.`);
+                return false;
+            }
+            if (config.maxLength && value.length > config.maxLength) {
+                showError(input, config.errorMessage || `Máximo ${config.maxLength} caracteres.`);
+                return false;
+            }
+            if (config.pattern && !config.pattern.test(value)) {
+                showError(input, config.errorMessage || 'Formato inválido.');
+                return false;
+            }
             return true;
-        }
-        
-        // Validar requerido
-        if (config.required && value === '') {
-            showError(input, 'Este campo es obligatorio');
-            return false;
-        }
-        
-        // Validar longitud mínima
-        if (config.minLength && value.length < config.minLength) {
-            showError(input, config.errorMessage);
-            return false;
-        }
-        
-        // Validar longitud máxima
-        if (config.maxLength && value.length > config.maxLength) {
-            showError(input, config.errorMessage);
-            return false;
-        }
-        
-        // Validar patrón
-        if (config.pattern && !config.pattern.test(value)) {
-            showError(input, config.errorMessage);
-            return false;
-        }
-        
-        clearError(input);
-        return true;
         } catch (error) {
-        console.error('Error durante la validación del campo:', error);
-        return false;
+            console.error('Error durante la validación del campo:', error);
+            showError(input, 'Error de validación inesperado.');
+            return false;
         }
     };
-    
+
+
     /**
      * Valida todo el formulario
      * @returns {boolean} - True si todo el formulario es válido, false si no
      */
     const validateForm = () => {
         try {
-        let isValid = true;
-        
-        inputs.forEach(input => {
-          // Para cada campo, validamos y actualizamos el estado general
-            const fieldValid = validateField(input);
-            isValid = isValid && fieldValid;
-        });
-        
-        return isValid;
+            let isValid = true;
+            inputs.forEach(input => {
+                if (!validateField(input)) {
+                    isValid = false;
+                }
+            });
+            return isValid;
         } catch (error) {
-        console.error('Error durante la validación del formulario:', error);
-        return false;
+            console.error('Error durante la validación del formulario:', error);
+            return false;
         }
     };
-    
+
     /**
      * Configura la funcionalidad para carga de imágenes
      */
     const setupImageUpload = () => {
         try {
-        // Crear un input de tipo file oculto
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = 'image/*';
-        fileInput.style.display = 'none';
-        document.body.appendChild(fileInput);
-        
-        // Al hacer clic en el placeholder de imagen, abrir el selector de archivos
-        imageUpload.addEventListener('click', () => {
-            fileInput.click();
-        });
-        
-        // Cuando se selecciona un archivo
-        fileInput.addEventListener('change', (event) => {
-            if (event.target.files && event.target.files[0]) {
-            const reader = new FileReader();
-            
-            reader.onload = (e) => {
-              // Reemplazar el SVG con la imagen seleccionada
-                imageUpload.innerHTML = '';
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.style.maxWidth = '100%';
-                img.style.maxHeight = '100%';
-                img.style.objectFit = 'contain';
-                imageUpload.appendChild(img);
-            };
-            
-            reader.readAsDataURL(event.target.files[0]);
+            if (!imageUpload) return;
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.style.display = 'none';
+            document.body.appendChild(fileInput);
+
+            imageUpload.addEventListener('click', () => fileInput.click());
+
+            fileInput.addEventListener('change', (event) => {
+                if (event.target.files && event.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        imageUpload.innerHTML = ''; // Clear placeholder
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.maxWidth = '100%';
+                        img.style.maxHeight = '100%';
+                        img.style.objectFit = 'contain';
+                        imageUpload.appendChild(img);
+                    };
+                    reader.readAsDataURL(event.target.files[0]);
+                }
+            });
+
+            imageUpload.style.cursor = 'pointer';
+            if (!imageUpload.querySelector('p')) { // Add help text only if not already image
+                 const helpText = document.createElement('p');
+                 helpText.textContent = 'Haz clic para cambiar/subir una imagen';
+                 helpText.style.marginTop = '1rem';
+                 helpText.style.fontSize = '1.4rem';
+                 helpText.style.color = 'var(--gray-750)';
+                 imageUpload.appendChild(helpText);
             }
-        });
-        
-        // Cambiar el cursor y añadir texto indicativo
-        imageUpload.style.cursor = 'pointer';
-        const helpText = document.createElement('p');
-        helpText.textContent = 'Haz clic para subir una imagen';
-        helpText.style.marginTop = '1rem';
-        helpText.style.fontSize = '1.4rem';
-        helpText.style.color = 'var(--gray-750)';
-        imageUpload.appendChild(helpText);
+
         } catch (error) {
-        console.error('Error al configurar la carga de imágenes:', error);
+            console.error('Error al configurar la carga de imágenes:', error);
         }
     };
-    
+
+
     /**
      * Configura los event listeners para el formulario
      */
     const setupEventListeners = () => {
         try {
-        // Validar cada campo al perder el foco
-        inputs.forEach(input => {
-            input.addEventListener('blur', () => {
-            validateField(input);
+            inputs.forEach(input => {
+                if (input.disabled) return;
+                input.addEventListener('blur', () => validateField(input));
+                input.addEventListener('input', () => clearError(input));
             });
-            
-          // Limpiar error al comenzar a escribir
-            input.addEventListener('input', () => {
-            clearError(input);
-            });
-        });
-        
-        // Validar todo el formulario al intentar enviarlo
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            
-            if (validateForm()) {
-            try {
-              // Simulación de envío exitoso
-                saveChanges();
-            } catch (error) {
-                console.error('Error al guardar los cambios:', error);
-                showNotification('Error al guardar los cambios. Inténtelo de nuevo.', 'error');
+
+            if (form) {
+                form.addEventListener('submit', async (event) => { // Make async for fetch
+                    event.preventDefault();
+                    if (validateForm()) {
+                        try {
+                            await saveChanges(); // await the saveChanges
+                        } catch (error) {
+                            console.error('Error al guardar los cambios:', error);
+                            showNotification('Error al guardar los cambios. Inténtelo de nuevo.', 'error');
+                        }
+                    } else {
+                        showNotification('Por favor, corrija los errores en el formulario.', 'error');
+                    }
+                });
             }
-            } else {
-            showNotification('Por favor, corrija los errores en el formulario.', 'error');
+
+
+            if (cancelButton) {
+                cancelButton.addEventListener('click', (event) => {
+                    // No preventDefault if it's an <a> tag
+                    // event.preventDefault(); 
+                    try {
+                        if (confirm('¿Está seguro que desea cancelar? Los cambios no guardados se perderán.')) {
+                            window.location.href = 'visualizar-cultivo.html';
+                        }
+                    } catch (error) {
+                        console.error('Error al cancelar:', error);
+                    }
+                });
             }
-        });
-        
-        // Configurar botón de guardar para enviar el formulario
-        saveButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            
-            if (validateForm()) {
-            try {
-                saveChanges();
-            } catch (error) {
-                console.error('Error al guardar los cambios:', error);
-                showNotification('Error al guardar los cambios. Inténtelo de nuevo.', 'error');
-            }
-            } else {
-            showNotification('Por favor, corrija los errores en el formulario.', 'error');
-            }
-        });
-        
-        // Configurar botón de cancelar
-        cancelButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            
-            try {
-            // Confirmación antes de cancelar
-            if (confirm('¿Está seguro que desea cancelar? Los cambios no guardados se perderán.')) {
-                window.location.href = 'visualizar-cultivo.html';
-            }
-            } catch (error) {
-            console.error('Error al cancelar:', error);
-            }
-        });
         } catch (error) {
-        console.error('Error al configurar event listeners:', error);
+            console.error('Error al configurar event listeners:', error);
         }
     };
-    
+
+
     /**
      * Muestra una notificación al usuario
      * @param {string} message - El mensaje a mostrar
@@ -366,134 +298,213 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     const showNotification = (message, type = 'success') => {
         try {
-        // Crear elemento de notificación
-        const notification = document.createElement('div');
-        notification.className = `notification notification--${type}`;
-        notification.textContent = message;
-        
-        // Estilos para la notificación
-        notification.style.position = 'fixed';
-        notification.style.bottom = '2rem';
-        notification.style.right = '2rem';
-        notification.style.padding = '1.5rem 2rem';
-        notification.style.borderRadius = '0.5rem';
-        notification.style.zIndex = '1000';
-        notification.style.minWidth = '30rem';
-        notification.style.boxShadow = '0 0.2rem 1rem rgba(0, 0, 0, 0.2)';
-        notification.style.animation = 'fadeIn 0.3s ease-in-out';
-        
-        if (type === 'success') {
-            notification.style.backgroundColor = 'var(--primary-900)';
-            notification.style.color = 'var(--white)';
-        } else {
-            notification.style.backgroundColor = '#FDC300';
-            notification.style.color = 'var(--white)';
-        }
-        
-        // Agregar al DOM
-        document.body.appendChild(notification);
-        
-        // Eliminar después de 3 segundos
-        setTimeout(() => {
-            notification.style.animation = 'fadeOut 0.3s ease-in-out';
+            let notification = document.querySelector(`.notification--${type}`);
+            if (!notification) {
+                notification = document.createElement('div');
+                notification.className = `notification notification--${type}`;
+                document.body.appendChild(notification);
+
+                // Estilos para la notificación
+                Object.assign(notification.style, {
+                    position: 'fixed',
+                    bottom: '2rem',
+                    right: '2rem',
+                    padding: '1.5rem 2rem',
+                    borderRadius: '0.5rem',
+                    zIndex: '1000',
+                    minWidth: '30rem',
+                    boxShadow: '0 0.2rem 1rem rgba(0, 0, 0, 0.2)',
+                    animation: 'fadeIn 0.3s ease-in-out'
+                });
+            }
+
+            notification.textContent = message;
+            notification.style.display = 'block'; // Ensure it's visible
+
+
+            if (type === 'success') {
+                notification.style.backgroundColor = 'var(--primary-900)';
+                notification.style.color = 'var(--white)';
+            } else { // error or other
+                notification.style.backgroundColor = 'var(--secondary-4-500, #FDC300)'; // Using a fallback
+                notification.style.color = 'var(--black, #000000)';
+            }
+
+
             setTimeout(() => {
-            document.body.removeChild(notification);
-            }, 300);
-        }, 3000);
+                notification.style.animation = 'fadeOut 0.3s ease-in-out forwards';
+                notification.addEventListener('animationend', () => {
+                    if (notification.parentNode) { // Check if it's still in DOM
+                        notification.remove();
+                    }
+                }, { once: true });
+            }, 3000);
         } catch (error) {
-        console.error('Error al mostrar notificación:', error);
+            console.error('Error al mostrar notificación:', error);
         }
     };
-    
+
     /**
      * Simula el guardado de los cambios del formulario
      */
-    const saveChanges = () => {
+    const saveChanges = async () => { // Make it async
+        const idCultivo = localStorage.getItem("idCultivo");
+        if (!idCultivo) {
+            showNotification("No se encontró el ID del cultivo para actualizar.", "error");
+            return;
+        }
+
+        const datosActualizados = {
+            nombre_cultivo: document.getElementById("nombredelcultivo")?.value, // Use corrected IDs
+            tipo_cultivo: document.getElementById("tipocultivo")?.value,
+            tamano: document.getElementById("tamaño")?.value,
+            ubicacion: document.getElementById("ubicación")?.value,
+            estado: document.getElementById("estado")?.value,
+            descripcion: document.getElementById("descripción")?.value
+            // id_cultivo is not sent in body for PUT usually, it's in URL
+        };
+
+        // Remove undefined fields to avoid issues with backend
+        Object.keys(datosActualizados).forEach(key => {
+            if (datosActualizados[key] === undefined) {
+                delete datosActualizados[key];
+            }
+        });
+
+
         try {
-        // Simular un retraso de operación en el servidor
-        setTimeout(() => {
-            showNotification('¡Cambios guardados correctamente!', 'success');
-            setTimeout(() => {
-            window.location.href = 'visualizar-cultivo.html';
-            }, 2000);
-        }, 1000);
+            const res = await fetch(`http://localhost:3000/cultivos/${idCultivo}`, { // Ensure endpoint is correct
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(datosActualizados)
+            });
+
+            if (res.ok) {
+                showNotification('¡Cambios guardados correctamente!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'visualizar-cultivo.html';
+                }, 1500); // Redirect after 1.5 seconds
+            } else {
+                const errorData = await res.json().catch(() => ({ message: "Error desconocido del servidor." }));
+                throw new Error(errorData.message || `Error al actualizar el cultivo (HTTP ${res.status})`);
+            }
         } catch (error) {
-        console.error('Error al guardar los cambios:', error);
-        throw error; // Re-lanzar el error para manejarlo en el nivel superior
+            console.error('Error al guardar los cambios:', error);
+            showNotification(error.message || 'Error al guardar los cambios. Inténtelo de nuevo.', 'error');
         }
     };
-    
+
     /**
      * Añade estilos CSS para animaciones
      */
     const addAnimationStyles = () => {
         try {
-        const styleSheet = document.createElement('style');
-        styleSheet.textContent = `
-            @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(1rem); }
-            to { opacity: 1; transform: translateY(0); }
-            }
-            
-            @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(1rem); }
-            }
-            
-            .update-crop__button:hover {
-            filter: brightness(1.1);
-            transform: translateY(-0.2rem);
-            transition: all 0.2s ease;
-            }
-            
-            .update-crop__button {
-            transition: all 0.2s ease;
-            }
-            
-            .update-crop__input:focus {
-            border-color: var(--primary-900);
-            box-shadow: 0 0 0.5rem rgba(57, 169, 0, 0.3);
-            outline: none;
-            transition: all 0.3s ease;
-            }
-            
-            .update-crop__input {
-            transition: all 0.3s ease;
-            }
-        `;
-        document.head.appendChild(styleSheet);
+            if (document.getElementById('animation-styles')) return; // Avoid adding multiple times
+            const styleSheet = document.createElement('style');
+            styleSheet.id = 'animation-styles';
+            styleSheet.textContent = `
+                @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(1rem); }
+                to { opacity: 1; transform: translateY(0); }
+                }
+                
+                @keyframes fadeOut {
+                from { opacity: 1; transform: translateY(0); }
+                to { opacity: 0; transform: translateY(1rem); }
+                }
+                
+                .update-crop__button:hover {
+                filter: brightness(1.1);
+                transform: translateY(-0.2rem);
+                transition: all 0.2s ease;
+                }
+                
+                .update-crop__button {
+                transition: all 0.2s ease;
+                }
+                
+                .update-crop__input:focus {
+                border-color: var(--primary-900);
+                box-shadow: 0 0 0.5rem rgba(57, 169, 0, 0.3);
+                outline: none;
+                transition: all 0.3s ease;
+                }
+                
+                .update-crop__input {
+                transition: all 0.3s ease;
+                }
+            `;
+            document.head.appendChild(styleSheet);
         } catch (error) {
-        console.error('Error al añadir estilos de animación:', error);
+            console.error('Error al añadir estilos de animación:', error);
         }
     };
-    
+
     // Función para logear todos los campos del formulario (ayuda para depuración)
     const logFormFields = () => {
-        console.log("=== CAMPOS DEL FORMULARIO ===");
+        // console.log("=== CAMPOS DEL FORMULARIO ===");
         inputs.forEach(input => {
-        console.log(`Campo: id="${input.id}", value="${input.value}"`);
+            // console.log(`Campo: id="${input.id}", value="${input.value}"`);
         });
     };
-    
+
     /**
      * Inicializa todas las funcionalidades
      */
-    const init = () => {
+    const init = async () => { // Make init async to await data loading
         try {
-        // Log para depuración
-        logFormFields();
-        
-        setupHtml5Validation();
-        setupImageUpload();
-        setupEventListeners();
-        addAnimationStyles();
-        
-        console.log("Inicialización completada");
+            logFormFields();
+            setupHtml5Validation();
+            setupImageUpload();
+            setupEventListeners();
+            addAnimationStyles();
+
+            // Load existing data
+            const idCultivo = localStorage.getItem("idCultivo");
+            if (!idCultivo) {
+                showNotification("No se encontró el ID del cultivo para cargar datos.", "error");
+                return;
+            }
+
+            const res = await fetch(`http://localhost:3000/cultivos/${idCultivo}`); // Ensure correct endpoint
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => null);
+                throw new Error(errorData?.message || `Error al cargar datos del cultivo (HTTP ${res.status}).`);
+            }
+            const cultivo = await res.json();
+
+            if (cultivo && cultivo.data) { // Check if data exists in the response
+                const cultivoData = cultivo.data;
+                document.getElementById("nombredelcultivo").value = cultivoData.nombre_cultivo || '';
+                document.getElementById("tipocultivo").value = cultivoData.tipo_cultivo || '';
+                document.getElementById("tamaño").value = cultivoData.tamano || '';
+                document.getElementById("ubicación").value = cultivoData.ubicacion || '';
+                document.getElementById("estado").value = cultivoData.estado || '';
+                document.getElementById("descripción").value = cultivoData.descripcion || '';
+                document.getElementById("idCultivoMostrar").value = cultivoData.id_cultivo || ''; // Use the correct ID field from your data
+                 // Handle image if available in cultivoData.fotografia
+                if (cultivoData.fotografia && imageUpload) {
+                    imageUpload.innerHTML = ''; // Clear placeholder
+                    const img = document.createElement('img');
+                    img.src = cultivoData.fotografia; // Assuming this is a URL or base64 string
+                    img.style.maxWidth = '100%';
+                    img.style.maxHeight = '100%';
+                    img.style.objectFit = 'contain';
+                    imageUpload.appendChild(img);
+                }
+
+            } else {
+                throw new Error('No se recibieron datos válidos del cultivo.');
+            }
+
+
+            // console.log("Inicialización completada");
         } catch (error) {
-        console.error('Error durante la inicialización:', error);
+            console.error('Error durante la inicialización:', error);
+            showNotification(`Error al inicializar: ${error.message}`, 'error');
         }
     };
-    
+
     // Iniciar la aplicación
     init();
-    });
+});

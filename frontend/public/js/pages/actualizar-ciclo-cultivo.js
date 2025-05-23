@@ -1,245 +1,78 @@
 // Esperar a que el DOM esté completamente cargado
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     // Obtener referencias a elementos del formulario
     const form = document.querySelector(".cultivo-form");
-    const idCicloInput = form.querySelector('input[value="Tomate Cherry Orgánico"]');
-    const nombreCicloInput = form.querySelector('input[value="Sweet 100"]');
-    const periodoSiembraInput = form.querySelector('input[value="15/03/2023"]');
-    const novedadesInput = form.querySelector('input[value="2.5"]');
-    const descripcionInput = form.querySelector('input[value="Crecimiento vegetativo"]');
-    const saveButton = form.querySelector(".cultivo-form__btn--save");
-    const cancelButton = form.querySelector(".cultivo-form__btn--cancel");
+    const idCicloInput = form.querySelector('#idCiclo'); // Changed to querySelector
+    const nombreCicloInput = form.querySelector('#nombreCiclo'); // Changed to querySelector
+    const periodoSiembraInput = form.querySelector('#periodoSiembra'); // Changed to querySelector
+    const novedadesInput = form.querySelector('#novedades'); // Changed to querySelector
+    const descripcionInput = form.querySelector('#descripcion'); // Changed to querySelector
+    // const saveButton = form.querySelector(".cultivo-form__btn--save"); // Not strictly needed if using form submit
+    // const cancelButton = form.querySelector(".cultivo-form__btn--cancel"); // Is an <a> tag
 
-    // Configurar IDs para facilitar el acceso a los campos
-    idCicloInput.id = "idCiclo";
-    nombreCicloInput.id = "nombreCiclo";
-    periodoSiembraInput.id = "periodoSiembra";
-    novedadesInput.id = "novedades";
-    descripcionInput.id = "descripcion";
+    const params = new URLSearchParams(window.location.search);
+    const idCiclo = params.get("id");
 
-    /**
-     * Mostrar mensaje de error en un campo específico
-     * @param {HTMLElement} input - El elemento input con error
-     * @param {string} message - Mensaje de error a mostrar
-     */
-    const showError = (input, message) => {
-        try {
-            // Buscar si ya existe un mensaje de error para este campo
-            let errorElement = input.parentElement.querySelector(".error-message");
+    if (!idCiclo) {
+        alert("No se encontró el ID del ciclo.");
+        return;
+    }
 
-            // Si no existe, crear uno nuevo
-            if (!errorElement) {
-                errorElement = document.createElement("span");
-                errorElement.className = "error-message";
-                errorElement.style.color = "#FDC300";
-                errorElement.style.fontSize = "1.2rem";
-                errorElement.style.display = "block";
-                errorElement.style.marginTop = "0.5rem";
-                input.parentElement.appendChild(errorElement);
-            }
+    // 1. Cargar los datos reales
+    try {
+        const res = await fetch(`http://localhost:3000/ciclo_cultivo/${idCiclo}`);
+        const ciclo = await res.json();
 
-            // Establecer mensaje y estilo al input
-            errorElement.textContent = message;
-            input.style.borderColor = "#FDC300";
-        } catch (error) {
-            console.error("Error al mostrar mensaje de error:", error);
+        if (res.ok && ciclo) {
+            idCicloInput.value = ciclo.id_ciclo;
+            nombreCicloInput.value = ciclo.nombre_ciclo;
+            periodoSiembraInput.value = ciclo.periodo_siembra;
+            novedadesInput.value = ciclo.novedades || '';
+            descripcionInput.value = ciclo.descripcion || '';
+        } else {
+             throw new Error(ciclo.message || 'No se pudieron cargar los datos del ciclo.');
         }
-    };
+    } catch (error) {
+        alert("Error al cargar los datos del ciclo: " + error.message);
+        console.error(error);
+    }
 
-    /**
-     * Eliminar mensaje de error de un campo
-     * @param {HTMLElement} input - El elemento input a limpiar
-     */
-    const clearError = (input) => {
-        try {
-            const errorElement = input.parentElement.querySelector(".error-message");
-            if (errorElement) {
-                errorElement.remove();
-            }
-            input.style.borderColor = "";
-        } catch (error) {
-            console.error("Error al limpiar mensaje de error:", error);
+    // 2. Actualizar al enviar el formulario
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // Basic client-side validation (can be expanded)
+        if (!nombreCicloInput.value.trim() || !periodoSiembraInput.value.trim()) {
+            alert("Nombre del ciclo y periodo de siembra son obligatorios.");
+            return;
         }
-    };
 
-    /**
-     * Validar campo según criterios específicos
-     * @param {HTMLElement} input - Campo a validar
-     * @returns {boolean} - Si el campo es válido
-     */
-    const validateField = (input) => {
+        const datosActualizados = {
+            nombre_ciclo: nombreCicloInput.value,
+            periodo_siembra: periodoSiembraInput.value,
+            novedades: novedadesInput.value,
+            descripcion: descripcionInput.value
+        };
+
         try {
-            clearError(input);
-            const value = input.value.trim();
+            const respuesta = await fetch(`http://localhost:3000/ciclo_cultivo/${idCiclo}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(datosActualizados),
+            });
 
-            // Validación según el tipo de campo
-            switch (input.id) {
-                case "idCiclo":
-                    if (value.length < 3) {
-                        showError(input, "El ID del ciclo debe tener al menos 3 caracteres");
-                        return false;
-                    }
-                    break;
-
-                case "nombreCiclo":
-                    if (value.length < 2) {
-                        showError(input, "El nombre del ciclo debe tener al menos 2 caracteres");
-                        return false;
-                    }
-                    break;
-
-                case "periodoSiembra":
-                    const datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-                    if (!datePattern.test(value)) {
-                        showError(input, "El formato de fecha debe ser DD/MM/AAAA");
-                        return false;
-                    }
-
-                    // Validar fecha realista
-                    const [, day, month, year] = value.match(datePattern);
-                    const date = new Date(year, month - 1, day);
-
-                    if (
-                        date.getFullYear() !== parseInt(year) ||
-                        date.getMonth() !== parseInt(month) - 1 ||
-                        date.getDate() !== parseInt(day)
-                    ) {
-                        showError(input, "La fecha no es válida");
-                        return false;
-                    }
-                    break;
-
-                case "novedades":
-                    if (value.length < 1 || value.length > 100) {
-                        showError(input, "Las novedades deben tener entre 1 y 100 caracteres");
-                        return false;
-                    }
-                    break;
-
-                case "descripcion":
-                    if (value.length < 5) {
-                        showError(input, "La descripción debe tener al menos 5 caracteres");
-                        return false;
-                    }
-                    break;
-            }
-
-            return true;
-        } catch (error) {
-            console.error(`Error al validar campo ${input.id}:`, error);
-            showError(input, "Error en la validación del campo");
-            return false;
-        }
-    };
-
-    /**
-     * Validar todo el formulario
-     * @returns {boolean} - Si el formulario es válido
-     */
-    const validateForm = () => {
-        try {
-            const inputs = [
-                idCicloInput,
-                nombreCicloInput,
-                periodoSiembraInput,
-                novedadesInput,
-                descripcionInput
-            ];
-
-            return inputs.every(input => validateField(input));
-        } catch (error) {
-            console.error("Error al validar formulario:", error);
-            alert("Ha ocurrido un error al validar el formulario. Por favor, inténtelo de nuevo.");
-            return false;
-        }
-    };
-
-    // Evento para validación en tiempo real cuando se pierde el foco
-    form.querySelectorAll("input").forEach(input => {
-        input.addEventListener("blur", () => {
-            validateField(input);
-        });
-
-        // Eliminar error cuando el usuario comienza a escribir
-        input.addEventListener("input", () => {
-            clearError(input);
-        });
-    });
-
-    // Evento para el botón de guardado
-    saveButton.addEventListener("click", (e) => {
-        try {
-            e.preventDefault();
-
-            if (validateForm()) {
-                // Simulación de envío exitoso
-                const successMessage = document.createElement("div");
-                successMessage.className = "success-message";
-                successMessage.textContent = "¡Datos guardados correctamente!";
-                successMessage.style.backgroundColor = "var(--primary-900)";
-                successMessage.style.color = "white";
-                successMessage.style.padding = "1rem";
-                successMessage.style.borderRadius = "0.5rem";
-                successMessage.style.textAlign = "center";
-                successMessage.style.marginTop = "1rem";
-
-                // Insertar el mensaje antes de los botones
-                const buttonsContainer = document.querySelector(".cultivo-form__buttons");
-                form.insertBefore(successMessage, buttonsContainer);
-
-                // Redirigir después de 2 segundos
-                setTimeout(() => {
-                    window.location.href = "visualizar-ciclo-cultivo.html";
-                }, 2000);
-            } else {
-                // Mostrar mensaje de error general
-                const errorSummary = document.createElement("div");
-                errorSummary.className = "error-summary";
-                errorSummary.textContent =
-                    "Por favor, corrija los errores en el formulario antes de continuar.";
-                errorSummary.style.backgroundColor = "#FEDE74";
-                errorSummary.style.color = "#ffffff";
-                errorSummary.style.padding = "1rem";
-                errorSummary.style.borderRadius = "0.5rem";
-                errorSummary.style.textAlign = "center";
-                errorSummary.style.marginTop = "1rem";
-
-                // Verificar si ya existe un mensaje de error general
-                const existingError = form.querySelector(".error-summary");
-                if (existingError) {
-                    existingError.remove();
-                }
-
-                // Insertar el mensaje al principio del formulario
-                form.insertBefore(errorSummary, form.firstChild);
-
-                // Eliminado el scroll automático
-                // errorSummary.scrollIntoView({ behavior: "smooth" });
-            }
-        } catch (error) {
-            console.error("Error al procesar el formulario:", error);
-            alert("Ha ocurrido un error al procesar el formulario. Por favor, inténtelo de nuevo.");
-        }
-    });
-
-    // Evento para el botón de cancelar
-    cancelButton.addEventListener("click", () => {
-        try {
-            if (confirm("¿Está seguro de que desea cancelar? Los cambios no se guardarán.")) {
+            if (respuesta.ok) {
+                alert("Ciclo actualizado correctamente.");
+                // Store ID in localStorage before redirecting to visualize the updated cycle
+                localStorage.setItem('idCicloCultivo', idCiclo);
                 window.location.href = "visualizar-ciclo-cultivo.html";
+            } else {
+                const errorData = await respuesta.json();
+                alert("Error al actualizar el ciclo: " + (errorData.message || respuesta.statusText));
             }
         } catch (error) {
-            console.error("Error al cancelar el formulario:", error);
+            alert("Error al enviar la solicitud: " + error.message);
+            console.error(error);
         }
     });
-
-    // Prevenir envío del formulario con Enter
-    form.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-        }
-    });
-
-    // Inicialización: validar campos con valores predeterminados
-    console.log("Formulario de Actualizar Ciclo Cultivo inicializado");
 });
