@@ -165,17 +165,12 @@ html {
     padding: 1rem 0;
 }
 
-.page__header-user--link{
-    text-decoration: none;
-    color: var(--black);
-    font-size: var(--font-size-h4);
-    cursor: default;
-}
-
+.page__header-user--link,
 .page__header-logout--link {
     text-decoration: none;
     color: var(--black);
     font-size: var(--font-size-h4);
+    cursor: default;
 }
 
 .nav {
