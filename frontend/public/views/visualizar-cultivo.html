@@ -47,58 +47,6 @@
         </main>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const idCultivo = localStorage.getItem('idCultivo');
-const response = await fetch(`http://localhost:3000/cultivos/${idCultivo}`);
-
-
-            if (!idCultivo) {
-                alert('ID de cultivo no encontrado');
-                return;
-            }
-
-            try {
-                const response = await fetch(`http://localhost:3000/cultivo/${idCultivo}`);
-                const result = await response.json();
-
-                const cultivo = result.data;
-
-                if (!cultivo || Object.keys(cultivo).length === 0) {
-                    alert('Cultivo no encontrado');
-                    return;
-                }
-
-                // Rellenar datos
-                document.getElementById('tipo-cultivo').textContent = cultivo.tipo_cultivo || 'No especificado';
-                document.getElementById('nombre-cultivo').textContent = cultivo.nombre_cultivo || 'No especificado';
-                document.getElementById('ubicacion').textContent = cultivo.ubicacion || 'No especificado';
-                document.getElementById('estado').textContent = cultivo.estado || 'No especificado';
-                document.getElementById('tamano').textContent = cultivo.tamano || 'No especificado';
-                document.getElementById('id-cultivo').textContent = cultivo.id_cultivo || 'No especificado';
-                document.getElementById('descripcion').textContent = cultivo.descripcion || 'No especificado';
-
-                // Tareas pendientes
-                const tareas = cultivo.tareas || [];
-                const tareasList = document.getElementById('tareas-pendientes');
-                tareasList.innerHTML = '';
-
-                if (tareas.length > 0) {
-                    tareas.forEach(tarea => {
-                        const li = document.createElement('li');
-                        li.className = 'ciclo-cultivo__list-item';
-                        li.textContent = tarea;
-                        tareasList.appendChild(li);
-                    });
-                } else {
-                    tareasList.innerHTML = '<li class="ciclo-cultivo__list-item">No hay tareas pendientes</li>';
-                }
-
-            } catch (error) {
-                console.error('Error al cargar los datos del cultivo:', error);
-                alert('Error al cargar los datos');
-            }
-        });
-    </script>
+    <script src="../js/pages/visualizar-cultivo.js"></script>
 </body>
 </html>

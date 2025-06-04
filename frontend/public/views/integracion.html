@@ -128,15 +128,16 @@
                         <div class="dashboard__form-group dashboard__form-group--full-width">
                             <label class="dashboard__label">Insumos</label>
                             <div class="dashboard__supply-selection">
-                                <button class="dashboard__button dashboard__button--icon dashboard__button--inline" type="button" onclick="redirectToCreate('supply', '../views/create-insumo.html')" title="Crear Nuevo Insumo">
-                                    <i class="material-icons">add_circle</i>
-                                </button>
+                                
                                 <div class="dashboard__supply-add-area">
                                     <select class="dashboard__select" data-field="available-supplies">
                                         <option value="">Seleccione un insumo para agregar</option>
                                     </select>
                                     <input type="number" class="dashboard__input" placeholder="Cantidad" min="1" data-field="supply-quantity">
-                                    <button class="dashboard__button dashboard__button--primary" type="button" data-action="add-selected-supply">Agregar</button>
+                                    <button class="dashboard__button dashboard__button--icon dashboard__button--inline" type="button" onclick="redirectToCreate('supply', '../views/create-insumo.html')" title="Crear Nuevo Insumo">
+                                        <i class="material-icons">add_circle</i>
+                                    </button>
+                                    <button class="dashboard__button dashboard__button--primary" type="button" data-action="add-selected-supply">Agregar</button> 
                                 </div>
                             </div>
                             <div class="dashboard__selected-items-list" data-list="selected-supplies">
@@ -170,88 +171,148 @@
             <section class="dashboard__section" data-panel="view">
                 <div class="dashboard__heading">
                     <h2 class="dashboard__title">
-                        <i class="material-icons dashboard__icon">visibility</i>
-                        Visualizar Producción
+                        <i class="material-icons dashboard__icon">dashboard</i>
+                        Dashboard de Producción
                     </h2>
-                    <p class="dashboard__subtitle">Busque una producción por su ID para ver los detalles</p>
+                    <p class="dashboard__subtitle">Análisis detallado de la producción por ID.</p>
                 </div>
-
+            
                 <div class="dashboard__widget">
-                    <form class="dashboard__form" data-form="view">
+                    <form class="dashboard__form" data-form="view-search">
                         <div class="dashboard__form-group">
-                            <label class="dashboard__label">ID de Producción</label>
+                            <label class="dashboard__label">ID de Producción a Visualizar</label>
                             <div class="dashboard__input-group">
-                                <input class="dashboard__input" type="text" data-field="production-id" required placeholder="Ej: prod-1">
-                                <button class="dashboard__button dashboard__button--primary" type="submit">Buscar</button>
+                                <input class="dashboard__input" type="text" data-field="production-id-search" required placeholder="Ej: prod-1">
+                                <button class="dashboard__button dashboard__button--primary" type="submit">Buscar Producción</button>
                             </div>
-                            <span class="dashboard__error" data-error="production-id"></span>
+                            <span class="dashboard__error" data-error="production-id-search"></span>
                         </div>
                     </form>
-
-                    <div class="dashboard__result dashboard__result--hidden" data-result="view">
-                        <div class="dashboard__info-section">
-                            <h3 class="dashboard__section-title">Información General</h3>
-                            <div class="dashboard__info-grid" data-info="basic">
+            
+                    <div class="dashboard__result dashboard__result--hidden" data-result="view-production-dashboard">
+                        <div class="dashboard__kpi-row">
+                            <div class="dashboard__kpi-card">
+                                <div class="dashboard__kpi-title">Inversión (Insumos)</div>
+                                <div class="dashboard__kpi-value" data-metric="total-investment">COP 0</div>
+                                <div class="dashboard__kpi-icon"><i class="material-icons">monetization_on</i></div>
+                            </div>
+                            <div class="dashboard__kpi-card">
+                                <div class="dashboard__kpi-title">Gastos Mantenimiento (Est.)</div>
+                                <div class="dashboard__kpi-value" data-metric="maintenance-cost">COP 0</div>
+                                <div class="dashboard__kpi-icon"><i class="material-icons">build</i></div>
+                            </div>
+                            <div class="dashboard__kpi-card">
+                                <div class="dashboard__kpi-title">Ganancia/Pérdida (Est.)</div>
+                                <div class="dashboard__kpi-value" data-metric="estimated-profit">COP 0</div>
+                                <div class="dashboard__kpi-icon"><i class="material-icons">trending_up</i></div>
+                            </div>
+                            <div class="dashboard__kpi-card">
+                                <div class="dashboard__kpi-title">Salud General Estimada</div>
+                                <div class="dashboard__kpi-value" data-metric="health-view">--%</div>
+                                <div class="dashboard__kpi-icon"><i class="material-icons">local_florist</i></div>
                             </div>
                         </div>
-
-                        <div class="dashboard__info-section">
-                            <h3 class="dashboard__section-title">Métricas Clave (Simuladas)</h3>
-                            <div class="dashboard__metrics-grid">
-                                <div class="dashboard__metric-card">
-                                    <div class="dashboard__metric-value" data-metric="health">--%</div>
-                                    <div class="dashboard__metric-label">Salud del Cultivo</div>
-                                    <div class="dashboard__metric-trend">
+                    
+                        <div class="dashboard__grid-layout">
+                    
+                            <div class="dashboard__grid-column dashboard__grid-column--left">
+                                <div class="dashboard__widget">
+                                    <h3 class="dashboard__widget-title"><i class="material-icons">info_outline</i> Detalles de la Producción</h3>
+                                    <div class="dashboard__info-grid" data-info="production-details">
+                                        </div>
+                                </div>
+                    
+                                <div class="dashboard__widget">
+                                    <h3 class="dashboard__widget-title"><i class="material-icons">sensors</i> Panel de Control de Sensores</h3>
+                                    <div class="dashboard__sensors-panel-grid" data-info="sensors-panel">
+                                        <p class="dashboard__notice">Cargando datos de sensores...</p>
                                     </div>
                                 </div>
-                                <div class="dashboard__metric-card">
-                                    <div class="dashboard__metric-value" data-metric="growth">--cm</div>
-                                    <div class="dashboard__metric-label">Crecimiento Promedio</div>
-                                    <div class="dashboard__metric-trend">
+                                <div class="dashboard__widget">
+                                    <h3 class="dashboard__widget-title"><i class="material-icons">compare_arrows</i> Comparativa de Sensores Similares</h3>
+                                    <div class="dashboard__chart-container" style="height: 220px;">
+                                        <canvas data-chart="sensors-comparison-chart"></canvas>
+                                    </div>
+                                    <p class="dashboard__notice--small">Humedad en Punto A vs. Punto B</p>
+                                </div>
+                            </div>
+                    
+                            <div class="dashboard__grid-column dashboard__grid-column--right">
+                                <div class="dashboard__widget">
+                                    <h3 class="dashboard__widget-title"><i class="material-icons">data_usage</i> Progreso del Ciclo</h3>
+                                    <div class="dashboard__gauge-container" style="height: 180px;">
+                                        <canvas data-chart="cycle-progress-gauge"></canvas>
+                                    </div>
+                                    <div class="dashboard__cycle-progress-text" data-info="cycle-progress-text">
+                                        Calculando...
                                     </div>
                                 </div>
-                                <div class="dashboard__metric-card">
-                                    <div class="dashboard__metric-value" data-metric="yield">--%</div>
-                                    <div class="dashboard__metric-label">Rendimiento Estimado</div>
-                                    <div class="dashboard__metric-trend">
+                    
+                                <div class="dashboard__widget">
+                                    <h3 class="dashboard__widget-title"><i class="material-icons">pie_chart</i> Desglose Costos (Est.)</h3>
+                                    <div class="dashboard__chart-container" style="height: 200px;">
+                                        <canvas data-chart="financial-breakdown"></canvas>
                                     </div>
                                 </div>
+                    
+                                <div class="dashboard__widget">
+                                    <h3 class="dashboard__widget-title"><i class="material-icons">local_shipping</i> Costo por Tipo Insumo</h3>
+                                    <div class="dashboard__chart-container" style="height: 200px;">
+                                        <canvas data-chart="supplies-cost-distribution"></canvas>
+                                    </div>
+                                </div>
+                                
+                                <div class="dashboard__widget">
+                                    <h3 class="dashboard__widget-title"><i class="material-icons">assessment</i> Indicadores de Rendimiento (Est.)</h3>
+                                    <div data-info="performance-indicators">
+                                        <div class="performance-indicator">
+                                            <span class="indicator-label">Rendimiento (kg/m²):</span>
+                                            <span class="indicator-value" data-metric="yield-value">5.2 (Est.)</span>
+                                        </div>
+                                        <div class="performance-indicator">
+                                            <span class="indicator-label">Eficiencia Agua:</span>
+                                            <span class="indicator-value" data-metric="water-efficiency">Optima</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="dashboard__widget">
+                                    <h3 class="dashboard__widget-title"><i class="material-icons">event_note</i> Registro de Actividad</h3>
+                                    <ul class="dashboard__activity-log" data-info="activity-log" style="max-height: 150px;">
+                                        </ul>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="dashboard__info-section">
-                            <h3 class="dashboard__section-title">Análisis de Datos (Simulados)</h3>
-                            <p class="dashboard__notice">Nota: Los gráficos muestran datos simulados y no reflejan lecturas reales de sensores.</p>
-                            <div class="dashboard__charts-grid">
-                                <div class="dashboard__chart-container">
-                                    <h4 class="dashboard__chart-title">Humedad del Suelo</h4>
-                                    <canvas data-chart="humidity" height="200"></canvas>
-                                </div>
-                                <div class="dashboard__chart-container">
-                                    <h4 class="dashboard__chart-title">Temperatura Ambiente</h4>
-                                    <canvas data-chart="temperature" height="200"></canvas>
-                                </div>
-                                <div class="dashboard__chart-container">
-                                    <h4 class="dashboard__chart-title">Niveles de Nutrientes</h4>
-                                    <canvas data-chart="nutrients" height="200"></canvas>
-                                </div>
-                                <div class="dashboard__chart-container">
-                                    <h4 class="dashboard__chart-title">Progreso de Crecimiento</h4>
-                                    <canvas data-chart="growth" height="200"></canvas>
+                    
+                        <div class="dashboard__full-width-section">
+                            <div class="dashboard__widget">
+                                <h3 class="dashboard__widget-title"><i class="material-icons">inventory_2</i> Gestión de Insumos de la Producción</h3>
+                                <div class="dashboard__table-responsive-container" data-info="supplies-table-view">
+                                    <table class="dashboard__data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre Insumo</th>
+                                                <th>Tipo</th>
+                                                <th>Descripción</th>
+                                                <th>Unidad</th>
+                                                <th>Costo Unit. (COP)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td colspan="5" class="dashboard__notice">Cargando insumos...</td></tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="dashboard__info-section">
-                            <h3 class="dashboard__section-title">Estado de Sensores Asignados</h3>
-                            <p class="dashboard__notice">Nota: Muestra el estado configurado del sensor, no lecturas en tiempo real.</p>
-                            <div class="dashboard__sensors-grid" data-info="sensors">
+                        <div class="dashboard__full-width-section">
+                                <div class="dashboard__widget">
+                                <h3 class="dashboard__widget-title"><i class="material-icons">agriculture</i> Proyección de Cosecha</h3>
+                                <div class="dashboard__chart-container" style="height: 220px;">
+                                    <canvas data-chart="harvest-projection-chart"></canvas>
+                                </div>
+                                <p class="dashboard__notice--small">Basado en crecimiento actual y condiciones estimadas.</p>
                             </div>
-                        </div>
-
-                        <div class="dashboard__info-section">
-                            <h3 class="dashboard__section-title">Insumos Asignados</h3>
-                            <div data-info="supplies"> </div>
                         </div>
                     </div>
                 </div>
@@ -378,7 +439,7 @@
                 <div class="dashboard__heading">
                     <h2 class="dashboard__title">
                         <i class="material-icons dashboard__icon">description</i>
-                        Generar Reporte (Simulado)
+                        Generar Reporte
                     </h2>
                     <p class="dashboard__subtitle">Genere reportes personalizados de las producciones</p>
                 </div>

@@ -16,8 +16,7 @@
     <main class="cultivo-main">
       <div class="cultivo-content">
         <div class="cultivo-content__image-placeholder">
-          <!-- decorativo -->
-        </div>
+          </div>
 
         <form class="cultivo-form" id="formulario-actualizar">
           <div class="cultivo-form__group cultivo-form__group--grid-page">
@@ -54,61 +53,6 @@
     </main>
   </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-const params = new URLSearchParams(window.location.search);
-const idCiclo = params.get("id");
-
-      if (!idCiclo) {
-        alert("No se encontró el ID del ciclo.");
-        return;
-      }
-
-      // 1. Cargar los datos reales
-      try {
-        const res = await fetch(`http://localhost:3000/ciclo_cultivo/${idCiclo}`);
-        const ciclo = await res.json();
-
-        document.getElementById("idCiclo").value = ciclo.id_ciclo;
-        document.getElementById("nombreCiclo").value = ciclo.nombre_ciclo;
-        document.getElementById("periodoSiembra").value = ciclo.periodo_siembra;
-        document.getElementById("novedades").value = ciclo.novedades || '';
-        document.getElementById("descripcion").value = ciclo.descripcion || '';
-      } catch (error) {
-        alert("Error al cargar los datos del ciclo.");
-        console.error(error);
-      }
-
-      // 2. Actualizar al enviar el formulario
-      document.getElementById("formulario-actualizar").addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const datosActualizados = {
-          nombre_ciclo: document.getElementById("nombreCiclo").value,
-          periodo_siembra: document.getElementById("periodoSiembra").value,
-          novedades: document.getElementById("novedades").value,
-          descripcion: document.getElementById("descripcion").value
-        };
-
-        try {
-          const respuesta = await fetch(`http://localhost:3000/ciclo_cultivo/${idCiclo}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datosActualizados),
-          });
-
-          if (respuesta.ok) {
-            alert("Ciclo actualizado correctamente.");
-            window.location.href = "visualizar-ciclo-cultivo.html";
-          } else {
-            alert("Error al actualizar el ciclo.");
-          }
-        } catch (error) {
-          alert("Error al enviar la solicitud.");
-          console.error(error);
-        }
-      });
-    });
-  </script>
+  <script src="../js/pages/actualizar-ciclo-cultivo.js"></script>
 </body>
 </html>

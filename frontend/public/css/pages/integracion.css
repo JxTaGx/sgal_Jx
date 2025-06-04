@@ -956,3 +956,432 @@ body {
       width: 100%;
   }
 }
+
+/* Estilos Adicionales para el Dashboard de Visualización */
+
+.dashboard__kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.dashboard__kpi-card {
+  background-color: var(--color-surface);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--elevation-2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard__kpi-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--elevation-4);
+}
+
+.dashboard__kpi-title {
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.dashboard__kpi-value {
+  font-size: calc(var(--font-size-medium) * 1.2); /* Un poco más grande */
+  font-weight: var(--font-bold);
+  color: var(--color-primary-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+.dashboard__kpi-icon {
+  align-self: flex-end;
+  color: var(--color-primary);
+}
+
+.dashboard__kpi-icon .material-icons {
+  font-size: 3rem; /* Icono más grande */
+  opacity: 0.7;
+}
+
+.dashboard__main-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.dashboard__widget-container {
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--elevation-1);
+  padding: var(--spacing-md); /* Padding interno para el widget */
+}
+
+.dashboard__widget-container--main-info {
+  /* Podrías darle más peso si quieres, ej: grid-column: span 2; */
+}
+
+.dashboard__widget-container--main-chart .dashboard__chart-container {
+  box-shadow: none; /* El widget ya tiene sombra */
+  padding: 0; /* El widget ya tiene padding */
+}
+
+
+.dashboard__list-widget {
+  max-height: 250px; /* Altura máxima para listas con scroll */
+  overflow-y: auto;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--border-radius-sm);
+}
+
+.dashboard__list-widget ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dashboard__list-widget li {
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--color-divider);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard__list-widget li:last-child {
+  border-bottom: none;
+}
+
+.dashboard__list-item-main {
+  font-weight: var(--font-medium);
+}
+.dashboard__list-item-detail {
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+}
+
+/* Ajustes a los gráficos existentes para la nueva vista */
+[data-panel="view"] .dashboard__charts-grid .dashboard__chart-container {
+  height: 200px; /* Ajusta si es necesario */
+}
+
+[data-panel="view"] .dashboard__chart-title {
+  font-weight: var(--font-medium);
+  color: var(--color-text-primary);
+}
+
+.dashboard__notice {
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-sm);
+  background-color: var(--primary-50);
+  border-left: 3px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+}
+
+/* Mejoras para la sección de info general de producción */
+.dashboard__info-grid[data-info="production-details"] .dashboard__info-item {
+  background-color: var(--primary-50, #f8f9fa);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  border-left: 3px solid var(--color-primary);
+}
+
+.dashboard__info-grid[data-info="production-details"] .dashboard__info-label {
+  font-weight: var(--font-semibold);
+  color: var(--color-primary-dark);
+}
+
+/* ... (Estilos previos se mantienen) ... */
+
+/* Ajustes a Contenedores de Widgets para Layout Flexible */
+.dashboard__main-row {
+  /* Reajustado para permitir tamaños variados */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+}
+
+.dashboard__widget-container--large {
+  grid-column: span 2; /* Ejemplo para que ocupe más espacio si hay 3 columnas */
+}
+@media (min-width: 992px) { /* En pantallas más grandes, ajusta el layout de la fila principal */
+  .dashboard__main-row {
+      grid-template-columns: 2fr 1fr 1fr; /* Info Producción más ancha, gráficos financieros al lado */
+  }
+   .dashboard__widget-container--large {
+      grid-column: 1 / 2; /* Ocupa la primera columna */
+  }
+  .dashboard__widget-container--medium:nth-child(2) {
+      grid-column: 2 / 3;
+  }
+  .dashboard__widget-container--medium:nth-child(3) {
+      grid-column: 3 / 4;
+  }
+}
+
+
+.dashboard__info-section .dashboard__section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: calc(var(--font-size-base) * 1.1);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md); /* Reducido un poco */
+}
+
+.dashboard__info-section .dashboard__section-title .material-icons {
+  color: var(--color-primary);
+}
+
+/* Panel de Control de Sensores */
+.dashboard__sensors-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); /* Tarjetas de buen tamaño */
+  gap: var(--spacing-md);
+}
+
+.dashboard__sensor-card-individual {
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--elevation-1);
+  transition: box-shadow var(--transition-fast);
+  border-left: 4px solid var(--color-primary-light); /* Borde distintivo */
+}
+
+.dashboard__sensor-card-individual:hover {
+  box-shadow: var(--elevation-2);
+}
+
+.dashboard__sensor-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.dashboard__sensor-card-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-medium);
+  color: var(--color-text-primary);
+}
+
+.dashboard__sensor-card-status {
+  font-size: var(--font-size-small);
+  padding: calc(var(--spacing-xs) / 2) var(--spacing-xs);
+  border-radius: var(--border-radius-sm);
+  font-weight: var(--font-medium);
+}
+
+.status-normal { background-color: var(--primary-100); color: var(--primary-900); }
+.status-caution { background-color: var(--secondary-4-100); color: var(--secondary-4-900); }
+.status-alert { background-color: #ffcdd2; color: var(--color-error); }
+
+
+.dashboard__sensor-card-details {
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.dashboard__sensor-card-details strong {
+  color: var(--color-text-primary);
+}
+
+.dashboard__sensor-current-value {
+  font-size: calc(var(--font-size-base) * 1.3);
+  font-weight: var(--font-bold);
+  color: var(--color-primary-dark);
+  margin: var(--spacing-xs) 0 var(--spacing-md) 0;
+}
+
+.dashboard__sensor-chart-container {
+  height: 120px; /* Altura para mini-gráficos */
+  margin-top: var(--spacing-sm);
+}
+
+/* Tabla de Insumos Detallada */
+.dashboard__table-responsive-container {
+  overflow-x: auto; /* Permite scroll horizontal en tablas grandes */
+  width: 100%;
+}
+.dashboard__data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--spacing-sm);
+}
+
+.dashboard__data-table th,
+.dashboard__data-table td {
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: left;
+  border-bottom: 1px solid var(--color-divider);
+  font-size: var(--font-size-small);
+}
+
+.dashboard__data-table th {
+  background-color: var(--primary-50);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+}
+
+.dashboard__data-table tbody tr:hover {
+  background-color: var(--primary-100, #f1f1f1);
+}
+
+.dashboard__data-table td .description-truncate {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block; /* Necesario para que ellipsis funcione bien */
+  vertical-align: middle;
+}
+
+
+/* Registro de Actividad */
+.dashboard__activity-log {
+  list-style: none;
+  padding: 0;
+  margin-top: var(--spacing-sm);
+  max-height: 200px; /* Limita altura */
+  overflow-y: auto;
+}
+
+.dashboard__activity-log li {
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px dashed var(--color-divider);
+  font-size: var(--font-size-small);
+  line-height: 1.4;
+}
+.dashboard__activity-log li:last-child {
+  border-bottom: none;
+}
+.dashboard__activity-log .activity-time {
+  display: block;
+  font-size: calc(var(--font-size-small) * 0.9);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+
+/* ... (Estilos previos se mantienen y los de la Iteración 2) ... */
+
+/* Layout Principal del Dashboard con Grid */
+.dashboard__grid-layout {
+  display: grid;
+  grid-template-columns: 1fr; /* Una columna por defecto para móviles */
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+}
+
+@media (min-width: 992px) { /* Layout de 2 columnas para pantallas medianas y grandes */
+  .dashboard__grid-layout {
+      grid-template-columns: 2fr 1fr; /* Columna izquierda 2/3, derecha 1/3 */
+  }
+}
+
+@media (min-width: 1200px) { /* Opcional: layout de 3 columnas para pantallas muy grandes */
+  .dashboard__grid-layout {
+     /* grid-template-columns: 3fr 2fr 2fr; /* Ejemplo si necesitaras más columnas principales */
+  }
+}
+
+.dashboard__grid-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg); /* Espacio entre widgets dentro de una columna */
+}
+
+/* Estilo General para Widgets */
+.dashboard__widget {
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md); /* Reducido un poco el padding general del widget */
+  box-shadow: var(--elevation-1);
+  display: flex; /* Para que el título y contenido se organicen bien */
+  flex-direction: column;
+  height: 100%; /* Para que los widgets en una fila de grid tengan alturas consistentes si es necesario */
+}
+
+.dashboard__widget-title {
+  font-size: var(--font-size-base); /* Ligeramente más pequeño que section-title */
+  font-weight: var(--font-medium);
+  color: var(--color-text-primary);
+  padding-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--color-divider);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+.dashboard__widget-title .material-icons {
+  font-size: calc(var(--font-size-base) * 1.2);
+  color: var(--color-primary);
+}
+
+
+/* Medidor de Progreso */
+.dashboard__gauge-container {
+  width: 100%;
+  max-width: 250px; /* Limita el ancho del medidor */
+  margin: 0 auto; /* Centra el medidor */
+  position: relative; /* Para texto superpuesto si es necesario */
+}
+.dashboard__cycle-progress-text {
+  text-align: center;
+  font-size: var(--font-size-medium);
+  font-weight: var(--font-bold);
+  color: var(--color-primary-dark);
+  margin-top: calc(-1 * var(--font-size-medium) * 1.5); /* Ajustar para superponer en el centro del donut */
+  position: relative;
+  pointer-events: none; /* Para que no interfiera con el tooltip del chart */
+}
+
+
+/* Indicadores de Rendimiento */
+.performance-indicator {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-xs) 0;
+  font-size: var(--font-size-small);
+  border-bottom: 1px dashed var(--color-divider);
+}
+.performance-indicator:last-child {
+  border-bottom: none;
+}
+.indicator-label {
+  color: var(--color-text-secondary);
+}
+.indicator-value {
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+}
+
+
+/* Sección de Ancho Completo */
+.dashboard__full-width-section {
+  grid-column: 1 / -1; /* Hace que ocupe todas las columnas del grid principal */
+  margin-top: var(--spacing-lg);
+}
+
+.dashboard__notice--small {
+  font-size: calc(var(--font-size-small) * 0.9);
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-top: var(--spacing-sm);
+}
+
+/* Ajuste para el panel de sensores para que no crezca indefinidamente */
+.dashboard__sensors-panel-grid {
+  /* Si las tarjetas de sensores se vuelven muy altas, podrías querer limitar la altura del contenedor */
+ /* max-height: 500px; */
+ /* overflow-y: auto; */
+}
+
+/* Ajuste para el padding de la tabla de insumos dentro del widget */
+.dashboard__widget .dashboard__table-responsive-container {
+  margin-top: 0; /* Ya hay padding en el widget */
+}
