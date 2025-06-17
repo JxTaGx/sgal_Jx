@@ -5,21 +5,21 @@ const userController = require('../controllers/userController');
 const router = express.Router();
 
 // --- User Routes ---
+// El prefijo base (/api/v1/users) se define en server.js
 
-// POST /user - Registrar un nuevo usuario
+// POST / - Registrar un nuevo usuario
 router.post('/', userController.registerUser);
 
-// Aquí añadirías otras rutas para usuarios:
-// GET /user - Obtener todos los usuarios (requeriría autenticación/autorización)
-// router.get('/', authMiddleware.isAdmin, userController.getUsers);
+// GET / - Obtener todos los usuarios
+router.get('/', userController.getAllUsers);
 
-// GET /user/:id - Obtener un usuario por ID
-// router.get('/:id', authMiddleware.isAuth, userController.getUserById);
+// GET /:id - Obtener un usuario por ID
+router.get('/:id', userController.getUserById);
 
-// PUT /user/:id - Actualizar un usuario
-// router.put('/:id', authMiddleware.isAuth, userController.updateUser);
+// PUT /:id - Actualizar un usuario por ID
+router.put('/:id', userController.updateUser);
 
-// DELETE /user/:id - Eliminar un usuario
+// DELETE /:id - (Pendiente) Eliminar un usuario
 // router.delete('/:id', authMiddleware.isAdmin, userController.deleteUser);
 
 module.exports = router;

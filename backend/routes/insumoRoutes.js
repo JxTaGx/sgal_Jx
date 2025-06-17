@@ -1,30 +1,29 @@
 /* backend/routes/insumoRoutes.js */
 const express = require('express');
 const insumoController = require('../controllers/insumoController');
-// Insumos no parece requerir Multer
 
 const router = express.Router();
 
-// --- Insumo Routes ---
+// --- Rutas del Módulo Insumo ---
+// El prefijo base /api/v1/supplies se define en server.js
 
-// POST /insumo - Crear un nuevo insumo
+// POST / - Crear un nuevo insumo
 router.post('/', insumoController.createInsumo);
 
-// GET /api/insumos - Obtener todos los insumos (Ruta específica usada por frontend)
-router.get('/api/insumos', insumoController.getAllInsumos);
+// GET / - Obtener todos los insumos
+router.get('/', insumoController.getAllInsumos);
 
-router.get('/', insumoController.getAllInsumos); // <--- Ruta relativa '/'
+// GET /search - Buscar insumos por término (ruta estandarizada desde /buscar)
+// Debe definirse antes de /:id
+router.get('/search', insumoController.searchInsumos);
 
-// GET /insumo/buscar - Buscar insumos por término
-router.get('/buscar', insumoController.searchInsumos); // Nota: '/buscar' antes de '/:id'
-
-// GET /insumo/:id - Obtener un insumo por ID (PK autoincremental)
+// GET /:id - Obtener un insumo por su ID (PK autoincremental)
 router.get('/:id', insumoController.getInsumoById);
 
-// PUT /insumo/:id - Actualizar un insumo por ID (PK autoincremental)
+// PUT /:id - Actualizar un insumo por su ID (PK autoincremental)
 router.put('/:id', insumoController.updateInsumo);
 
-// DELETE /insumo/:id - Eliminar un insumo por ID (PK autoincremental)
+// DELETE /:id - Eliminar un insumo por su ID (PK autoincremental)
 router.delete('/:id', insumoController.deleteInsumo);
 
 module.exports = router;

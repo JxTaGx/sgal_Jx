@@ -1,28 +1,30 @@
 /* backend/routes/sensorRoutes.js */
 const express = require('express');
 const sensorController = require('../controllers/sensorController');
-const { upload } = require('../config/multerConfig'); // Importar instancia de upload
+const { upload } = require('../config/multerConfig');
 
 const router = express.Router();
 
-// --- Sensor Routes ---
+// --- Rutas del Módulo Sensor ---
+// El prefijo base /api/v1/sensors se define en server.js
 
-// POST /sensor - Crear un nuevo sensor (con carga de foto)
+// POST / - Crear un nuevo sensor (con subida de foto opcional)
 router.post('/', upload.single('fotografia'), sensorController.createSensor);
 
-// GET /sensores - Obtener todos los sensores
-router.get('/s', sensorController.getAllSensores); // Usamos /s para listar todos
+// GET / - Obtener todos los sensores (ruta estandarizada desde /s)
+router.get('/', sensorController.getAllSensores);
 
-// GET /sensor/buscar - Buscar sensores por término
-router.get('/buscar', sensorController.searchSensores); // Definir antes de /:id
+// GET /search - Buscar sensores por término de búsqueda (ruta estandarizada desde /buscar)
+// Debe definirse antes de /:id para evitar que "search" sea interpretado como un ID.
+router.get('/search', sensorController.searchSensores);
 
-// GET /sensor/:id - Obtener un sensor por ID (PK autoincremental)
+// GET /:id - Obtener un sensor por su ID (PK autoincremental)
 router.get('/:id', sensorController.getSensorById);
 
-// PUT /sensor/:id - Actualizar un sensor (con posible carga de foto)
+// PUT /:id - Actualizar un sensor (con subida de foto opcional)
 router.put('/:id', upload.single('fotografia'), sensorController.updateSensor);
 
-// DELETE /sensor/:id - Eliminar un sensor
+// DELETE /:id - Eliminar un sensor
 router.delete('/:id', sensorController.deleteSensor);
 
 module.exports = router;

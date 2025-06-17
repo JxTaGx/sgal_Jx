@@ -1,27 +1,27 @@
 /* backend/routes/cicloCultivoRoutes.js */
 const express = require('express');
 const cicloCultivoController = require('../controllers/cicloCultivoController');
-const { upload } = require('../config/multerConfig'); // Importar la instancia de upload
+const { upload } = require('../config/multerConfig');
 
 const router = express.Router();
 
-// --- Ciclo Cultivo Routes ---
+// --- Rutas del Módulo Ciclo Cultivo ---
+// El prefijo base /api/v1/cycles se define en server.js
 
-// POST /ciclo-cultivo - Crear un nuevo ciclo (con carga de foto)
-// Usamos upload.single('nombre_del_campo_en_el_form')
-// El nombre 'fotografia' debe coincidir con el atributo 'name' del input file en tu HTML
+// POST / - Crear un nuevo ciclo de cultivo (con subida de foto opcional)
+// El 'name' del input file en el formulario debe ser 'fotografia'.
 router.post('/', upload.single('fotografia'), cicloCultivoController.createCicloCultivo);
 
-// GET /ciclo-cultivo - Obtener todos los ciclos (renombrado de /ciclos-cultivo)
+// GET / - Obtener todos los ciclos de cultivo
 router.get('/', cicloCultivoController.getAllCiclosCultivo);
 
-// GET /ciclo-cultivo/:id - Obtener un ciclo por ID
+// GET /:id - Obtener un ciclo de cultivo específico por su ID
 router.get('/:id', cicloCultivoController.getCicloCultivoById);
 
-// PUT /ciclo-cultivo/:id - Actualizar un ciclo (con posible carga de foto)
+// PUT /:id - Actualizar un ciclo de cultivo (con subida de foto opcional)
 router.put('/:id', upload.single('fotografia'), cicloCultivoController.updateCicloCultivo);
 
-// DELETE /ciclo-cultivo/:id - Eliminar un ciclo
+// DELETE /:id - Eliminar un ciclo de cultivo
 router.delete('/:id', cicloCultivoController.deleteCicloCultivo);
 
 module.exports = router;

@@ -5,367 +5,85 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
 
-// Importar configuración de BD y test de conexión
+// --- Importaciones del Proyecto ---
+// Configuración de la Base de Datos
 const db = require('./config/db');
-// Importar manejador de errores de Multer
+// Middleware para manejo de errores de subida de archivos
 const { handleMulterError } = require('./config/multerConfig');
 
-// Importar Routers
+// Enrutadores de los Módulos
 const userRoutes = require('./routes/userRoutes');
 const cicloCultivoRoutes = require('./routes/cicloCultivoRoutes');
 const cultivoRoutes = require('./routes/cultivoRoutes');
-const insumoRoutes = require('./routes/insumoRoutes');const sensorRoutes = require('./routes/sensorRoutes');
+const insumoRoutes = require('./routes/insumoRoutes');
+const sensorRoutes = require('./routes/sensorRoutes');
 const productionRoutes = require('./routes/productionRoutes');
 const integracionRoutes = require('./routes/integracionRoutes');
 
+// --- Inicialización de la App Express ---
 const app = express();
 
 // --- Middlewares Esenciales ---
-app.use(cors()); // Habilitar CORS para todas las rutas
-app.use(bodyParser.json()); // Para parsear JSON bodies
-app.use(bodyParser.urlencoded({ extended: true })); // Para parsear URL-encoded bodies
+app.use(cors()); // Habilita CORS para todas las rutas
+app.use(bodyParser.json()); // Parsea bodies de tipo JSON
+app.use(bodyParser.urlencoded({ extended: true })); // Parsea bodies de URL-encoded
 
-// --- Servir Archivos Estáticos ---
-// Servir archivos desde el directorio 'uploads' bajo la ruta '/uploads'
+// --- Servidor de Archivos Estáticos ---
+// Sirve los archivos subidos (imágenes) desde la carpeta 'uploads'
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// --- Montaje de Rutas ---
-// Montar cada router en su ruta base correspondiente
-app.use('/user', userRoutes);
-app.use('/ciclo-cultivo', cicloCultivoRoutes);
-app.use('/cultivo', cultivoRoutes); // Rutas como POST /, GET /s, GET /:id, PUT /:id, DELETE /:id
-app.use('/insumo', insumoRoutes);   // Rutas como POST /, GET /api/insumos, GET /buscar, GET /:id, PUT /:id, DELETE /:id
-app.use('/sensor', sensorRoutes);   // Rutas como POST /, GET /s, GET /buscar, GET /:id, PUT /:id, DELETE /:id
-app.use('/api/productions', productionRoutes); // Rutas para producción bajo /api/productions
-app.use('/api/integracion', integracionRoutes); // Rutas para integración bajo /api/integracion
-// ***** LÍNEA MODIFICADA (Correcta según última corrección) *****
-app.use('/api/insumos', insumoRoutes); // <-- Montaje en /api/insumos
+// --- Montaje de Rutas de la API ---
+// Se estandariza un prefijo base '/api/v1' para todas las rutas.
+// Esto mejora la organización y facilita el versionamiento futuro.
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/cycles', cicloCultivoRoutes);
+app.use('/api/v1/crops', cultivoRoutes);
+app.use('/api/v1/supplies', insumoRoutes);
+app.use('/api/v1/sensors', sensorRoutes);
+app.use('/api/v1/productions', productionRoutes);
+app.use('/api/v1/integration', integracionRoutes); // Para datos de dropdowns en el frontend
 
-// --- Middleware de Manejo de Errores de Multer ---
-// Debe ir DESPUÉS de montar las rutas que usan 'upload'
+// --- Middlewares de Manejo de Errores ---
+// 1. Manejador de errores específico de Multer.
+//    Debe ir DESPUÉS de montar las rutas que usan 'upload'.
 app.use(handleMulterError);
 
-// --- Manejo de Errores General (Opcional pero recomendado) ---
+// 2. Manejador de errores general (catch-all).
+//    Este se ejecuta si cualquier ruta anterior arroja un error.
 app.use((err, req, res, next) => {
   console.error("Error no manejado:", err.stack || err);
-  res.status(500).json({ success: false, error: 'Algo salió mal en el servidor', details: err.message });
+  // Evitar enviar detalles del error en producción por seguridad
+  const errorMessage = process.env.NODE_ENV === 'production' 
+    ? 'Algo salió mal en el servidor.' 
+    : err.message;
+  res.status(500).json({ success: false, error: 'Error Interno del Servidor', details: errorMessage });
 });
 
-// --- Iniciar Servidor ---
+// --- Inicio del Servidor ---
 const PORT = process.env.PORT || 3000;
 
-// Verificar conexión a la BD antes de iniciar el servidor
+// Se verifica la conexión a la BD antes de iniciar el servidor.
+// Este es un excelente patrón que ya tenías implementado.
 db.testConnection().then(isConnected => {
     if (isConnected) {
         app.listen(PORT, () => {
             console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+            console.log(`📚 Rutas de la API disponibles en http://localhost:${PORT}/api/v1`);
         });
     } else {
-        console.error("❌ No se pudo iniciar el servidor debido a un error en la conexión a la base de datos.");
-        process.exit(1); // Terminar el proceso si no hay conexión a BD
+        console.error("❌ No se pudo iniciar el servidor. Error de conexión con la base de datos.");
+        process.exit(1); // Termina el proceso si la BD no está disponible
     }
 }).catch(err => {
-     console.error("❌ Error durante el test de conexión a la BD:", err);
+     console.error("❌ Error catastrófico durante la prueba de conexión a la BD:", err);
      process.exit(1);
 });
 
-// ESTO ES UNA PRUEBA PARA LOS LISTAR
-// Listar todos los cultivos
-const { pool } = require('./config/db');
-
-app.get('/cultivos', async (req, res) => {
-    try {
-        const [resultados] = await pool.query('SELECT * FROM cultivos');
-        res.json(resultados);
-    } catch (error) {
-        console.error('Error al listar cultivos:', error);
-        res.status(500).send('Error al listar cultivos');
-    }
-});
-
-app.get('/ciclo_cultivo', async (req, res) => {
-    try {
-        const [rows] = await pool.query('SELECT * FROM ciclo_cultivo');
-        res.json(rows);
-    } catch (err) {
-        console.error('Error al listar ciclos:', err);
-        res.status(500).json({ error: 'Error al obtener los ciclos de cultivo' });
-    }
-});
-
-app.get('/sensores', async (req, res) => {
-    try {
-        const [rows] = await pool.query('SELECT * FROM sensores');
-        res.json(rows);
-    } catch (error) {
-        console.error('Error al obtener sensores:', error);
-        res.status(500).json({ error: 'Error al obtener sensores' });
-    }
-});
-
-app.get('/insumos', async (req, res) => {
-    try {
-        const [rows] = await pool.query('SELECT * FROM insumos');
-        res.json(rows);
-    } catch (error) {
-        console.error('Error al obtener insumos:', error);
-        res.status(500).json({ error: 'Error al obtener insumos' });
-    }
-});
-
-app.get('/user', async (req, res) => {
-    try {
-        const [rows] = await pool.query('SELECT * FROM user');
-        res.json(rows);
-    } catch (error) {
-        console.error('Error al obtener usuario:', error);
-        res.status(500).json({ error: 'Error al obtener usuario:' });
-    }
-});
-
-// ESTO ES UNA PRUEBA PARA LOS VISUALIZAR
-app.get('/ciclo_cultivo/:id', async (req, res) => {
-  const id = req.params.id;
-  try {
-    const [rows] = await pool.query('SELECT * FROM ciclo_cultivo WHERE id_ciclo = ?', [id]);
-    if (rows.length === 0) {
-      return res.status(404).json({ error: 'Ciclo no encontrado' });
-    }
-    res.json(rows[0]);
-  } catch (error) {
-    console.error('Error al obtener ciclo:', error);
-    res.status(500).json({ error: 'Error en el servidor' });
-  }
-});
-
-app.get('/cultivo/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-        const [rows] = await pool.query('SELECT * FROM cultivo WHERE id = ?', [id]);
-        if (rows.length === 0) {
-            return res.status(404).json({ error: 'Cultivo no encontrado' });
-        }
-        res.json(rows[0]);
-    } catch (err) {
-        console.error('Error al obtener cultivo:', err);
-        res.status(500).json({ error: 'Error al obtener el cultivo' });
-    }
-});
-
-app.get('/insumos/:id', (req, res) => {
-  const insumoId = req.params.id;
-
-  db.query('SELECT * FROM insumos WHERE id = ?', [insumoId], (err, results) => {
-    if (err) {
-      console.error('Error al consultar la base de datos:', err);
-      return res.status(500).json({ success: false, message: 'Error en el servidor' });
-    }
-
-    if (results.length === 0) {
-      return res.status(404).json({ success: false, message: 'Insumo no encontrado' });
-    }
-
-    res.json({ success: true, data: results[0] });
-  });
-});
-
-
-// ESTO ES UNA PRUEBA PARA LOS EDITAR
-app.put('/ciclo_cultivo/:id', async (req, res) => {
-    const { id } = req.params; // Aquí era el error
-    const { nombre_ciclo, periodo_siembra, novedades, descripcion } = req.body;
-  
-    try {
-      const [resultado] = await pool.query(
-        `UPDATE ciclo_cultivo SET nombre_ciclo = ?, periodo_siembra = ?, novedades = ?, descripcion = ? WHERE id_ciclo = ?`,
-        [nombre_ciclo, periodo_siembra, novedades, descripcion, id]
-      );
-  
-      if (resultado.affectedRows === 0) {
-        return res.status(404).json({ error: 'Ciclo no encontrado' });
-      }
-  
-      res.json({ mensaje: 'Ciclo actualizado correctamente' });
-    } catch (error) {
-      console.error('Error al actualizar ciclo:', error);
-      res.status(500).json({ error: 'Error en el servidor' });
-    }
-  });  
-
-  app.get('/cultivos/:id', async (req, res) => {
-    const { id } = req.params;
-  
-    try {
-      const [resultado] = await pool.query('SELECT * FROM cultivos WHERE id_cultivo = ?', [id]);
-  
-      if (resultado.length === 0) {
-        return res.status(404).json({ mensaje: 'Cultivo no encontrado' });
-      }
-  
-      res.json(resultado[0]); // Envía todos los campos correctamente
-    } catch (error) {
-      console.error('Error al obtener cultivo:', error);
-      res.status(500).send('Error al obtener cultivo');
-    }
-  });
-  
-  app.put('/cultivos/:id', async (req, res) => {
-    const { id } = req.params;
-    const {
-      nombre_cultivo,
-      tipo_cultivo,
-      tamano,
-      ubicacion,
-      estado,
-      descripcion
-    } = req.body;
-  
-    try {
-      await pool.query(
-        `UPDATE cultivos SET 
-          nombre_cultivo = ?, 
-          tipo_cultivo = ?, 
-          tamano = ?, 
-          ubicacion = ?, 
-          estado = ?, 
-          descripcion = ?
-        WHERE id_cultivo = ?`,
-        [
-          nombre_cultivo,
-          tipo_cultivo,
-          tamano,
-          ubicacion,
-          estado,
-          descripcion,
-          id
-        ]
-      );
-  
-      res.send('Cultivo actualizado correctamente');
-    } catch (error) {
-      console.error('Error al actualizar cultivo:', error);
-      res.status(500).send('Error al actualizar cultivo');
-    }
-  });
-
-  app.put('/sensores/:id', async (req, res) => {
-    const { id } = req.params;
-    const {
-      nombre_sensor,
-      tipo_sensor,
-      identificador,
-      referencia_sensor,
-      unidad_medida,
-      tiempo_escaneo,
-      estado,
-      descripcion
-    } = req.body;
-  
-    try {
-      await pool.query(
-        `UPDATE sensores SET
-          nombre_sensor = ?,
-          tipo_sensor = ?,
-          unidad_medida = ?,
-          referencia_sensor = ?,
-          identificador = ?,
-          tiempo_escaneo = ?,
-          estado = ?,
-          descripcion = ?
-        WHERE id = ?`,
-        [
-          nombre_sensor,
-          tipo_sensor,
-          unidad_medida,
-          identificador,
-          referencia_sensor,
-          tiempo_escaneo,
-          estado,
-          descripcion,
-          id
-        ]
-      );
-      res.send('Sensor actualizado correctamente');
-    } catch (error) {
-      console.error('Error al actualizar sensor:', error);
-      res.status(500).send('Error al actualizar sensor');
-    }
-  });
-  
-  app.get('/sensores/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-        const [rows] = await pool.query('SELECT * FROM sensores WHERE id = ?', [id]);
-
-        if (rows.length === 0) {
-            return res.status(404).json({ success: false, message: 'Sensor no encontrado' });
-        }
-
-        res.json({ success: true, data: rows[0] });
-    } catch (error) {
-        console.error('Error al obtener el sensor:', error);
-        res.status(500).json({ success: false, message: 'Error al obtener el sensor' });
-    }
-});
-
-app.get('/user/:id', async (req, res) => {
-  const userId = req.params.id;
-
-  try {
-      const [rows] = await pool.query('SELECT * FROM user WHERE id = ?', [userId]);
-
-      if (rows.length === 0) {
-          return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
-      }
-
-      res.json({ success: true, data: rows[0] });
-  } catch (error) {
-      console.error('Error al obtener usuario por ID:', error);
-      res.status(500).json({ success: false, message: 'Error interno del servidor' });
-  }
-});
-
-app.put('/user/:id', async (req, res) => {
-  const { id } = req.params;
-  const {
-    documentType,
-    documentNumber,
-    userType,
-    firstName,
-    lastName,
-    phone,
-    email,
-    confirmEmail
-  } = req.body;
-
-  try {
-    await pool.query(
-      `UPDATE user SET 
-        documentType = ?, 
-        documentNumber = ?, 
-        userType = ?, 
-        firstName = ?, 
-        lastName = ?, 
-        phone = ?, 
-        email = ?, 
-        confirmEmail = ?
-      WHERE id = ?`,
-      [
-        documentType,
-        documentNumber,
-        userType,
-        firstName,
-        lastName,
-        phone,
-        email,
-        confirmEmail,
-        id
-      ]
-    );
-
-    res.send('Usuario actualizado correctamente');
-  } catch (error) {
-    console.error('Error al actualizar usuario:', error);
-    res.status(500).send('Error al actualizar usuario');
-  }
-});
+/********************************************************************************/
+/* */
+/* TODA LA LÓGICA DE RUTAS DE PRUEBA HA SIDO ELIMINADA DE ESTE ARCHIVO.     */
+/* Su funcionalidad ahora es responsabilidad exclusiva de los archivos     */
+/* en las carpetas /routes y /controllers, manteniendo así la              */
+/* separación de conceptos (Separation of Concerns).                       */
+/* */
+/********************************************************************************/

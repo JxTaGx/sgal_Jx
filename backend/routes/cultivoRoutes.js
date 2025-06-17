@@ -1,29 +1,27 @@
 /* backend/routes/cultivoRoutes.js */
 const express = require('express');
 const cultivoController = require('../controllers/cultivoController');
-const { upload } = require('../config/multerConfig'); // Importar instancia de upload
+const { upload } = require('../config/multerConfig');
 
 const router = express.Router();
 
-// --- Cultivo Routes ---
+// --- Rutas del Módulo Cultivo ---
+// El prefijo base /api/v1/crops se define en server.js
 
-// POST /cultivo - Crear un nuevo cultivo (con carga de foto)
-// El nombre del campo en upload.single() debe coincidir con el 'name' del input file
+// POST / - Crear un nuevo cultivo (con subida de foto opcional)
+// El 'name' del input file debe ser 'fotografia'.
 router.post('/', upload.single('fotografia'), cultivoController.createCultivo);
 
-// GET /cultivos - Obtener todos los cultivos
-router.get('/s', cultivoController.getAllCultivos); // Cambiado a /cultivos para evitar colisión
+// GET / - Obtener todos los cultivos (ruta estandarizada desde /s)
+router.get('/', cultivoController.getAllCultivos);
 
-// GET /cultivo/:id - Obtener un cultivo por id_cultivo
-// :id aquí representa el id_cultivo (ej: CULT-001)
+// GET /:id - Obtener un cultivo específico por su id_cultivo
 router.get('/:id', cultivoController.getCultivoById);
 
-// PUT /cultivo/:id - Actualizar un cultivo (con posible carga de foto)
-// :id aquí representa el id_cultivo
+// PUT /:id - Actualizar un cultivo (con subida de foto opcional)
 router.put('/:id', upload.single('fotografia'), cultivoController.updateCultivo);
 
-// DELETE /cultivo/:id - Eliminar un cultivo
-// :id aquí representa el id_cultivo
+// DELETE /:id - Eliminar un cultivo
 router.delete('/:id', cultivoController.deleteCultivo);
 
 module.exports = router;
