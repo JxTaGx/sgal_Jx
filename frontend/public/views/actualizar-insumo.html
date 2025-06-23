@@ -1,65 +1,138 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actualizar Insumo</title>
-    <link rel="stylesheet" href="/frontend/public/css/pages/actualizar-insumo-style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Actualizar Insumo</title>
+  <link rel="stylesheet" href="../css/pages/actualizar-insumo-style.css" />
 </head>
 <body>
-    <header class="header">
-        <div class="header__logo"></div>
-    </header>
-    <main class="main">
-        <section class="main__section">
-            <h1><svg width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5.5 0L10.5 5L5.5 10L0.5 5L5.5 0Z" fill="#4BBD17"/>
-                </svg>
-                Actualizar Insumo</h1>
-            <form class="form">
-                <div class="form__group">
-                    <label for="tipoInsumo" class="form__group-label">Tipo de insumo *</label>
-                    <input type="text" class="form__group-input" placeholder="Escribe aquí...">
-                </div>
-                <div class="form__group">
-                    <label for="idInsumo" class="form__group-label">ID de insumo</label>
-                    <input type="text" class="form__group-input form__group--disabled" value="INS-001" disabled>
-                </div>
-                <div class="form__group">
-                    <label for="nombreInsumo" class="form__group-label">Nombre del insumo *</label>
-                    <input type="text" class="form__group-input" value="Harina de trigo">
-                </div>
-                <div class="form__group">
-                    <label for="unidadMedida" class="form__group-label">Unidad de medida *</label>
-                    <input type="text" class="form__group-input" placeholder="Escribe aquí...">
-                </div>
-                <div class="form__group">
-                    <label for="cantidad" class="form__group-label">Cantidad *</label>
-                    <input type="number" class="form__group-input" value="50">
-                </div>
-                <div class="form__group">
-                    <label for="valorUnitario" class="form__group-label">Valor unitario *</label>
-                    <input type="text" class="form__group-input" value="$2,500">
-                </div>
-                <div class="form__group form__group--full-width">
-                    <label for="valorTotal" class="form__group-label">Valor total</label>
-                    <input type="text" class="form__group-input form__group--disabled" value="$125,000" disabled>
-                </div>
-                <div class="form__group form__group-full--width">
-                    <label for="descripcion" class="form__group-label">Descripción</label>
-                    <textarea class="form__group-textarea">...</textarea>
-                </div>
-                <div class="form__button-group">
-                    <a href="visualizar-insumo.html" class="form__button-link">
-                        <button type="button" class="form__button form__button--back">Volver</button>
-                    </a>
-                    <a href="visualizar-insumo.html" class="form__button-link">
-                        <button type="button" class="form__button form__button--save">Guardar</button>
-                    </a>
-                </div>
-            </form>
-        </section>
-    </main>
-    <script src="../js/pages/actualizar-insumo.js"></script>
+  <header class="header">
+    <div class="header__logo"></div>
+  </header>
+
+  <main class="main">
+    <section class="main__section">
+      <h1>Actualizar Insumo</h1>
+    </section>
+
+    <form id="form-actualizar-insumo" class="form">
+      <div class="form__group">
+        <label class="form__group-label" for="nombre-insumo">Nombre del insumo *</label>
+        <input class="form__group-input" type="text" id="nombre-insumo" name="nombre_insumo" required>
+      </div>
+      <div class="form__group">
+        <label class="form__group-label" for="tipo-insumo">Tipo de insumo *</label>
+        <input class="form__group-input" type="text" id="tipo-insumo" name="tipo_insumo" required>
+      </div>
+      <div class="form__group">
+        <label class="form__group-label" for="unidad-insumo">Unidad de medida *</label>
+        <input class="form__group-input" type="text" id="unidad-insumo" name="unidad_medida" required>
+      </div>
+      <div class="form__group">
+        <label class="form__group-label" for="cantidad-insumo">Cantidad *</label>
+        <input class="form__group-input" type="number" id="cantidad-insumo" name="cantidad" required>
+      </div>
+      <div class="form__group">
+        <label class="form__group-label" for="valoru-insumo">Valor unitario *</label>
+        <input class="form__group-input" type="number" id="valoru-insumo" name="valor_unitario" required>
+      </div>
+      <div class="form__group">
+        <label class="form__group-label" for="valor-total">Valor total</label>
+        <input class="form__group-input" type="number" id="valor-total" name="valor_total" readonly>
+      </div>
+      <div class="form__group">
+        <label class="form__group-label" for="descripcion-insumo">Descripción</label>
+        <textarea class="form__group-textarea" id="descripcion-insumo" name="descripcion" required></textarea>
+      </div>
+      <div class="form__group">
+        <label class="form__group-label" for="estado-insumo">Estado</label>
+        <select class="form__group-input" id="estado-insumo" name="estado" required>
+          <option value="Activo">Activo</option>
+          <option value="Inactivo">Inactivo</option>
+        </select>
+      </div>
+
+      <div class="form__button-group">
+        <a href="listar-insumo-sebas.html" class="form__button form__button--back">Volver</a>
+        <button type="submit" class="form__button form__button--save">Guardar</button>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    const idInsumo = localStorage.getItem("idInsumo");
+    if (!idInsumo) {
+      alert("No se ha encontrado un insumo para editar.");
+      window.location.href = "listar-insumo-sebas.html";
+    }
+
+    const form = document.getElementById("form-actualizar-insumo");
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/insumo/${idInsumo}`);
+        if (!response.ok) throw new Error("Error al obtener el insumo");
+
+        const { data } = await response.json();
+
+        document.getElementById("nombre-insumo").value = data.nombre_insumo || "";
+        document.getElementById("tipo-insumo").value = data.tipo_insumo || "";
+        document.getElementById("unidad-insumo").value = data.unidad_medida || "";
+        document.getElementById("cantidad-insumo").value = data.cantidad || "";
+        document.getElementById("valoru-insumo").value = data.valor_unitario || "";
+        document.getElementById("valor-total").value = data.valor_total || "";
+        document.getElementById("descripcion-insumo").value = data.descripcion || "";
+        document.getElementById("estado-insumo").value = data.estado || "Activo";
+      } catch (error) {
+        console.error(error);
+        alert("No se pudo cargar la información del insumo.");
+      }
+    });
+
+    const actualizarValorTotal = () => {
+      const cantidad = parseFloat(document.getElementById("cantidad-insumo").value) || 0;
+      const valorU = parseFloat(document.getElementById("valoru-insumo").value) || 0;
+      document.getElementById("valor-total").value = (cantidad * valorU).toFixed(2);
+    };
+
+    document.getElementById("cantidad-insumo").addEventListener("input", actualizarValorTotal);
+    document.getElementById("valoru-insumo").addEventListener("input", actualizarValorTotal);
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const updatedInsumo = {
+        nombre_insumo: form.nombre_insumo.value,
+        tipo_insumo: form.tipo_insumo.value,
+        unidad_medida: form.unidad_medida.value,
+        cantidad: parseFloat(form.cantidad.value),
+        valor_unitario: parseFloat(form.valor_unitario.value),
+        valor_total: parseFloat(form.valor_total.value),
+        descripcion: form.descripcion.value,
+        estado: form.estado.value
+      };
+
+      try {
+        const response = await fetch(`http://localhost:3000/insumo/${idInsumo}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(updatedInsumo)
+        });
+
+        if (!response.ok) throw new Error("Error al actualizar insumo");
+
+        alert("Insumo actualizado correctamente.");
+        localStorage.removeItem("idInsumo");
+        window.location.href = "listar-insumo-sebas.html";
+      } catch (error) {
+        console.error(error);
+        alert("No se pudo actualizar el insumo.");
+      }
+    });
+  </script>
 </body>
 </html>

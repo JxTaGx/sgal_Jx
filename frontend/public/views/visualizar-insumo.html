@@ -76,37 +76,38 @@
   </main>
 
   <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const insumoId = localStorage.getItem("insumoId");
+document.addEventListener("DOMContentLoaded", async () => {
+  const insumoId = localStorage.getItem("idInsumo");
+  localStorage.removeItem("insumoId");
 
-      console.log("ID de insumo obtenido del localStorage:", insumoId);
-      if (!insumoId) {
-        alert("No se ha seleccionado ningún insumo.");
-        return;
-      }
+  console.log("ID de insumo obtenido del localStorage:", insumoId);
+  if (!insumoId) {
+    alert("No se ha seleccionado ningún insumo.");
+    return;
+  }
 
-      try {
-        const response = await fetch(`http://localhost:3000/insumos/${insumoId}`);
-        if (!response.ok) throw new Error("No se pudo obtener el insumo");
+  try {
+    const response = await fetch(`http://localhost:3000/insumo/${insumoId}`);
+    if (!response.ok) throw new Error("No se pudo obtener el insumo");
 
-        const insumo = await response.json();
+    const result = await response.json();
+    const insumo = result.data;
 
-        // Mostrar los datos en los campos correspondientes
-        document.getElementById("nombre-insumo").textContent = insumo.nombre_insumo || "Sin dato";
-        document.getElementById("ID-insumo").textContent = insumo.id || "Sin id";
-        document.getElementById("tipo-insumo").textContent = insumo.tipo_insumo || "Sin dato";
-        document.getElementById("unidad-insumo").textContent = insumo.unidad_medida || "Sin estado";
-        document.getElementById("cantidad-insumo").textContent = insumo.cantidad || "Sin estado";
-        document.getElementById("valoru-insumo").textContent = insumo.valor_unitario || "Sin estado";
-        document.getElementById("valor-insumo").textContent = insumo.valor_total || "Sin estado";
-        document.getElementById("descripcion-insumo").textContent = insumo.descripcion || "Sin estado";
-        document.getElementById("estado-insumo").textContent = insumo.estado || "Sin estado";
+    document.getElementById("nombre-insumo").textContent = insumo.nombre_insumo || "Sin dato";
+    document.getElementById("ID-insumo").textContent = insumo.id || "Sin id";
+    document.getElementById("tipo-insumo").textContent = insumo.tipo_insumo || "Sin dato";
+    document.getElementById("unidad-insumo").textContent = insumo.unidad_medida || "Sin estado";
+    document.getElementById("cantidad-insumo").textContent = insumo.cantidad || "Sin estado";
+    document.getElementById("valoru-insumo").textContent = insumo.valor_unitario || "Sin estado";
+    document.getElementById("valor-insumo").textContent = insumo.valor_total || "Sin estado";
+    document.getElementById("descripcion-insumo").textContent = insumo.descripcion || "Sin estado";
+    document.getElementById("estado-insumo").textContent = insumo.estado || "Sin estado";
 
-      } catch (error) {
-        console.error("Error al obtener insumo:", error);
-        alert("Hubo un error al cargar los datos del insumo.");
-      }
-    });
+  } catch (error) {
+    console.error("Error al obtener insumo:", error);
+    alert("Hubo un error al cargar los datos del insumo.");
+  }
+});
   </script>
 </body>
 </html>
