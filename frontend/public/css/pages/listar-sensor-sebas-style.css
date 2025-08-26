@@ -310,7 +310,7 @@ html > * {
     color: var(--black);
     background: var(--gray-150);
     width: 90%; 
-    height: 1rem;
+    height: 10rem;
     padding-left: 4rem;
     padding-right: 4rem;
     margin-top: 0.6rem;

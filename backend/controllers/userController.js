@@ -1,6 +1,7 @@
 /* backend/controllers/userController.js */
 const bcrypt = require('bcrypt');
 const db = require('../config/db'); // Importar el pool de la configuración
+const jwt = require('jsonwebtoken');
 
 // Registrar un nuevo usuario
 async function registerUser(req, res) {
@@ -39,14 +40,56 @@ async function registerUser(req, res) {
     }
 }
 
-// Aquí podrías añadir más funciones para login, obtener usuarios, actualizar, eliminar, etc.
-// async function loginUser(req, res) { ... }
-// async function getUsers(req, res) { ... }
-// async function getUserById(req, res) { ... }
-// async function updateUser(req, res) { ... }
-// async function deleteUser(req, res) { ... }
+// Login de usuario
+async function loginUser(req, res) {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ success: false, error: "El correo y la contraseña son obligatorios" });
+    }
+
+    try {
+        const sql = "SELECT * FROM user WHERE email = ?";
+        const [users] = await db.pool.query(sql, [email]);
+
+        if (users.length === 0) {
+            return res.status(401).json({ success: false, error: "Credenciales inválidas" });
+        }
+
+        const user = users[0];
+
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordCorrect) {
+            return res.status(401).json({ success: false, error: "Credenciales inválidas" });
+        }
+
+        // Generar el token JWT
+        const token = jwt.sign(
+            { id: user.id, userType: user.userType, firstName: user.firstName },
+            process.env.JWT_SECRET || 'your_default_secret',
+            { expiresIn: '1h' } // El token expira en 1 hora
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Login exitoso",
+            token,
+            user: {
+                id: user.id,
+                firstName: user.firstName,
+                userType: user.userType
+            }
+        });
+
+    } catch (error) {
+        console.error("Error en el login:", error);
+        res.status(500).json({ success: false, error: "Error interno del servidor en el login", details: error.message });
+    }
+}
+
 
 module.exports = {
     registerUser,
-    // Exporta las otras funciones que añadas
+    loginUser,
 };

@@ -12,9 +12,11 @@ const { handleMulterError } = require('./config/multerConfig');
 
 // Importar Routers
 const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes');
 const cicloCultivoRoutes = require('./routes/cicloCultivoRoutes');
 const cultivoRoutes = require('./routes/cultivoRoutes');
-const insumoRoutes = require('./routes/insumoRoutes');const sensorRoutes = require('./routes/sensorRoutes');
+const insumoRoutes = require('./routes/insumoRoutes');
+const sensorRoutes = require('./routes/sensorRoutes');
 const productionRoutes = require('./routes/productionRoutes');
 const integracionRoutes = require('./routes/integracionRoutes');
 
@@ -32,17 +34,16 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // --- Montaje de Rutas ---
 // Montar cada router en su ruta base correspondiente
 app.use('/user', userRoutes);
+app.use('/auth', authRoutes); // Rutas de autenticación
 app.use('/ciclo-cultivo', cicloCultivoRoutes);
-app.use('/cultivo', cultivoRoutes); // Rutas como POST /, GET /s, GET /:id, PUT /:id, DELETE /:id
-app.use('/insumo', insumoRoutes);   // Rutas como POST /, GET /api/insumos, GET /buscar, GET /:id, PUT /:id, DELETE /:id
-app.use('/sensor', sensorRoutes);   // Rutas como POST /, GET /s, GET /buscar, GET /:id, PUT /:id, DELETE /:id
-app.use('/api/productions', productionRoutes); // Rutas para producción bajo /api/productions
-app.use('/api/integracion', integracionRoutes); // Rutas para integración bajo /api/integracion
-// ***** LÍNEA MODIFICADA (Correcta según última corrección) *****
-app.use('/api/insumos', insumoRoutes); // <-- Montaje en /api/insumos
+app.use('/cultivo', cultivoRoutes);
+app.use('/insumo', insumoRoutes);
+app.use('/sensor', sensorRoutes);
+app.use('/api/productions', productionRoutes);
+app.use('/api/integracion', integracionRoutes);
+app.use('/api/insumos', insumoRoutes);
 
 // --- Middleware de Manejo de Errores de Multer ---
-// Debe ir DESPUÉS de montar las rutas que usan 'upload'
 app.use(handleMulterError);
 
 // --- Manejo de Errores General (Opcional pero recomendado) ---
@@ -174,41 +175,41 @@ app.get('/insumos/:id', (req, res) => {
 app.put('/ciclo_cultivo/:id', async (req, res) => {
     const { id } = req.params; // Aquí era el error
     const { nombre_ciclo, periodo_siembra, novedades, descripcion } = req.body;
-  
+
     try {
       const [resultado] = await pool.query(
         `UPDATE ciclo_cultivo SET nombre_ciclo = ?, periodo_siembra = ?, novedades = ?, descripcion = ? WHERE id_ciclo = ?`,
         [nombre_ciclo, periodo_siembra, novedades, descripcion, id]
       );
-  
+
       if (resultado.affectedRows === 0) {
         return res.status(404).json({ error: 'Ciclo no encontrado' });
       }
-  
+
       res.json({ mensaje: 'Ciclo actualizado correctamente' });
     } catch (error) {
       console.error('Error al actualizar ciclo:', error);
       res.status(500).json({ error: 'Error en el servidor' });
     }
-  });  
+  });
 
   app.get('/cultivos/:id', async (req, res) => {
     const { id } = req.params;
-  
+
     try {
       const [resultado] = await pool.query('SELECT * FROM cultivos WHERE id_cultivo = ?', [id]);
-  
+
       if (resultado.length === 0) {
         return res.status(404).json({ mensaje: 'Cultivo no encontrado' });
       }
-  
+
       res.json(resultado[0]); // Envía todos los campos correctamente
     } catch (error) {
       console.error('Error al obtener cultivo:', error);
       res.status(500).send('Error al obtener cultivo');
     }
   });
-  
+
   app.put('/cultivos/:id', async (req, res) => {
     const { id } = req.params;
     const {
@@ -219,15 +220,15 @@ app.put('/ciclo_cultivo/:id', async (req, res) => {
       estado,
       descripcion
     } = req.body;
-  
+
     try {
       await pool.query(
-        `UPDATE cultivos SET 
-          nombre_cultivo = ?, 
-          tipo_cultivo = ?, 
-          tamano = ?, 
-          ubicacion = ?, 
-          estado = ?, 
+        `UPDATE cultivos SET
+          nombre_cultivo = ?,
+          tipo_cultivo = ?,
+          tamano = ?,
+          ubicacion = ?,
+          estado = ?,
           descripcion = ?
         WHERE id_cultivo = ?`,
         [
@@ -240,7 +241,7 @@ app.put('/ciclo_cultivo/:id', async (req, res) => {
           id
         ]
       );
-  
+
       res.send('Cultivo actualizado correctamente');
     } catch (error) {
       console.error('Error al actualizar cultivo:', error);
@@ -260,7 +261,7 @@ app.put('/ciclo_cultivo/:id', async (req, res) => {
       estado,
       descripcion
     } = req.body;
-  
+
     try {
       await pool.query(
         `UPDATE sensores SET
@@ -291,7 +292,7 @@ app.put('/ciclo_cultivo/:id', async (req, res) => {
       res.status(500).send('Error al actualizar sensor');
     }
   });
-  
+
   app.get('/sensores/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -340,14 +341,14 @@ app.put('/user/:id', async (req, res) => {
 
   try {
     await pool.query(
-      `UPDATE user SET 
-        documentType = ?, 
-        documentNumber = ?, 
-        userType = ?, 
-        firstName = ?, 
-        lastName = ?, 
-        phone = ?, 
-        email = ?, 
+      `UPDATE user SET
+        documentType = ?,
+        documentNumber = ?,
+        userType = ?,
+        firstName = ?,
+        lastName = ?,
+        phone = ?,
+        email = ?,
         confirmEmail = ?
       WHERE id = ?`,
       [

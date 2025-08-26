@@ -7,24 +7,21 @@
     <title>Login</title>
 </head>
 <body>
-    <section class="login"> <!--eloque-->
-        <div class="login__form-container"> <!--elemnto-->
-            <form class="login__form" action="" method="post">
+    <section class="login">
+        <div class="login__form-container">
+            <form class="login__form" id="login-form">
                 <h1 class="login__title">LOGIN</h1>
-                <input type="text" placeholder="Usuario" class="login__input login__input--username"> <!--modificador-->
-                <input type="password" placeholder="Contraseña" class="login__input login__input--password"> <!--modificador-->
+                <input type="email" placeholder="Correo Electrónico" class="login__input login__input--username" required>
+                <input type="password" placeholder="Contraseña" class="login__input login__input--password" required>
                 <a href="../views/recover.html" class="login__recover-link">
                     <p class="login__recover-text">¿Olvidaste la contraseña?</p>
                 </a>
-                <a href="../views/home.html" class="login__submit-link">
-                    <input type="button" value="Iniciar Sesión" class="login__button" required>
-                </a>                
+                <button type="submit" class="login__button">Iniciar Sesión</button>
             </form>
         </div>
         <section class="login__image-container">
         </section>
     </section>
-    <!-- Mensaje de error -->
     <div class="error-message">
         Los números no están permitidos en el nombre de usuario
     </div>

@@ -1,25 +1,18 @@
 /* backend/routes/userRoutes.js */
 const express = require('express');
 const userController = require('../controllers/userController');
+const { verifyToken, authorize } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 // --- User Routes ---
 
-// POST /user - Registrar un nuevo usuario
-router.post('/', userController.registerUser);
+// RF-SADMIN 02: Solo el Súper Administrador puede crear usuarios.
+router.post('/', verifyToken, authorize(['SADMIN']), userController.registerUser);
 
-// Aquí añadirías otras rutas para usuarios:
-// GET /user - Obtener todos los usuarios (requeriría autenticación/autorización)
-// router.get('/', authMiddleware.isAdmin, userController.getUsers);
-
-// GET /user/:id - Obtener un usuario por ID
-// router.get('/:id', authMiddleware.isAuth, userController.getUserById);
-
-// PUT /user/:id - Actualizar un usuario
-// router.put('/:id', authMiddleware.isAuth, userController.updateUser);
-
-// DELETE /user/:id - Eliminar un usuario
-// router.delete('/:id', authMiddleware.isAdmin, userController.deleteUser);
+// RF-SADMIN 06 y RF-ADMIN 02: Listar usuarios para SADMIN y ADMIN.
+// (Asumimos que la misma función de controlador puede listar usuarios).
+// Se necesita una función en userController para esto, por ahora protegemos la ruta.
+// router.get('/', verifyToken, authorize(['SADMIN', 'ADMIN']), userController.getAllUsers);
 
 module.exports = router;

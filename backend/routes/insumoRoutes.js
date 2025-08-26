@@ -1,30 +1,29 @@
 /* backend/routes/insumoRoutes.js */
 const express = require('express');
 const insumoController = require('../controllers/insumoController');
-// Insumos no parece requerir Multer
+const { verifyToken, authorize } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 // --- Insumo Routes ---
 
-// POST /insumo - Crear un nuevo insumo
-router.post('/', insumoController.createInsumo);
+// RF-ADMIN 11: Crear. (Permitido para SADMIN y ADMIN)
+router.post('/', verifyToken, authorize(['SADMIN', 'ADMIN']), insumoController.createInsumo);
 
-// GET /api/insumos - Obtener todos los insumos (Ruta específica usada por frontend)
-router.get('/api/insumos', insumoController.getAllInsumos);
+// RF-ADMIN 15: Listar. (Permitido para SADMIN y ADMIN)
+router.get('/api/insumos', verifyToken, authorize(['SADMIN', 'ADMIN']), insumoController.getAllInsumos);
+router.get('/', verifyToken, authorize(['SADMIN', 'ADMIN']), insumoController.getAllInsumos);
 
-router.get('/', insumoController.getAllInsumos); // <--- Ruta relativa '/'
+// Buscar. (Permitido para SADMIN y ADMIN)
+router.get('/buscar', verifyToken, authorize(['SADMIN', 'ADMIN']), insumoController.searchInsumos);
 
-// GET /insumo/buscar - Buscar insumos por término
-router.get('/buscar', insumoController.searchInsumos); // Nota: '/buscar' antes de '/:id'
+// RF-ADMIN 12: Visualizar. (Permitido para SADMIN y ADMIN)
+router.get('/:id', verifyToken, authorize(['SADMIN', 'ADMIN']), insumoController.getInsumoById);
 
-// GET /insumo/:id - Obtener un insumo por ID (PK autoincremental)
-router.get('/:id', insumoController.getInsumoById);
+// RF-ADMIN 13: Actualizar. (Permitido para SADMIN y ADMIN)
+router.put('/:id', verifyToken, authorize(['SADMIN', 'ADMIN']), insumoController.updateInsumo);
 
-// PUT /insumo/:id - Actualizar un insumo por ID (PK autoincremental)
-router.put('/:id', insumoController.updateInsumo);
-
-// DELETE /insumo/:id - Eliminar un insumo por ID (PK autoincremental)
-router.delete('/:id', insumoController.deleteInsumo);
+// RF-ADMIN 14: Eliminar. (Permitido para SADMIN y ADMIN)
+router.delete('/:id', verifyToken, authorize(['SADMIN', 'ADMIN']), insumoController.deleteInsumo);
 
 module.exports = router;

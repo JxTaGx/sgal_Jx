@@ -1,29 +1,26 @@
 /* backend/routes/cultivoRoutes.js */
 const express = require('express');
 const cultivoController = require('../controllers/cultivoController');
-const { upload } = require('../config/multerConfig'); // Importar instancia de upload
+const { upload } = require('../config/multerConfig');
+const { verifyToken, authorize } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 // --- Cultivo Routes ---
 
-// POST /cultivo - Crear un nuevo cultivo (con carga de foto)
-// El nombre del campo en upload.single() debe coincidir con el 'name' del input file
-router.post('/', upload.single('fotografia'), cultivoController.createCultivo);
+// RF-ADMIN 17: Crear. (Permitido para SADMIN y ADMIN)
+router.post('/', verifyToken, authorize(['SADMIN', 'ADMIN']), upload.single('fotografia'), cultivoController.createCultivo);
 
-// GET /cultivos - Obtener todos los cultivos
-router.get('/s', cultivoController.getAllCultivos); // Cambiado a /cultivos para evitar colisión
+// RF-ADMIN 21: Listar. (Permitido para SADMIN, ADMIN, VTE)
+router.get('/s', verifyToken, authorize(['SADMIN', 'ADMIN', 'VTE']), cultivoController.getAllCultivos);
 
-// GET /cultivo/:id - Obtener un cultivo por id_cultivo
-// :id aquí representa el id_cultivo (ej: CULT-001)
-router.get('/:id', cultivoController.getCultivoById);
+// RF-ADMIN 18: Obtener uno. (Permitido para SADMIN, ADMIN, VTE)
+router.get('/:id', verifyToken, authorize(['SADMIN', 'ADMIN', 'VTE']), cultivoController.getCultivoById);
 
-// PUT /cultivo/:id - Actualizar un cultivo (con posible carga de foto)
-// :id aquí representa el id_cultivo
-router.put('/:id', upload.single('fotografia'), cultivoController.updateCultivo);
+// RF-ADMIN 19: Actualizar. (Permitido para SADMIN y ADMIN)
+router.put('/:id', verifyToken, authorize(['SADMIN', 'ADMIN']), upload.single('fotografia'), cultivoController.updateCultivo);
 
-// DELETE /cultivo/:id - Eliminar un cultivo
-// :id aquí representa el id_cultivo
-router.delete('/:id', cultivoController.deleteCultivo);
+// RF-ADMIN 20: Eliminar. (Permitido para SADMIN y ADMIN)
+router.delete('/:id', verifyToken, authorize(['SADMIN', 'ADMIN']), cultivoController.deleteCultivo);
 
 module.exports = router;

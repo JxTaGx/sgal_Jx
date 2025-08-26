@@ -1,123 +1,51 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const usuarioInput = document.querySelector(".login__input--username");
-    const contrasenaInput = document.querySelector(".login__input--password");
-    const loginButton = document.querySelector(".login__button");
-    const submitLink = document.querySelector(".login__submit-link");
-    
-    // Crear elemento de alerta si no existe
-    function crearElementoAlerta() {
-        if (!document.querySelector(".mensaje-alerta")) {
-            const alertaDiv = document.createElement("div");
-            alertaDiv.className = "mensaje-alerta";
-            alertaDiv.style.display = "none";
-            alertaDiv.style.fontSize = "14px";
-            alertaDiv.style.padding = "5px 10px";
-            alertaDiv.style.borderRadius = "3px";
-            alertaDiv.style.position = "relative";
-            alertaDiv.style.top = "10px";
-            alertaDiv.style.right = "0px";
-            alertaDiv.style.maxWidth = "250px";
-            document.querySelector(".login__form").appendChild(alertaDiv);
+    const loginForm = document.getElementById("login-form");
+    const emailInput = document.querySelector(".login__input--username");
+    const passwordInput = document.querySelector(".login__input--password");
+    const errorMessageDiv = document.querySelector(".error-message");
+
+    loginForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        errorMessageDiv.style.display = 'none'; // Ocultar errores previos
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        if (email === "" || password === "") {
+            showError("Por favor, ingrese correo y contraseña.");
+            return;
         }
-    }
-    
-    // Crear el elemento de alerta al cargar
-    crearElementoAlerta();
-    
-    // Cambiar el color de borde en los inputs cuando hay error
-    function marcarCampoError(elemento, hayError) {
-        if (hayError) {
-            elemento.style.borderColor = "#FDC300";
-        } else {
-            elemento.style.borderColor = "";
-        }
-    }
-    
-    // Validar campo específico
-    function validarCampo(elemento) {
-        const valor = elemento.value.trim();
-        if (valor === "") {
-            marcarCampoError(elemento, true);
-            return false;
-        } else {
-            marcarCampoError(elemento, false);
-            return true;
-        }
-    }
-    
-    // Validar todos los campos
-    function validarFormulario() {
-        let esValido = true;
-        
-        if (!validarCampo(usuarioInput)) {
-            mostrarAlerta("Ingrese un usuario", "error");
-            esValido = false;
-        }
-        
-        if (!validarCampo(contrasenaInput)) {
-            mostrarAlerta("Ingrese una contraseña", "error");
-            esValido = false;
-        }
-        
-        return esValido;
-    }
-    
-    // Evitar números en el campo de usuario
-    usuarioInput.addEventListener("keydown", function (e) {
-        if (e.key >= "0" && e.key <= "9") {
-            e.preventDefault();
-            mostrarAlerta("No se permiten números", "error");
-            marcarCampoError(usuarioInput, true);
+
+        try {
+            const response = await fetch("http://localhost:3000/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || `Error ${response.status}`);
+            }
+
+            // Guardar el token y la información del usuario en localStorage
+            localStorage.setItem('token', result.token);
+            localStorage.setItem('user', JSON.stringify(result.user));
+
+            // Redirigir a la página de inicio
+            window.location.href = 'home.html';
+
+        } catch (error) {
+            console.error("Error de login:", error);
+            showError(error.message);
         }
     });
-    
-    // Quitar alerta visual cuando el usuario empieza a escribir
-    usuarioInput.addEventListener("input", function() {
-        if (usuarioInput.value.trim() !== "") {
-            marcarCampoError(usuarioInput, false);
-        }
-    });
-    
-    contrasenaInput.addEventListener("input", function() {
-        if (contrasenaInput.value.trim() !== "") {
-            marcarCampoError(contrasenaInput, false);
-        }
-    });
-    
-    // Interceptar el clic en el botón
-    loginButton.addEventListener("click", function (e) {
-        if (!validarFormulario()) {
-            e.preventDefault();
-            return false;
-        }
-        
-        // Si la validación es exitosa, mostrar mensaje breve
-        mostrarAlerta("Iniciando sesión...", "exito");
-    });
-    
-    // También prevenir la navegación del enlace si hay error
-    submitLink.addEventListener("click", function (e) {
-        if (!validarFormulario()) {
-            e.preventDefault();
-            return false;
-        }
-    });
-    
-    function mostrarAlerta(mensaje, tipo) {
-        const alertaElement = document.querySelector(".mensaje-alerta");
-        alertaElement.textContent = mensaje;
-        alertaElement.style.display = "block";
-        
-        if (tipo === "error") {
-            alertaElement.style.backgroundColor = "#FDC300";
-        } else {
-            alertaElement.style.backgroundColor = "#23d160";
-        }
-        alertaElement.style.color = "white";
-        
-        // Auto-ocultar después de 3 segundos
-        setTimeout(() => {
-            alertaElement.style.display = "none";
-        }, 3000);
+
+    function showError(message) {
+        errorMessageDiv.textContent = message;
+        errorMessageDiv.style.display = 'block';
     }
 });

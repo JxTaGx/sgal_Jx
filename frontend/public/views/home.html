@@ -6,31 +6,31 @@
     <title>Sistema Gestión Agrícola Lembo</title>
     <link rel="stylesheet" href="../css/pages/home-style.css">
 </head>
-<body class="page"> <!--bloque-->
-    <header class="page__header"> <!--elemento-->
+<body class="page">
+    <header class="page__header">
         <div class="page__header-logo"></div>
         <h1 class="page__header-title">Sistema Gestión Agrícola Lembo <br><span class="page__header-subtitle">S.G.A.L</span></h1>
-    <nav class="nav">
-        <ul class="nav__list">
-            <li class="nav__list-item"><a href="../views/listar-ciclo-cultivo-sebas.html" class="nav__list-link">Ciclo Cultivo</a></li>
-            <li class="nav__list-item"><a href="../views/listar-cultivo-sebas.html" class="nav__list-link">Cultivos</a></li>
-            <li class="nav__list-item"><a href="../views/listar-sensor-sebas.html" class="nav__list-link">Sensores</a></li>
-            <li class="nav__list-item"><a href="../views/listar-insumo-sebas.html" class="nav__list-link">Insumos</a></li>
-            <li class="nav__list-item"><a href="../views/lista-usuario.html" class="nav__list-link">Usuarios</a></li>
-            <li class="nav__list-item"><a href="../views/integracion.html" class="nav__list-link">Integración</a></li>
-        </ul>
-    </nav>
-    <div class="page__header-user--options">
-        <a href="" class="page__header-user--link">ADMIN</a>
-        <a href="/frontend/public/views/login.html" class="page__header-logout--link">LOGOUT</a>
-    </div>
-</header>
-    <main class="main"> <!--bloque-->
-        <section class="main__welcome"> 
-            <h2 class="main__welcome-title">Bienvenid@ "User"</h2>
-        </section> <!--elemento-->
-        <section class="content"> <!--bloque-->
-            <div class="content__cards"> <!--elemento-->
+        <nav class="nav">
+            <ul class="nav__list">
+                <li class="nav__list-item"><a href="../views/listar-ciclo-cultivo-sebas.html" class="nav__list-link">Ciclo Cultivo</a></li>
+                <li class="nav__list-item"><a href="../views/listar-cultivo-sebas.html" class="nav__list-link">Cultivos</a></li>
+                <li class="nav__list-item"><a href="../views/listar-sensor-sebas.html" class="nav__list-link">Sensores</a></li>
+                <li class="nav__list-item"><a href="../views/listar-insumo-sebas.html" class="nav__list-link">Insumos</a></li>
+                <li class="nav__list-item"><a href="../views/lista-usuario.html" class="nav__list-link">Usuarios</a></li>
+                <li class="nav__list-item"><a href="../views/integracion.html" class="nav__list-link">Integración</a></li>
+            </ul>
+        </nav>
+        <div class="page__header-user--options">
+            <a href="#" class="page__header-user--link" id="user-info">ADMIN</a>
+            <a href="#" class="page__header-logout--link" onclick="logout()">LOGOUT</a>
+        </div>
+    </header>
+    <main class="main">
+        <section class="main__welcome">
+            <h2 class="main__welcome-title" id="welcome-message">Bienvenid@ "User"</h2>
+        </section>
+        <section class="content">
+            <div class="content__cards">
                 <div class="content__cards-card content__cards-card--cultivos">
                     <h3 class="content__card-title">Cultivos</h3>
                     <div class="content__card-image"></div>
@@ -67,5 +67,7 @@
             </div>
         </section>
     </main>
+
+    <script src="../js/pages/permissions.js"></script>
 </body>
 </html>
