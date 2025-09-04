@@ -186,6 +186,7 @@ h6 {
     width: 8rem;
     height: auto;
     margin-left: 1rem;
+    margin-top: 5rem;
 }
 
 .page__button {
@@ -262,7 +263,7 @@ h6 {
     margin-bottom: 0.1rem;
     border-radius: 5rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
-    margin-top: -13rem;
+    margin-top: -15.5rem;
     max-height: 90vh; /* Altura máxima limitada */
 }
 
@@ -342,6 +343,7 @@ h6 {
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
+    margin-bottom: 10rem;
 }
 
 a {
@@ -379,6 +381,11 @@ a {
 .register__form-group {
     min-height: 8.0rem; /* Ajusta según necesites */
     margin-bottom: 0.5rem;
+}
+
+.gov {
+    margin-bottom: 80rem;
+    position: absolute;
 }
 
 /* Animación de entrada para alertas */

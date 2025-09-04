@@ -176,6 +176,7 @@ img {
     width: 8rem;
     margin-left: -15rem;
     margin-right: 5rem;
+    margin-top: 14rem;
 }
 
 .ciclo-cultivo__card-title {
@@ -261,10 +262,20 @@ img {
 .ciclo-cultivo__btn--back {
     background-color: var(--gray-550);
     color: var(--white);
-    margin-top: 3rem;
     margin-left: -12rem;
 }
 
+.gov__co{
+    margin-bottom: -10.9rem;
+}
+
+.gov {
+    margin-bottom: -6.5rem;
+}
+
+.gov_co {
+    margin-top: -8.5rem;
+}
 /* Media query para pantallas grandes (hasta 1200px) */
 @media (max-width: 1200px) {
     .ciclo-cultivo {

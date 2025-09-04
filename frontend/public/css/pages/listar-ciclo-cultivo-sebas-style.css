@@ -221,6 +221,7 @@ h1 {
     background: linear-gradient(135deg, var(--white), var(--secondary-1-50));
     padding-bottom: 2rem;
     text-align: center;
+    border: 2px solid var(--primary-900); /* Borde verde añadido */
 }
 
 .card__title {
@@ -296,6 +297,7 @@ h1 {
 
 .footer__buttons {
     display: flex;
+    margin-top: -15rem;
 }
 
 .cards {
@@ -324,6 +326,11 @@ h1 {
     align-items: center;
     margin-top: 22rem;
     margin-left: 6rem;
+}         
+
+.gov_co {
+    margin-bottom: 9rem;
+    position: absolute;
 }
 
 /* Media Queries */
