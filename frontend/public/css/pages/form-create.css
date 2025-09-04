@@ -103,7 +103,6 @@ html::before {
     content: ""; 
     position: absolute; 
     inset: 0;
-    background-image: url('/frontend/IMG/fondo.jpeg'); 
     background-size: cover; 
     background-position: center; 
     opacity: 0.1; 
@@ -193,6 +192,27 @@ h6 {
     left: -14rem;
     top: 0.5rem;
     z-index: 2;
+    margin-top: 5rem;
+}
+
+.form__logo_sensor {
+    width: 8rem;
+    height: auto;
+    position: absolute;
+    left: -14rem;
+    top: 0.5rem;
+    z-index: 2;
+    margin-top: 5rem;
+}
+
+.form__logo_insumo {
+    width: 8rem;
+    height: auto;
+    position: absolute;
+    left: -14rem;
+    top: 0.5rem;
+    z-index: 2;
+    margin-top: 5rem;
 }
 
 .form__title {
@@ -233,7 +253,7 @@ h6 {
     content: ""; 
     position: absolute; 
     inset: 0;
-    background-image: url('/frontend/IMG/imagen-register.jpeg'); 
+    background-image: url('/frontend/IMG/image-register-cambio.png'); 
     background-size: cover; 
     background-position: center; 
     opacity: 0.1; 
@@ -274,7 +294,7 @@ h6 {
     height: 4.8rem;
     padding: 1rem;
     font-size: var(--font-size-h5);
-    border: 0.1rem solid var(--gray-350);
+    border: 0.1rem solid var(--black);
     border-radius: 0.5rem;
 }
 
@@ -284,7 +304,7 @@ h6 {
     width: 32rem;
     padding: 1rem;
     font-size: var(--font-size-h5);
-    border: 0.1rem solid var(--gray-350);
+    border: 0.1rem solid var(--black);
     border-radius: 0.5rem;
 }
 
@@ -293,10 +313,11 @@ h6 {
     height: 4.8rem;
     padding: 1rem;
     font-size: var(--font-size-h5);
-    border: 0.1rem solid var(--gray-350);
+    border: 0.1rem solid var(--black);
     border-radius: 0.5rem;
     color: var(--gray-550);
 }
+
 
 /* --- AJUSTE PARA PREVISUALIZACIÓN DE IMAGEN --- */
 .form__preview-image {
@@ -411,6 +432,16 @@ h6 {
 .form--sensor .form__upload-area {
     height: 15rem;
     padding: 5rem;
+}
+
+.gov {
+    margin-bottom: 74rem;
+    position: absolute;
+}
+
+.gov_co {
+    margin-top: 74.5rem;
+    position: absolute;
 }
 
 /* Media Queries para diferentes tamaños de pantalla */
