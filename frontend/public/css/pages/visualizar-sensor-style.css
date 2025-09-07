@@ -77,9 +77,11 @@
     --font-size-h6: 1.2rem;
 }
 
-html {
+html, body {
     box-sizing: border-box;
     font-size: 62.5%;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 *, *:before, *:after {
@@ -162,6 +164,7 @@ h6 {
     width: 8rem;
     margin-left: -15rem;
     margin-right: 5rem;
+    margin-top: 4rem;
 }
 
 .container__sensor-title {
@@ -264,6 +267,18 @@ h6 {
     color: var(--white);
     margin-left: -15rem;
     margin-top: 7rem;
+}
+
+.gov {
+    margin-top: -1.3rem;
+    position: absolute;
+    left: -20rem;
+}
+
+.gov_co {
+    margin-top: 2.8rem;
+    position: absolute;
+    right: -20rem;
 }
 
 @media screen and (max-width: 1200px) {

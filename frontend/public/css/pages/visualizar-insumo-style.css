@@ -147,9 +147,11 @@ h6 {
 }
 
 /* Hack para usar los rem de manera fácil */
-html {
+html, body {
     box-sizing: border-box;
     font-size: 62.5%;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 *, *:before, *:after {
     box-sizing: inherit;
@@ -179,7 +181,7 @@ body {
     background-size: cover;
     background-position: center;
     margin-left: 2rem;
-    margin-top: -1.5rem;
+    margin-top: 3.5rem;
 }
 
 .container {
@@ -224,7 +226,7 @@ body {
 .container__logo{
     margin-left: 6rem;
     width: 73rem;   
-    margin-bottom: -2rem;
+    margin-top: -9rem;
 }
 
 .form {
@@ -323,6 +325,16 @@ input[disabled] {
 body {
     font-family: var(--font-primary);
     font-size: var(--font-size-h4); /* Base */
+}
+
+.gov {
+    margin-top: -1.5rem;
+    position: absolute;
+}
+
+.gov_co {
+    margin-top: 73rem;
+    position: absolute;
 }
 
 /* Media Queries */
