@@ -150,6 +150,25 @@ body {
     overflow: hidden;
 }
 
+/* Imágenes decorativas GOV arriba y abajo */
+.gov-image-top,
+.gov-image-bottom {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    width: auto; /* Ajusta el tamaño según tu imagen */
+    pointer-events: none;
+}
+
+.gov-image-top {
+    top: 0;
+}
+
+.gov-image-bottom {
+    bottom: 0;
+}
+
 .login {
     width: 100%;
     height: 100%;
