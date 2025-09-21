@@ -121,6 +121,7 @@ html {
     z-index: -1; 
     inset: 0;
     opacity: 0.2;
+    filter: grayscale(100%);
 }
 
 .page__header-logo {

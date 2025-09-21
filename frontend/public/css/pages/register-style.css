@@ -128,6 +128,7 @@ body::before {
     background-position: center;
     opacity: 0.1; 
     z-index: -1; 
+    filter: grayscale(100%);
 }
 
 h1 {
