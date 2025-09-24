@@ -133,6 +133,7 @@ html {
     background-position: center;
     opacity: 0.6; 
     z-index: -1; 
+    filter: grayscale(100%);
 }
 
 .page__header-logo {

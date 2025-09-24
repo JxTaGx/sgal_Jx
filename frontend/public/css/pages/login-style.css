@@ -203,6 +203,7 @@ body {
     background-size: cover;
     border-radius: 2rem;
     opacity: 0.5;
+    filter: grayscale(100%);
 }
 
 .login__title {
