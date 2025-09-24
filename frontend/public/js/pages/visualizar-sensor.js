@@ -1,17 +1,29 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const idSensor = localStorage.getItem('idSensor');
+    const token = localStorage.getItem('token'); // Obtener el token
 
     if (!idSensor) {
         alert('ID del sensor no encontrado');
+        window.location.href = 'listar-sensor-sebas.html';
+        return;
+    }
+
+    if (!token) {
+        alert('No estás autenticado.');
+        window.location.href = 'login.html';
         return;
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/sensor/${idSensor}`);
+        const response = await fetch(`http://localhost:3000/sensor/${idSensor}`, {
+            headers: {
+                'Authorization': `Bearer ${token}` // Incluir el token en los headers
+            }
+        });
         const result = await response.json();
 
         if (!result || !result.success || !result.data) {
-            alert('Sensor no encontrado');
+            alert(result.error || 'Sensor no encontrado');
             return;
         }
 
@@ -40,12 +52,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     } catch (error) {
         console.error('Error al cargar datos del sensor:', error);
-        alert('Error al cargar los datos');
+        alert('Error al cargar los datos del sensor.');
     }
 });
 
 function irActualizarSensor() {
-    const idSensor = localStorage.getItem('idSensor'); // Removed '1' as default
+    const idSensor = localStorage.getItem('idSensor');
     if (idSensor) {
         window.location.href = `actualizar-sensor.html?id=${idSensor}`;
     } else {
