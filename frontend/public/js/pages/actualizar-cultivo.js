@@ -3,7 +3,6 @@
  * Carga los datos del cultivo seleccionado, permite la edición y guarda los cambios.
  */
 document.addEventListener('DOMContentLoaded', async () => {
-    // Referencias a los elementos del formulario
     const form = document.getElementById('formulario-actualizar-cultivo');
     const nombreCultivoInput = document.getElementById('nombreCultivo');
     const tipoCultivoInput = document.getElementById('tipoCultivo');
@@ -13,28 +12,34 @@ document.addEventListener('DOMContentLoaded', async () => {
     const descripcionInput = document.getElementById('descripcion');
     const idCultivoMostrarInput = document.getElementById('idCultivoMostrar');
 
-    // 1. Obtener el ID del cultivo desde localStorage
     const idCultivo = localStorage.getItem('idCultivo');
+    const token = localStorage.getItem('token');
 
-    if (!idCultivo) {
-        alert('Error: No se ha seleccionado un cultivo para editar.');
-        window.location.href = 'listar-cultivo-sebas.html'; // Redirigir si no hay ID
+    if (!token) {
+        alert('Acceso denegado. Por favor, inicie sesión.');
+        window.location.href = 'login.html';
         return;
     }
 
-    // 2. Cargar los datos del cultivo desde el backend
+    if (!idCultivo) {
+        alert('Error: No se ha seleccionado un cultivo para editar.');
+        window.location.href = 'listar-cultivo-sebas.html';
+        return;
+    }
+
     try {
-        const response = await fetch(`http://localhost:3000/cultivos/${idCultivo}`);
+        const response = await fetch(`http://localhost:3000/cultivo/${idCultivo}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
         
         if (!response.ok) {
-            // Si el servidor responde con un error (ej. 404 Not Found)
-            const errorData = await response.json().catch(() => ({ message: 'No se pudo leer la respuesta del servidor.' }));
-            throw new Error(errorData.mensaje || `Error ${response.status}: ${response.statusText}`);
+            const errorData = await response.json().catch(() => ({ error: 'No se pudo leer la respuesta del servidor.' }));
+            throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
         }
 
-        const cultivo = await response.json();
+        const result = await response.json();
+        const cultivo = result.data;
 
-        // 3. Rellenar el formulario con los datos obtenidos
         if (cultivo) {
             nombreCultivoInput.value = cultivo.nombre_cultivo || '';
             tipoCultivoInput.value = cultivo.tipo_cultivo || '';
@@ -42,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             ubicacionInput.value = cultivo.ubicacion || '';
             estadoInput.value = cultivo.estado || '';
             descripcionInput.value = cultivo.descripcion || '';
-            idCultivoMostrarInput.value = cultivo.id_cultivo || idCultivo; // Mostrar el ID no editable
+            idCultivoMostrarInput.value = cultivo.id_cultivo || idCultivo;
         } else {
             throw new Error('La respuesta del servidor no contenía datos del cultivo.');
         }
@@ -52,11 +57,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         alert(`No se pudieron cargar los datos del cultivo. Causa: ${error.message}`);
     }
 
-    // 4. Manejar el envío del formulario para guardar los cambios
     form.addEventListener('submit', async (event) => {
-        event.preventDefault(); // Evitar que la página se recargue
+        event.preventDefault();
 
-        // Recolectar los datos actualizados del formulario
         const datosActualizados = {
             nombre_cultivo: nombreCultivoInput.value,
             tipo_cultivo: tipoCultivoInput.value,
@@ -66,23 +69,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             descripcion: descripcionInput.value,
         };
 
-        // 5. Enviar los datos actualizados al backend
         try {
-            const response = await fetch(`http://localhost:3000/cultivos/${idCultivo}`, {
+            const response = await fetch(`http://localhost:3000/cultivo/${idCultivo}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(datosActualizados),
             });
 
             if (!response.ok) {
-                 const errorData = await response.text();
-                 throw new Error(errorData || `Error ${response.status}: No se pudo actualizar el cultivo.`);
+                 const errorData = await response.json().catch(()=>({error: "Error al actualizar"}));
+                 throw new Error(errorData.error || `Error ${response.status}: No se pudo actualizar el cultivo.`);
             }
 
             alert('Cultivo actualizado correctamente.');
-            window.location.href = 'listar-cultivo-sebas.html'; // Redirigir a la lista de cultivos
+            window.location.href = 'listar-cultivo-sebas.html';
 
         } catch (error) {
             console.error('Error al guardar los cambios:', error);

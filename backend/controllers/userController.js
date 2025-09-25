@@ -7,28 +7,24 @@ const jwt = require('jsonwebtoken');
 async function registerUser(req, res) {
     const { documentType, documentNumber, userType, firstName, lastName, phone, password, email, confirmEmail } = req.body;
 
-    // Validaciones básicas (puedes moverlas a un middleware de validación si prefieres)
+    // Validaciones básicas
     if (!documentType || !documentNumber || !userType || !firstName || !lastName || !phone || !password || !email || !confirmEmail) {
         return res.status(400).json({ success: false, error: "Todos los campos son obligatorios" });
     }
     if (email !== confirmEmail) {
         return res.status(400).json({ success: false, error: "Los correos electrónicos no coinciden" });
     }
-    // Añadir más validaciones si es necesario (longitud, formato, etc.)
-
+    
     try {
-        // Verificar si el usuario (documento o email) ya existe
         const checkSql = "SELECT id FROM user WHERE documentNumber = ? OR email = ?";
         const [existingUsers] = await db.pool.query(checkSql, [documentNumber, email]);
 
         if (existingUsers.length > 0) {
-            return res.status(409).json({ success: false, error: "El número de documento o correo electrónico ya está registrado." }); // 409 Conflict
+            return res.status(409).json({ success: false, error: "El número de documento o correo electrónico ya está registrado." });
         }
 
-        // Hashear la contraseña
-        const hashedPassword = await bcrypt.hash(password, 10); // Usar salt rounds (e.g., 10)
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Insertar el nuevo usuario
         const insertSql = "INSERT INTO user (documentType, documentNumber, userType, firstName, lastName, phone, password, email, confirmEmail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         const [result] = await db.pool.query(insertSql, [documentType, documentNumber, userType, firstName, lastName, phone, hashedPassword, email, confirmEmail]);
 
@@ -64,11 +60,10 @@ async function loginUser(req, res) {
             return res.status(401).json({ success: false, error: "Credenciales inválidas" });
         }
 
-        // Generar el token JWT
         const token = jwt.sign(
             { id: user.id, userType: user.userType, firstName: user.firstName },
             process.env.JWT_SECRET || 'your_default_secret',
-            { expiresIn: '1h' } // El token expira en 1 hora
+            { expiresIn: '1h' }
         );
 
         res.status(200).json({
@@ -88,8 +83,75 @@ async function loginUser(req, res) {
     }
 }
 
+// Obtener todos los usuarios
+async function getAllUsers(req, res) {
+    try {
+        const [users] = await db.pool.query("SELECT id, documentType, documentNumber, userType, firstName, lastName, phone, email FROM user");
+        res.status(200).json({ success: true, data: users });
+    } catch (error) {
+        console.error("Error al obtener usuarios:", error);
+        res.status(500).json({ success: false, error: "Error al obtener usuarios" });
+    }
+}
+
+// Obtener un usuario por ID
+async function getUserById(req, res) {
+    const { id } = req.params;
+    try {
+        const [user] = await db.pool.query("SELECT id, documentType, documentNumber, userType, firstName, lastName, phone, email FROM user WHERE id = ?", [id]);
+        if (user.length === 0) {
+            return res.status(404).json({ success: false, error: "Usuario no encontrado" });
+        }
+        res.status(200).json({ success: true, data: user[0] });
+    } catch (error) {
+        console.error("Error al obtener usuario:", error);
+        res.status(500).json({ success: false, error: "Error al obtener usuario" });
+    }
+}
+
+// Actualizar un usuario
+async function updateUser(req, res) {
+    const { id } = req.params;
+    const { documentType, documentNumber, userType, firstName, lastName, phone, email } = req.body;
+
+    if (!documentType || !documentNumber || !userType || !firstName || !lastName || !phone || !email) {
+        return res.status(400).json({ success: false, error: "Todos los campos son obligatorios" });
+    }
+
+    try {
+        const sql = "UPDATE user SET documentType = ?, documentNumber = ?, userType = ?, firstName = ?, lastName = ?, phone = ?, email = ?, confirmEmail = ? WHERE id = ?";
+        const [result] = await db.pool.query(sql, [documentType, documentNumber, userType, firstName, lastName, phone, email, email, id]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ success: false, error: "Usuario no encontrado para actualizar" });
+        }
+        res.status(200).json({ success: true, message: "Usuario actualizado correctamente" });
+    } catch (error) {
+        console.error("Error al actualizar usuario:", error);
+        res.status(500).json({ success: false, error: "Error al actualizar usuario" });
+    }
+}
+
+// Eliminar un usuario
+async function deleteUser(req, res) {
+    const { id } = req.params;
+    try {
+        const [result] = await db.pool.query("DELETE FROM user WHERE id = ?", [id]);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ success: false, error: "Usuario no encontrado para eliminar" });
+        }
+        res.status(200).json({ success: true, message: "Usuario eliminado correctamente" });
+    } catch (error) {
+        console.error("Error al eliminar usuario:", error);
+        res.status(500).json({ success: false, error: "Error al eliminar usuario" });
+    }
+}
 
 module.exports = {
     registerUser,
     loginUser,
+    getAllUsers,
+    getUserById,
+    updateUser,
+    deleteUser,
 };

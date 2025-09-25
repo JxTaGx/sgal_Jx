@@ -2,23 +2,22 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     // --- Global Variables ---
-    let currentProductionId = null; // ID of production being viewed/updated/toggled
+    let currentProductionId = null; 
     let currentPage = 1;
-    const productionsPerPage = 5; // Items per page in the list view
-    let allSuppliesData = []; // Holds full data for all supplies {id, name, value, ...}
-    let allSensorsData = []; // Holds full data for all sensors
-    let selectedSuppliesCreate = []; // Supplies selected in the CREATE form {id, name, quantity, unit_value}
-    let selectedSensorsCreate = []; // Sensors selected in the CREATE form {id, name, quantity}
-    let selectedSuppliesUpdate = []; // Supplies selected in the UPDATE form {id, name, quantity, unit_value}
-    let selectedSensorsUpdate = []; // Sensors selected in the UPDATE form {id, name, quantity}
-    let filteredProductions = []; // Holds productions after filtering for list view
-    const API_BASE_URL = 'http://localhost:3000/api'; // Base URL for most API calls
-    const SESSION_STORAGE_KEY = 'productionFormData'; // Key for saving form state
-    let cycleProgressGauge = null; // Para la instancia del chart del medidor
+    const productionsPerPage = 5; 
+    let allSuppliesData = []; 
+    let allSensorsData = []; 
+    let selectedSuppliesCreate = []; 
+    let selectedSensorsCreate = [];
+    let selectedSuppliesUpdate = [];
+    let selectedSensorsUpdate = [];
+    let filteredProductions = []; 
+    const API_BASE_URL = 'http://localhost:3000/api'; 
+    const SESSION_STORAGE_KEY = 'productionFormData';
+    let cycleProgressGauge = null; 
     let sensorsComparisonChart = null;
     let harvestProjectionChart = null;
 
-    // --- NUEVA FUNCIÓN DE AYUDA PARA HEADERS ---
     /**
      * Obtiene los headers de autorización para las peticiones fetch.
      * @returns {HeadersInit} Un objeto de Headers con el token de autorización.
@@ -35,10 +34,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Initialization ---
     async function init() {
-        // Primero, verificar si el usuario está autenticado
         const token = localStorage.getItem('token');
         if (!token) {
-            window.location.href = 'login.html'; // Si no hay token, redirigir al login
+            window.location.href = 'login.html'; 
             return;
         }
 
@@ -49,141 +47,91 @@ document.addEventListener('DOMContentLoaded', function() {
         setupEnableForm();
         setupListSection();
         setupReportForm();
-        await populateDropdownsAndSensorData(); // Fetch dropdown data and all sensors/supplies
-        await restoreCreateFormState(); // Try restoring state AFTER dropdowns are populated
-        await setInitialProductionId(); // Generate ID for create form
-        await loadProductionsList(); // Load initial list of productions
+        await populateDropdownsAndData();
+        await restoreCreateFormState();
+        await setInitialProductionId();
+        await loadProductionsList();
     }
 
-    // --- (Añade esto al inicio de tu integracion.js si no existe) ---
     function formatCurrencyCOP(amount) {
-        if (typeof amount !== 'number') {
-            // Try to parse if it's a string that might be a number
-            const parsedAmount = parseFloat(amount);
-            if (isNaN(parsedAmount)) {
-                return 'COP 0'; // O un placeholder como 'No disponible'
-            }
-            amount = parsedAmount;
+        const parsedAmount = parseFloat(amount);
+        if (isNaN(parsedAmount)) {
+            return 'COP 0';
         }
-        return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
+        return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(parsedAmount);
     }
-
-    // --- State Preservation Functions ---
-
-    /**
-     * Gathers data from the 'Create Production' form.
-     * @returns {object|null} Form data object or null if form not found.
-     */
+    
+    // --- State Preservation ---
     function getCreateFormData() {
         const form = document.querySelector('[data-form="create"]');
         if (!form) return null;
-
-        // Get selected sensors from the new structure
-        // We save the selectedSensorsCreate array directly
 
         return {
             name: form.querySelector('[data-field="name"]')?.value || '',
             responsible: form.querySelector('[data-field="responsible"]')?.value || '',
             cultivation: form.querySelector('[data-field="cultivation"]')?.value || '',
             cycle: form.querySelector('[data-field="cycle"]')?.value || '',
-            // sensors field is handled by selectedSensorsCreate
             startDate: form.querySelector('[data-field="start-date"]')?.value || '',
             endDate: form.querySelector('[data-field="end-date"]')?.value || '',
             selectedSupplies: selectedSuppliesCreate,
-            selectedSensors: selectedSensorsCreate // Save the selected sensors array
+            selectedSensors: selectedSensorsCreate
         };
     }
-
-    /**
-     * Saves the current 'Create Production' form data to sessionStorage.
-     */
+    
     function saveCreateFormState() {
         const formData = getCreateFormData();
         if (formData) {
             try {
                 sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(formData));
-                console.log("Form state saved to sessionStorage.");
             } catch (e) {
-                console.error("Error saving form state to sessionStorage:", e);
+                console.error("Error saving form state:", e);
                 showSnackbar("Error al guardar el estado del formulario.", "error");
             }
         }
     }
 
-    /**
-     * Restores the 'Create Production' form data from sessionStorage.
-     */
     async function restoreCreateFormState() {
         const savedState = sessionStorage.getItem(SESSION_STORAGE_KEY);
-        if (!savedState) return; // No saved state
+        if (!savedState) return;
 
         const form = document.querySelector('[data-form="create"]');
         if (!form) return;
 
         try {
             const formData = JSON.parse(savedState);
-            console.log("Restoring form state from sessionStorage:", formData);
 
-            // Repopulate standard fields only if they exist in saved data
             if (formData.name) form.querySelector('[data-field="name"]').value = formData.name;
             if (formData.responsible) form.querySelector('[data-field="responsible"]').value = formData.responsible;
             if (formData.cultivation) form.querySelector('[data-field="cultivation"]').value = formData.cultivation;
             if (formData.cycle) form.querySelector('[data-field="cycle"]').value = formData.cycle;
             if (formData.startDate) form.querySelector('[data-field="start-date"]').value = formData.startDate;
             if (formData.endDate) form.querySelector('[data-field="end-date"]').value = formData.endDate;
-
-            // Repopulate selected supplies list
             if (Array.isArray(formData.selectedSupplies)) {
                 selectedSuppliesCreate = formData.selectedSupplies;
-                renderSelectedSupplies('create'); // Render the restored list for CREATE form
-                console.log("Selected supplies restored.");
+                renderSelectedSupplies('create');
             }
-
-            // Repopulate selected sensors list
             if (Array.isArray(formData.selectedSensors)) {
                 selectedSensorsCreate = formData.selectedSensors;
-                renderSelectedSensors('create'); // Use new render function
-                console.log("Selected sensors restored.");
+                renderSelectedSensors('create');
             }
 
-
-            sessionStorage.removeItem(SESSION_STORAGE_KEY); // Clear storage after restoring
-            console.log("Form state restored and removed from sessionStorage.");
-
-            // Re-validate form to enable/disable create button and update estimations
-            // validateCreateForm(); // Removed initial validation call here
-            checkFormValidityForSubmitButton(); // Check if button should be enabled
-
+            sessionStorage.removeItem(SESSION_STORAGE_KEY);
+            checkFormValidityForSubmitButton();
         } catch (e) {
             console.error("Error restoring form state:", e);
-            showSnackbar("Error al restaurar el estado del formulario.", "error");
-            sessionStorage.removeItem(SESSION_STORAGE_KEY); // Clear invalid data
+            sessionStorage.removeItem(SESSION_STORAGE_KEY);
         }
     }
-
-    /**
-     * Saves form state and redirects to the specified URL, adding an origin parameter.
-     * Called by the '+' buttons in the create form.
-     * @param {string} moduleType - Identifier for the module being created (e.g., 'user', 'cultivation').
-     * @param {string} url - The base URL to redirect to.
-     */
-    window.redirectToCreate = function(moduleType, url) { // Make it globally accessible
-        console.log(`Redirecting to create ${moduleType} from production...`);
-        saveCreateFormState(); // Save current data
-
-        // Append the origin parameter to the URL
-        const urlWithOrigin = `${url}?origin=produccion`;
-
-        window.location.href = urlWithOrigin; // Perform redirection with the origin parameter
+    
+    window.redirectToCreate = function(moduleType, url) {
+        saveCreateFormState();
+        window.location.href = `${url}?origin=produccion`;
     }
-
-    // --- End State Preservation Functions ---
-
 
     // --- Initial ID Generation ---
     async function setInitialProductionId() {
         const prodIdInput = document.querySelector('[data-form="create"] [data-field="production-id"]');
-        if (!prodIdInput) return; // Ensure the input exists
+        if (!prodIdInput) return;
 
         try {
             const prodResponse = await fetch(`${API_BASE_URL}/productions`, { headers: getAuthHeaders() });
@@ -199,125 +147,89 @@ document.addEventListener('DOMContentLoaded', function() {
             showSnackbar('Error al generar ID de producción.', 'error');
         }
     }
-
-    // --- Dropdown & Data Population ---
-    async function populateDropdownsAndSensorData() { // Renamed
+    
+    // --- Data Population ---
+    async function populateDropdownsAndData() {
         try {
-            const integrationDataResponse = await fetch(`${API_BASE_URL}/integracion/data`, { headers: getAuthHeaders() });
-            if (!integrationDataResponse.ok) throw new Error('Error al obtener datos de integración');
-            const integrationDataResult = await integrationDataResponse.json();
-            if (!integrationDataResult.success) throw new Error(integrationDataResult.error || 'Error en datos de integración');
+            const [integrationRes, sensorsRes, suppliesRes] = await Promise.all([
+                fetch(`${API_BASE_URL}/integracion/data`, { headers: getAuthHeaders() }),
+                fetch(`http://localhost:3000/sensor/s`, { headers: getAuthHeaders() }),
+                fetch(`http://localhost:3000/api/insumos`, { headers: getAuthHeaders() })
+            ]);
+
+            if (!integrationRes.ok) throw new Error('Error al obtener datos de integración');
+            const integrationDataResult = await integrationRes.json();
+            if (!integrationDataResult.success) throw new Error(integrationDataResult.error);
             const data = integrationDataResult.data;
 
-            // Populate standard selects (Users, Cultivations, Cycles, Status)
-            document.querySelectorAll('[data-field="responsible"]').forEach(select => populateSelect(select, data.users || [], "Seleccione un responsable"));
-            document.querySelectorAll('[data-field="cultivation"]').forEach(select => populateSelect(select, data.cultivations || [], "Seleccione un cultivo"));
-            document.querySelectorAll('[data-field="cycle"]').forEach(select => populateSelect(select, data.cycles || [], "Seleccione un ciclo"));
-            document.querySelectorAll('[data-field="status"]').forEach(select => populateSelect(select, [{ id: 'active', name: 'Activo' }, { id: 'inactive', name: 'Inactivo' }], "Seleccione estado"));
+            document.querySelectorAll('[data-field="responsible"]').forEach(select => populateSelect(select, data.users || [], "Seleccione responsable"));
+            document.querySelectorAll('[data-field="cultivation"]').forEach(select => populateSelect(select, data.cultivations || [], "Seleccione cultivo"));
+            document.querySelectorAll('[data-field="cycle"]').forEach(select => populateSelect(select, data.cycles || [], "Seleccione ciclo"));
 
-            // Fetch and store ALL sensor data
-            const sensorsResponse = await fetch(`http://localhost:3000/sensor/s`, { headers: getAuthHeaders() }); // Use the correct endpoint for sensors
-            if (!sensorsResponse.ok) throw new Error(`Error al obtener lista de sensores: ${sensorsResponse.statusText}`);
-            const sensorsResult = await sensorsResponse.json();
-            // Adjust based on the actual structure returned by /sensor/s
-            allSensorsData = sensorsResult.success ? sensorsResult.data : (Array.isArray(sensorsResult) ? sensorsResult : []);
-            if (!Array.isArray(allSensorsData)) {
-                allSensorsData = [];
-                console.warn('Formato inesperado de datos de sensores:', sensorsResult);
-                throw new Error('Formato inesperado de datos de sensores detallados');
-            }
+            if (!sensorsRes.ok) throw new Error('Error al obtener sensores');
+            const sensorsResult = await sensorsRes.json();
+            allSensorsData = sensorsResult.success ? sensorsResult.data : [];
+            document.querySelectorAll('[data-field="available-sensors"]').forEach(select => populateSelect(select, allSensorsData, "Seleccione un sensor"));
 
-            // Populate the AVAILABLE sensor dropdown (single select) in Create and Update forms
-            document.querySelectorAll('[data-field="available-sensors"]').forEach(select => {
-                populateSelect(select, allSensorsData || [], "Seleccione un sensor");
-            });
-
-            // Fetch and store ALL supply data
-            const suppliesResponse = await fetch(`http://localhost:3000/api/insumos`, { headers: getAuthHeaders() });
-            if (!suppliesResponse.ok) throw new Error(`Error al obtener lista de insumos: ${suppliesResponse.statusText}`);
-            const suppliesResult = await suppliesResponse.json();
-            allSuppliesData = suppliesResult.success ? suppliesResult.data : (Array.isArray(suppliesResult) ? suppliesResult : []);
-            if (!Array.isArray(allSuppliesData)) {
-                allSuppliesData = [];
-                console.warn('Formato inesperado de datos de insumos:', suppliesResult);
-                throw new Error('Formato inesperado de datos de insumos detallados');
-            }
-
-            // Populate the AVAILABLE supply dropdown (single select)
-            document.querySelectorAll('[data-field="available-supplies"]').forEach(select => {
-                populateSelect(select, allSuppliesData || [], "Seleccione un insumo para agregar");
-            });
+            if (!suppliesRes.ok) throw new Error('Error al obtener insumos');
+            const suppliesResult = await suppliesRes.json();
+            allSuppliesData = suppliesResult.success ? suppliesResult.data : [];
+            document.querySelectorAll('[data-field="available-supplies"]').forEach(select => populateSelect(select, allSuppliesData, "Seleccione un insumo"));
 
         } catch (error) {
             console.error('Error al poblar datos:', error);
-            showSnackbar(`Error al cargar datos iniciales: ${error.message || 'Error desconocido'}`, 'error');
+            showSnackbar(`Error al cargar datos iniciales: ${error.message}`, 'error');
         }
     }
 
-    // Helper for populating selects
     function populateSelect(selectElement, options, defaultOptionText) {
         if (!selectElement) return;
         selectElement.innerHTML = `<option value="">${defaultOptionText}</option>`;
         options.forEach(opt => {
-            // Adjust property names based on data source (user, cultivation, cycle, sensor, supply)
-            const id = opt.id || opt.id_cultivo || opt.id_ciclo || opt.id_insumo || opt.id_sensor; // Use sensor id too
-            const name = opt.name || opt.nombre_cultivo || opt.nombre_ciclo || opt.nombre_insumo || opt.nombre_sensor; // Use sensor name too
-
+            const id = opt.id || opt.id_cultivo || opt.id_ciclo || opt.id_insumo;
+            const name = opt.name || opt.nombre_cultivo || opt.nombre_ciclo || opt.nombre_insumo || opt.nombre_sensor;
             if (id !== undefined && name !== undefined) {
                 const option = document.createElement('option');
                 option.value = id;
                 option.textContent = name;
                 selectElement.appendChild(option);
-            } else {
-                console.warn("Opción inválida para select:", opt);
             }
         });
     }
 
-    // --- Form Setups ---
+    // --- Form Setup & Event Listeners ---
+    function setupNavigation() {
+        const tabs = document.querySelectorAll('.navigation__tab');
+        const sections = document.querySelectorAll('.dashboard__section');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.getAttribute('data-tab');
+                tabs.forEach(t => t.classList.remove('navigation__tab--active'));
+                this.classList.add('navigation__tab--active');
+                sections.forEach(section => {
+                    section.style.display = section.getAttribute('data-panel') === tabName ? 'block' : 'none';
+                });
+                if (tabName === 'list') loadProductionsList();
+            });
+        });
+    }
+    
+    // Asigna los eventos para el formulario de creación
     function setupCreateForm() {
         const form = document.querySelector('[data-form="create"]');
         if (!form) return;
 
-        form.querySelector('[data-action="cancel"]')?.addEventListener('click', resetForms);
-        form.querySelector('[data-action="save-draft"]')?.addEventListener('click', saveAsDraft);
-        form.addEventListener('submit', async(e) => { e.preventDefault(); await createProduction(); });
-
-        // Listeners for validation on interaction
-        form.querySelectorAll('[required]:not([disabled])').forEach(input => {
-            input.addEventListener('change', (event) => {
-                validateSingleField(event.target);
-                checkFormValidityForSubmitButton();
-            });
-            input.addEventListener('input', (event) => {
-                validateSingleField(event.target);
-                checkFormValidityForSubmitButton();
-            });
-        });
-
-        // Add listener for new "Agregar Sensor" button
+        form.addEventListener('submit', async (e) => { e.preventDefault(); await createProduction(); });
         form.querySelector('[data-action="add-selected-sensor"]')?.addEventListener('click', () => addSelectedSensorToList('create'));
-
-        // Add listener for "Agregar Insumo" button
         form.querySelector('[data-action="add-selected-supply"]')?.addEventListener('click', () => addSelectedSupplyToList('create'));
-
-        // Delegate event listener for removing sensors/supplies in the create form
-        const selectedListsContainer = form; // Attach listener to the form itself or a container div
-        selectedListsContainer.addEventListener('click', (e) => {
+        
+        form.addEventListener('click', (e) => {
             if (e.target.matches('.dashboard__button--remove-sensor')) {
-                const sensorId = e.target.getAttribute('data-sensor-id');
-                if (sensorId) removeSelectedSensor(sensorId, 'create');
+                removeSelectedSensor(e.target.getAttribute('data-sensor-id'), 'create');
             } else if (e.target.matches('.dashboard__button--remove-supply')) {
-                const supplyId = e.target.getAttribute('data-supply-id');
-                if (supplyId) removeSelectedSupply(supplyId, 'create');
+                removeSelectedSupply(e.target.getAttribute('data-supply-id'), 'create');
             }
         });
-
-        // Initial button state (disabled)
-        const createButton = form.querySelector('[data-action="create"]');
-        if (createButton) {
-            createButton.disabled = true;
-        }
     }
 
     function setupViewForm() {

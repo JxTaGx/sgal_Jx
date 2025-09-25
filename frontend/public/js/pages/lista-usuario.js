@@ -1,9 +1,32 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const contenedor = document.getElementById('usuarios-lista');
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        alert('Acceso denegado. Por favor, inicie sesión.');
+        window.location.href = 'login.html';
+        return;
+    }
 
     try {
-        const response = await fetch('http://localhost:3000/user'); // Cambia si usas otra URL
-        const usuarios = await response.json();
+        const response = await fetch('http://localhost:3000/user', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Error al obtener los usuarios');
+        }
+
+        const result = await response.json();
+        const usuarios = result.data || [];
+
+        if (usuarios.length === 0) {
+            contenedor.innerHTML = '<tr><td colspan="9">No se encontraron usuarios.</td></tr>';
+            return;
+        }
 
         usuarios.forEach(usuario => {
             const fila = document.createElement('tr');
@@ -12,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td>${usuario.id}</td>
                 <td>${usuario.documentType}</td>
                 <td>${usuario.documentNumber}</td>
-                <td>${usuario.firstName}</td>
+                <td>${usuario.firstName} ${usuario.lastName || ''}</td>
                 <td>${usuario.email}</td>
                 <td>${usuario.phone}</td>
                 <td>${usuario.userType}</td>
@@ -23,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </svg>
                 </td>
                 <td>
-                    <button onclick="window.location.href='/frontend/public/views/editar-perfil.html?id=${usuario.id}'" type="submit" class="sensor__button sensor__button--blue">Editar</button>
+                    <button onclick="window.location.href='/frontend/public/views/editar-perfil.html?id=${usuario.id}'" type="button" class="sensor__button sensor__button--blue">Editar</button>
                 </td>
             `;
             contenedor.appendChild(fila);
@@ -31,5 +54,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     } catch (error) {
         console.error('Error al obtener usuarios:', error);
+        contenedor.innerHTML = `<tr><td colspan="9" style="color:red;">Error: ${error.message}</td></tr>`;
     }
 });

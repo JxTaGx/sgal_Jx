@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Error al cargar los insumos.');
+            return response.json().then(err => { throw new Error(err.error || 'Error al cargar los insumos.'); });
         }
         return response.json();
     })
@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', function() {
         cardsContainer.innerHTML = '';
 
         const insumos = result.data || [];
+
+        if (insumos.length === 0) {
+            cardsContainer.innerHTML = '<p>No se encontraron insumos.</p>';
+            return;
+        }
 
         insumos.forEach(insumo => {
             const card = document.createElement('div');

@@ -15,13 +15,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const form = document.getElementById("form-actualizar-insumo");
 
-    // Función para cargar los datos iniciales en el formulario
     const cargarDatosInsumo = async () => {
         try {
             const response = await fetch(`http://localhost:3000/insumo/${idInsumo}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-            if (!response.ok) throw new Error("Error al obtener el insumo");
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || "Error al obtener el insumo");
+            }
 
             const { data } = await response.json();
 
@@ -35,14 +37,12 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("estado-insumo").value = data.estado || "Activo";
         } catch (error) {
             console.error(error);
-            alert("No se pudo cargar la información del insumo.");
+            alert(`No se pudo cargar la información del insumo: ${error.message}`);
         }
     };
     
-    // Cargar los datos cuando el DOM esté listo
     cargarDatosInsumo();
 
-    // Función para calcular y actualizar el valor total
     const actualizarValorTotal = () => {
       const cantidad = parseFloat(document.getElementById("cantidad-insumo").value) || 0;
       const valorU = parseFloat(document.getElementById("valoru-insumo").value) || 0;
@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("cantidad-insumo").addEventListener("input", actualizarValorTotal);
     document.getElementById("valoru-insumo").addEventListener("input", actualizarValorTotal);
 
-    // Event listener para el envío del formulario
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 

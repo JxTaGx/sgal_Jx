@@ -1,33 +1,38 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
+    const token = localStorage.getItem('token');
 
-    if (!id) {
-        alert('No se proporcionó un ID de sensor');
+    if (!token) {
+        alert('Acceso denegado. Por favor, inicie sesión.');
+        window.location.href = 'login.html';
         return;
     }
 
-    console.log('ID del sensor recibido:', id);
+    if (!id) {
+        alert('No se proporcionó un ID de sensor');
+        window.location.href = 'listar-sensor-sebas.html';
+        return;
+    }
 
     try {
-        const res = await fetch(`http://localhost:3000/sensores/${id}`); // Ensure this endpoint is correct
+        const res = await fetch(`http://localhost:3000/sensor/${id}`, {
+             headers: { 'Authorization': `Bearer ${token}` }
+        });
+
         if (!res.ok) {
-            const errorText = await res.text();
-            console.error("Error response text:", errorText);
-            throw new Error(`Error al obtener datos: ${res.status} ${res.statusText}`);
+            const errorData = await res.json();
+            throw new Error(errorData.error || `Error al obtener datos: ${res.statusText}`);
         }
 
         const response = await res.json();
-        console.log('Sensor completo:', response);
-
         const sensor = response.data;
 
         if (!sensor) {
             throw new Error('Los datos del sensor no se cargaron correctamente.');
         }
 
-
-        document.getElementById('id').value = sensor.id || sensor.id_sensor || 'Sin ID'; // Use id_sensor as fallback
+        document.getElementById('id').value = sensor.id || 'Sin ID';
         document.getElementById('nombre_sensor').value = sensor.nombre_sensor || '';
         document.getElementById('identificador').value = sensor.identificador || '';
         document.getElementById('referencia_sensor').value = sensor.referencia_sensor || '';
@@ -57,18 +62,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
 
         try {
-            const res = await fetch(`http://localhost:3000/sensores/${id}`, { // Ensure this endpoint is correct
+            const res = await fetch(`http://localhost:3000/sensor/${id}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` 
+                },
                 body: JSON.stringify(sensorActualizado)
             });
 
             if (!res.ok) {
                 const errorData = await res.json();
-                throw new Error(errorData.message || `Error al actualizar: ${res.status}`);
+                throw new Error(errorData.error || `Error al actualizar: ${res.status}`);
             }
             alert('Sensor actualizado correctamente');
-            window.location.href = 'visualizar-sensor.html'; // Or back to the list
+            window.location.href = 'listar-sensor-sebas.html';
         } catch (error) {
             console.error('Error al actualizar sensor:', error);
             alert(`No se pudo actualizar el sensor: ${error.message}`);

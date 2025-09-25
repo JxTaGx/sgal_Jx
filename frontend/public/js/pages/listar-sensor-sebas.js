@@ -1,29 +1,33 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const token = localStorage.getItem('token'); // Obtener el token
+    const token = localStorage.getItem('token'); 
 
     if (!token) {
-        // Redirigir si no hay token, o manejar el error como prefieras
+        alert('No estás autenticado. Redirigiendo al login.');
         window.location.href = 'login.html';
         return;
     }
 
-    fetch('http://localhost:3000/sensor/s', { // Usar la ruta correcta de la API
+    fetch('http://localhost:3000/sensor/s', { 
         headers: {
-            'Authorization': `Bearer ${token}` // Incluir el token en los headers
+            'Authorization': `Bearer ${token}` 
         }
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Error al obtener los sensores. Asegúrate de haber iniciado sesión.');
+            return response.json().then(err => { throw new Error(err.error || 'Error al obtener los sensores.'); });
         }
         return response.json();
     })
     .then(result => {
         const tableBody = document.getElementById('sensorTableBody');
-        tableBody.innerHTML = ''; // Limpiar contenido
+        tableBody.innerHTML = ''; 
 
-        // El controlador devuelve un objeto { success: true, data: [...] }
         const sensores = result.data || [];
+
+        if (sensores.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No se encontraron sensores.</td></tr>';
+            return;
+        }
 
         sensores.forEach(sensor => {
             const row = document.createElement('tr');

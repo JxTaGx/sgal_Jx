@@ -21,31 +21,31 @@
             <div class="form__column">
                 <h1 class="form__title">Crear Cultivo</h1>
                 <div class="form__group">
-                    <label class="form__label" for="tipoCultivo">Tipo de cultivo</label>
+                    <label class="form__label" for="tipo_cultivo">Tipo de cultivo</label>
                     <input
                         class="form__input"
                         type="text"
-                        id="tipoCultivo" name="tipoCultivo"
+                        id="tipo_cultivo" name="tipo_cultivo"
                         placeholder="Ej: Maíz, Café, Arroz"
                         title="Ingrese el tipo de cultivo"
                         aria-label="Tipo de cultivo" required>
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="nombreCultivo">Nombre del cultivo</label>
+                    <label class="form__label" for="nombre_cultivo">Nombre del cultivo</label>
                     <input
                         class="form__input"
                         type="text"
-                        id="nombreCultivo" name="nombreCultivo"
+                        id="nombre_cultivo" name="nombre_cultivo"
                         placeholder="Ej: Cultivo de maíz 2024"
                         title="Ingrese el nombre del cultivo"
                         aria-label="Nombre del cultivo" required>
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="identificador">ID de cultivo</label>
+                    <label class="form__label" for="id_cultivo">ID de cultivo</label>
                     <input
                         class="form__input"
                         type="text"
-                        id="identificador" name="identificador"
+                        id="id_cultivo" name="id_cultivo"
                         placeholder="Ej: CULT-001"
                         title="Ingrese el ID del cultivo"
                         aria-label="ID del cultivo" required>
@@ -80,8 +80,12 @@
                         aria-label="Ubicación del cultivo">
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="Estado">Estado</label> <select id="Estado" name="Estado" class="form__input form__option" required> <option value="">Seleccione Estado</option> <option value="Activo">Activo</option>
-                        <option value="Inactivo">Inactivo</option> </select>
+                    <label class="form__label" for="estado">Estado</label>
+                    <select id="estado" name="estado" class="form__input form__option" required>
+                        <option value="">Seleccione Estado</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="descripcion">Descripción</label>

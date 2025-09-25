@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   if (!token) {
-      alert('No estás autenticado.');
+      alert('No estás autenticado. Por favor, inicie sesión.');
       window.location.href = 'login.html';
       return;
   }
@@ -20,10 +20,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             'Authorization': `Bearer ${token}`
         }
     });
-    if (!response.ok) throw new Error("No se pudo obtener el insumo");
+    if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.error || "No se pudo obtener el insumo");
+    }
 
     const result = await response.json();
-    if (!result.success) throw new Error(result.error || "Error en la respuesta del servidor");
+    if (!result.success) {
+        throw new Error(result.error || "Error en la respuesta del servidor");
+    }
     
     const insumo = result.data;
 
@@ -39,6 +44,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   } catch (error) {
     console.error("Error al obtener insumo:", error);
-    alert("Hubo un error al cargar los datos del insumo.");
+    alert(`Hubo un error al cargar los datos del insumo: ${error.message}`);
   }
 });

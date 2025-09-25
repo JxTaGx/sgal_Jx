@@ -1,30 +1,35 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const idSensor = localStorage.getItem('idSensor');
-    const token = localStorage.getItem('token'); // Obtener el token
+    const token = localStorage.getItem('token'); 
 
+    if (!token) {
+        alert('No estás autenticado. Por favor, inicie sesión.');
+        window.location.href = 'login.html';
+        return;
+    }
+    
     if (!idSensor) {
         alert('ID del sensor no encontrado');
         window.location.href = 'listar-sensor-sebas.html';
         return;
     }
 
-    if (!token) {
-        alert('No estás autenticado.');
-        window.location.href = 'login.html';
-        return;
-    }
-
     try {
         const response = await fetch(`http://localhost:3000/sensor/${idSensor}`, {
             headers: {
-                'Authorization': `Bearer ${token}` // Incluir el token en los headers
+                'Authorization': `Bearer ${token}` 
             }
         });
+        
+        if (!response.ok) {
+            const err = await response.json();
+            throw new Error(err.error || 'Sensor no encontrado');
+        }
+
         const result = await response.json();
 
         if (!result || !result.success || !result.data) {
-            alert(result.error || 'Sensor no encontrado');
-            return;
+            throw new Error(result.error || 'No se recibieron datos del sensor.');
         }
 
         const sensor = result.data;
@@ -35,24 +40,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('ultima-lectura').textContent = sensor.referencia_sensor || 'No disponible';
         document.getElementById('estado-sensor').textContent = sensor.estado || 'No especificado';
 
-        const historial = sensor.historial || [];
         const historialList = document.getElementById('historial-lecturas');
-        historialList.innerHTML = '';
-
-        if (historial.length > 0) {
-            historial.forEach(lectura => {
-                const li = document.createElement('li');
-                li.className = 'history__item';
-                li.textContent = lectura;
-                historialList.appendChild(li);
-            });
-        } else {
-            historialList.innerHTML = '<li class="history__item">No hay historial disponible</li>';
-        }
+        historialList.innerHTML = '<li class="history__item">No hay historial disponible</li>';
 
     } catch (error) {
         console.error('Error al cargar datos del sensor:', error);
-        alert('Error al cargar los datos del sensor.');
+        alert(`Error al cargar los datos del sensor: ${error.message}`);
     }
 });
 

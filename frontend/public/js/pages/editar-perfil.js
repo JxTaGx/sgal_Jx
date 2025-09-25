@@ -1,7 +1,14 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('Acceso denegado. Por favor, inicie sesión.');
+        window.location.href = 'login.html';
+        return;
+    }
+
     document.querySelectorAll('.form__field-input--text').forEach(input => {
         input.addEventListener('keypress', function(e) {
-            if (!/^[a-zA-Z´ñÑáéíóú\s]$/.test(e.key)) { // Added space character to allow spaces
+            if (!/^[a-zA-Z´ñÑáéíóú\s]$/.test(e.key)) {
                 e.preventDefault();
                 showErrorNotification('Los números no están permitidos en el campo de texto');
             }
@@ -17,21 +24,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/user/${id}`);
+        const response = await fetch(`http://localhost:3000/user/${id}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.message || 'Usuario no encontrado');
+            throw new Error(errorData.error || 'Usuario no encontrado');
         }
         const result = await response.json();
         const usuario = result.data;
 
         if (usuario) {
             document.getElementById('nombre-de-usuario').value = usuario.firstName || '';
+            // Rellenar también el apellido si lo tienes en el formulario
+            // document.getElementById('apellido-de-usuario').value = usuario.lastName || '';
             document.getElementById('tipo-de-documento').value = usuario.documentType || '';
             document.getElementById('numero-de-documento').value = usuario.documentNumber || '';
             document.getElementById('tipo-de-usuario').value = usuario.userType || '';
             document.getElementById('email').value = usuario.email || '';
-            document.getElementById('confirmar-email').value = usuario.email || ''; // Populate confirm email too
+            document.getElementById('confirmar-email').value = usuario.email || '';
             document.getElementById('telefono').value = usuario.phone || '';
         } else {
             throw new Error('Datos de usuario no recibidos.');
@@ -41,39 +53,44 @@ document.addEventListener('DOMContentLoaded', async () => {
         showErrorNotification(`Error al cargar datos: ${error.message}`);
     }
 
-    // Manejar la actualización del formulario
     const form = document.getElementById('edit-form');
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            if (!validateForm()) { // Call validateForm before submitting
+            if (!validateForm()) {
                 return;
             }
 
             const data = {
                 firstName: document.getElementById('nombre-de-usuario').value,
+                // Si tienes campo de apellido, inclúyelo
+                // lastName: document.getElementById('apellido-de-usuario').value,
                 documentType: document.getElementById('tipo-de-documento').value,
                 documentNumber: document.getElementById('numero-de-documento').value,
                 userType: document.getElementById('tipo-de-usuario').value,
                 email: document.getElementById('email').value,
-                confirmEmail: document.getElementById('confirmar-email').value, // Though not typically sent
                 phone: document.getElementById('telefono').value
-                // Do not send password unless it's being changed, handle separately
             };
+            // Para el lastName, como no está en el formulario de edición, lo obtenemos de los datos cargados.
+            const originalUserResponse = await fetch(`http://localhost:3000/user/${id}`, { headers: { 'Authorization': `Bearer ${token}` } });
+            const originalUserData = await originalUserResponse.json();
+            data.lastName = originalUserData.data.lastName;
+
 
             try {
                 const updateResponse = await fetch(`http://localhost:3000/user/${id}`, {
                     method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify(data)
                 });
 
                 if (!updateResponse.ok) {
                     const errorData = await updateResponse.json();
-                    throw new Error(errorData.message || 'Error al actualizar usuario');
+                    throw new Error(errorData.error || 'Error al actualizar usuario');
                 }
 
                 alert('Usuario actualizado correctamente');
@@ -84,8 +101,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
-
-    // Event listeners for specific field validations (moved from global scope)
+    
+    // ... (El resto de tus funciones de validación se mantienen igual)
     const emailInput = document.getElementById('email');
     if (emailInput) {
         emailInput.addEventListener('blur', function() {
@@ -111,20 +128,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             this.value = this.value.replace(/[^\d]/g, '');
         });
     }
-
-    const backLink = document.querySelector('.button__group--green a:first-of-type');
-    if (backLink) {
-        // No specific action needed on click here, it's a link.
-    }
 });
 
 
-/**
- * Muestra una notificación de error
- * @param {string} message 
- */
 function showErrorNotification(message) {
-    const errorNotification = document.getElementById('error-message'); // Use ID for consistency
+    const errorNotification = document.getElementById('error-message');
     if (errorNotification) {
         errorNotification.textContent = message;
         errorNotification.style.display = 'block';
@@ -135,26 +143,16 @@ function showErrorNotification(message) {
     }
 }
 
-/**
- * Valida el formato del correo electrónico
- * @param {string} email 
- * @returns {boolean} 
- */
 function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
 
-/**
- * Valida que todos los campos requeridos estén completos
- * @returns {boolean}
- */
 function validateRequiredFields() {
     let allFieldsComplete = true;
     document.querySelectorAll('input[required]').forEach(input => {
         if (!input.value.trim()) {
             allFieldsComplete = false;
-            // showErrorNotification(`El campo "${input.previousElementSibling?.textContent || input.id || input.name}" es obligatorio.`);
         }
     });
     if (!allFieldsComplete) {
@@ -164,10 +162,6 @@ function validateRequiredFields() {
 }
 
 
-/**
- * Valida que los correos electrónicos coincidan
- * @returns {boolean} 
- */
 function validateEmailsMatch() {
     const email = document.getElementById('email').value;
     const confirmEmail = document.getElementById('confirmar-email').value;
@@ -179,10 +173,6 @@ function validateEmailsMatch() {
     return true;
 }
 
-/**
- * Valida el formulario completo
- * @returns {boolean} 
- */
 function validateForm() {
     if (!validateRequiredFields()) {
         return false;
@@ -199,7 +189,7 @@ function validateForm() {
     }
 
     const telefono = document.getElementById('telefono').value;
-    if (!/^\d{7,15}$/.test(telefono)) { // Example: 7 to 15 digits for phone
+    if (!/^\d{7,15}$/.test(telefono)) {
         showErrorNotification('El número telefónico debe tener entre 7 y 15 dígitos.');
         return false;
     }
