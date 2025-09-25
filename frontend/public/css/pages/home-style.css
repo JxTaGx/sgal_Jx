@@ -109,6 +109,7 @@ html {
     background-color: var(--white);
     overflow-x: hidden; /* Previene scroll horizontal */
     min-height: 100vh; /* Asegura que el contenido ocupe al menos la altura de la ventana */
+    overflow: hidden;
 }
 
 /* Header */
@@ -205,6 +206,7 @@ html {
 .main__welcome-title {
     font-size: var(--font-size-h3);
     margin: 0;
+    margin-bottom: -1rem;
 }
 
 .content {
@@ -215,6 +217,7 @@ html {
     padding: 2rem;
     border-radius: 0.5rem;
     box-shadow: 0 0.1rem 0.5rem rgba(12, 231, 5, 0.5); 
+    margin-top: -4rem;
 }
 
 .content__cards {
@@ -293,6 +296,13 @@ html {
     position: relative;
 }
 
+.gov {
+    margin-top: -1.3rem;
+}
+
+.gov_co {
+    margin-bottom: -1rem;
+}
 /* Tipografía secundaria */
 .calibri {
     font-family: var(--font-secondary);

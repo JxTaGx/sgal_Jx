@@ -173,8 +173,7 @@ h6 {
     height: 8rem;
     background-size: cover;
     background-position: center;
-    margin-top: 1rem;
-    margin-left: -2rem;
+    margin-top: -1.3rem;
 }
 
 /* Container */
@@ -225,7 +224,7 @@ h6 {
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
-    margin-top: -11rem;
+    margin-top: -14rem;
     justify-content: center;
     margin-left: 3rem;
 }
@@ -305,6 +304,16 @@ h6 {
     background-color: var(--secondary-2-900);
     color: var(--white);
     margin-right: 6rem;
+}
+
+.gov {
+    object-fit: contain;
+    margin-top: -1.1rem;
+}
+
+.gov_co {
+    object-fit: contain;
+    margin-top: -2rem;
 }
 
 /* Media query para pantallas de hasta 1200px */

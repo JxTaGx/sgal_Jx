@@ -139,7 +139,7 @@ img, svg {
 .cultivo-header__logo {
     max-width: 8rem;
     margin-right: 1rem;
-    margin-top: -3rem;
+    margin-top: -0.5rem;
 }
 
 .cultivo-header h1 {
@@ -226,6 +226,20 @@ svg {
 .cultivo-form__btn--cancel {
     background: var(--gray-550);
     color: var(--white);
+}
+
+.gov {
+    position: fixed;
+    object-fit: contain;
+    right: -1.5rem;
+    margin-top: -1.5rem;
+}
+
+.gov_co {
+    position: fixed;
+    object-fit: contain;
+    right: -1.5rem;
+    margin-top: 20rem;
 }
 
 /* Pantallas grandes (escritorio) */

@@ -177,7 +177,7 @@ img {
     width: 8rem;
     margin-left: -15rem;
     margin-right: 5rem;
-    margin-top: 14rem;
+    margin-top: 15rem;
 }
 
 .ciclo-cultivo__card-title {
@@ -264,18 +264,27 @@ img {
     background-color: var(--gray-550);
     color: var(--white);
     margin-left: -12rem;
+    margin-top: -10rem;
+}
+
+.ciclo-cultivo__title {
+    margin-top: 14rem;
 }
 
 .gov__co{
-    margin-bottom: -10.9rem;
+    margin-bottom: -17rem;
+}
+
+.gov___co {
+    margin-top: 7rem;
 }
 
 .gov {
-    margin-bottom: -6.5rem;
+    margin-bottom: -9.5rem;
 }
 
 .gov_co {
-    margin-top: -8.5rem;
+    margin-top: rem;
 }
 /* Media query para pantallas grandes (hasta 1200px) */
 @media (max-width: 1200px) {

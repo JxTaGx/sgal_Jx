@@ -55,6 +55,7 @@
 html {
     box-sizing: border-box;
     font-size: 62.5%;
+    overflow: hidden;
 }
 
 *, *:before, *:after {
@@ -225,6 +226,18 @@ h6 {
 .update-crop__button--cancel {
     background-color: var(--gray-550);
     color: var(--white);
+}
+
+.gov {
+    object-fit: contain;
+    right: 1.5rem;
+    margin-top: -1.5rem;
+}
+
+.gov_co {
+    object-fit: contain;
+    right: 1.5rem;
+    margin-top: 16rem;
 }
 
 /* Media Queries para distintos tamaños de pantalla */
