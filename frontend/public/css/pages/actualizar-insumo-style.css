@@ -150,6 +150,7 @@ h6 {
 html {
     box-sizing: border-box;
     font-size: 62.5%;
+    overflow: hidden;
 }
 *, *:before, *:after {
     box-sizing: inherit;
@@ -299,4 +300,14 @@ svg {
     z-index: 1;
     border: 0.1rem solid var(--black);
     margin-right: 6rem;
+}
+
+.gov {
+    object-fit: contain;
+    margin-top: -1.1rem;
+}
+
+.gov_co {
+    object-fit: contain;
+    margin-top: 2rem;
 }
