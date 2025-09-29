@@ -19,6 +19,7 @@ const insumoRoutes = require('./routes/insumoRoutes');
 const sensorRoutes = require('./routes/sensorRoutes');
 const productionRoutes = require('./routes/productionRoutes');
 const integracionRoutes = require('./routes/integracionRoutes');
+const reportesRoutes = require('./routes/reportesRoutes'); // Nuevo
 
 const app = express();
 
@@ -42,7 +43,7 @@ app.use('/sensor', sensorRoutes);
 app.use('/api/productions', productionRoutes);
 app.use('/api/integracion', integracionRoutes);
 app.use('/api/insumos', insumoRoutes);
-
+app.use('/api/reportes', reportesRoutes); // Nuevo
 
 // --- Middleware de Manejo de Errores de Multer ---
 app.use(handleMulterError);

@@ -17,17 +17,14 @@
     <input type="text" placeholder="Buscar insumo..." class="header__search">
     <input type="submit" class="button button--green" value="Filtrar">
     <div>
-      <a href="../views/excel.html">
-        <input class="button button--gray" type="submit" value="Generar Reporte">
-      </a>
+      <button class="button button--gray" onclick="showReportOptions('insumos')">Generar Reporte</button>
     </div>
   </div>
 
   <main>
     <div class="main__container">
       <div id="cards" class="cards">
-        <!-- Aquí se insertarán los insumos dinámicamente -->
-      </div>
+        </div>
     </div>
     <div class="footer">
       <div class="footer__buttons">
@@ -50,6 +47,7 @@
 
   <script src="/frontend/public/js/pages/listar-insumo.js"></script>
     <script src="../js/pages/permissions.js"></script>
+    <script src="../js/pages/reportes.js"></script>
     <div class="gov_co">
         <img src="/frontend/IMG/gov_co.png" alt="">
 </body>
