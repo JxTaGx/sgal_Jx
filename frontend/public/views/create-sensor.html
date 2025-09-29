@@ -4,67 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Sensor</title>
+    <link rel="stylesheet" href="../css/components/validation-styles.css">
     <link rel="stylesheet" href="../css/pages/form-create.css">
 </head>
 <body>
-    <div class="gov">
-        <img src="/frontend/IMG/gov_co.png" alt="">
-    </div>
+    <div class="gov"><img src="/frontend/IMG/gov_co.png" alt=""></div>
     <div class="form form--sensor">
         <header class="form__header">
             <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="form__logo_sensor">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="form__icon">
-                <path d="M18 36C27.9411 36 36 27.9411 36 18C36 8.05887 27.9411 0 18 0C8.05887 0 0 8.05887 0 18C0 27.9411 8.05887 36 18 36Z" fill="#4BBD17"/>
-            </svg>
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="form__icon"><path d="M18 36C27.9411 36 36 27.9411 36 18C36 8.05887 27.9411 0 18 0C8.05887 0 0 8.05887 0 18C0 27.9411 8.05887 36 18 36Z" fill="#4BBD17"/></svg>
         </header>
         <form class="form__content" novalidate>
             <div class="form__column">
                 <h1 class="form__title">Crear Sensor</h1>
-
                 <div class="form__group">
-                    <label class="form__label" for="tipo_sensor">Tipo de Sensor</label>
-                    <input class="form__input" type="text" id="tipo_sensor" name="tipo_sensor" placeholder="Ingrese el tipo de sensor" title="Tipo de sensor" required>
+                    <label class="form__label" for="tipo_sensor">Tipo de Sensor (*)</label>
+                    <input class="form__input" type="text" id="tipo_sensor" name="tipo_sensor" placeholder="Ej: Temperatura, Humedad" required>
+                    <div class="error-container"></div>
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="nombre_sensor">Nombre del Sensor</label>
-                    <input class="form__input" type="text" id="nombre_sensor" name="nombre_sensor" placeholder="Ingrese el nombre del sensor" title="Nombre del sensor" required>
+                    <label class="form__label" for="nombre_sensor">Nombre del Sensor (*)</label>
+                    <input class="form__input" type="text" id="nombre_sensor" name="nombre_sensor" placeholder="Ej: Sensor Invernadero A" required>
+                    <div class="error-container"></div>
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="identificador">Identificador</label>
-                    <input class="form__input" type="text" id="identificador" name="identificador" placeholder="Ingrese el identificador" title="Identificador del sensor" required>
+                    <label class="form__label" for="identificador">Identificador (*)</label>
+                    <input class="form__input" type="text" id="identificador" name="identificador" placeholder="Ej: TEMP-01A" required>
+                    <div class="error-container"></div>
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="fotografia">Fotografía</label>
                     <input type="file" id="fotografia" name="fotografia" accept="image/*" style="display: none;">
-                    <div class="form__upload-area">
-                        <p class="form__upload-text">Arrastra y suelta o haz clic para subir</p>
-                    </div>
+                    <div class="form__upload-area"><p class="form__upload-text">Arrastra y suelta o haz clic para subir</p></div>
                 </div>
             </div>
             <div class="form__column">
                 <div class="form__group">
-                    <label class="form__label" for="referencia_sensor">Referencia del Sensor</label>
-                    <input class="form__input" type="text" id="referencia_sensor" name="referencia_sensor" placeholder="Ingrese la referencia" title="Referencia del sensor" required>
+                    <label class="form__label" for="referencia_sensor">Referencia del Sensor (*)</label>
+                    <input class="form__input" type="text" id="referencia_sensor" name="referencia_sensor" placeholder="Ej: DHT22" required>
+                    <div class="error-container"></div>
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="unidad_medida">Unidad de Medida</label>
-                    <input class="form__input" type="text" id="unidad_medida" name="unidad_medida" placeholder="Ingrese la unidad de medida" title="Unidad de medida" required>
+                    <label class="form__label" for="unidad_medida">Unidad de Medida (*)</label>
+                    <input class="form__input" type="text" id="unidad_medida" name="unidad_medida" placeholder="Ej: °C, %, pH" required>
+                    <div class="error-container"></div>
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="tiempo_escaneo">Tiempo de Escaneo</label>
-                    <input class="form__input" type="text" id="tiempo_escaneo" name="tiempo_escaneo" placeholder="Ingrese el tiempo de escaneo" title="Tiempo de escaneo" required>
+                    <label class="form__label" for="tiempo_escaneo">Tiempo de Escaneo (segundos) (*)</label>
+                    <input class="form__input" type="number" id="tiempo_escaneo" name="tiempo_escaneo" placeholder="Ej: 60" required min="1" title="Debe ser un número positivo.">
+                    <div class="error-container"></div>
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="estado">Estado</label>
+                    <label class="form__label" for="estado">Estado (*)</label>
                     <select id="estado" name="estado" class="form__input form__option" required>
                         <option value="">Seleccione Estado</option>
                         <option value="Activo">Activo</option>
                         <option value="Inactivo">Inactivo</option>
                     </select>
+                    <div class="error-container"></div>
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="descripcion">Descripción</label>
-                    <textarea class="form__textarea" id="descripcion" name="descripcion" placeholder="Ingrese una descripción" title="Descripción del sensor"></textarea>
+                    <textarea class="form__textarea" id="descripcion" name="descripcion" placeholder="Ingrese una descripción"></textarea>
                 </div>
             </div>
             <div class="form__actions">
@@ -73,10 +74,8 @@
             </div>
         </form>
     </div>
-    <script src="../js/pages/form-crear.js"></script>
+    <script type="module" src="../js/pages/form-crear.js"></script>
     <script src="../js/pages/permissions.js"></script>
-    <div class="gov_co">
-        <img src="/frontend/IMG/gov_co.png" alt="">
-    </div>
+    <div class="gov_co"><img src="/frontend/IMG/gov_co.png" alt=""></div>
 </body>
 </html>

@@ -4,113 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Cultivo</title>
+    <link rel="stylesheet" href="../css/components/validation-styles.css">
     <link rel="stylesheet" href="../css/pages/form-create.css">
 </head>
 <body>
-    <div class="gov">
-        <img src="/frontend/IMG/gov_co.png" alt="">
-    </div>
+    <div class="gov"><img src="/frontend/IMG/gov_co.png" alt=""></div>
     <div class="form form--cultivo">
         <header class="form__header">
             <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="form__logo" title="Logo del SENA">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="form__icon" aria-hidden="true">
-                <path d="M18 36C27.9411 36 36 27.9411 36 18C36 8.05887 27.9411 0 18 0C8.05887 0 0 8.05887 0 18C0 27.9411 8.05887 36 18 36Z" fill="#4BBD17"/>
-            </svg>
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="form__icon" aria-hidden="true"><path d="M18 36C27.9411 36 36 27.9411 36 18C36 8.05887 27.9411 0 18 0C8.05887 0 0 8.05887 0 18C0 27.9411 8.05887 36 18 36Z" fill="#4BBD17"/></svg>
         </header>
         <form class="form__content" novalidate>
             <div class="form__column">
                 <h1 class="form__title">Crear Cultivo</h1>
                 <div class="form__group">
-                    <label class="form__label" for="tipo_cultivo">Tipo de cultivo</label>
-                    <input
-                        class="form__input"
-                        type="text"
-                        id="tipo_cultivo" name="tipo_cultivo"
-                        placeholder="Ej: Maíz, Café, Arroz"
-                        title="Ingrese el tipo de cultivo"
-                        aria-label="Tipo de cultivo" required>
+                    <label class="form__label" for="tipo_cultivo">Tipo de cultivo (*)</label>
+                    <input class="form__input" type="text" id="tipo_cultivo" name="tipo_cultivo" placeholder="Ej: Hortaliza, Frutal" required>
+                    <div class="error-container"></div>
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="nombre_cultivo">Nombre del cultivo</label>
-                    <input
-                        class="form__input"
-                        type="text"
-                        id="nombre_cultivo" name="nombre_cultivo"
-                        placeholder="Ej: Cultivo de maíz 2024"
-                        title="Ingrese el nombre del cultivo"
-                        aria-label="Nombre del cultivo" required>
+                    <label class="form__label" for="nombre_cultivo">Nombre del cultivo (*)</label>
+                    <input class="form__input" type="text" id="nombre_cultivo" name="nombre_cultivo" placeholder="Ej: Tomate Cherry" required>
+                    <div class="error-container"></div>
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="id_cultivo">ID de cultivo</label>
-                    <input
-                        class="form__input"
-                        type="text"
-                        id="id_cultivo" name="id_cultivo"
-                        placeholder="Ej: CULT-001"
-                        title="Ingrese el ID del cultivo"
-                        aria-label="ID del cultivo" required>
+                    <label class="form__label" for="id_cultivo">ID de cultivo (*)</label>
+                    <input class="form__input" type="text" id="id_cultivo" name="id_cultivo" placeholder="Ej: CULT-001" required>
+                    <div class="error-container"></div>
                 </div>
                 <div class="form__group">
-                    <label class="form__label form__picture" for="fotografia">Fotografía</label>
-                     <input type="file" id="fotografia" name="fotografia" accept="image/*" style="display: none;">
-                    <div class="form__upload-area" role="button" aria-label="Subir fotografía" title="Área para subir imágenes">
-                        <p class="form__upload-text">Arrastra y suelta o haz clic para subir</p>
-                    </div>
+                    <label class="form__label" for="fotografia">Fotografía</label>
+                    <input type="file" id="fotografia" name="fotografia" accept="image/*" style="display: none;">
+                    <div class="form__upload-area" role="button" aria-label="Subir fotografía"><p class="form__upload-text">Arrastra y suelta o haz clic para subir</p></div>
                 </div>
             </div>
             <div class="form__column">
                 <div class="form__group">
-                    <label class="form__label" for="tamano">Tamaño</label>
-                    <input
-                        class="form__input"
-                        type="text"
-                        id="tamano" name="tamano"
-                        placeholder="Ej: 100 m²"
-                        title="Ingrese el tamaño del cultivo"
-                        aria-label="Tamaño del cultivo">
+                    <label class="form__label" for="tamano">Tamaño (Ej: 100 m²)</label>
+                    <input class="form__input" type="text" id="tamano" name="tamano" placeholder="Ej: 100 m²">
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="ubicacion">Ubicación</label>
-                    <input
-                        class="form__input"
-                        type="text"
-                        id="ubicacion" name="ubicacion"
-                        placeholder="Ej: Finca La Esperanza"
-                        title="Ingrese la ubicación del cultivo"
-                        aria-label="Ubicación del cultivo">
+                    <input class="form__input" type="text" id="ubicacion" name="ubicacion" placeholder="Ej: Invernadero A">
                 </div>
                 <div class="form__group">
-                    <label class="form__label" for="estado">Estado</label>
+                    <label class="form__label" for="estado">Estado (*)</label>
                     <select id="estado" name="estado" class="form__input form__option" required>
                         <option value="">Seleccione Estado</option>
                         <option value="Activo">Activo</option>
                         <option value="Inactivo">Inactivo</option>
                     </select>
+                    <div class="error-container"></div>
                 </div>
                 <div class="form__group">
                     <label class="form__label" for="descripcion">Descripción</label>
-                    <textarea
-                        class="form__textarea"
-                        id="descripcion" name="descripcion"
-                        placeholder="Describa el cultivo..."
-                        title="Ingrese una descripción"
-                        aria-label="Descripción del cultivo"></textarea>
+                    <textarea class="form__textarea" id="descripcion" name="descripcion" placeholder="Describa el cultivo..."></textarea>
                 </div>
             </div>
             <div class="form__actions">
-                <button type="button" id="btn-volver" class="form__btn form__btn--volver" title="Volver" aria-label="Volver">
-                    Volver
-                </button>
-                <button type="submit" class="form__btn form__btn--crear" title="Crear nuevo cultivo" aria-label="Crear cultivo">
-                    Crear Cultivo
-                </button>
+                <button type="button" id="btn-volver" class="form__btn form__btn--volver">Volver</button>
+                <button type="submit" class="form__btn form__btn--crear">Crear Cultivo</button>
             </div>
         </form>
     </div>
-    <script src="../js/pages/form-crear.js"></script>
+    <script type="module" src="../js/pages/form-crear.js"></script>
     <script src="../js/pages/permissions.js"></script>
-    <div class="gov_co">
-        <img src="/frontend/IMG/gov_co.png" alt="">
-    </div>
+    <div class="gov_co"><img src="/frontend/IMG/gov_co.png" alt=""></div>
 </body>
 </html>

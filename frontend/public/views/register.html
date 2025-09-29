@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SISTEMA GESTION AGRICOLA LEMBO (S.G.A.L)</title>
     <link rel="stylesheet" href="../css/pages/register-style.css">
+    <link rel="stylesheet" href="../css/components/validation-styles.css">
 </head>
 <body>
-    <div class="gov">
-        <img src="/frontend/IMG/gov_co.png" alt="Gov Co">
-    </div>   
+    <div class="gov"><img src="/frontend/IMG/gov_co.png" alt="Gov Co"></div>
     <div class="page">
         <header class="page__header">
             <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="page__logo">
@@ -19,7 +18,6 @@
                 <h2 class="register__title register__title--subtitle">Registro de Usuario</h2>
                 <div class="register__background">
                     <h1 class="register__heading">SISTEMA GESTION AGRICOLA LEMBO <br>(S.G.A.L)</h1>
-
                     <form class="register__container" id="register-form" novalidate>
                         <div class="register__column register__column--left">
                             <div class="register__form-group">
@@ -36,7 +34,7 @@
                             </div>
                             <div class="register__form-group">
                                 <label for="documentNumber" class="register__label">Número de Documento (*)</label>
-                                <input type="text" id="documentNumber" placeholder="Número de Documento" name="documentNumber" class="register__input" required pattern="[0-9]{5,20}" title="Debe contener solo números (de 5 a 20 dígitos).">
+                                <input type="text" id="documentNumber" placeholder="Número de Documento" name="documentNumber" class="register__input" required pattern="[0-9]{5,20}" title="Debe contener solo números (5-20 dígitos).">
                                 <div class="error-container"></div>
                             </div>
                             <div class="register__form-group">
@@ -64,7 +62,7 @@
                             </div>
                             <div class="register__form-group">
                                 <label for="phone" class="register__label">Teléfono (*)</label>
-                                <input type="tel" id="phone" placeholder="Teléfono" name="phone" class="register__input register__input--tel" required pattern="[0-9]{7,20}" title="Debe contener solo números (de 7 a 20 dígitos).">
+                                <input type="tel" id="phone" placeholder="Teléfono" name="phone" class="register__input register__input--tel" required pattern="[0-9]{7,20}" title="Debe contener solo números (7-20 dígitos).">
                                 <div class="error-container"></div>
                             </div>
                             <div class="register__form-group">
@@ -90,9 +88,7 @@
             <button type="button" id="btn-volver-registro" class="page__button page__button--back">Volver</button>
         </main>
     </div>
-    <script src="../js/pages/script-register.js"></script>
-    <div class="gov_co">
-        <img src="/frontend/IMG/gov_co.png" alt="Gov Co">
-    </div>   
+    <script type="module" src="../js/pages/script-register.js"></script>
+    <div class="gov_co"><img src="/frontend/IMG/gov_co.png" alt="Gov Co"></div>
 </body>
 </html>

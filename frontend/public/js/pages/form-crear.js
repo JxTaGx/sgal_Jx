@@ -1,5 +1,12 @@
+import { validateForm, addRealTimeValidation } from '../utils/validation.js';
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('.form__content');
+    if (!form) return;
+
+    // Activa la validación en tiempo real para este formulario
+    addRealTimeValidation(form);
+
     const uploadArea = document.querySelector('.form__upload-area');
     const btnCrear = document.querySelector('.form__btn--crear');
     const btnVolver = document.querySelector('#btn-volver');
@@ -51,6 +58,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     async function submitForm() {
+        // Valida el formulario completo antes de enviarlo
+        if (!validateForm(form)) {
+            alert("Por favor, corrige los errores marcados en el formulario.");
+            return;
+        }
+
         const token = localStorage.getItem('token');
         if (!token) {
             alert('Acceso denegado. Por favor, inicie sesión de nuevo.');
@@ -67,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const headers = { 'Authorization': `Bearer ${token}` };
         let body;
         
-        // El formulario de Insumo es el único que envía JSON
         if (formType === 'insumo') {
             headers['Content-Type'] = 'application/json';
             body = JSON.stringify({
@@ -81,9 +93,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 estado: form.querySelector('[name="estado"]').value || 'Disponible'
             });
         } else {
-            // Todos los demás formularios (cultivo, sensor, ciclo) usan FormData
-            // ya que pueden incluir una imagen. FormData construirá el body
-            // usando los `name` corregidos del HTML.
             body = new FormData(form);
             if (selectedFile) {
                 body.set('fotografia', selectedFile, selectedFile.name);
@@ -100,6 +109,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
 
             if (!response.ok) {
+                 if (data.errors) {
+                    const errorMessages = data.errors.map(err => err.msg).join('\n');
+                    throw new Error(errorMessages);
+                }
                 throw new Error(data.error || `Error al crear (HTTP ${response.status})`);
             }
 
@@ -120,6 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             console.error('Error:', error);
             alert(`Error: ${error.message}`);
+        } finally {
             if (btnCrear) {
                 const title = formElement.querySelector('.form__title')?.textContent || `Crear`;
                 btnCrear.textContent = title;
@@ -152,10 +166,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     initFileUpload();
     setupVolverButton();
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            submitForm();
-        });
-    }
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        submitForm();
+    });
 });

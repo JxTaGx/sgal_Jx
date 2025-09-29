@@ -1,0 +1,20 @@
+/* Estilo para los campos con error */
+.input-error {
+    border: 2px solid #d32f2f !important; /* Rojo para errores */
+    background-color: #ffebee !important;
+}
+
+.input-error:focus {
+    outline: 1px solid #d32f2f;
+    box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.2);
+}
+
+/* Contenedor para el mensaje de error debajo del campo */
+.error-container {
+    color: #d32f2f;
+    font-size: 1.2rem;
+    font-weight: 500;
+    min-height: 1.5rem; /* Evita que el layout salte */
+    margin-top: 0.4rem;
+    visibility: hidden; /* Oculto por defecto */
+}
