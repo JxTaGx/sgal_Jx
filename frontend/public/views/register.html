@@ -32,10 +32,12 @@
                                     <option value="PPT">PPT</option>
                                     <option value="PEP">PEP</option>
                                 </select>
+                                <div class="error-container"></div>
                             </div>
                             <div class="register__form-group">
                                 <label for="documentNumber" class="register__label">Número de Documento (*)</label>
-                                <input type="text" id="documentNumber" placeholder="Número de Documento" name="documentNumber" class="register__input" required>
+                                <input type="text" id="documentNumber" placeholder="Número de Documento" name="documentNumber" class="register__input" required pattern="[0-9]{5,20}" title="Debe contener solo números (de 5 a 20 dígitos).">
+                                <div class="error-container"></div>
                             </div>
                             <div class="register__form-group">
                                 <label for="userType" class="register__label">Tipo de Usuario (*)</label>
@@ -46,32 +48,39 @@
                                     <option value="PAP">Personal apoyo</option>
                                     <option value="VTE">Visitante</option>
                                 </select>
+                                <div class="error-container"></div>
                             </div>
                         </div>
                         <div class="register__column register__column--right">
                             <div class="register__form-group">
                                 <label for="firstName" class="register__label">Nombre (*)</label>
-                                <input type="text" id="firstName" placeholder="Nombre" name="firstName" class="register__input register__input--name" required>
+                                <input type="text" id="firstName" placeholder="Nombre" name="firstName" class="register__input register__input--name" required pattern="[a-zA-Z\s]+" title="El nombre solo debe contener letras.">
+                                <div class="error-container"></div>
                             </div>
                             <div class="register__form-group">
                                 <label for="lastName" class="register__label">Apellido (*)</label>
-                                <input type="text" id="lastName" placeholder="Apellido" name="lastName" class="register__input register__input--lastname" required>
+                                <input type="text" id="lastName" placeholder="Apellido" name="lastName" class="register__input register__input--lastname" required pattern="[a-zA-Z\s]+" title="El apellido solo debe contener letras.">
+                                <div class="error-container"></div>
                             </div>
                             <div class="register__form-group">
                                 <label for="phone" class="register__label">Teléfono (*)</label>
-                                <input type="tel" id="phone" placeholder="Teléfono" name="phone" class="register__input register__input--tel" required>
+                                <input type="tel" id="phone" placeholder="Teléfono" name="phone" class="register__input register__input--tel" required pattern="[0-9]{7,20}" title="Debe contener solo números (de 7 a 20 dígitos).">
+                                <div class="error-container"></div>
                             </div>
                             <div class="register__form-group">
                                 <label for="password" class="register__label">Contraseña (*)</label>
-                                <input type="password" id="password" placeholder="Contraseña (mín. 8 caracteres)" name="password" class="register__input register__input--password" required>
+                                <input type="password" id="password" placeholder="Contraseña (mín. 8 caracteres)" name="password" class="register__input register__input--password" required minlength="8">
+                                <div class="error-container"></div>
                             </div>
                             <div class="register__form-group">
                                 <label for="email" class="register__label">Correo Electrónico (*)</label>
                                 <input type="email" id="email" placeholder="Correo Electrónico" name="email" class="register__input register__input--email" required>
+                                <div class="error-container"></div>
                             </div>
                             <div class="register__form-group">
                                 <label for="confirmEmail" class="register__label">Confirmar Correo (*)</label>
                                 <input type="email" id="confirmEmail" placeholder="Confirmar Correo Electrónico" name="confirmEmail" class="register__input register__input--confirmEmail" required>
+                                <div class="error-container"></div>
                             </div>
                             <button type="submit" class="register__button register__button--submit">Registrarse</button>
                         </div>
