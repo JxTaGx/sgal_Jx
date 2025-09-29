@@ -97,6 +97,7 @@ body {
     font-size: var(--font-size-h4); /* Base */
     margin: 0;
     padding: 0;
+    min-height: 100vh;
 }
 
 h1 {
@@ -179,9 +180,10 @@ input[type="submit"] {
 }
 
 .main__container {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     margin-top: 3rem;
     gap: 2rem;
@@ -268,7 +270,6 @@ h1 {
     font-weight: var(--font-regular);
     border: 0.1rem solid var(--black);
     border-radius: 0.6rem;
-    margin-left: 180%;
     margin-top: 1rem;
 }
 
@@ -298,7 +299,7 @@ h1 {
 
 .footer__buttons {
     display: flex;
-    margin-top: -15rem;
+    margin-top: -1rem;
 }
 
 .cards {
@@ -327,6 +328,7 @@ h1 {
     align-items: center;
     margin-top: 22rem;
     margin-left: 6rem;
+    margin-top: 2rem;
 }         
 
 .gov_co {
