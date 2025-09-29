@@ -95,6 +95,7 @@
 html {
     box-sizing: border-box;
     font-size: 62.5%;
+    background: url(/frontend/IMG/gov.png) no-repeat;
 }
 
 *, *:before, *:after {
@@ -128,7 +129,7 @@ html {
     width: 8rem;
     height: auto;
     margin-left: -28rem;
-    margin-bottom: 64rem;
+    margin-bottom: 62rem;
 }
 
 .profile {
@@ -244,7 +245,6 @@ html {
 .button__group--purple a{
     text-decoration: none;
 }
-
 
 .button__group--green {
     display: flex;
