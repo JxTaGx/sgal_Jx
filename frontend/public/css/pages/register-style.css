@@ -116,7 +116,6 @@ html, body {
     height: 100vh; /* Altura fija del viewport */
     min-height: 100vh; /* Mínima altura del viewport */
     max-height: 100vh; /* Máxima altura del viewport */
-    overflow-y: hidden; /* Deshabilitar scroll vertical */
 }
 
 body::before {
@@ -173,7 +172,6 @@ h6 {
     padding: 2rem;
     position: relative;
     height: 100vh; /* Usar 100vh en lugar de 100% */
-    overflow: hidden; /* Evitar scroll en el contenedor principal */
 }
 
 .page__header {
@@ -241,6 +239,7 @@ h6 {
 .register__title--subtitle {
     margin-right: 90rem;
     text-transform: uppercase;
+    margin-left: -14rem;
 }
 
 .register__heading {
@@ -387,6 +386,10 @@ a {
 .gov {
     margin-bottom: 80rem;
     position: absolute;
+}
+
+.gov_co {
+    margin-top: -2rem;
 }
 
 /* Animación de entrada para alertas */
