@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
+    const searchInput = document.querySelector('.header__search');
+    let allInsumos = [];
 
     if (!token) {
         alert('No estás autenticado. Redirigiendo al login.');
@@ -19,10 +21,27 @@ document.addEventListener('DOMContentLoaded', function() {
         return response.json();
     })
     .then(result => {
+        allInsumos = result.data || [];
+        renderInsumos(allInsumos);
+    })
+    .catch(error => {
+        console.error('Error al listar insumos:', error);
+        document.getElementById('cards').innerHTML = `<p style="color:red;">${error.message}</p>`;
+    });
+
+    searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredInsumos = allInsumos.filter(insumo => {
+            return insumo.nombre_insumo.toLowerCase().includes(searchTerm) ||
+                   insumo.tipo_insumo.toLowerCase().includes(searchTerm) ||
+                   insumo.id_insumo.toLowerCase().includes(searchTerm);
+        });
+        renderInsumos(filteredInsumos);
+    });
+
+    function renderInsumos(insumos) {
         const cardsContainer = document.getElementById('cards');
         cardsContainer.innerHTML = '';
-
-        const insumos = result.data || [];
 
         if (insumos.length === 0) {
             cardsContainer.innerHTML = '<p>No se encontraron insumos.</p>';
@@ -41,11 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             cardsContainer.appendChild(card);
         });
-    })
-    .catch(error => {
-        console.error('Error al listar insumos:', error);
-        document.getElementById('cards').innerHTML = `<p style="color:red;">${error.message}</p>`;
-    });
+    }
 });
 
 function visualizarInsumo(id) {

@@ -5,7 +5,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const periodoSiembraInput = form.querySelector('#periodoSiembra');
     const novedadesInput = form.querySelector('#novedades');
     const descripcionInput = form.querySelector('#descripcion');
-    const estadoInput = form.querySelector('#estado'); // <-- Nueva variable para el estado
+    const estadoInput = form.querySelector('#estado');
+    const imagePlaceholder = document.getElementById('image-placeholder');
+
 
     const idCiclo = localStorage.getItem('idCicloCultivo');
     const token = localStorage.getItem('token');
@@ -31,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const err = await res.json();
             throw new Error(err.error || 'No se pudieron cargar los datos del ciclo.');
         }
-        
+
         const result = await res.json();
         const ciclo = result.data;
 
@@ -41,7 +43,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             periodoSiembraInput.value = ciclo.periodo_siembra;
             novedadesInput.value = ciclo.novedades || '';
             descripcionInput.value = ciclo.descripcion || '';
-            estadoInput.value = ciclo.estado || 'pendiente'; // <-- Asigna el valor del estado
+            estadoInput.value = ciclo.estado || 'pendiente';
+
+            if (ciclo.ruta_fotografia) {
+                imagePlaceholder.innerHTML = `<img src="http://localhost:3000${ciclo.ruta_fotografia}" alt="Imagen del Ciclo de Cultivo" style="max-width: 100%; height: auto;">`;
+            } else {
+                imagePlaceholder.innerHTML = '<p>No hay imagen disponible</p>';
+            }
+
         } else {
              throw new Error('La respuesta del servidor no contenía datos del ciclo.');
         }
@@ -63,7 +72,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             periodo_siembra: periodoSiembraInput.value,
             novedades: novedadesInput.value,
             descripcion: descripcionInput.value,
-            estado: estadoInput.value, // <-- Envía el nuevo valor del estado
+            estado: estadoInput.value,
         };
 
         try {
@@ -78,7 +87,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (respuesta.ok) {
                 alert("Ciclo actualizado correctamente.");
-                // Limpia el ID de localStorage y redirige a la lista
                 localStorage.removeItem('idCicloCultivo');
                 window.location.href = "listar-ciclo-cultivo-sebas.html";
             } else {

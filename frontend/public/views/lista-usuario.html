@@ -1,57 +1,59 @@
-<!DOCTYPE html> 
-<html lang="en">  
-<head>     
-    <meta charset="UTF-8">     
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">     
-    <link rel="stylesheet" href="../css/pages/listar-sensor-sebas-style.css">     
-    <title>Lista de usuarios</title> 
-</head> 
-<body>    
-    <div class="gov">
-        <img src="/frontend/IMG/gov_co.png" alt="">
-    </div>    
-    <main class="sensor">         
-        <h1 class="sensor__title">Lista de Usuarios</h1>          
-        <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="sensor__logo">          
-        <div class="sensor__control-panel">             
-            <input type="text" placeholder="Buscar usuarios..." class="sensor__search">             
-            <div class="sensor__button-group">
-                <button type="submit" class="sensor__button sensor__button--green" onclick="window.location.href='register.html'">Crear Usuario</button>                         
-                <button class="sensor__button sensor__button--gray" onclick="showReportOptions('usuarios')">Generar Reporte</button>
-            </div>                      
-        </div>          
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/pages/listar-sensor-sebas-style.css">
+    <title>Lista de usuarios</title>
+</head>
+<body>
+<div class="gov">
+    <img src="/frontend/IMG/gov_co.png" alt="">
+</div>
+<main class="sensor">
+    <h1 class="sensor__title">Lista de Usuarios</h1>
+    <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="sensor__logo">
+    <div class="sensor__control-panel">
+        <input type="text" id="search-input" placeholder="Buscar usuarios..." class="sensor__search">
+        <div class="sensor__button-group">
+            <button type="button" class="sensor__button sensor__button--green" onclick="window.location.href='register.html'">Crear Usuario</button>
+            <button class="sensor__button sensor__button--gray" onclick="showReportOptions('usuarios')">Generar Reporte</button>
+        </div>
+    </div>
 
-        <table class="sensor__table-header">             
-            <thead>                 
-                <tr>                     
-                    <th>ID</th>                     
-                    <th>Tipo Documento</th>                     
-                    <th>Número Documento</th>                     
-                    <th>Nombre</th>                     
-                    <th>Correo Electrónico</th>                     
-                    <th>Teléfono</th>                     
-                    <th>Tipo de Usuario</th>                     
-                    <th>Estado</th>
-                    <th>Acciones</th>                 
-                </tr>             
-            </thead>         
-        </table>          
+    <table class="sensor__table-header">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tipo Documento</th>
+            <th>Número Documento</th>
+            <th>Nombre</th>
+            <th>Correo Electrónico</th>
+            <th>Teléfono</th>
+            <th>Tipo de Usuario</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+    </table>
 
-        <table class="sensor__table" id="usuarios-lista">     
-            </table>         
+    <table class="sensor__table">
+        <tbody id="usuarios-lista">
+        </tbody>
+    </table>
 
-        <div class="bottom-buttons">
-            <a href="../views/home.html">
-                <button class="sensor__button--return">Volver</button>
-            </a>
-        </div>    
-    </main> 
+    <div class="bottom-buttons">
+        <a href="../views/home.html">
+            <button class="sensor__button--return">Volver</button>
+        </a>
+    </div>
+</main>
 
-    <script src="../js/pages/lista-usuario.js"></script>
-    <script src="../js/pages/permissions.js"></script>
-    <script src="../js/pages/reportes.js"></script>
-    <div class="gov_co">
-        <img src="/frontend/IMG/gov_co.png" alt="">
-    </div>   
-</body> 
+<script src="../js/pages/lista-usuario.js"></script>
+<script src="../js/pages/permissions.js"></script>
+<script src="../js/pages/reportes.js"></script>
+<div class="gov_co">
+    <img src="/frontend/IMG/gov_co.png" alt="">
+</div>
+</body>
 </html>

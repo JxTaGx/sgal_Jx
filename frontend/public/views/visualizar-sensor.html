@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizar Sensor</title>
     <link rel="stylesheet" href="../css/pages/visualizar-sensor-style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="gov">
@@ -19,10 +20,9 @@
             <section class="main__sensor">
                 <div class="main__sensor-details">
                     <h4 class="main__sensor-title">ID del Sensor: <span id="sensor-id">Cargando...</span></h4>
-                    <svg class="main__sensor-graph" width="1082" height="96" viewBox="0 0 1082 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1 88H1081" stroke="#34A853" stroke-width="2"/>
-                        <path d="M1 88.0002C201 -11.9998 401 48.0002 601 8.00021C801 -31.9998 1001 128 1081 88.0002" stroke="#34A853" stroke-width="3"/>
-                    </svg>
+                    <div class="main__sensor-graph">
+                        <canvas id="sensorChart"></canvas>
+                    </div>
                     <ul class="main__sensor-info--list">
                         <li class="main__sensor-info--item">Tipo: <span id="tipo-sensor">Cargando...</span></li>
                         <li class="main__sensor-info--item">Nombre: <span id="ubicacion-sensor">Cargando...</span></li>

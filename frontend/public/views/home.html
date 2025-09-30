@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Gestión Agrícola Lembo</title>
     <link rel="stylesheet" href="../css/pages/home-style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="page">
     <div class="gov">
@@ -35,37 +36,28 @@
         <section class="content">
             <div class="content__cards">
                 <div class="content__cards-card content__cards-card--cultivos">
-                    <h3 class="content__card-title">Cultivos</h3>
-                    <div class="content__card-image"></div>
-                    <p class="content__card-text">Tomates</p>
-                    <p class="content__card-text">Fecha siembra: 15/03/2023</p>
-                    <p class="content__card-text">Período: 90-120 días</p><br>
-                    <p class="content__card-text">Maíz</p>
-                    <p class="content__card-text">Fecha siembra: 01/05/2023</p>
-                    <p class="content__card-text">Período: 90-120 días</p>
-                    <p class="content__card-text">Temperatura: 22-28°C</p>
+                    <h3 class="content__card-title">Cultivos Activos</h3>
+                    <div class="content__card-chart">
+                        <canvas id="cultivosChart"></canvas>
+                    </div>
+                    <div id="cultivos-data" class="content__card-data">
+                        </div>
                 </div>
                 <div class="content__cards-card content__cards-card--sensores">
-                    <h3 class="content__card-title">Sensores</h3>
-                    <div class="content__card-image"></div>
-                    <p class="content__card-text">Temperatura</p>
-                    <p class="content__card-text">Rango óptimo: 18-25°C</p>
-                    <p class="content__card-text">Valor actual: 22°C</p>
-                    <p class="content__card-text">Histórico: Estable</p><br>
-                    <p class="content__card-text">Humedad</p>
-                    <p class="content__card-text">Rango óptimo: 55-75%</p>
-                    <p class="content__card-text">Valor actual: 65%</p>
-                    <p class="content__card-text">Histórico: Estable</p>
+                    <h3 class="content__card-title">Estado de Sensores</h3>
+                    <div class="content__card-chart">
+                        <canvas id="sensoresChart"></canvas>
+                    </div>
+                    <div id="sensores-data" class="content__card-data">
+                        </div>
                 </div>
                 <div class="content__cards-card content__cards-card--info">
-                    <h3 class="content__card-title">Información Útil</h3>
-                    <div class="content__card-image"></div>
-                    <p class="content__card-text">Alerta de Helada</p>
-                    <p class="content__card-text">Riesgo alto en las próximas 12 horas</p><br>
-                    <p class="content__card-text">Recomendación</p>
-                    <p class="content__card-text">Cubrir los cultivos sensibles a la helada</p>
-                    <p class="content__card-text">Índice UV</p>
-                    <p class="content__card-text">Nivel actual: 8 (Alto)</p>
+                    <h3 class="content__card-title">Resumen de Insumos</h3>
+                    <div class="content__card-chart">
+                        <canvas id="insumosChart"></canvas>
+                    </div>
+                    <div id="insumos-data" class="content__card-data">
+                        </div>
                 </div>
             </div>
         </section>
@@ -74,6 +66,7 @@
         <img src="/frontend/IMG/gov_co.png" alt="">
     </div>
 
+    <script src="../js/pages/home.js"></script>
     <script src="../js/pages/permissions.js"></script>
 </body>
 </html>

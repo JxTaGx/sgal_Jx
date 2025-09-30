@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const estadoInput = document.getElementById('estado');
     const descripcionInput = document.getElementById('descripcion');
     const idCultivoMostrarInput = document.getElementById('idCultivoMostrar');
+    const imagePlaceholder = document.getElementById('image-placeholder');
 
     const idCultivo = localStorage.getItem('idCultivo');
     const token = localStorage.getItem('token');
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await fetch(`http://localhost:3000/cultivo/${idCultivo}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
-        
+
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({ error: 'No se pudo leer la respuesta del servidor.' }));
             throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
@@ -48,6 +49,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             estadoInput.value = cultivo.estado || '';
             descripcionInput.value = cultivo.descripcion || '';
             idCultivoMostrarInput.value = cultivo.id_cultivo || idCultivo;
+
+            if (cultivo.ruta_fotografia) {
+                imagePlaceholder.innerHTML = `<img src="http://localhost:3000${cultivo.ruta_fotografia}" alt="Imagen del Cultivo" style="max-width: 100%; height: auto;">`;
+            } else {
+                imagePlaceholder.innerHTML = '<p>No hay imagen disponible</p>';
+            }
+
         } else {
             throw new Error('La respuesta del servidor no contenía datos del cultivo.');
         }

@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const token = localStorage.getItem('token');
+    const searchInput = document.querySelector('.header__search');
+    let allCultivos = [];
+
     if (!token) {
         alert('Acceso denegado. Por favor, inicie sesión.');
         window.location.href = 'login.html';
@@ -18,16 +21,35 @@ document.addEventListener('DOMContentLoaded', function() {
         return response.json();
     })
     .then(result => {
-        const data = result.data || [];
+        allCultivos = result.data || [];
+        renderCultivos(allCultivos);
+    })
+    .catch(error => {
+        console.error('Error al listar cultivos:', error);
+        const cardsContainer = document.getElementById('cards');
+        cardsContainer.innerHTML = `<p style="color:red;">${error.message}</p>`;
+    });
+
+    searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredCultivos = allCultivos.filter(cultivo => {
+            return cultivo.nombre_cultivo.toLowerCase().includes(searchTerm) ||
+                   cultivo.tipo_cultivo.toLowerCase().includes(searchTerm) ||
+                   cultivo.ubicacion.toLowerCase().includes(searchTerm);
+        });
+        renderCultivos(filteredCultivos);
+    });
+
+    function renderCultivos(cultivos) {
         const cardsContainer = document.getElementById('cards');
         cardsContainer.innerHTML = '';
 
-        if (data.length === 0) {
+        if (cultivos.length === 0) {
             cardsContainer.innerHTML = '<p>No se encontraron cultivos.</p>';
             return;
         }
 
-        data.forEach(cultivo => {
+        cultivos.forEach(cultivo => {
             const id = cultivo.id_cultivo || cultivo.id;
             const card = document.createElement('div');
             card.classList.add('card');
@@ -40,12 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             cardsContainer.appendChild(card);
         });
-    })
-    .catch(error => {
-        console.error('Error al listar cultivos:', error);
-        const cardsContainer = document.getElementById('cards');
-        cardsContainer.innerHTML = `<p style="color:red;">${error.message}</p>`;
-    });
+    }
 });
 
 function visualizarCultivo(id) {

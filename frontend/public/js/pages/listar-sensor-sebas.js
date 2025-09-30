@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
+    const searchInput = document.querySelector('.sensor__search');
+    let allSensores = [];
 
     if (!token) {
         alert('No estás autenticado. Redirigiendo al login.');
@@ -7,9 +9,9 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    fetch('http://localhost:3000/sensor/s', { 
+    fetch('http://localhost:3000/sensor/s', {
         headers: {
-            'Authorization': `Bearer ${token}` 
+            'Authorization': `Bearer ${token}`
         }
     })
     .then(response => {
@@ -19,10 +21,28 @@ document.addEventListener('DOMContentLoaded', function () {
         return response.json();
     })
     .then(result => {
+        allSensores = result.data || [];
+        renderSensores(allSensores);
+    })
+    .catch(error => {
+        console.error('Error al listar sensores:', error);
         const tableBody = document.getElementById('sensorTableBody');
-        tableBody.innerHTML = ''; 
+        tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">${error.message}</td></tr>`;
+    });
 
-        const sensores = result.data || [];
+    searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredSensores = allSensores.filter(sensor => {
+            return sensor.nombre_sensor.toLowerCase().includes(searchTerm) ||
+                   sensor.tipo_sensor.toLowerCase().includes(searchTerm) ||
+                   sensor.referencia_sensor.toLowerCase().includes(searchTerm);
+        });
+        renderSensores(filteredSensores);
+    });
+
+    function renderSensores(sensores) {
+        const tableBody = document.getElementById('sensorTableBody');
+        tableBody.innerHTML = '';
 
         if (sensores.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No se encontraron sensores.</td></tr>';
@@ -45,12 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
             tableBody.appendChild(row);
         });
-    })
-    .catch(error => {
-        console.error('Error al listar sensores:', error);
-        const tableBody = document.getElementById('sensorTableBody');
-        tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">${error.message}</td></tr>`;
-    });
+    }
 });
 
 function verSensor(id) {

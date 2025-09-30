@@ -109,7 +109,7 @@ html {
     background-color: var(--white);
     overflow-x: hidden; /* Previene scroll horizontal */
     min-height: 100vh; /* Asegura que el contenido ocupe al menos la altura de la ventana */
-    overflow: hidden;
+    overflow-y: auto;
 }
 
 /* Header */
@@ -132,15 +132,15 @@ html {
     background: url(/frontend/IMG/2.png) no-repeat center;
     background-size: cover;
     background-position: center;
-    opacity: 0.6; 
-    z-index: -1; 
+    opacity: 0.6;
+    z-index: -1;
     filter: grayscale(100%);
 }
 
 .page__header-logo {
     width: 8rem;
     height: 8rem;
-    background-image: url('/frontend/IMG/logo-sena.png'); 
+    background-image: url('/frontend/IMG/logo-sena.png');
     background-size: contain;
     background-repeat: no-repeat;
     margin-right: 2rem;
@@ -176,7 +176,7 @@ html {
 }
 
 .nav {
-    width: 50%; 
+    width: 50%;
 }
 
 .nav__list {
@@ -184,7 +184,7 @@ html {
     display: flex;
     margin-left: -48rem;
     gap: 3rem;
-    margin-top: 4rem; 
+    margin-top: 4rem;
     margin-bottom: -3rem;
 }
 
@@ -211,12 +211,12 @@ html {
 
 .content {
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     background-color: var(--white);
     border: 0.1rem solid var(--black);
     padding: 2rem;
     border-radius: 0.5rem;
-    box-shadow: 0 0.1rem 0.5rem rgba(12, 231, 5, 0.5); 
+    box-shadow: 0 0.1rem 0.5rem rgba(12, 231, 5, 0.5);
     margin-top: -4rem;
 }
 
@@ -229,14 +229,14 @@ html {
 
 .content__cards-card {
     flex: 1;
-    padding: 3rem;
+    padding: 2rem;
     width: 36rem;
-    height: auto;
-    min-height: 45rem;
+    min-height: 35rem; /* Reducir altura mínima */
     border: 0.1rem solid var(--gray-550);
     border-radius: 0.5rem;
     position: relative;
-    
+    display: flex;
+    flex-direction: column;
 }
 
 .content__cards-card::before {
@@ -247,24 +247,25 @@ html {
     left: 0;
     width: 100%;
     height: 100%;
-    border: 0.3rem solid var(--primary-950); 
+    border: 0.3rem solid var(--primary-950);
     border-radius: 0.5rem;
-    opacity: 0.1; 
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat; 
+    opacity: 0.1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
+
 .content__cards-card--cultivos::before {
-    background-image: url('/frontend/IMG/card-1.jpeg'); 
+    background-image: url('/frontend/IMG/card-1.jpeg');
 }
 
 .content__cards-card--sensores::before {
-    background-image: url('/frontend/IMG/card-2.jpeg'); 
+    background-image: url('/frontend/IMG/card-2.jpeg');
 }
 
 .content__cards-card--info::before {
-    background-image: url('/frontend/IMG/card-3.jpeg'); 
+    background-image: url('/frontend/IMG/card-3.jpeg');
 }
 
 .content__card-title {
@@ -274,26 +275,36 @@ html {
     z-index: 1;
     font-weight: var(--font-medium);
     position: relative;
+    text-align: center;
+    margin-bottom: 1.5rem;
 }
 
-.content__card-text {
+.content__card-chart {
+    position: relative;
+    height: 28rem; /* Altura fija para los gráficos */
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+.content__card-data {
     font-size: var(--font-size-h5);
-    margin: 0.5rem 0;
+    text-align: center;
     color: var(--black);
     z-index: 1;
-    font-weight: var(--font-medium);
     position: relative;
 }
 
-.content__card-image {
-    width: 100%;
-    height: 10rem;
-    background-color: var(--gray-150); 
-    background-size: cover;
-    background-position: center;
-    opacity: 0.2; 
-    margin-bottom: 1rem;
-    position: relative;
+.content__card-data p {
+    margin: 0.5rem 0;
+}
+
+.interactive-info {
+    color: var(--primary-900);
+    font-weight: var(--font-semibold);
+}
+
+.error-text {
+    color: #d32f2f;
 }
 
 .gov {
@@ -303,7 +314,7 @@ html {
 .gov_co {
     margin-bottom: -1rem;
 }
-/* Tipografía secundaria */
+
 .calibri {
     font-family: var(--font-secondary);
 }
@@ -352,13 +363,12 @@ html {
     }
 
     .content__cards-card {
-        min-height: 40rem;
+        min-height: 38rem;
         width: calc(50% - 1rem);
     }
 }
 
 @media screen and (max-width: 768px) {
-
     .page__header {
         padding: 1.5rem;
     }
@@ -393,7 +403,6 @@ html {
 }
 
 @media screen and (max-width: 480px) {
-
     .page__header {
         padding: 1rem;
     }
@@ -422,14 +431,14 @@ html {
 
     .content__cards-card {
         padding: 1.5rem;
-        min-height: 30rem;
+        min-height: 32rem;
     }
 
     .content__card-title {
         font-size: var(--font-size-h4);
     }
 
-    .content__card-text {
-        font-size: var(--font-size-h6);
+    .content__card-chart {
+        height: 15rem;
     }
 }
