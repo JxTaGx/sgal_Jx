@@ -109,6 +109,7 @@ html {
   color: var(--black);
   background-color: var(--white);
   overflow-x: hidden;
+  overflow: hidden;
 }
 
 .page__header {
@@ -244,6 +245,14 @@ html {
   background-position: center;
   height: 100%;
   border-radius: 0.8rem;
+}
+
+.gov {
+  margin-top: -1rem;
+}
+
+.gov_co {
+  margin-top: 5rem;
 }
 
 @media screen and (max-width: 1200px) {

@@ -119,6 +119,7 @@ html {
     background-size: cover;
     background-position: center;
     opacity: 0.1; 
+    filter: grayscale(100%);
 }
 
 /* Contenedor principal */
@@ -166,6 +167,7 @@ html {
     border-radius: 5rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
     margin-top: -9rem;
+    filter: grayscale(100%);
 }
 
 .main__recovery-background::after {
@@ -285,11 +287,20 @@ a {
 }
 
 .button--next {
+    background-color: var(--primary-900);
     width: 9.7rem;
     position: absolute;
     bottom: 1rem;
     left: 29rem;
     margin-bottom: -1rem;
+}
+
+.gov {
+    margin-top: -1.2rem;
+}
+
+.gov_co {
+    margin-top: 5.6rem;
 }
 
 @media screen and (max-width: 1200px) {

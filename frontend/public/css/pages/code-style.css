@@ -111,6 +111,7 @@ body::before {
     background-position: center;
     opacity: 0.1; 
     z-index: -1;
+    filter: grayscale(100%);
 }
 
 /* Hack para usar los rem de manera fácil */
@@ -193,7 +194,8 @@ h6 {
     margin-bottom: 10rem;
     border-radius: 5rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
-    margin-top: -9rem;
+    margin-top: -12.5rem;
+    margin-right: -0.5rem;
 }
 
 .main__verification-background::after {
@@ -222,6 +224,7 @@ h6 {
     margin-top: 1.8rem;
     width: 4rem;
     height: auto;
+    margin-left: 10rem;
 }
 
 .verification__form-container {
@@ -260,6 +263,7 @@ h6 {
     z-index: 3;
     position: relative;
     font-style: italic;
+    margin-left: 7rem;
 }
 
 .verification__input-group {
@@ -279,6 +283,7 @@ h6 {
     gap: 1.5rem;
     margin-bottom: 2rem;
     width: 100%;
+    margin-left: 22rem;
 }
 
 .verification__input--password {
@@ -301,6 +306,7 @@ h6 {
     border-radius: 0.5rem;
     background-color: var(--secondary-3-100);
     text-align: center;
+    margin-left: 2.5rem;
 }
 
 .verification__button {
@@ -337,6 +343,7 @@ h6 {
     margin-left: 33rem;
     border-radius: 10rem;
     border: 0.1rem solid var(--black);
+    margin-left: 42rem;
 }
 
 .verification__form-group {
@@ -382,6 +389,14 @@ h6 {
     position: relative;
     z-index: 3;
     font-style: italic;
+}
+
+.gov {
+    margin-top: -1rem;
+}
+
+.gov_co {
+    margin-top: -9.7rem;
 }
 
 @media screen and (max-width: 1200px) {
