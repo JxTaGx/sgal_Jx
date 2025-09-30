@@ -146,6 +146,65 @@ async function deleteUser(req, res) {
         res.status(500).json({ success: false, error: "Error al eliminar usuario" });
     }
 }
+// Solicitar recuperación de contraseña
+async function forgotPassword(req, res) {
+    const { email } = req.body;
+    if (!email) {
+        return res.status(400).json({ success: false, error: "El correo electrónico es requerido" });
+    }
+
+    try {
+        const sql = "SELECT * FROM user WHERE email = ?";
+        const [users] = await db.pool.query(sql, [email]);
+
+        if (users.length === 0) {
+            return res.status(404).json({ success: false, error: "Usuario no encontrado" });
+        }
+
+        // Simulación del envío de correo: se genera un código y se devuelve.
+        // En un caso real, este código se almacenaría temporalmente (ej. en otra tabla con expiración) y se enviaría por email.
+        const recoveryCode = Math.floor(100000 + Math.random() * 900000).toString();
+        
+        // Para este ejemplo, simplemente devolvemos el código para que el frontend pueda simular el proceso.
+        console.log(`Código de recuperación para ${email}: ${recoveryCode}`);
+        
+        res.status(200).json({ success: true, message: "Se ha enviado un código de recuperación a su correo.", recoveryCode: recoveryCode });
+
+    } catch (error) {
+        console.error("Error en forgotPassword:", error);
+        res.status(500).json({ success: false, error: "Error interno del servidor" });
+    }
+}
+
+// Resetear la contraseña
+async function resetPassword(req, res) {
+    const { email, newPassword } = req.body;
+
+    if (!email || !newPassword) {
+        return res.status(400).json({ success: false, error: "Faltan datos para restablecer la contraseña." });
+    }
+
+    if (newPassword.length < 8) {
+        return res.status(400).json({ success: false, error: "La nueva contraseña debe tener al menos 8 caracteres." });
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const sql = "UPDATE user SET password = ? WHERE email = ?";
+        const [result] = await db.pool.query(sql, [hashedPassword, email]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ success: false, error: "No se pudo actualizar la contraseña para el usuario especificado." });
+        }
+
+        res.status(200).json({ success: true, message: "Contraseña actualizada correctamente." });
+
+    } catch (error) {
+        console.error("Error en resetPassword:", error);
+        res.status(500).json({ success: false, error: "Error interno del servidor al actualizar la contraseña." });
+    }
+}
+
 
 module.exports = {
     registerUser,
@@ -154,4 +213,6 @@ module.exports = {
     getUserById,
     updateUser,
     deleteUser,
+    forgotPassword,
+    resetPassword,
 };

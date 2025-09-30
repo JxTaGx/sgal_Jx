@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
     const inputsNumeros = document.querySelectorAll(".verification__input");
+    const newPasswordInput = document.getElementById("newPassword");
+    const confirmPasswordInput = document.getElementById("confirmPassword");
     const verificarButton = document.querySelector(".verification__button--verify");
     
-    // Crear el elemento para mostrar mensajes (errores y éxito)
     const mensajeDiv = document.createElement("div");
     mensajeDiv.id = "mensaje";
     mensajeDiv.style.display = "none";
@@ -14,18 +15,16 @@ document.addEventListener("DOMContentLoaded", function () {
     mensajeDiv.style.zIndex = "3";
     document.querySelector(".verification__form-container").appendChild(mensajeDiv);
     
-    // Agregar listeners a cada campo de entrada para solo permitir números
     inputsNumeros.forEach((input, index) => {
         input.addEventListener("keydown", function (e) {
             if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && 
                 (e.keyCode < 96 || e.keyCode > 105) &&
                 e.keyCode !== 8 && e.keyCode !== 9 && e.keyCode !== 37 && e.keyCode !== 39) {
                 e.preventDefault();
-                mostrarError("Solo se permiten números en este campo");
+                mostrarError("Solo se permiten números.");
             }
         });
         
-        // Mover al siguiente input después de ingresar un dígito
         input.addEventListener("input", function() {
             if (this.value.length === 1 && index < inputsNumeros.length - 1) {
                 inputsNumeros[index + 1].focus();
@@ -33,29 +32,62 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
     
-    verificarButton.addEventListener("click", function () {
-        let todosLlenos = true;
+    verificarButton.addEventListener("click", async function () {
         let codigo = "";
-        
         inputsNumeros.forEach(input => {
-            if (input.value.trim() === "") {
-                todosLlenos = false;
-            }
-            codigo += input.value;
+            codigo += input.value.trim();
         });
+
+        const newPassword = newPasswordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
         
-        if (!todosLlenos) {
-            mostrarError("Todos los campos del código deben estar llenos");
-        } else {
-            // Mostrar mensaje de éxito
-            mostrarMensaje("Verificación exitosa", true);
+        const storedCode = localStorage.getItem('recoveryCode');
+        const email = localStorage.getItem('recoveryEmail');
+
+        if (codigo.length !== 6) {
+            mostrarError("El código debe tener 6 dígitos.");
+            return;
+        }
+        if (codigo !== storedCode) {
+            mostrarError("El código de verificación es incorrecto.");
+            return;
+        }
+        if (newPassword.length < 8) {
+            mostrarError("La nueva contraseña debe tener al menos 8 caracteres.");
+            return;
+        }
+        if (newPassword !== confirmPassword) {
+            mostrarError("Las contraseñas no coinciden.");
+            return;
+        }
+
+        try {
+            const response = await fetch("http://localhost:3000/auth/reset-password", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, newPassword })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || "No se pudo cambiar la contraseña.");
+            }
+
+            mostrarMensaje("Contraseña actualizada con éxito.", true);
             
-            // Redirigir al home después de un breve retraso
+            // Limpiar localStorage y redirigir
+            localStorage.removeItem('recoveryEmail');
+            localStorage.removeItem('recoveryCode');
             setTimeout(() => {
-                window.location.href = "home.html"; // Cambia esta URL a la ruta de tu página de inicio
-            }, 2000); // 2 segundos de espera para que el usuario vea el mensaje
-            
-            console.log("Código enviado:", codigo);
+                window.location.href = "completerecover.html";
+            }, 2000);
+
+        } catch (error) {
+            console.error("Error al resetear contraseña:", error);
+            mostrarError(`Error: ${error.message}`);
         }
     });
     
@@ -64,24 +96,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     
     function mostrarMensaje(mensaje, esExito) {
-        const mensajeElement = document.getElementById("mensaje");
-        mensajeElement.textContent = mensaje;
+        mensajeDiv.textContent = mensaje;
         
-        // Establecer estilo según tipo de mensaje
         if (esExito) {
-            mensajeElement.style.color = "#008000";
-            mensajeElement.style.backgroundColor = "#eeffee";
+            mensajeDiv.style.color = "#008000";
+            mensajeDiv.style.backgroundColor = "#eeffee";
         } else {
-            mensajeElement.style.color = "#FDC300";
-            mensajeElement.style.backgroundColor = "#ffeeee";
+            mensajeDiv.style.color = "#FDC300";
+            mensajeDiv.style.backgroundColor = "#ffeeee";
         }
         
-        mensajeElement.style.display = "block";
+        mensajeDiv.style.display = "block";
         
-        // Solo desaparece automáticamente los mensajes de error
         if (!esExito) {
             setTimeout(() => {
-                mensajeElement.style.display = "none";
+                mensajeDiv.style.display = "none";
             }, 4000);
         }
     }

@@ -263,12 +263,33 @@ h6 {
 }
 
 .verification__input-group {
-    margin-bottom: 5rem;
+    margin-bottom: 2rem; /* Reducido para dar espacio a los nuevos campos */
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(6, 1fr);
     width: 1rem;
     margin-left: 9rem;
     gap: 1rem;
+}
+
+/* --- NUEVOS ESTILOS --- */
+.verification__password-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+.verification__input--password {
+    width: 32rem; /* Ancho consistente con otros formularios */
+    height: 4.8rem;
+    padding: 1rem;
+    font-size: var(--font-size-h5);
+    border: 0.1rem solid var(--gray-150);
+    border-radius: 0.5rem;
+    background-color: var(--secondary-3-100);
+    text-align: center;
 }
 
 .verification__input {
@@ -295,16 +316,17 @@ h6 {
 }
 
 .verification__button--verify {
-    width: 9.7rem;
+    width: auto; /* Ancho automático para adaptarse al texto */
+    padding: 1rem 2rem; /* Mejor padding */
     position: absolute;
     bottom: 1rem;
-    left: 2rem;
+    left: 50%; /* Centrado horizontal */
+    transform: translateX(-50%); /* Ajuste fino del centrado */
     background-color: var(--primary-900);
     color: var(--white);
     border: 0.1rem solid var(--black);
     z-index: 3;
     margin: 1rem;
-    margin-left: 30rem;
 }
 
 /*Complete recover*/

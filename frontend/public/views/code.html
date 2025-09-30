@@ -7,32 +7,26 @@
     <link rel="stylesheet" href="../css/pages/code-style.css">
 </head>
 <body>
-    <div class="container"> <!--blooque-->
-        <header class="container__header"> <!--elemento-->
-            <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="container__header-logo"> <!--elemento-->
-        </header>
-        <main class="main"> <!--blooque-->
-            <section class="main__verification"> <!--elemento-->
-                <div class="main__verification-background"> <!--elemento-->
-                    <div class="verification__icon-container"> <!--elemento-->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="verification__icon"><path fill="none" stroke="currentColor" d="M3 .5h18m-18 23h18m-15.5 0v-6l2.856-1.714a4.415 4.415 0 0 0 0-7.572L5.5 6.5v-6m13 0v6l-2.856 1.714a4.416 4.416 0 0 0 0 7.572L18.5 17.5v6"/></svg>
+    <div class="container"> <header class="container__header"> <img src="/frontend/IMG/logo-sena.png" alt="Logo SENA" class="container__header-logo"> </header>
+        <main class="main"> <section class="main__verification"> <div class="main__verification-background"> <div class="verification__icon-container"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="verification__icon"><path fill="none" stroke="currentColor" d="M3 .5h18m-18 23h18m-15.5 0v-6l2.856-1.714a4.415 4.415 0 0 0 0-7.572L5.5 6.5v-6m13 0v6l-2.856 1.714a4.416 4.416 0 0 0 0 7.572L18.5 17.5v6"/></svg>
                     </div>
-                    <div class="verification__form-container"> <!--elemento-->
-                        <div class="verification__form--left"> <!--modificador-->
-                            <h2 class="verification__title">Ingresa el código de 6 dígitos que se ha enviado <br> a su correo electrónico registrado</h2>
+                    <div class="verification__form-container"> <div class="verification__form--left"> <h2 class="verification__title">Ingresa el código de 6 dígitos y tu nueva contraseña.</h2>
                             <div class="verification__input-group">
-                                <input type="text" class="verification__input" required placeholder="1">
-                                <input type="text" class="verification__input" required placeholder="2">
-                                <input type="text" class="verification__input" required placeholder="3">
-                                <input type="text" class="verification__input" required placeholder="4">
-                                <input type="text" class="verification__input" required placeholder="5">
-                                <input type="text" class="verification__input" required placeholder="6">
+                                <input type="text" class="verification__input" required placeholder="1" maxlength="1">
+                                <input type="text" class="verification__input" required placeholder="2" maxlength="1">
+                                <input type="text" class="verification__input" required placeholder="3" maxlength="1">
+                                <input type="text" class="verification__input" required placeholder="4" maxlength="1">
+                                <input type="text" class="verification__input" required placeholder="5" maxlength="1">
+                                <input type="text" class="verification__input" required placeholder="6" maxlength="1">
+                            </div>
+                             <div class="verification__password-group">
+                                <input type="password" id="newPassword" class="verification__input--password" placeholder="Nueva Contraseña (mín. 8 caracteres)" required>
+                                <input type="password" id="confirmPassword" class="verification__input--password" placeholder="Confirmar Nueva Contraseña" required>
                             </div>
                         </div>
-                        <div class="verification__form--right"> <!--modificador-->
-                        </div>
+                        <div class="verification__form--right"> </div>
                     </div>
-                    <button class="verification__button verification__button--verify">Verificar</button>
+                    <button class="verification__button verification__button--verify">Verificar y Cambiar</button>
                 </div>
             </section>
         </main>

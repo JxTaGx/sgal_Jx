@@ -15,28 +15,27 @@
             <section class="main__recovery">
                 <div class="main__recovery-background">
                     <h1 class="main__recovery-title">Recuperacion</h1>
-                    <div class="main__recovery-form">
+                    <form class="main__recovery-form" id="recover-form">
                         <div class="main__recovery-column main__recovery-column--left">
                             <h2 class="main__recovery-heading">Restablece tu contraseña</h2>
                             <div class="main__recovery-field">
-                                <input type="text" id="documentNumber" placeholder="Correo Electrónico" name="documentNumber" class="main__recovery-input">
+                                <input type="email" id="email" placeholder="Correo Electrónico" name="email" class="main__recovery-input" required>
                             </div>
                             <a href="../views/login.html">
-                            <h3 class="main__recovery-link--text">¿Volver al inicio de Sesion?</h3>
+                                <h3 class="main__recovery-link--text">¿Volver al inicio de Sesion?</h3>
                             </a>
                         </div>
                         <div class="main__recovery-column main__recovery-column--right">
                         </div>
-                        <a href="../views/code.html">
-                        <button class="button button--next">Siguiente</button>
-                        </a>    
-                    </div>
+                        <button type="submit" class="button button--next">Siguiente</button>
+                    </form>
                     <a href="../views/login.html">
-                    <button class="button button--back">Volver</button>
+                        <button class="button button--back">Volver</button>
                     </a>
                 </div>
             </section>
         </main>
     </div>
+    <script src="../js/pages/recover.js"></script>
 </body>
 </html>
