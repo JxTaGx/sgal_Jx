@@ -104,10 +104,11 @@ html {
 
 .page {
     display: flex;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    font-family: var(--font-primary);   
+    flex-direction: column; /* Organiza el contenido verticalmente */
+    min-height: 100vh;
+    justify-content: center; /* Centra el contenido principal verticalmente */
+    align-items: center; /* Centra el contenido principal horizontalmente */
+    font-family: var(--font-primary);
     font-size: var(--font-size-h4);
     overflow: hidden;
 }
@@ -128,19 +129,22 @@ html {
 .page__header-logo {
     width: 8rem;
     height: auto;
-    margin-left: -28rem;
-    margin-bottom: 62rem;
+    position: absolute; /* Posiciona el logo sin afectar otros elementos */
+    top: 4rem;
+    left: 2rem;
 }
 
 .profile {
+    margin: auto;
     padding: 5rem;
     border-radius: 1.5rem;
     width: 86.7rem;
     height: auto; 
     margin-right: -1rem;
     position: relative;
-    margin-top: 4rem;
+    margin-top: 9rem;
     padding-top: 6rem;
+    right: 35rem;
 }
 
 .profile::before {
@@ -268,6 +272,15 @@ html {
 .notification--error {
     background-color: var(--secondary-4-950);
     color: var(--white);
+}
+
+.gov {
+    width: 100%;
+    margin-top: auto; /* Empuja la barra hacia el final de la página */
+}
+
+.gov img {
+    width: 100%;
 }
 
 @media screen and (max-width: 1200px) {

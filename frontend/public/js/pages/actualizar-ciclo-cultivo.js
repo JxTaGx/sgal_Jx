@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const periodoSiembraInput = form.querySelector('#periodoSiembra');
     const novedadesInput = form.querySelector('#novedades');
     const descripcionInput = form.querySelector('#descripcion');
+    const estadoInput = form.querySelector('#estado'); // <-- Nueva variable para el estado
 
     const idCiclo = localStorage.getItem('idCicloCultivo');
     const token = localStorage.getItem('token');
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             periodoSiembraInput.value = ciclo.periodo_siembra;
             novedadesInput.value = ciclo.novedades || '';
             descripcionInput.value = ciclo.descripcion || '';
+            estadoInput.value = ciclo.estado || 'pendiente'; // <-- Asigna el valor del estado
         } else {
              throw new Error('La respuesta del servidor no contenía datos del ciclo.');
         }
@@ -61,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             periodo_siembra: periodoSiembraInput.value,
             novedades: novedadesInput.value,
             descripcion: descripcionInput.value,
-            // El estado no está en este formulario, así que no lo enviamos para no sobreescribirlo
+            estado: estadoInput.value, // <-- Envía el nuevo valor del estado
         };
 
         try {
@@ -76,7 +78,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (respuesta.ok) {
                 alert("Ciclo actualizado correctamente.");
-                window.location.href = "visualizar-ciclo-cultivo.html";
+                // Limpia el ID de localStorage y redirige a la lista
+                localStorage.removeItem('idCicloCultivo');
+                window.location.href = "listar-ciclo-cultivo-sebas.html";
             } else {
                 const errorData = await respuesta.json();
                 alert("Error al actualizar el ciclo: " + (errorData.error || respuesta.statusText));

@@ -47,6 +47,15 @@
             <input type="text" class="cultivo-form__input" id="descripcion" name="descripcion" />
           </div>
 
+          <div class="cultivo-form__group cultivo-form__group--grid-page">
+            <label for="estado" class="cultivo-form__label">Estado</label>
+            <select class="cultivo-form__input" id="estado" name="estado" required>
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+                <option value="pendiente">Pendiente</option>
+            </select>
+          </div>
+
           <div class="cultivo-form__buttons">
             <button type="submit" class="cultivo-form__btn cultivo-form__btn--save">Guardar Cambios</button>
             <a href="visualizar-ciclo-cultivo.html" class="cultivo-form__btn cultivo-form__btn--cancel">Cancelar</a>
@@ -61,6 +70,7 @@
 
   <script src="../js/pages/actualizar-ciclo-cultivo.js"></script>
   <script src="../js/pages/permissions.js"></script>
+
 
 </body>
 </html>

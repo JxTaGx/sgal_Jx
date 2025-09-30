@@ -259,7 +259,7 @@ h1 {
     border-radius: 0.6rem;
     position: absolute;
     margin-left: 46%;
-    margin-top: 1rem;
+    margin-bottom: -5rem;
 }
 
 .button--gray {
@@ -270,6 +270,7 @@ h1 {
     font-weight: var(--font-regular);
     border: 0.1rem solid var(--black);
     border-radius: 0.6rem;
+    left: -5rem;
     margin-top: 1rem;
 }
 

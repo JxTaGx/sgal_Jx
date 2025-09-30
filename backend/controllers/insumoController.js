@@ -1,11 +1,19 @@
 /* backend/controllers/insumoController.js */
 const db = require('../config/db');
 
-// --- VALIDACIONES ---
-function validarInsumo(data) {
+// --- VALIDACIÓN UNIFICADA Y CORREGIDA ---
+// Esta función ahora sabe si es una creación o una actualización.
+function validarInsumo(data, isUpdate = false) {
     const { id_insumo, tipo_insumo, nombre_insumo, unidad_medida, cantidad, valor_unitario } = data;
-    if (!id_insumo || !tipo_insumo || !nombre_insumo || !unidad_medida) {
-        return "El ID, tipo, nombre y unidad de medida son obligatorios.";
+
+    // El 'id_insumo' solo es OBLIGATORIO al crear un nuevo insumo.
+    if (!isUpdate && !id_insumo) {
+        return "El ID del insumo es obligatorio.";
+    }
+    
+    // Estos campos siempre son obligatorios.
+    if (!tipo_insumo || !nombre_insumo || !unidad_medida) {
+        return "El tipo, nombre y unidad de medida son obligatorios.";
     }
     if (cantidad === undefined || valor_unitario === undefined) {
          return "La cantidad y el valor unitario son obligatorios.";
@@ -18,11 +26,14 @@ function validarInsumo(data) {
     if (isNaN(numValorUnitario) || numValorUnitario < 0) {
         return "El valor unitario debe ser un número no negativo.";
     }
-    return null; // No hay errores
+    return null; // Si todo está bien, no devuelve ningún error.
 }
 
+// --- CONTROLADORES ---
+
 async function createInsumo(req, res) {
-    const error = validarInsumo(req.body);
+    // Llama a la validación en modo CREACIÓN
+    const error = validarInsumo(req.body, false);
     if (error) {
         return res.status(400).json({ success: false, error });
     }
@@ -43,7 +54,8 @@ async function createInsumo(req, res) {
 }
 
 async function updateInsumo(req, res) {
-    const error = validarInsumo(req.body);
+    // Llama a la validación en modo ACTUALIZACIÓN
+    const error = validarInsumo(req.body, true);
     if (error) {
         return res.status(400).json({ success: false, error });
     }
@@ -65,8 +77,6 @@ async function updateInsumo(req, res) {
     }
 }
 
-// ... (El resto de las funciones como getAllInsumos, getInsumoById, deleteInsumo se mantienen igual)
-// ... (Asegúrate de copiar el resto de las funciones desde tu archivo original aquí)
 async function getAllInsumos(req, res) {
     const sql = "SELECT *, id as pk_id FROM insumos ORDER BY fecha_creacion DESC";
     try {
@@ -81,6 +91,7 @@ async function getAllInsumos(req, res) {
         res.status(500).json({ success: false, error: "Error al obtener insumos", details: err.message });
     }
 }
+
 async function getInsumoById(req, res) {
     const id = req.params.id; 
      if (!id || isNaN(parseInt(id))) {
@@ -98,6 +109,7 @@ async function getInsumoById(req, res) {
         res.status(500).json({ success: false, error: "Error al obtener insumo", details: err.message });
     }
 }
+
 async function deleteInsumo(req, res) {
     const id = req.params.id; 
     if (!id || isNaN(parseInt(id))) {
@@ -118,6 +130,7 @@ async function deleteInsumo(req, res) {
         res.status(500).json({ success: false, error: "Error al eliminar insumo", details: err.message });
     }
 }
+
 async function searchInsumos(req, res) {
     const { termino } = req.query;
     if (!termino) {

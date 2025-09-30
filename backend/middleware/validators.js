@@ -4,13 +4,15 @@ const { body, validationResult } = require('express-validator');
 const handleValidationErrors = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ success: false, errors: errors.array() });
+        // Devuelve el primer error encontrado para que el mensaje sea más claro
+        return res.status(400).json({ success: false, error: errors.array()[0].msg });
     }
     next();
 };
 
 // --- REGLAS DE VALIDACIÓN PARA CADA MÓDULO ---
 
+// Reglas originales para CREAR un usuario (requiere contraseña)
 const userValidationRules = () => [
     body('documentType').isIn(['TI', 'CC', 'CE', 'PPT', 'PEP']).withMessage('Tipo de documento inválido.'),
     body('documentNumber').isNumeric().withMessage('El documento solo debe contener números.').isLength({ min: 5, max: 20 }).withMessage('El número de documento debe tener entre 5 y 20 caracteres.'),
@@ -28,6 +30,19 @@ const userValidationRules = () => [
     }),
 ];
 
+// NUEVAS REGLAS para ACTUALIZAR un usuario (NO requiere contraseña)
+const userUpdateValidationRules = () => [
+    body('documentType').isIn(['TI', 'CC', 'CE', 'PPT', 'PEP']).withMessage('Tipo de documento inválido.'),
+    body('documentNumber').isNumeric().withMessage('El documento solo debe contener números.').isLength({ min: 5, max: 20 }).withMessage('El número de documento debe tener entre 5 y 20 caracteres.'),
+    body('userType').isIn(['SADMIN', 'ADMIN', 'PAP', 'VTE']).withMessage('Tipo de usuario inválido.'),
+    body('firstName').isString().trim().notEmpty().withMessage('El nombre es requerido.'),
+    body('lastName').isString().trim().notEmpty().withMessage('El apellido es requerido.'),
+    body('phone').isNumeric().withMessage('El teléfono solo debe contener números.').isLength({ min: 7, max: 20 }).withMessage('El teléfono debe tener entre 7 y 20 dígitos.'),
+    body('email').isEmail().normalizeEmail().withMessage('Debe ser un correo electrónico válido.'),
+];
+
+
+// El resto de las reglas se mantienen igual
 const sensorValidationRules = () => [
     body('nombre_sensor').isString().trim().notEmpty().withMessage('El nombre del sensor es requerido.'),
     body('identificador').isString().trim().notEmpty().withMessage('El identificador es requerido.'),
@@ -80,6 +95,7 @@ const productionValidationRules = () => [
 module.exports = {
     handleValidationErrors,
     userValidationRules,
+    userUpdateValidationRules,
     sensorValidationRules,
     insumoValidationRules,
     cultivoValidationRules,
