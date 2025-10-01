@@ -196,7 +196,7 @@ h1 {
     font-size: var(--font-size-h1);
     font-weight: var(--font-bold);
     margin-left: 24rem;
-    margin-bottom: -2rem;
+    margin-bottom: -3rem;
 }
 
 .header__logo {
@@ -342,7 +342,7 @@ h1 {
 
 .gov_coo {
     position: absolute;
-    margin-top: 17rem;
+    margin-top: 2rem;
 }
 
 /* Media Queries */

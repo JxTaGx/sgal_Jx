@@ -171,13 +171,14 @@ img {
     justify-content: flex-start;
     gap: 2rem;
     padding: 0.4rem 0;
+    margin-bottom: -4rem
 }
 
 .ciclo-cultivo__logo {
     width: 8rem;
     margin-left: -15rem;
     margin-right: 5rem;
-    margin-top: 15rem;
+    margin-top: 19rem;
 }
 
 .ciclo-cultivo__card-title {
@@ -276,7 +277,7 @@ img {
 }
 
 .gov___co {
-    margin-top: 7rem;
+    margin-top: 10rem;
 }
 
 .gov {
@@ -284,7 +285,7 @@ img {
 }
 
 .gov_co {
-    margin-top: rem;
+    margin-top: 3rem;
 }
 /* Media query para pantallas grandes (hasta 1200px) */
 @media (max-width: 1200px) {
