@@ -17,6 +17,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     const telefonoInput = document.getElementById('telefono');
     const form = document.getElementById('edit-form');
 
+    // --- VALIDACIONES ---
+    // Función para prevenir números en los campos de texto
+    const preventNumbers = (event) => {
+        if (/[0-9]/.test(event.key)) {
+            event.preventDefault();
+        }
+    };
+
+    // Aplicar la validación a los campos de nombre y apellido
+    nombreInput.addEventListener('keypress', preventNumbers);
+    apellidoInput.addEventListener('keypress', preventNumbers);
+    // --- FIN DE VALIDACIONES ---
+
     const params = new URLSearchParams(window.location.search);
     const id = parseInt(params.get('id'), 10);
     if (!id || id <= 0) {
@@ -99,7 +112,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
-    
+
     // --- Resto de funciones de validación (se mantienen igual) ---
     // ... (incluye aquí las funciones showErrorNotification, validateEmail, validateForm, etc.)
 });

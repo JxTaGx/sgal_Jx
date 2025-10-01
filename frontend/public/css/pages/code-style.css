@@ -267,7 +267,7 @@ h6 {
 }
 
 .verification__input-group {
-    margin-bottom: 2rem; /* Reducido para dar espacio a los nuevos campos */
+    margin-bottom: 2rem; 
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     width: 1rem;
@@ -275,7 +275,6 @@ h6 {
     gap: 1rem;
 }
 
-/* --- NUEVOS ESTILOS --- */
 .verification__password-group {
     display: flex;
     flex-direction: column;
@@ -287,7 +286,7 @@ h6 {
 }
 
 .verification__input--password {
-    width: 32rem; /* Ancho consistente con otros formularios */
+    width: 32rem; 
     height: 4.8rem;
     padding: 1rem;
     font-size: var(--font-size-h5);
@@ -322,12 +321,12 @@ h6 {
 }
 
 .verification__button--verify {
-    width: auto; /* Ancho automático para adaptarse al texto */
-    padding: 1rem 2rem; /* Mejor padding */
+    width: auto;
+    padding: 1rem 2rem; 
     position: absolute;
     bottom: 1rem;
-    left: 50%; /* Centrado horizontal */
-    transform: translateX(-50%); /* Ajuste fino del centrado */
+    left: 50%; 
+    transform: translateX(-50%);
     background-color: var(--primary-900);
     color: var(--white);
     border: 0.1rem solid var(--black);
@@ -455,6 +454,12 @@ h6 {
         margin: 2rem auto;
         width: auto;
         padding: 1rem 2rem;
+    }
+
+    .verification__password-group {
+        margin-left: 0;
+        width: 100%;
+        align-items: center;
     }
 }
 
@@ -656,6 +661,11 @@ h6 {
         margin-top: 1.5rem;
         margin-left: 1.5rem;
     }
+
+    .verification__button--verify {
+        padding: 0.8rem 1.5rem;
+        font-size: var(--font-size-h5);
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -698,6 +708,11 @@ h6 {
     }
 
     .verification__button--finish {
+        padding: 0.8rem 1.5rem;
+        font-size: var(--font-size-h5);
+    }
+
+    .verification__button--verify {
         padding: 0.8rem 1.5rem;
         font-size: var(--font-size-h5);
     }

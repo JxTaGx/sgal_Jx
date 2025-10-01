@@ -12,6 +12,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     const idCiclo = localStorage.getItem('idCicloCultivo');
     const token = localStorage.getItem('token');
 
+    // --- VALIDACIONES ---
+    // Función para validar que los campos no estén vacíos
+    const validateForm = () => {
+        let isValid = true;
+        [nombreCicloInput, periodoSiembraInput, novedadesInput, descripcionInput, estadoInput].forEach(input => {
+            if (!input.value.trim()) {
+                isValid = false;
+            }
+        });
+        return isValid;
+    };
+    // --- FIN DE VALIDACIONES ---
+
     if (!token) {
         alert('Acceso denegado. Por favor, inicie sesión.');
         window.location.href = 'login.html';
@@ -62,8 +75,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        if (!nombreCicloInput.value.trim() || !periodoSiembraInput.value.trim()) {
-            alert("Nombre del ciclo y periodo de siembra son obligatorios.");
+        // Validar el formulario antes de enviar
+        if (!validateForm()) {
+            alert('Por favor, complete todos los campos antes de guardar.');
             return;
         }
 
