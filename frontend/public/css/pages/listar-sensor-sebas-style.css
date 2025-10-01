@@ -387,13 +387,13 @@ html > * {
     }
 
     .sensor__title {
-        margin-left: 4rem;
+        margin-left: 15rem;
         font-size: var(--font-size-h2);
     }
 
     .sensor__logo {
-        margin-top: -3rem;
-        margin-left: 0;
+        margin-top: -5rem;
+        margin-left: 3rem;
     }
 
     .sensor__control-panel {
@@ -413,7 +413,8 @@ html > * {
     }
 
     .sensor__button--gray {
-        margin-right: 1rem;
+        margin-top: -4.2rem;
+        margin-left: 50rem;
     }
 
     .sensor__table-header,
@@ -426,11 +427,16 @@ html > * {
     .sensor__table-row,
     .sensor__table td {
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: flex-end;
     }
 
     .bottom-buttons {
         left: 3rem;
+    }
+
+    .sensor__button--blue {
+        margin-bottom: 1.2rem;
+        margin-left: 2rem;
     }
 }
 
@@ -439,11 +445,12 @@ html > * {
         margin-left: 2rem;
         font-size: var(--font-size-h3);
         text-align: center;
+        margin-top: -0.5rem;
     }
 
     .sensor__logo {
         margin: 0 auto;
-        margin-top: -2rem;
+        margin-top: -0.1rem;
     }
 
     .sensor__search {
@@ -488,5 +495,6 @@ html > * {
 
     .sensor__button--return {
         width: 100%;
+        margin-bottom: -5rem;
     }
 }

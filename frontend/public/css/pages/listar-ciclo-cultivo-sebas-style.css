@@ -337,6 +337,11 @@ h1 {
     position: absolute;
 }
 
+.gov_coo {
+    position: absolute;
+    margin-top: 17rem;
+}
+
 /* Media Queries */
 
 /* Desktop grande (1200px y mayor) */
