@@ -178,7 +178,7 @@ h6 {
     text-align: left;
     display: flex;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 5rem;
 }
 
 .page__logo {
@@ -204,7 +204,7 @@ h6 {
 .page__button--back {
     width: 9.7rem;
     position: absolute;
-    bottom: 3rem;
+    bottom: 1rem;
     left: 4rem;
     background-color: var(--gray-550);
     color: var(--white);
@@ -290,7 +290,7 @@ h6 {
     margin-left: 40rem;
     position: relative;
     z-index: 2; 
-    max-height: calc(100vh - 15rem); /* Altura máxima calculada */
+    max-height: calc(100vh - 15rem);
 }
 
 .register__column {
@@ -389,7 +389,7 @@ a {
 }
 
 .gov_co {
-    margin-top: -2rem;
+    margin-top: 6.8rem;
 }
 
 /* Animación de entrada para alertas */

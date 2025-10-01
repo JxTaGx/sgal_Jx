@@ -184,15 +184,6 @@ body {
     margin-top: 3.5rem;
 }
 
-.container {
-    width: 60%;
-    background-color: var(--white);
-    border-radius: 0.8rem;
-    box-shadow: 0 0rem 0.4rem rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-    margin-top: 1rem;
-}
-
 .container::before {
     content: ""; 
     position: absolute; 
@@ -219,9 +210,9 @@ body {
     margin-bottom: 20rem;
 }
 
-.container__decoration-title {
-    margin-right: 1rem;
-    margin-bottom: 0.2rem;
+.container__title {
+    margin-top: -9rem;
+    margin-right: 95rem;
 }
 
 .container__logo{
@@ -278,8 +269,26 @@ input[disabled] {
 }
 
 .container__fields {
-    margin-top: 7rem;
+    background-color: var(--gray-350);
+    border: 0.1rem solid var(--gray-550);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    width: 70rem;
+    border: 0.1rem solid var(--black);
+    margin-left: 70rem;
 }
+
+.insumo-tasks {
+    background-color: var(--primary-50);
+    border: 0.1rem solid var(--gray-550);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    margin-top: -42rem;
+    width: 70rem;
+    margin-right: 75rem;
+}
+
 
 .field {
     margin-top: 1.5rem;
@@ -289,7 +298,7 @@ input[disabled] {
     display: flex;
     justify-content: space-around;
     width: 100%;
-    margin-top: 9rem;
+    margin-top: 4rem;
 }
 
 .button {
@@ -326,6 +335,13 @@ input[disabled] {
 body {
     font-family: var(--font-primary);
     font-size: var(--font-size-h4); /* Base */
+}
+
+.chart-container {
+    position: relative;
+    height: 300px; 
+    width: 100%;
+    margin-top: 2rem;
 }
 
 .gov {
