@@ -42,6 +42,51 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("descripcion-insumo").textContent = insumo.descripcion || "Sin descripción";
     document.getElementById("estado-insumo").textContent = insumo.estado || "Sin estado";
 
+    // --- Lógica del Gráfico ---
+    const ctx = document.getElementById('consumo-chart').getContext('2d');
+
+    // Simular datos de consumo para los últimos 6 meses
+    const labels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'];
+    const data = {
+      labels: labels,
+      datasets: [{
+        label: `Consumo de ${insumo.nombre_insumo || 'Insumo'} (${insumo.unidad_medida || 'unidades'})`,
+        data: labels.map(() => Math.floor(Math.random() * (insumo.cantidad > 10 ? insumo.cantidad / 5 : 10)) + 5),
+        fill: true,
+        borderColor: '#4BBD17', // Color verde de la paleta del proyecto
+        backgroundColor: 'rgba(75, 189, 23, 0.2)',
+        tension: 0.1
+      }]
+    };
+
+    new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+          },
+          title: {
+            display: true,
+            text: 'Consumo Mensual Estimado'
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: `Cantidad (${insumo.unidad_medida || 'unidades'})`
+            }
+          }
+        }
+      }
+    });
+
   } catch (error) {
     console.error("Error al obtener insumo:", error);
     alert(`Hubo un error al cargar los datos del insumo: ${error.message}`);

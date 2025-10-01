@@ -215,6 +215,7 @@ h6 {
     padding: 1.2rem 2.4rem;
     border: 0.1rem solid var(--black);
     z-index: 10; /* Asegurar que esté por encima de otros elementos */
+    margin-bottom: 3rem;
 }
 
 /* Bloque register */
@@ -222,7 +223,7 @@ h6 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: calc(100vh - 8rem); /* Altura calculada restando paddings */
+    height: calc(0vh - 8rem); /* Altura calculada restando paddings */
     position: relative;
 }
 
@@ -290,7 +291,7 @@ h6 {
     margin-left: 40rem;
     position: relative;
     z-index: 2; 
-    max-height: calc(100vh - 15rem);
+    max-height: calc(85vh - 15rem);
 }
 
 .register__column {
@@ -384,12 +385,12 @@ a {
 }
 
 .gov {
-    margin-bottom: 80rem;
+    margin-top: 0rem;
     position: absolute;
 }
 
 .gov_co {
-    margin-top: 6.8rem;
+    margin-top: -2rem;
 }
 
 /* Animación de entrada para alertas */
