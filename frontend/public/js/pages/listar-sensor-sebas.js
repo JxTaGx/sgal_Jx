@@ -60,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${sensor.estado}</td>
                 <td>
                     <button onclick="verSensor(${sensor.id})" class="sensor__button sensor__button--blue">Editar</button>
-                    <button class="sensor__button sensor__button--purple">Habilitar</button>
                 </td>
             `;
             tableBody.appendChild(row);
