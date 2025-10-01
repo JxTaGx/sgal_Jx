@@ -53,6 +53,67 @@ document.addEventListener('DOMContentLoaded', () => {
         if (userInfo) {
             userInfo.textContent = user.userType.toUpperCase();
         }
+
+        // --- Ocultar botones específicos por rol ---
+        const pathname = window.location.pathname;
+
+        // Ocultar botón "Crear Sensor" para VTE y PAP
+        if (userType === 'VTE' || userType === 'PAP') {
+            if (pathname.endsWith('listar-sensor-sebas.html')) {
+                const crearSensorLink = document.querySelector('a[href="create-sensor.html"]');
+                if (crearSensorLink) {
+                    crearSensorLink.style.display = 'none';
+                }
+            }
+        }
+        
+        // Ocultar botones adicionales solo para VTE
+        if (userType === 'VTE') {
+            // Ocultar botón "Crear" en Ciclo Cultivo
+            if (pathname.endsWith('listar-ciclo-cultivo-sebas.html')) {
+                const crearCicloLink = document.querySelector('a[href="create-ciclo-cultivo.html"]');
+                if (crearCicloLink && crearCicloLink.parentElement) {
+                    crearCicloLink.parentElement.style.display = 'none';
+                }
+            }
+            
+            // Ocultar botón "Crear" en Cultivos
+            if (pathname.endsWith('listar-cultivo-sebas.html')) {
+                const crearCultivoLink = document.querySelector('a[href="create-cultivo.html"]');
+                if (crearCultivoLink && crearCultivoLink.parentElement) {
+                    crearCultivoLink.parentElement.style.display = 'none';
+                }
+            }
+
+            // Ocultar botón "Editar" en la vista de detalle de Ciclo Cultivo
+            if (pathname.endsWith('visualizar-ciclo-cultivo.html')) {
+                const editarCicloBtn = document.getElementById('editar-btn');
+                if (editarCicloBtn) editarCicloBtn.style.display = 'none';
+            }
+
+            // Ocultar botón "Editar" en la vista de detalle de Cultivo
+            if (pathname.endsWith('visualizar-cultivo.html')) {
+                const editarCultivoBtn = document.querySelector('.ciclo-cultivo__btn--edit');
+                if (editarCultivoBtn) editarCultivoBtn.style.display = 'none';
+            }
+
+            // Ocultar botón "Actualizar Sensor"
+            if (pathname.endsWith('visualizar-sensor.html')) {
+                const actualizarSensorBtn = document.querySelector('.button--edit');
+                if (actualizarSensorBtn) actualizarSensorBtn.style.display = 'none';
+            }
+        }
+
+        // Rol: Administrador (ADMIN)
+        if (userType === 'ADMIN') {
+            // Ocultar botón "Crear Usuario" en la lista de usuarios
+            if (pathname.endsWith('lista-usuario.html')) {
+                const crearUsuarioBtn = document.querySelector("button[onclick=\"window.location.href='register.html'\"]");
+                if (crearUsuarioBtn) {
+                    crearUsuarioBtn.style.display = 'none';
+                }
+            }
+        }
     }
 });
 
